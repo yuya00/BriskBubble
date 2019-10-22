@@ -64,8 +64,6 @@ public class CharaBase : MonoBehaviour {
 		//Debug.Log("vel:"+velocity);
 		//add
 		//add2
-
-		//pulse
 	}
 
 
