@@ -1,0 +1,9 @@
+﻿rigidbody
+Drag		 0   →　1
+Angular Drag 0.5 →　1
+
+[SerializeField]
+
+
+ジャンプ時は移動減
+

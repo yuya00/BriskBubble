@@ -1,0 +1,156 @@
+﻿rigidbody
+Drag		 0   →　1
+Angular Drag 0.5 →　1
+
+ジャンプ時は移動減
+
+
+
+[System.Serializable]
+構造体やクラスなどをインスペクターに表示する
+構造体と実体の前にpublicが必要
+
+[SerializeField]
+private変数をインスペクターで表示する
+
+[System.NonSerialized]
+public変数をインスペクターに表示しない
+シリアライズされない。
+※[HideInInspector]もあるが、これは表示しないだけなので、
+シリアライズはされてしまう。
+
+
+[Header("近接範囲")]
+変数の上に文字を表示できる
+
+[Range(0, 50)]
+変数をスライダーで変更できる
+
+[Tooltip("半径")]
+カーソルを合わせるとテキストが表示される
+
+readonly
+コンストラクタ内でも初期化可能,new可能
+constは、列挙型の定義などの
+コンパイル時に値が必要な場合に使用する
+
+
+throw new System.ArgumentException(string.Format("角度がおかしい"));
+エラーを表示させる
+
+m_,g_,i_
+メンバ変数,グローバル変数,引数の頭にを付ける
+
+var 
+autoと同じ仕様
+
+回転の方法 ------------------------
+
+//上書き
+// ローカル座標を基準に、回転を取得
+Vector3 localAngle = transform.localEulerAngles(eulerAngles);
+
+Vector3 newAngle;
+newAngle.x = 10.0f;	// 回転角度代入
+newAngle.y = 10.0f;
+newAngle.z = 10.0f;
+
+transform.localEulerAngles = newAngle;	  // 回転角度を設定
+
+
+//加算
+// ローカル座標基準で、現在の回転量へ加算する
+transform.Rotate (0.0f, 5.0f, 0.0f (,Space.World) );
+
+
+// 指定した方向を見る
+// LookAt
+transform.LookAt(transform.position);	//プレイヤーを見るカメラに使用
+transform.LookAt(transform.position + input);	//進む方向を見る
+
+// --Quaternion.Slerp
+// ターゲット方向のベクトルを取得
+Vector3 relativePos = targetObject.transform.position - this.transform.position;
+// 方向を、回転情報に変換
+Quaternion rotation = Quaternion.LookRotation (relativePos);
+// 現在の回転情報と、ターゲット方向の回転情報を補完する
+transform.rotation  = Quaternion.Slerp (this.transform.rotation, rotation, speed);
+
+--------------------------------------------------------------
+
+
+OnGUI ------------------------
+
+// 半透明のフキダシを敷く
+GUILayout.BeginVertical("box");
+GUILayout.EndVertical();
+
+// 半透明のフキダシの上に文字表示
+GUILayout.TextArea("状態\n state：" + state.ToString());
+
+// タイトル
+GUILayout.Box("Title");
+
+// スクロールビュー
+leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(100));
+GUILayout.EndScrollView();
+
+// スペース
+GUILayout.Space(10);
+
+// ボタン
+if (GUILayout.Button("Button")) {
+	Debug.Log("Clicked the image");
+}
+if (GUILayout.Button("Button", GUILayout.Width(70))) {
+	Debug.Log("Clicked the image");
+}
+
+// トグル(チェックボタン)
+toggleflg = GUILayout.Toggle(toggleflg, "Toggle");
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+
+
+泡のに発射直後判定、破裂判定をつける
+  if(other.発射直後判定 || other.破裂判定 ){
+	　Hitflg = true
+  }
+  泡は破裂した後、
+  破裂判定をtrue、透明、当たり判定を無くす
+  破裂した1秒後に消去する
+
+
+コードの色変える
+
+
+
+
+
+
+
+
+
+
+あとから
+・Enemyのインスペクターで
+　Colliderの大きさを変更出来るようにする
+　(Enemyの実体がないから出来ない?)
+・扇形の向きが前後ろ逆
+　影響範囲　逃走後のlookAt
+・敵にプレイヤーのプレハブを入れない
+
+
