@@ -1,2 +1,2 @@
-# prac-git
-練習
+# BriskBubble
+
