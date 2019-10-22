@@ -61,6 +61,7 @@ public class CharaBase : MonoBehaviour {
 		//Debug.DrawRay(chara_ray.position, Vector3.down * chara_ray_length, Color.red);
 		//Debug.Log("ground:" + is_ground);
 		//Debug.Log("vel:"+velocity);
+		//Debug.Log("vel:"+velocity);
 	}
 
 
