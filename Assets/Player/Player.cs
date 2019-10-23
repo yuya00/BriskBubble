@@ -5,29 +5,43 @@ using UnityEngine.UI;
 
 public class Player : CharaBase
 {
-    private const float SHOT_POSITION = 2.8f;
-
-    private Vector3 axis;           //入力値
-    private Vector3 input;          //入力値
+    private Vector3 axis;                   //入力値
+    private Vector3 input;                  //入力値
     public GameObject[] shot_object;
-    public float jump_power_up;
+    public float jump_power_up;          // ショットに乗ったときにジャンプ力を何倍にするか
 
-    private float init_spd;     // 初期速度
-    private float init_fric;    // 初期慣性STOP
-    private float fall_time;    // 落下判定用
+    private float init_spd;               // 初期速度
+    private float init_fric;              // 初期慣性STOP
+    private float fall_time;              // 落下判定用
+    public float rotate = 1.0f;
+    public float slope = 0.3f;           // スティックの傾き具合設定用
+
+    // あにめ
+    private Animator animator;
+
+    // 状態
+    private const int WAIT = 0;
+    private const int WALK = 1;
+    private const int RUN = 2;
 
     //--- shot用↓ ---//
-    public int      shot_state;             // debugでpublicにしてる
-    private float   charge_time;            // チャージ時間
-    private float   shot_interval_time;     // ショットの間隔
-    public float    shot_interval_time_max; // ショットを撃つまでの間隔
-    private bool    stop_player;            // ショット3を撃った後にプレイヤーを後ろに飛ばす
-    private float   stop_time;              // 動けない時間
-    public float    stop_time_max;          // どれだけ動けないか
-    public float    back_spd = 0.5f;        // 後ろ方向に進む速度
-    private float   init_back_spd;          // 初期速度保存用
+    private const float SHOT_POSITION = 2.8f;
 
-    public Text txt;
+    public int shot_state;             // debugでpublicにしてる
+    private float charge_time;            // チャージ時間
+    private float shot_interval_time;     // ショットの間隔
+    public float shot_interval_time_max; // ショットを撃つまでの間隔
+    private bool back_player;            // ショット3を撃った後にプレイヤーを後ろに飛ばす
+    private float stop_time;              // 動けない時間
+    public float stop_time_max;          // どれだけ動けないか
+    public float back_spd = 0.5f;        // 後ろ方向に進む速度
+    private float init_back_spd;          // 初期速度保存用
+
+    //--- カメラ用↓ ---//
+    public GameObject cam;
+    public float rot_spd = 10.0f;
+
+    //public Text txt;
 
     // プレイヤーの足元用データ
     private Vector3[] ofset_layer_pos =
@@ -46,11 +60,8 @@ public class Player : CharaBase
          new Vector3(  1, 0,  1 ),
     };
 
-	GUIStyle style;
-	GUIStyleState style_state;
-
-	// Start is called before the first frame update
-	public override void Start()
+    // Start is called before the first frame update
+    public override void Start()
     {
         base.Start();
         // 初期値設定
@@ -58,36 +69,51 @@ public class Player : CharaBase
         init_fric = stop_fric;
         init_back_spd = back_spd;
         chara_ray = transform.Find("CharaRay");
-
-		style = new GUIStyle();
-		style.fontSize = 15;
-
-		style_state = new GUIStyleState();
-		style_state.textColor = Color.gray;
-		style.normal = style_state;
-
-	}
+        animator = GetComponent<Animator>();
+    }
 
     // Update is called once per frame
     void Update()
     {
         Move();
         Shot();
-
-		//Debug_Log();
+        //Debug_Log();
     }
 
-	void OnGUI() {
-		//float posx = Mathf.Round(transform.position.x * 100.0f)/100.0f;
-		//GUI.Label(new Rect(0, 180, 1000, 500), "pos.x:" +posx.ToString(), style);
-	}
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        // 移動
+        lstick_move();
+
+        // モーション
+        anime_jump();
+    }
+
+    void OnGUI()
+    {
+        GUILayout.BeginVertical("box");
+
+        GUILayout.TextArea("ジャンプフラグ\n" + jump_on().ToString());
+        GUILayout.TextArea("velocity.y\n" + velocity.y);
+
+        //velocity.y += jump_power;
+        //rigid.useGravity = false;
+        //is_ground = false;
+
+        //// jumpした後すぐは上に動いてるからそのときは当たり判定なくす
+        //fall_time = 0;
+
+        GUILayout.EndVertical();
+    }
 
 
-	//---------------------------------------------//
-	//                    移動                     //
-	//---------------------------------------------//
-	// 移動まとめ
-	public override void Move()
+    //---------------------------------------------//
+    //                    移動                     //
+    //---------------------------------------------//
+    // 移動まとめ
+    public override void Move()
     {
         base.Move();
 
@@ -103,56 +129,102 @@ public class Player : CharaBase
         if (shot_state > 1) bubble_spd(2.0f, 0.1f);
 
         // ショット3を撃った後プレイヤーをとめる
-        if (stop_player) back_move();
-
-        // 移動
-        ground_move();
+        if (back_player) back_move();
 
         //　ジャンプ
-        if (Input.GetButtonDown("Jump") && is_ground)
-        {
-            jump(jump_power);
-        }
+        if (jump_on()) jump(jump_power);
 
         // ショットに乗った時にジャンプをjump_power_up倍
-        if (down_hit_shot())
-        {
-            jump(jump_power * jump_power_up);
-        }
+        if (down_hit_shot()) jump(jump_power * jump_power_up);
 
-        //txt.text = "sub : " + transform.position.y;
     }
 
-    // 地面移動
-    void ground_move()
+    // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
+    void lstick_move()
     {
-        //移動
-        axis.x = Input.GetAxis("Horizontal");
-        axis.z = Input.GetAxis("Vertical");
-        input = new Vector3(axis.x, 0f, axis.z);
+        Vector3 move = new Vector3(0, 0, 0);
 
-        #region 速さ代入
-        //　方向キーが多少押されていたら
-        if (input.magnitude > 0f)
-        {
-            // プレイヤーが止まってないとき
-            if (!stop_player)
-            {
-                //向き変更
-                transform.LookAt(transform.position + input);
+        // スピード
+        float axis_x = 0, axis_y = 0;
 
-                //慣性を考慮した速さ(等速)
-                velocity.x = input.normalized.x * (run_spd * jump_fric);
-                velocity.z = input.normalized.z * (run_spd * jump_fric);
-            }
-        }
-        else
+        // パッド情報代入
+        float pad_x = Input.GetAxis("L_Stick_H");
+        float pad_y = -Input.GetAxis("L_Stick_V");
+
+        axis_x += pad_x;
+        axis_y += pad_y;
+
+        // 平方根を求めて正規化
+        float axis_length = Mathf.Sqrt(axis_x * axis_x + axis_y * axis_y);
+        if (axis_length > 1.0f)
         {
-            //停止時慣性(徐々に遅くなる)
-            velocity.x -= velocity.x * stop_fric;
-            velocity.z -= velocity.z * stop_fric;
+            axis_x /= axis_length;
+            axis_y /= axis_length;
         }
+
+        // 進む方向
+        Vector3 front = (transform.position - cam.transform.position).normalized;
+        front.y = 0;
+
+        // 横方向
+        Vector3 right = Vector3.Cross(new Vector3(0, transform.position.y + 1.0f, 0), front).normalized;
+
+        // 方向に値を設定
+        move = right * axis_x;
+        move += front * axis_y;
+
+        //　方向キーが多少押されていたらその方向向く
+        if (axis_x != 0f || axis_y != 0f) look_at(move);
+
+        #region 状態分け
+        switch (stick_state(axis_x, axis_y))
+        {
+            case WAIT:
+                //停止時慣性(徐々に遅くなる)              
+                velocity.x -= velocity.x * stop_fric;
+                velocity.z -= velocity.z * stop_fric;
+                animator.SetBool("Walk", false);
+                animator.SetBool("Run", false);
+                break;
+            case WALK:
+                // カメラから見てスティックを倒したほうへ進む
+                velocity.x = move.normalized.x * walk_spd;
+                velocity.z = move.normalized.z * walk_spd;
+                animator.SetBool("Walk", true);
+                animator.SetBool("Run", false);
+                break;
+            case RUN:
+                // カメラから見てスティックを倒したほうへ進む
+                velocity.x = move.normalized.x * run_spd;
+                velocity.z = move.normalized.z * run_spd;
+                animator.SetBool("Run", true);
+                animator.SetBool("Walk", false);
+                break;
+        }
+
         #endregion
+    }
+
+    // その方向を向く
+    void look_at(Vector3 vec)
+    {
+        Vector3 target_pos = transform.position + vec.normalized;
+        Vector3 target = Vector3.Lerp(transform.position + transform.forward, target_pos, rot_spd * Time.deltaTime);
+        transform.LookAt(target);
+    }
+
+    // スティックの倒し具合設定
+    int stick_state(float x, float y)
+    {
+        // 入力チェック
+        if (x != 0f || y != 0f)
+        {
+            // スティックの傾きによって歩きと走りを切り替え
+            if (Mathf.Abs(x) >= slope || Mathf.Abs(y) >= slope) return RUN;
+            else return WALK;
+        }
+        // 入力してないときは待機
+        return WAIT;
     }
 
     // バブル状態のときの速さ
@@ -172,6 +244,59 @@ public class Player : CharaBase
 
         // jumpした後すぐは上に動いてるからそのときは当たり判定なくす
         fall_time = 0;
+        animator.SetBool("Jump", true);
+    }
+
+    float time;
+    // ジャンプモーション用
+    void anime_jump()
+    {
+        // ジャンプしたとき
+        if (jump_on())
+        {
+            animator.SetBool("JumpStart", true);
+        }
+        // 浮いてるとき
+        if (!is_ground)
+        {
+            animator.SetBool("Fall", true);
+            animator.SetBool("JumpStart", false);
+            animator.SetBool("Walk", false);
+            animator.SetBool("Run", false);
+        }
+        // 着地してるとき
+        if (is_ground)
+        {
+            animator.SetBool("Fall", false);
+        }
+
+        // 着地したときに1回だけ着地をtrueにする
+        if (!is_ground)
+        {
+            time = 0;
+        }
+        if (is_ground)
+        {
+            if (time++ < 2)
+            {
+                animator.SetBool("JumpEnd", true);
+            }
+            else
+            {
+                animator.SetBool("JumpEnd", false);
+            }
+
+        }
+
+        Debug.Log(is_ground);
+
+    }
+
+    // ジャンプする判定
+    bool jump_on()
+    {
+        if (Input.GetButtonDown("Jump") && is_ground) return true;
+        return false;
     }
 
     //---------------------------------------------//
@@ -210,14 +335,14 @@ public class Player : CharaBase
                 // ショット間隔の時間リセット
                 shot_interval_time = 0;
             }
-        }        
+        }
     }
 
     // ショットの間隔
     void shot_interval()
     {
         // ショットを撃った後
-        if(!shot_interval_check())
+        if (!shot_interval_check())
         {
             shot_interval_time += Time.deltaTime;
         }
@@ -238,9 +363,9 @@ public class Player : CharaBase
         charge_time += Time.deltaTime;
 
         // ショットをstateで管理
-        if (charge_time <= 1)                       shot_state = 0;
-        if (charge_time > 1 && charge_time <= 2)    shot_state = 1;
-        if (charge_time > 2)                        shot_state = 2;
+        if (charge_time <= 1) shot_state = 0;
+        if (charge_time > 1 && charge_time <= 2) shot_state = 1;
+        if (charge_time > 2) shot_state = 2;
     }
 
     // ショットの選択
@@ -263,12 +388,12 @@ public class Player : CharaBase
                 // 3段階目
                 shot.GetComponent<Shot03>().SetCharacterObject(gameObject);
                 back_spd = init_back_spd;   // 初期化
-                stop_player = true;
+                back_player = true;
                 break;
         }
     }
 
-    // プレイヤーを後ろに飛ばす
+    // ショット3を撃った後、プレイヤーを後ろに飛ばす
     void back_move()
     {
         // 徐々に遅く
@@ -282,9 +407,9 @@ public class Player : CharaBase
         if (stop_time > stop_time_max)
         {
             // プレイヤーが操作可能になる
-            stop_player = false;
+            back_player = false;
             stop_time = 0;
-        }        
+        }
     }
     //---------------------------------------------//
 
@@ -319,25 +444,22 @@ public class Player : CharaBase
     bool fall()
     {
         // 地面についてる時は初期化
-        if (is_ground)  fall_time = 0;
-        else            fall_time += Time.deltaTime;
+        if (is_ground) fall_time = 0;
+        else fall_time += Time.deltaTime;
 
         // 落下時
-        if(fall_time > 0.4f)     return true;
+        if (fall_time > 0.4f) return true;
         return false;
     }
+
+    //---------------------------------------------//
 
     public override void Debug_Log()
     {
         base.Debug_Log();
     }
 
-
-
-
-
-
-	public float Run_spd {
+    public float Run_spd {
 		get { return run_spd; }
 	}
 
