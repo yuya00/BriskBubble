@@ -58,18 +58,25 @@ public class CharaBase : MonoBehaviour {
 
 
 	public virtual void Debug_Log(){
-		//Debug.DrawRay(chara_ray.position, Vector3.down * chara_ray_length, Color.red);
-		//Debug.Log("ground:" + is_ground);
-		//Debug.Log("vel:"+velocity);
-		//Debug.Log("vel:"+velocity);
-		//add
-		//add2
-		//add3
-	}
+        //Debug.DrawRay(chara_ray.position, Vector3.down * chara_ray_length, Color.red);
+        //Debug.Log("ground:" + is_ground);
+        //Debug.Log("vel:"+velocity);
+        //Debug.Log("vel:"+velocity);
+        //add
+        //add2
+        //add3
+        /*
+        public virtual void Debug_Log()
+        public virtual void Debug_Log()
+        public virtual void Debug_Log()
+        public virtual void Debug_Log()
+        public virtual void Debug_Log()
+         */
+    }
 
 
 
-	public virtual void FixedUpdate(){
+    public virtual void FixedUpdate(){
 		//キャラクターを移動させる処理
 		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
 	}
