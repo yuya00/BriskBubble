@@ -65,6 +65,7 @@ public class CharaBase : MonoBehaviour {
 		//add
 		//add2
 		//add3
+		//add4
 	}
 
 
