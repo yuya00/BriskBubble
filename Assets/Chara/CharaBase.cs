@@ -63,16 +63,6 @@ public class CharaBase : MonoBehaviour {
         //Debug.Log("ground:" + is_ground);
         //Debug.Log("vel:"+velocity);
         //Debug.Log("vel:"+velocity);
-        //add
-        //add2
-        //add3
-        /*
-        public virtual void Debug_Log()
-        public virtual void Debug_Log()
-        public virtual void Debug_Log()
-        public virtual void Debug_Log()
-        public virtual void Debug_Log()
-         */
     }
 
 
