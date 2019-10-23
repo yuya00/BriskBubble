@@ -5,9 +5,9 @@ using UnityEngine;
 public class CharaBase : MonoBehaviour {
 
 	protected			 Rigidbody rigid;
-	protected			 Vector3 velocity;                 //速さ(rigd.velocityでも良いかも)
-	public float		 run_spd = 15.0f;   //通常の速さ
-    public float		 walk_spd = 3.0f;    //歩きの速さ
+	protected			 Vector3 velocity;			//速さ(rigd.velocityでも良いかも)
+	public float		 run_spd = 15.0f;			//通常の速さ
+    public float		 walk_spd = 3.0f;			//歩きの速さ
     public float		 jump_power = 15.0f;		//ジャンプ力
 	public float		 stop_fric = 0.3f;			//慣性(停止)
 	protected float		 jump_fric = 0;				//慣性(ジャンプ)
