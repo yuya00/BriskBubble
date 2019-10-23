@@ -150,6 +150,8 @@ public class Player : CharaBase
         // パッド情報代入
         float pad_x = Input.GetAxis("L_Stick_H");
         float pad_y = -Input.GetAxis("L_Stick_V");
+        pad_x = Input.GetAxis("Horizontal");
+        pad_y = Input.GetAxis("Vertical");
 
         axis_x += pad_x;
         axis_y += pad_y;
