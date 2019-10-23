@@ -123,7 +123,7 @@ toggleflg = GUILayout.Toggle(toggleflg, "Toggle");
 
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-
+泡の当たり判定
 
 泡のに発射直後判定、破裂判定をつける
   if(other.発射直後判定 || other.破裂判定 ){
@@ -134,8 +134,9 @@ toggleflg = GUILayout.Toggle(toggleflg, "Toggle");
   破裂した1秒後に消去する
 
 
-コードの色変える
 
+
+コードの色変える
 
 
 

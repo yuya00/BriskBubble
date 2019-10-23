@@ -290,7 +290,7 @@ public class Player : CharaBase
 
         }
 
-        Debug.Log(is_ground);
+        //Debug.Log(is_ground);
 
     }
 
