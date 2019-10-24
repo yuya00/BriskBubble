@@ -107,45 +107,45 @@ public class Player : CharaBase
 
 
     private Vector2 leftScrollPos = Vector2.zero;
-    void OnGUI()
-    {
-        GUILayout.BeginVertical("box");
+    //void OnGUI()
+    //{
+    //    GUILayout.BeginVertical("box");
 
-        // スクロールビュー
-        leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+    //    // スクロールビュー
+    //    leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-        GUILayout.TextArea("ジャンプフラグ\n" + fg);
+    //    GUILayout.TextArea("ジャンプフラグ\n" + fg);
 
-        // スペース
-        GUILayout.Space(10);
+    //    // スペース
+    //    GUILayout.Space(10);
 
-        GUILayout.TextArea("velocity.y\n" + velocity.y);
+    //    GUILayout.TextArea("velocity.y\n" + velocity.y);
 
-        // スペース
-        GUILayout.Space(10);
+    //    // スペース
+    //    GUILayout.Space(10);
 
-        GUILayout.TextArea("地面着地\n" + is_ground);
+    //    GUILayout.TextArea("地面着地\n" + is_ground);
 
-        // スペース
-        GUILayout.Space(10);
+    //    // スペース
+    //    GUILayout.Space(10);
 
-        // スペース
-        GUILayout.Space(10);
+    //    // スペース
+    //    GUILayout.Space(10);
 
-        // スペース
-        GUILayout.Space(10);
+    //    // スペース
+    //    GUILayout.Space(10);
 
-        //velocity.y += jump_power;
-        //rigid.useGravity = false;
-        //is_ground = false;
+    //    //velocity.y += jump_power;
+    //    //rigid.useGravity = false;
+    //    //is_ground = false;
 
-        //// jumpした後すぐは上に動いてるからそのときは当たり判定なくす
-        //fall_time = 0;
+    //    //// jumpした後すぐは上に動いてるからそのときは当たり判定なくす
+    //    //fall_time = 0;
 
-        GUILayout.EndScrollView();
+    //    GUILayout.EndScrollView();
 
-        GUILayout.EndVertical();
-    }
+    //    GUILayout.EndVertical();
+    //}
 
     //---------------------------------------------//
     //                    移動                     //
