@@ -51,8 +51,8 @@ public partial class Enemy : CharaBase
 		GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
 
 		//ランダム値
-		GUILayout.TextArea("ランダム値\n once_random.num：" + once_random.num.ToString() + "\n"
-			+ " once_random.isfinish：" + once_random.isfinish.ToString());
+		GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
+			+ " isfinish：" + once_random.isfinish.ToString());
 
 		//状態(待機や警戒など)
 		GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
