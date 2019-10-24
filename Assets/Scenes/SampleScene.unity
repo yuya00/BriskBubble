@@ -1514,7 +1514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2047487348}
   UP: -7
-  UP_TARGET: 5
+  UP_TARGET: 4
   TURN: 0.03
   DIST: 9
   spd: 1

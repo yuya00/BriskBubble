@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spd_down_timer_max: 0.5
   spd: 15
-  clearcolor_time: 3
+  destroy_time: 3
   down_spd: 15
   down_pos: 0.8
   timer_fg: 0

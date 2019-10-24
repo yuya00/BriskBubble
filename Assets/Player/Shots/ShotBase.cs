@@ -10,11 +10,11 @@ public class ShotBase : MonoBehaviour
     protected GameObject chara_object;  // ショット撃つ本体
     protected Rigidbody rigid;          // 物理
     protected Vector3 forward;          // 正面方向
-    public float timer;              // 経過時間
+    private float timer;              // 経過時間
     protected float spd_down_timer;     // 減速するまでの時間
     public float spd_down_timer_max;
     public float spd;                   // 速度
-    public int destroy_time;            // 何秒たったら消すか
+    public int destroy_time = 3;            // 何秒たったら消すか
 
     public float down_spd;
     public float down_pos;
@@ -84,7 +84,6 @@ public class ShotBase : MonoBehaviour
         }
     }
 
-
     //----------------------------------------------------------//
     //                   オブジェクトセット                     //
     //----------------------------------------------------------//
@@ -131,7 +130,7 @@ public class ShotBase : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
 
             // 2倍の時間で消去する
-            if (timer >= destroy_time * 2)
+            if (timer >= destroy_time + 1)
             {
                 Destroy(gameObject);
             }
