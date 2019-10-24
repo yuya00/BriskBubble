@@ -16,19 +16,55 @@ public class ShotBase : MonoBehaviour
     public float down_spd;
     public float down_pos;
 
+    public float timer_fg;  // 何秒経ったら判定を消すか
+    public float timer_fg_max;  // 時間設定
+    public bool destroy_fg; // ショットが消えた後判定
+    public bool apper_fg;   // 出現したときの判定
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         spd_down_timer = 0;
+
+        // 取得
         rigid = this.GetComponent<Rigidbody>();
+
+        // 正面方向（進む方向）取得
         forward = chara_object.transform.forward;
+
+        // 判定用
+        timer_fg = 0;
+
+        // 最大時間設定
+        timer_fg_max = 1;
+
+        // 出現フラグon
+        apper_fg = true;
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
-        
+        fg_manager();
+        //if(destroy_fg)
+        //{
+        //    fg_manager(destroy_fg);
+        //}
+    }
+
+    void fg_manager()
+    {
+        timer_fg += Time.deltaTime;
+        // 条件でショットのインターバルタイムくらいでfalseにする
+        if (timer_fg > timer_fg_max)
+        {
+            apper_fg = false;
+        }
+    }
+
+    public bool Apper_fg
+    {
+        get { return apper_fg; }
     }
 
     public virtual void SetCharacterObject(GameObject chara_object)
@@ -75,6 +111,7 @@ public class ShotBase : MonoBehaviour
         //一定時間経ったら消去
         if (timer >= destroy_time)
         {
+            destroy_fg = true;
             Destroy(gameObject);
         }
     }

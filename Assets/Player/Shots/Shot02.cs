@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Shot02 : ShotBase
 {
-    // Update is called once per frame
-    void Update()
+    public override void Start()
     {
+        base.Start();
+    }
+
+    // Update is called once per frame
+    public override void Update()
+    {
+        base.Update();
         base.Destroy();
     }
 

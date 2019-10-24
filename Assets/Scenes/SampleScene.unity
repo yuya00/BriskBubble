@@ -1324,10 +1324,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2047487348}
-  UP: -2.5
-  UP_TARGET: 4
+  UP: -7
+  UP_TARGET: 5
   TURN: 0.03
-  DIST: 12
+  DIST: 9
   spd: 1
   ANGLE: 75
   ANGLE_MAX: 145
