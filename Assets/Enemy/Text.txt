@@ -123,6 +123,12 @@ toggleflg = GUILayout.Toggle(toggleflg, "Toggle");
 
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
+shotのタグ変更
+
+sceneをコンフリクトさせる実験
+
+
+
 泡の当たり判定
 
 泡のに発射直後判定、破裂判定をつける

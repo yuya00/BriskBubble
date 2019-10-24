@@ -19,13 +19,13 @@ public class EnemySoundDetect : MonoBehaviour {
 	// 当たり判定
 	// ****************************************************************
 	private void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "Player") {
+		if (other.gameObject.tag == "Shot" /*&&other.hitFlg*/ ) {
 			hit_flg = true;
 		}
 	}
 
 	private void OnTriggerExit(Collider other) {
-		if (other.gameObject.tag == "Player") {
+		if (other.gameObject.tag == "Shot" /*&&other.hitFlg*/) {
 			hit_flg = false;
 		}
 	}

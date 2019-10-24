@@ -33,30 +33,22 @@ public partial class Enemy : CharaBase
 		GUILayout.BeginVertical("box",GUILayout.Width(180));
 
 		//スクロール
-		leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(170), GUILayout.Height(350));
+		leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(170), GUILayout.Height(330));
 
 		//座標
 		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
 		float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
 		float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
-		GUILayout.TextArea(
-			"座標\n pos.x：" + posx.ToString() + "\n"
-			+ " pos.y：" + posy.ToString() + "\n"
-			+ " pos.z：" + posz.ToString());
+		GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString()+ ")");
 
 		//速さ
 		float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
 		float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
 		float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-		GUILayout.TextArea(
-			"速さ\n spd.x：" + spdx.ToString() + "\n"
-			+ " spd.y：" + spdy.ToString() + "\n"
-			+ " spd.z：" + spdz.ToString());
+		GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
 		//汎用待機タイマー
 		GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
-		GUILayout.TextArea("汎用待機タイマー\n wait_timer_swing：" + (wait_timer_swing / 10).ToString());
-
 
 		//状態(待機や警戒など)
 		GUILayout.TextArea("状態\n state：" + enum_state.ToString());
@@ -68,8 +60,8 @@ public partial class Enemy : CharaBase
 		//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
 		//	+ " isfinish：" + once_random.isfinish.ToString());
 
-		//首振りの行動
-		GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
+		////首振りの行動
+		//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
 
 		//回転
 		GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
@@ -376,9 +368,11 @@ public partial class Enemy : CharaBase
 			}
 		}
 		//音範囲内で音があったら
-		//if (enemy_sound_detect.HitFlg) {
-		//	enum_state = Enum_State.WARNING;   //警戒stateに移行
-		//}
+		if (enemy_sound_detect.HitFlg) {
+			if (enum_state == Enum_State.WAIT) {
+				enum_state = Enum_State.WARNING;   //警戒stateに移行
+			}
+		}
 		//プレイヤーに触れたら(待機か,警戒の時)
 		if (player_touch_flg) {
 			if (enum_state == Enum_State.WAIT ||
