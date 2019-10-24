@@ -11,25 +11,36 @@ public class EnemySoundDetect : MonoBehaviour {
 
 	private void Awake() {
 		m_sphereCollider = GetComponent<SphereCollider>();
-		//m_sphereCollider.radius = 10;
 		hit_flg = false;
 	}
+
+	//FixedUpdateはonTriggerの前に実行される
+	private void FixedUpdate() {
+		hit_flg = false;
+	}
+
 
 	// ****************************************************************
 	// 当たり判定
 	// ****************************************************************
+	private void OnTriggerStay(Collider other) {
+		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
+			hit_flg = true;
+		}
+
+	}
 	private void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "Shot" && other) {
+		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
 			hit_flg = true;
 		}
 	}
 
-	private void OnTriggerExit(Collider other) {
-		if (other.gameObject.tag == "Shot" /*&&other.hitFlg*/) {
-			hit_flg = false;
-		}
-	}
 
+
+	//void OnGUI() {
+	//	GUILayout.Space(50);
+	//	GUILayout.TextArea("hit_flg\n" + hit_flg);
+	//}
 
 
 	// ****************************************************************

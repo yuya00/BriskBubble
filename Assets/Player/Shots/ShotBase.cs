@@ -45,7 +45,7 @@ public class ShotBase : MonoBehaviour
         timer_fg = 0;
 
         // 最大時間設定
-        timer_fg_max = 1;
+        timer_fg_max = 0.2f;
 
         // 出現フラグon
         apper_fg = true;
@@ -64,8 +64,8 @@ public class ShotBase : MonoBehaviour
 
     void OnGUI()
     {
-        GUILayout.TextArea("apper_fg\n" + apper_fg);
-        GUILayout.TextArea("timer_fg\n" + timer_fg);
+        //GUILayout.TextArea("apper_fg\n" + apper_fg);
+        //GUILayout.TextArea("timer_fg\n" + timer_fg);
     }
 
     //----------------------------------------------------------//
@@ -127,10 +127,10 @@ public class ShotBase : MonoBehaviour
             gameObject.GetComponent<Renderer>().material.color = col;
 
             // レイヤーで当たり判定なくす
-            gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
+            //gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
 
             // 2倍の時間で消去する
-            if (timer >= destroy_time + 1)
+            if (timer >= destroy_time + 0.2f)
             {
                 Destroy(gameObject);
             }
