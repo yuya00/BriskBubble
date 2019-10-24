@@ -810,6 +810,11 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 2066760144}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: run_spd
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239076, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_Size.x
@@ -1432,7 +1437,7 @@ Transform:
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2066760144
 GameObject:
@@ -1724,7 +1729,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144323496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.3, y: 6.39, z: 7.86}
+  m_LocalPosition: {x: -19.3, y: 10, z: 7.86}
   m_LocalScale: {x: 7.1862, y: 7.1862, z: 7.1862}
   m_Children: []
   m_Father: {fileID: 0}
