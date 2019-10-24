@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6946754512427368936}
   m_Layer: 8
   m_Name: Shot03
-  m_TagString: Untagged
+  m_TagString: Shot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,6 +98,10 @@ MonoBehaviour:
   destroy_time: 3
   down_spd: 15
   down_pos: 0.8
+  timer_fg: 0
+  timer_fg_max: 0
+  destroy_fg: 0
+  apper_fg: 0
 --- !u!54 &7358626092893561063
 Rigidbody:
   m_ObjectHideFlags: 0

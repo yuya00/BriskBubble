@@ -19,7 +19,7 @@ public class EnemySoundDetect : MonoBehaviour {
 	// 当たり判定
 	// ****************************************************************
 	private void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "Shot" /*&&other.hitFlg*/ ) {
+		if (other.gameObject.tag == "Shot" && other) {
 			hit_flg = true;
 		}
 	}
