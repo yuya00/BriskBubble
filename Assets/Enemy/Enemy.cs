@@ -9,12 +9,13 @@ public partial class Enemy : CharaBase
 	public override void Start()
     {
         base.Start();
-        chara_ray = transform.Find("CharaRay");
-		Clear();    //初期化
-		p_player = new Player();
-		run_spd = p_player.Run_spd / spd_ratio;
-		enemynear = GetComponentInChildren<EnemyNear>();
-		enemy_sound_detect = GetComponentInChildren<EnemySoundDetect>();
+        chara_ray			 = transform.Find("CharaRay");
+		Clear(); //初期化
+		p_player			 = new Player();
+		run_spd				 = p_player.Run_spd / spd_ratio;
+		dist				 = new Vector2(0, 0);
+		enemynear			 = GetComponentInChildren<EnemyNear>();
+		enemy_sound_detect	 = GetComponentInChildren<EnemySoundDetect>();
 	}
 
 	// Update is called once per frame
@@ -29,37 +30,37 @@ public partial class Enemy : CharaBase
 	}
 
 	void OnGUI() {
-		//GUILayout.BeginVertical("box");
+		GUILayout.BeginVertical("box");
 
-		////スクロール
-		////leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+		//スクロール
+		//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-		////座標
-		//float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-		//float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-		//GUILayout.TextArea("座標\n pos.x：" + posx.ToString() + "\n" 
-		//	+ " pos.y：" + posy.ToString());
+		//座標
+		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+		float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+		GUILayout.TextArea("座標\n pos.x：" + posx.ToString() + "\n" 
+			+ " pos.y：" + posy.ToString());
 
-		////汎用待機タイマー
-		//GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer/10).ToString());
+		//汎用待機タイマー
+		GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer/10).ToString());
 
-		////ランダム値
-		//GUILayout.TextArea("ランダム値\n once_random.num：" + once_random.num.ToString() + "\n"
-		//	+ " once_random.isfinish：" + once_random.isfinish.ToString());
+		//ランダム値
+		GUILayout.TextArea("ランダム値\n once_random.num：" + once_random.num.ToString() + "\n"
+			+ " once_random.isfinish：" + once_random.isfinish.ToString());
 
-		////状態(待機や警戒など)
-		//GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+		//状態(待機や警戒など)
+		GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
 
-		////状態内の行動(首振りやジャンプなど)
-		//GUILayout.TextArea("行動\n enum_act：" + enum_act.ToString());
+		//状態内の行動(首振りやジャンプなど)
+		GUILayout.TextArea("行動\n enum_act：" + enum_act.ToString());
 
-		////首振りの行動
-		//GUILayout.TextArea("首振り\n enum_swingact：" + enum_swingact.ToString());
-
-
-		////GUILayout.EndScrollView();
+		//首振りの行動
+		GUILayout.TextArea("首振り\n enum_swingact：" + enum_swingact.ToString());
 
 
+		//GUILayout.EndScrollView();
+
+		
 
 		//GUILayout.EndVertical();
 	}
@@ -200,10 +201,14 @@ public partial class Enemy : CharaBase
 					Clear();
 					enum_state = Enum_State.WAIT; //待機
 				}
-				//if (WaitTime(180)) {
-				//}
-			}
-		}
+			} //if(enemynear.HitFlg)
+
+			if (WaitTime(60*10)) {
+				Clear();
+				enum_state = Enum_State.WAIT; //待機
+			} //if (WaitTime(180)
+
+		} //if (!finder_flg)
 
 	}
 
@@ -231,52 +236,49 @@ public partial class Enemy : CharaBase
 
 	//逃走(プレイヤーから逆方向に逃げ、一定距離で止まる)
 	void Away() {
-		Vector3 dist = transform.position - player.transform.position;
+		dist.x = transform.position.x - player.transform.position.x;
+		dist.y = transform.position.z - player.transform.position.z;
 
 		switch (enum_act) {
 			case Enum_Act.CLEAR:
 				// プレイヤーと逆方向のベクトルを取得
-				//delection_vec = transform.position - player.transform.position;
+				dist.Normalize();
 				dist_normal_vec = dist;
-				dist_normal_vec.Normalize();
 				//±指定角度内でベクトル変更(-10度ではなく350度になるので注意!)
 				//float rand_num = Random.Range(-away_angle, away_angle);
 				//dist_normal_vec.x = Mathf.Sin(rand_num * Mathf.Deg2Rad);
 				//dist_normal_vec.z = Mathf.Cos(rand_num * Mathf.Deg2Rad);
 
-				velocity = dist_normal_vec * run_spd;
+				velocity.x = dist_normal_vec.x * run_spd;
+				velocity.z = dist_normal_vec.y * run_spd;
 				enum_act = Enum_Act.RUN;
 				break;
 			case Enum_Act.RUN:     //走る
 				//120f毎にプレイヤーの方向に向いて60fほど速度が1/2になる
 				if (!lookback_flg && WaitTime(awayact.lookback_interval)) {
 					lookback_flg = true;
-					velocity = dist_normal_vec * run_spd / 2;
+					velocity.x = dist_normal_vec.x * run_spd/2;
+					velocity.z = dist_normal_vec.y * run_spd/2;
 				}
 				if (lookback_flg && WaitTime(awayact.lookback_time)) {
-					velocity = dist_normal_vec * run_spd;
+					velocity.x = dist_normal_vec.x * run_spd;
+					velocity.z = dist_normal_vec.y * run_spd;
 					lookback_flg = false;
 				}
 
+				//視点
 				transform.LookAt(transform.position - velocity);
+
 				//二人の距離が(音探知範囲*awayact.mag)より離れたら
 				if (dist.magnitude >= enemy_sound_detect.Radius * awayact.mag) {
 					enum_act = Enum_Act.END;
 				}
 				break;
 			case Enum_Act.END:      //state変更
+				//プレイヤーの方向を向く
+				transform.LookAt(transform.position + velocity);
 				Clear();
 				enum_state = Enum_State.WAIT;
-				//プレイヤーの方向向く(要修正)
-				transform.LookAt(player.transform);
-				Vector3 localAngle = transform.localEulerAngles;
-				localAngle.x = 0;
-				localAngle.z = 0;
-				localAngle.y = localAngle.y + 180;
-				if (localAngle.y > 360) {
-					localAngle.y -= 360;
-				}
-				transform.localEulerAngles = localAngle;
 				break;
 		}
 	}
@@ -300,12 +302,12 @@ public partial class Enemy : CharaBase
 		switch (enum_swingact) {
 			case Enum_SwingAct.SWING:    //首振り
 				transform.Rotate(0, spd * Mathf.Deg2Rad, 0);    //回転
-				if (WaitTime(time)) {
+				if (WaitTime_Swing(time)) {
 					enum_swingact = Enum_SwingAct.WAIT;
 				}
 				break;
 			case Enum_SwingAct.WAIT:     //首振りの間
-				if (WaitTime(wait_time)) {
+				if (WaitTime_Swing(wait_time)) {
 					enum_swingact = Enum_SwingAct.SWING;
 					enum_act = next_state;
 				}
