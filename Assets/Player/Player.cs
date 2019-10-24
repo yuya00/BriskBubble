@@ -15,6 +15,7 @@ public class Player : CharaBase
     private float fall_time;              // 落下判定用
     public float rotate = 1.0f;
     public float slope = 0.3f;           // スティックの傾き具合設定用
+    private float jump_anim_count = 0;
 
     // あにめ
     private Animator animator;
@@ -72,11 +73,23 @@ public class Player : CharaBase
         animator = GetComponent<Animator>();
     }
 
+    bool fg = false;
+
     // Update is called once per frame
     void Update()
     {
         Move();
         Shot();
+
+        if (is_ground)
+        {
+            fg = true;
+        }
+        else
+        {
+            fg = false;
+        }
+        debug();
         //Debug_Log();
     }
 
@@ -91,12 +104,36 @@ public class Player : CharaBase
         anime_jump();
     }
 
+
+
+    private Vector2 leftScrollPos = Vector2.zero;
     void OnGUI()
     {
         GUILayout.BeginVertical("box");
 
-        GUILayout.TextArea("ジャンプフラグ\n" + jump_on().ToString());
+        // スクロールビュー
+        leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+
+        GUILayout.TextArea("ジャンプフラグ\n" + fg);
+
+        // スペース
+        GUILayout.Space(10);
+
         GUILayout.TextArea("velocity.y\n" + velocity.y);
+
+        // スペース
+        GUILayout.Space(10);
+
+        GUILayout.TextArea("地面着地\n" + is_ground);
+
+        // スペース
+        GUILayout.Space(10);
+
+        // スペース
+        GUILayout.Space(10);
+
+        // スペース
+        GUILayout.Space(10);
 
         //velocity.y += jump_power;
         //rigid.useGravity = false;
@@ -105,9 +142,10 @@ public class Player : CharaBase
         //// jumpした後すぐは上に動いてるからそのときは当たり判定なくす
         //fall_time = 0;
 
+        GUILayout.EndScrollView();
+
         GUILayout.EndVertical();
     }
-
 
     //---------------------------------------------//
     //                    移動                     //
@@ -132,7 +170,7 @@ public class Player : CharaBase
         if (back_player) back_move();
 
         //　ジャンプ
-        if (jump_on()) jump(jump_power);
+        if (Input.GetButtonDown("Jump") && fg) jump(jump_power);
 
         // ショットに乗った時にジャンプをjump_power_up倍
         if (down_hit_shot()) jump(jump_power * jump_power_up);
@@ -246,10 +284,10 @@ public class Player : CharaBase
 
         // jumpした後すぐは上に動いてるからそのときは当たり判定なくす
         fall_time = 0;
-        animator.SetBool("Jump", true);
+        animator.SetBool("JumpStart", true);
+        //animator.SetBool("Jump", true);
     }
 
-    float time;
     // ジャンプモーション用
     void anime_jump()
     {
@@ -257,41 +295,40 @@ public class Player : CharaBase
         if (jump_on())
         {
             animator.SetBool("JumpStart", true);
+            animator.SetBool("Fall", true);
         }
         // 浮いてるとき
         if (!is_ground)
         {
-            animator.SetBool("Fall", true);
+            jump_anim_count = 0;
             animator.SetBool("JumpStart", false);
+            animator.SetBool("Fall", true);
             animator.SetBool("Walk", false);
             animator.SetBool("Run", false);
         }
         // 着地してるとき
         if (is_ground)
         {
+            animator.SetBool("JumpStart", false);
             animator.SetBool("Fall", false);
+            // 着地したときに1回だけ着地をtrueにする
+            jump_end_anim();
         }
 
-        // 着地したときに1回だけ着地をtrueにする
-        if (!is_ground)
+    }
+
+    // 着地したときに1回だけ着地をtrueにする
+    void jump_end_anim()
+    {
+        // 地面ついたときにカウント
+        if (jump_anim_count++ < 1)
         {
-            time = 0;
+            animator.SetBool("JumpEnd", true);
         }
-        if (is_ground)
+        else
         {
-            if (time++ < 2)
-            {
-                animator.SetBool("JumpEnd", true);
-            }
-            else
-            {
-                animator.SetBool("JumpEnd", false);
-            }
-
+            animator.SetBool("JumpEnd", false);
         }
-
-        Debug.Log(is_ground);
-
     }
 
     // ジャンプする判定
@@ -299,6 +336,11 @@ public class Player : CharaBase
     {
         if (Input.GetButtonDown("Jump") && is_ground) return true;
         return false;
+    }
+
+    void debug()
+    {
+        //animator.SetBool("JumpStart", true);
     }
 
     //---------------------------------------------//
@@ -461,7 +503,8 @@ public class Player : CharaBase
         base.Debug_Log();
     }
 
-    public float Run_spd {
+    public float Run_spd
+    {
 		get { return run_spd; }
 	}
 

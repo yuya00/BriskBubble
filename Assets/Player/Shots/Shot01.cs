@@ -12,9 +12,10 @@ public class Shot01 : ShotBase
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
         Move();
+        base.Update();
         base.Destroy();
 		//Debug.Log(transform.position);
     }

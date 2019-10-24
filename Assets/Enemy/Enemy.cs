@@ -29,39 +29,39 @@ public partial class Enemy : CharaBase
 	}
 
 	void OnGUI() {
-		GUILayout.BeginVertical("box");
+		//GUILayout.BeginVertical("box");
 
-		//スクロール
-		//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+		////スクロール
+		////leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-		//座標
-		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-		float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-		GUILayout.TextArea("座標\n pos.x：" + posx.ToString() + "\n" 
-			+ " pos.y：" + posy.ToString());
+		////座標
+		//float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+		//float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+		//GUILayout.TextArea("座標\n pos.x：" + posx.ToString() + "\n" 
+		//	+ " pos.y：" + posy.ToString());
 
-		//汎用待機タイマー
-		GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer/10).ToString());
+		////汎用待機タイマー
+		//GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer/10).ToString());
 
-		//ランダム値
-		GUILayout.TextArea("ランダム値\n once_random.num：" + once_random.num.ToString() + "\n"
-			+ " once_random.isfinish：" + once_random.isfinish.ToString());
+		////ランダム値
+		//GUILayout.TextArea("ランダム値\n once_random.num：" + once_random.num.ToString() + "\n"
+		//	+ " once_random.isfinish：" + once_random.isfinish.ToString());
 
-		//状態(待機や警戒など)
-		GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+		////状態(待機や警戒など)
+		//GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
 
-		//状態内の行動(首振りやジャンプなど)
-		GUILayout.TextArea("行動\n enum_act：" + enum_act.ToString());
+		////状態内の行動(首振りやジャンプなど)
+		//GUILayout.TextArea("行動\n enum_act：" + enum_act.ToString());
 
-		//首振りの行動
-		GUILayout.TextArea("首振り\n enum_swingact：" + enum_swingact.ToString());
-
-
-		//GUILayout.EndScrollView();
+		////首振りの行動
+		//GUILayout.TextArea("首振り\n enum_swingact：" + enum_swingact.ToString());
 
 
+		////GUILayout.EndScrollView();
 
-		GUILayout.EndVertical();
+
+
+		//GUILayout.EndVertical();
 	}
 
 

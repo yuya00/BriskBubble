@@ -126,7 +126,8 @@ toggleflg = GUILayout.Toggle(toggleflg, "Toggle");
 
 
 泡のに発射直後判定、破裂判定をつける
-  if(other.発射直後判定 || other.破裂判定 ){
+  if(other.発射直後判定 || other.破裂判定 )
+  {
 	　Hitflg = true
   }
   泡は破裂した後、
