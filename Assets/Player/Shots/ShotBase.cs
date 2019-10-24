@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class ShotBase : MonoBehaviour
 {
+    //----------------------------------------------------------//
+    //                       変数宣言                           //
+    //----------------------------------------------------------//
     protected GameObject chara_object;  // ショット撃つ本体
     protected Rigidbody rigid;          // 物理
     protected Vector3 forward;          // 正面方向
-    protected float timer;              // 経過時間
+    public float timer;              // 経過時間
     protected float spd_down_timer;     // 減速するまでの時間
     public float spd_down_timer_max;
     public float spd;                   // 速度
@@ -16,17 +19,23 @@ public class ShotBase : MonoBehaviour
     public float down_spd;
     public float down_pos;
 
-    public float timer_fg;  // 何秒経ったら判定を消すか
-    public float timer_fg_max;  // 時間設定
-    public bool destroy_fg; // ショットが消えた後判定
-    public bool apper_fg;   // 出現したときの判定
+    public float timer_fg;              // 何秒経ったら判定を消すか
+    public float timer_fg_max;          // 時間設定
+    public bool apper_fg;               // 出現したときの判定
+    private Color col;                  // 色取得
 
-    // Start is called before the first frame update
+    //----------------------------------------------------------//
+
+
+
+    //----------------------------------------------------------//
+    //                         初期化                           //
+    //----------------------------------------------------------//
     public virtual void Start()
     {
         spd_down_timer = 0;
 
-        // 取得
+        // 物理取得
         rigid = this.GetComponent<Rigidbody>();
 
         // 正面方向（進む方向）取得
@@ -40,39 +49,53 @@ public class ShotBase : MonoBehaviour
 
         // 出現フラグon
         apper_fg = true;
+
+        col = gameObject.GetComponent<Renderer>().material.color;
+        col.a = 0.0f;
     }
 
-    // Update is called once per frame
+    //----------------------------------------------------------//
+    //                         更新　                           //
+    //----------------------------------------------------------//
     public virtual void Update()
     {
         fg_manager();
-        //if(destroy_fg)
-        //{
-        //    fg_manager(destroy_fg);
-        //}
     }
 
+    void OnGUI()
+    {
+        GUILayout.TextArea("apper_fg\n" + apper_fg);
+        GUILayout.TextArea("timer_fg\n" + timer_fg);
+    }
+
+    //----------------------------------------------------------//
+    //           出現したときの判定をfalseに初期化              //
+    //----------------------------------------------------------//
     void fg_manager()
     {
-        timer_fg += Time.deltaTime;
+        // 出現したとき、壊れたときだけ
+        if (apper_fg) timer_fg += Time.deltaTime;
+
         // 条件でショットのインターバルタイムくらいでfalseにする
-        if (timer_fg > timer_fg_max)
+        if (timer_fg >= timer_fg_max)
         {
             apper_fg = false;
+            timer_fg = 0;
         }
     }
 
-    public bool Apper_fg
-    {
-        get { return apper_fg; }
-    }
 
+    //----------------------------------------------------------//
+    //                   オブジェクトセット                     //
+    //----------------------------------------------------------//
     public virtual void SetCharacterObject(GameObject chara_object)
     {
         this.chara_object = chara_object;
     }
 
-    // 速度と位置を落とす
+    //----------------------------------------------------------//
+    //                  速度と位置を落とす                      //
+    //----------------------------------------------------------//
     public virtual void down(float down_spd,float down_pos)
     {
         // 速度あるときだけ速度落とす
@@ -88,7 +111,36 @@ public class ShotBase : MonoBehaviour
         }
     }
 
-    // 速度を下げるまでの時間を設定
+    //----------------------------------------------------------//
+    //                   　ショット消去   　                     //
+    //----------------------------------------------------------//
+    public virtual void Destroy()
+    {
+        timer += Time.deltaTime;
+
+        //一定時間経ったら透明にして、その後に時間はかって消す
+        if (timer >= destroy_time)
+        {
+            // ショットが消えた判定
+            apper_fg = true;
+
+            // 透明にする
+            gameObject.GetComponent<Renderer>().material.color = col;
+
+            // レイヤーで当たり判定なくす
+            gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
+
+            // 2倍の時間で消去する
+            if (timer >= destroy_time * 2)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    //----------------------------------------------------------//
+    //          　  速度を下げるまでの時間を設定                //
+    //----------------------------------------------------------//
     public virtual bool spd_down_check(float time_max)
     {
         spd_down_timer += Time.deltaTime;
@@ -101,19 +153,12 @@ public class ShotBase : MonoBehaviour
         return false;
     }
 
-
-
-    // ショット消去
-    public virtual void Destroy()
+    //----------------------------------------------------------//
+    //     　 出現したときと壊れたときのフラグをゲット          //
+    //----------------------------------------------------------//
+    public bool Apper_fg
     {
-        timer += Time.deltaTime;
-
-        //一定時間経ったら消去
-        if (timer >= destroy_time)
-        {
-            destroy_fg = true;
-            Destroy(gameObject);
-        }
+        get { return apper_fg; }
     }
 
 }

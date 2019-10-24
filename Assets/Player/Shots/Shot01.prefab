@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e7b37b7518ef73748a9ee97f84459754, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,7 +100,6 @@ MonoBehaviour:
   down_pos: 0.8
   timer_fg: 0
   timer_fg_max: 0
-  destroy_fg: 0
   apper_fg: 0
 --- !u!54 &-4397165458067278756
 Rigidbody:
