@@ -22,8 +22,8 @@ public partial class Enemy : CharaBase
 	void Update()
     {
 		base.Move();
-		Action();       // stateに応じて個別関数に飛ぶ
 		StateChange();  // プレイヤーとの当たり判定でstate変更
+		Action();       // stateに応じて個別関数に飛ぶ
 
 		Debug_Log();
 
@@ -88,6 +88,44 @@ public partial class Enemy : CharaBase
 		//Debug.Log("enum_act:" + enum_act);
 		//Debug.Log(velocity);
 		//Debug.Log(transform.localEulerAngles);
+
+		//Vector3 localAngle=transform.forward;
+		//localAngle.x = Mathf.Sin(45 * Mathf.Deg2Rad);
+		//localAngle.z = Mathf.Cos(45 * Mathf.Deg2Rad);
+		//Debug.DrawRay(transform.position,localAngle*30.0f);
+
+		//Debug.DrawRay(transform.position, transform.forward*30.0f);
+		//Debug.DrawRay(transform.position, new Vector3(Mathf.Sin(45 * Mathf.Deg2Rad), 0, Mathf.Cos(45 * Mathf.Deg2Rad)) * 30.0f);
+
+	}
+
+	Vector3 localAngle = Vector3.zero;
+	void OnDrawGizmos() {
+		//Vector3.forward (0,0,1)
+		//Vector3.right   (1,0,0)
+		//var a = transform.forward;
+		//Gizmos.DrawRay(transform.position, transform.forward * -30.0f);
+		//Gizmos.DrawRay(transform.position, new Vector3(
+		//	transform.forward.x * Mathf.Sin(0 * Mathf.Deg2Rad),
+		//	transform.forward.y,
+		//	transform.forward.z * Mathf.Cos(0 * Mathf.Deg2Rad)
+		//	) * -30.0f);
+		//Gizmos.DrawLine(transform.position, transform.position + new Vector3(
+		//	Mathf.Sin(0 * Mathf.Deg2Rad), 
+		//	0,
+		//	Mathf.Cos(0 * Mathf.Deg2Rad))
+		//	* 10.0f);
+
+		//Gizmos.DrawRay(transform.position, new Vector3(Mathf.Sin(30 * Mathf.Deg2Rad), 0, Mathf.Cos(30 * Mathf.Deg2Rad)) * -30.0f);
+		//Gizmos.DrawRay(transform.position, new Vector3(Mathf.Sin(330 * Mathf.Deg2Rad), 0, Mathf.Cos(330 * Mathf.Deg2Rad)) * -30.0f);
+
+		//localAngle = transform.forward;
+		//localAngle = transform.localEulerAngles;
+		//localAngle.x = Mathf.Sin(30 * Mathf.Deg2Rad)*transform.forward.x;
+		//localAngle.z = Mathf.Cos(30 * Mathf.Deg2Rad)*transform.forward.z;
+		////Debug.DrawRay(transform.position, localAngle * 30.0f);
+		//Gizmos.DrawRay(transform.position, localAngle * 30.0f);
+
 	}
 
 
@@ -196,7 +234,7 @@ public partial class Enemy : CharaBase
 					Swing(warningact.swing_spd, warningact.swing_time, warningact.swing_space_time, Enum_Act.SWING2);
 					break;
 				case Enum_Act.SWING2:   //首振り(+45度)
-					Swing(-warningact.swing_spd, warningact.swing_time + 40, warningact.swing_space_time, Enum_Act.SWING3);
+					Swing(-warningact.swing_spd, warningact.swing_time + warningact.swing_time, warningact.swing_space_time, Enum_Act.SWING3);
 					break;
 				case Enum_Act.SWING3:   //首振り(-360度)
 					Swing((warningact.swing_spd + swing3_spd_add), (warningact.swing_time + swing3_time_add), warningact.swing_space_time, Enum_Act.END);
@@ -229,7 +267,11 @@ public partial class Enemy : CharaBase
 			case Enum_Act.CLEAR:
 				enum_act = Enum_Act.JUMP;
 				break;
-			case Enum_Act.JUMP:		//その場で小さくジャンプ
+			//その場で小さくジャンプ
+			case Enum_Act.JUMP:
+				Vector3 distr = transform.position - player.transform.position;
+				distr.y = 0;
+				transform.LookAt(transform.position + distr); //プレイヤーの方向を向く
 				Jump(jump_power);
 				enum_act = Enum_Act.WAIT;
 				break;
@@ -262,9 +304,11 @@ public partial class Enemy : CharaBase
 
 				velocity.x = dist_normal_vec.x * run_spd;
 				velocity.z = dist_normal_vec.y * run_spd;
-				enum_act = Enum_Act.RUN;
-				break;
+				//enum_act = Enum_Act.RUN;
+				goto case Enum_Act.RUN;
+				//break;
 			case Enum_Act.RUN:     //走る
+				enum_act = Enum_Act.RUN;
 				//120f毎にプレイヤーの方向に向いて60fほど速度が1/2になる
 				if (!lookback_flg && WaitTime(awayact.lookback_interval)) {
 					lookback_flg = true;
@@ -376,14 +420,16 @@ public partial class Enemy : CharaBase
 		//プレイヤーに触れたら(待機か,警戒の時)
 		if (player_touch_flg) {
 			if (enum_state == Enum_State.WAIT ||
-				enum_state == Enum_State.WARNING) {
+				enum_state == Enum_State.WARNING ||
+				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
 				enum_state = Enum_State.FIND;   //発見stateに移行
 			}
 		}
 		//視界にプレイヤーが入ったら
 		if (finder_flg) {
 			if (enum_state == Enum_State.WAIT ||
-				enum_state == Enum_State.WARNING) {
+				enum_state == Enum_State.WARNING ||
+				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
 				enum_state = Enum_State.FIND;   //発見stateに移行
 			}
 		}
