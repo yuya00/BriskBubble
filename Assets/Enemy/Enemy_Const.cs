@@ -15,7 +15,9 @@ public partial class Enemy : CharaBase
 	private float				spd_ratio = 1.8f;	//プレイヤー速度を割る割合
 	private EnemyNear			enemynear;
 	private Vector2				dist;				//プレイヤーと逆方向のベクトル
-	private Vector2				dist_normal_vec;	//プレイヤーと逆方向のベクトル
+	private Vector2				dist_normal_vec;    //プレイヤーと逆方向のベクトル
+
+
 
 	private EnemySoundDetect	enemy_sound_detect;
 	private struct OnceRondom {
@@ -25,9 +27,16 @@ public partial class Enemy : CharaBase
 	OnceRondom					once_random;
 	private bool				clear_flg;			//行動初期化判定
 
-	private Vector2 leftScrollPos = Vector2.zero;	//uGUIスクロールビュー用
+	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 
 
+	//Transform wall_ray;
+	//Quaternion wall_ray;
+	//GameObject wall_ray;
+
+	Vector3 old_angle;
+	Vector3 new_angle;
+	Vector3 dist_angle;
 
 
 
@@ -90,6 +99,75 @@ public partial class Enemy : CharaBase
 
 
 
+	//壁判定Ray ---------------------------------------------
+	private int angle_mag = 3; //角度調整
+	[System.Serializable]
+	public struct WallRay {
+		[SerializeField, Header("Rayの角度")]
+		public float	 angle;     //00.0f 未使用
+		[SerializeField, Header("Rayの長さ")]
+		public float	 langth;    //20.0f
+
+		[System.NonSerialized] //壁との距離保存用
+		public float	 dist_right, dist_left;
+
+		[System.NonSerialized] //壁との当たり判定
+		public bool		 hit_right_flg, hit_left_flg;
+
+		[System.NonSerialized] //両方のRayが当たった回数
+		public int		 both_count;
+
+		[System.NonSerialized] //両方のRayが当たった回数判定
+		public bool		 both_flg;
+
+		[SerializeField, Header("向き変更の速さ")]
+		public float	 spd;		//2.0f
+	}
+	[Header("壁判定Ray")]
+	public WallRay wallray;
+
+	void WallRay_Clear() {
+		wallray.dist_right		 = 0;
+		wallray.dist_left		 = 0;
+		wallray.hit_right_flg	 = false;
+		wallray.hit_left_flg	 = false;
+		wallray.both_flg		 = false;
+	}
+
+
+	//壁判定Ray ---------------------------------------------
+	[System.Serializable]
+	public struct HoleRay {
+		[SerializeField, Header("Rayの角度")]
+		public float angle;     //00.0f 未使用
+		[SerializeField, Header("Rayの長さ")]
+		public float length;    //100.0f
+
+		//[System.NonSerialized] //穴との距離保存用
+		//public float dist_right, dist_left;
+
+		[System.NonSerialized] //穴との当たり判定
+		public bool hit_right_flg, hit_left_flg;
+
+		//[System.NonSerialized] //両方のRayが当たった回数
+		//public int both_count;
+
+		//[System.NonSerialized] //両方のRayが当たった回数判定
+		//public bool both_flg;
+
+		[SerializeField, Header("向き変更の速さ")]
+		public float spd;       //2.0f
+	}
+	[Header("穴判定Ray")]
+	public HoleRay holeray;
+
+	void HoleRay_Clear() {
+		holeray.hit_right_flg = false;
+		holeray.hit_left_flg = false;
+	}
+
+
+
 
 
 	//敵モデルの種類
@@ -106,6 +184,7 @@ public partial class Enemy : CharaBase
 		WARNING,  //警戒
 		FIND,     //発見
 		AWAY,     //逃走
+		ATTACK,   //攻撃
 		WRAP,     //捕獲
 		END       //消去
 	}
