@@ -42,14 +42,14 @@ public class CameraTest : MonoBehaviour
         cam();
     }
 
-    void OnGUI()
-    {
-        GUILayout.BeginVertical("box");
+    //void OnGUI()
+    //{
+    //    GUILayout.BeginVertical("box");
 
-        //GUILayout.TextArea("スティック入力 : " + Input.GetAxis("R_Stick_H"));
+    //    //GUILayout.TextArea("スティック入力 : " + Input.GetAxis("R_Stick_H"));
 
-        GUILayout.EndVertical();
-    }
+    //    GUILayout.EndVertical();
+    //}
 
     // カメラまとめ
     void cam()
