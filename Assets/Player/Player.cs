@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-    /*              　　やること
-        ジャンプしたときの上限あっておかしいやつをなおす　できやん
+/*              　　やること
+    ジャンプしたときの上限あっておかしいやつをなおす　できやん
 
-        ショットのスクリプトを分ける              やった
-        ショットの中心に乗ったときのバグをなおす  やった   
-     */
+    ショットのスクリプトを分ける              やった
+    ショットの中心に乗ったときのバグをなおす  やった   
+ */
 
 public partial class Player : CharaBase//
 {
@@ -94,20 +94,20 @@ public partial class Player : CharaBase//
     private Vector2 leftScrollPos = Vector2.zero;
     void OnGUI()
     {
-        GUILayout.BeginVertical("box");
+        //GUILayout.BeginVertical("box");
 
-        // スクロールビュー
-        leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+        //// スクロールビュー
+        //leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-        debug();
+        //debug();
 
-        // スペース
-        GUILayout.Space(10);
+        //// スペース
+        //GUILayout.Space(10);
 
-        // スペース
-        GUILayout.EndScrollView();
+        //// スペース
+        //GUILayout.EndScrollView();
 
-        GUILayout.EndVertical();
+        //GUILayout.EndVertical();
     }
 
     void debug()
@@ -307,6 +307,24 @@ public partial class Player : CharaBase//
             jump_anim_count = COUNT;
             animator.SetBool("JumpEnd", false);
         }
+    }
+
+    // 当たった時に呼ばれる
+    void OnCollisionEnter(Collision col)
+    {
+        // 上方向に進んでる途中
+        if (jump_now())
+        {
+            // 頭当たった時に落下
+            velocity.y = 0;
+        }
+    }
+
+    // 飛んでる判定
+    bool jump_now()
+    {
+        if (velocity.y > 0) return true;
+        return false;
     }
 
     // ジャンプする判定
