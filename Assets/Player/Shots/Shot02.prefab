@@ -93,16 +93,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4b89babe8ed624e80ec0c99bdf85be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0
   spd_down_timer_max: 0
   spd: 0
-  destroy_time: 10
+  destroy_time: 100
   down_spd: 0
   down_pos: 0
   timer_fg: 0
   timer_fg_max: 0
   apper_fg: 0
-  shot_hit_fg: 0
 --- !u!54 &8580679673519122968
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,5 +128,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

@@ -19,7 +19,7 @@ public class FadeManager : ProductionManager
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     // GUI作る
