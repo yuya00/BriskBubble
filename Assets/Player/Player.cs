@@ -94,6 +94,7 @@ public partial class Player : CharaBase//
     private Vector2 leftScrollPos = Vector2.zero;
     void OnGUI()
     {
+		/*
         GUILayout.BeginVertical("box");
 
         // スクロールビュー
@@ -108,6 +109,7 @@ public partial class Player : CharaBase//
         GUILayout.EndScrollView();
 
         GUILayout.EndVertical();
+		//*/
     }
 
     void debug()

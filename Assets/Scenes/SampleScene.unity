@@ -1674,7 +1674,7 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2047487348}
     - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
         type: 3}
       propertyPath: waitact.wait_time
@@ -1739,6 +1739,26 @@ PrefabInstance:
         type: 3}
       propertyPath: holeray.spd
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: wallGrabRay.Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: wallGrabRay.height
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: wallGrabRay.length
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: wallray.length
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6582a8460615bbc41aa8df265ad41b1f, type: 3}

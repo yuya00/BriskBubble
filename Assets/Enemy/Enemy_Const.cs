@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class Enemy : CharaBase
+public sealed partial class Enemy : CharaBase
 {
 
 	private bool				jump_flg;
 	private int					timer;				//汎用
 	private int					wait_timer;         //汎用待機タイマー
 	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
-	private bool				player_touch_flg;	//プレイヤーとの当たり判定
+	private bool				player_touch_flg;   //プレイヤーとの当たり判定
+	private bool				wall_touch_flg;		//壁との当たり判定
 	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
 	private Player				p_player; 
 	private float				spd_ratio = 1.8f;	//プレイヤー速度を割る割合
@@ -106,7 +107,7 @@ public partial class Enemy : CharaBase
 		[SerializeField, Header("Rayの角度")]
 		public float	 angle;     //00.0f 未使用
 		[SerializeField, Header("Rayの長さ")]
-		public float	 langth;    //20.0f
+		public float	 length;    //20.0f
 
 		[System.NonSerialized] //壁との距離保存用
 		public float	 dist_right, dist_left;
@@ -135,7 +136,7 @@ public partial class Enemy : CharaBase
 	}
 
 
-	//壁判定Ray ---------------------------------------------
+	//穴判定Ray ---------------------------------------------
 	[System.Serializable]
 	public struct HoleRay {
 		[SerializeField, Header("Rayの角度")]
@@ -165,6 +166,30 @@ public partial class Enemy : CharaBase
 		holeray.hit_right_flg = false;
 		holeray.hit_left_flg = false;
 	}
+
+
+
+
+	//壁掴み判定Ray ---------------------------------------------
+	[System.Serializable]
+	public struct WallGrabRay {
+		[SerializeField, Range(0.0f, 2.0f),Header("Rayの高さ")]
+		public float height;    //1.3f
+
+		[SerializeField, Range(0.0f, 5.0f), Header("Rayの長さ")]
+		public float length;    //2.0f
+
+		[System.NonSerialized] //掴み準備判定
+		public bool prepare_flg;
+
+		[System.NonSerialized] //掴み判定
+		public bool flg;
+
+	}
+	[Header("壁掴み判定Ray")]
+	public WallGrabRay wallGrabRay;
+
+
 
 
 
