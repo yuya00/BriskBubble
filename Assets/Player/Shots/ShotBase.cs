@@ -23,6 +23,7 @@ public class ShotBase : MonoBehaviour
     public float timer_fg_max;          // 時間設定
     public bool apper_fg;               // 出現したときの判定
     private Color col;                  // 色取得
+    private bool hit_fg;                // 消えてからは当たり判定なくす
 
     //----------------------------------------------------------//
 
@@ -49,6 +50,9 @@ public class ShotBase : MonoBehaviour
 
         // 出現フラグon
         apper_fg = true;
+
+        // 当たり判定つける
+        hit_fg = true;
 
         col = gameObject.GetComponent<Renderer>().material.color;
         col.a = 0.0f;
@@ -111,6 +115,14 @@ public class ShotBase : MonoBehaviour
     }
 
     //----------------------------------------------------------//
+    //                    ショットの演出                        //
+    //----------------------------------------------------------//
+    void performance()
+    {
+        Destroy(gameObject);
+    }
+
+    //----------------------------------------------------------//
     //                   　ショット消去   　                     //
     //----------------------------------------------------------//
     public virtual void Destroy()
@@ -123,17 +135,30 @@ public class ShotBase : MonoBehaviour
             // ショットが消えた判定
             apper_fg = true;
 
+            // 当たり判定なくす
+            hit_fg = false; 
+
             // 透明にする
             gameObject.GetComponent<Renderer>().material.color = col;
 
             // レイヤーで当たり判定なくす
             //gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
 
-            // 2倍の時間で消去する
+            // +0.2fの時間で消去する
             if (timer >= destroy_time + 0.2f)
             {
                 Destroy(gameObject);
             }
+        }
+    }
+
+    // 何かに当たった時に呼ばれる
+    void OnTriggerEnter(Collider col)
+    {
+        // ショットが消えてなくて敵と当たった時
+        if(hit_fg && col.tag == "Enemy")
+        {
+            performance();
         }
     }
 
