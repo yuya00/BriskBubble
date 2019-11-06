@@ -41,8 +41,8 @@ public sealed partial class Enemy : CharaBase
 		//*
 		GUILayout.BeginVertical("box", GUILayout.Width(190));
 
-		//スクロール
-		leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+	//	//スクロール
+	//	leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
 		//座標
 		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -75,20 +75,20 @@ public sealed partial class Enemy : CharaBase
 		//回転
 		GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
-		//レイが両方当たった回数
-		//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
+	//	//レイが両方当たった回数
+	//	//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
 
-		//斜めベクトル
-		//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
-		//GUILayout.TextArea("dist_angle\n" + dist_angle);
+	//	//斜めベクトル
+	//	//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
+	//	//GUILayout.TextArea("dist_angle\n" + dist_angle);
 
 		//
 		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
 		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
 
-		//スクロール終了
-		GUILayout.EndScrollView();
+	//	//スクロール終了
+	//	GUILayout.EndScrollView();
 
 
 
