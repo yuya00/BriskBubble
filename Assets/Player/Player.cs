@@ -94,20 +94,22 @@ public partial class Player : CharaBase//
     private Vector2 leftScrollPos = Vector2.zero;
     void OnGUI()
     {
-        //GUILayout.BeginVertical("box");
+		/*
+        GUILayout.BeginVertical("box");
 
-        //// スクロールビュー
-        //leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+        // スクロールビュー
+        leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-        //debug();
+        debug();
 
-        //// スペース
-        //GUILayout.Space(10);
+        // スペース
+        GUILayout.Space(10);
 
-        //// スペース
-        //GUILayout.EndScrollView();
+        // スペース
+        GUILayout.EndScrollView();
 
-        //GUILayout.EndVertical();
+        GUILayout.EndVertical();
+		//*/
     }
 
     void debug()

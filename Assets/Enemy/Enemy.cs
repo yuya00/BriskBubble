@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class Enemy : CharaBase
+public sealed partial class Enemy : CharaBase
 {
 
 	// Start is called before the first frame update
@@ -37,42 +37,43 @@ public partial class Enemy : CharaBase
 
 	}
 
-	//void OnGUI() {
-	//	GUILayout.BeginVertical("box", GUILayout.Width(190));
+	void OnGUI() {
+		//*
+		GUILayout.BeginVertical("box", GUILayout.Width(190));
 
 	//	//スクロール
 	//	leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
-	////	//座標
-	////	float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-	////	float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-	////	float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
-	////	GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+		//座標
+		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+		float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+		float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+		GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
 
-	////	//速さ
-	////	float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-	////	float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-	////	float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-	////	GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+		//速さ
+		float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+		float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+		float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+		GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-	////	//汎用待機タイマー
-	////	GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
+		//汎用待機タイマー
+		GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
 
-	////	//状態(待機や警戒など)
-	////	GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+		//状態(待機や警戒など)
+		GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
 
-	////	//状態内の行動(首振りやジャンプなど)
-	////	GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+		//状態内の行動(首振りやジャンプなど)
+		GUILayout.TextArea("行動\n act：" + enum_act.ToString());
 
-	////	////ランダム値
-	////	//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
-	////	//	+ " isfinish：" + once_random.isfinish.ToString());
+		////ランダム値
+		//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
+		//	+ " isfinish：" + once_random.isfinish.ToString());
 
-	////	////首振りの行動
-	////	//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
+		////首振りの行動
+		//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
 
-	////	//回転
-	////	GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+		//回転
+		GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
 	//	//レイが両方当たった回数
 	//	//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
@@ -81,9 +82,9 @@ public partial class Enemy : CharaBase
 	//	//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
 	//	//GUILayout.TextArea("dist_angle\n" + dist_angle);
 
-	//	//
-	//	GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
-	//	GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
+		//
+		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
+		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
 
 	//	//スクロール終了
@@ -91,15 +92,15 @@ public partial class Enemy : CharaBase
 
 
 
- //       GUILayout.EndVertical();
- //   }
+		GUILayout.EndVertical();
+		// */
+	}
 
 
-
-    //*******************************************
-    // デバッグログ表示
-    //*******************************************
-    public override void Debug_Log() {
+	//*******************************************
+	// デバッグログ表示
+	//*******************************************
+	public override void Debug_Log() {
 		base.Debug_Log();
 		//Debug.Log("touch:" + player_touch_flg);
 		//Debug.Log("enum:"+enum_state);
@@ -136,16 +137,21 @@ public partial class Enemy : CharaBase
 		//old_angle = new_angle;
 		#endregion
 
-		Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * -wallray.langth);
-		Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.langth);
+		//*
 
+		//壁判定Ray
+		Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * -wallray.length);
+		Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length);
 
-		Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.langth, -transform.up * holeray.length);
-		Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.langth, -transform.up * holeray.length);
+		//穴判定Ray
+		Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.length, -transform.up * holeray.length);
+		Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length, -transform.up * holeray.length);
 
-		//Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.langth);
-
-
+		//壁掴み判定Ray
+		Gizmos.color= new Color(0.5f, 0.0f, 1.0f, 0.8f);
+		Gizmos.DrawRay(transform.position + new Vector3(0,wallGrabRay.height,0), transform.forward * -wallGrabRay.length);
+		
+		// */
 	}
 
 
@@ -354,6 +360,9 @@ public partial class Enemy : CharaBase
 				//--穴判定による向き変更
 				HoleRay_Rotate_Judge();
 
+				//--壁掴み判定による掴み
+				WallGrabRay_Grab_Judge();
+
 				//--振り向き
 				Away_LookBack();
 
@@ -371,7 +380,7 @@ public partial class Enemy : CharaBase
 		}
 	}
 
-	//--壁判定による向き変更
+	//--壁判定による向き変更 **************
 	void WallRay_Rotate_Judge() {
 		//----壁判定Ray当たり判定
 		WallRay_Judge();
@@ -389,7 +398,7 @@ public partial class Enemy : CharaBase
 
 		//右のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.langth)) {
+			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_right = hit.distance;  //壁との距離保存
 				wallray.hit_right_flg = true;       //壁との当たり判定
@@ -402,7 +411,7 @@ public partial class Enemy : CharaBase
 
 		//左のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.langth)) {
+			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_left = hit.distance;   //壁との距離保存
 				wallray.hit_left_flg = true;        //壁との当たり判定
@@ -457,22 +466,22 @@ public partial class Enemy : CharaBase
 	}
 
 
-	//--穴判定による向き変更
+	//--穴判定による向き変更 **************
 	void HoleRay_Rotate_Judge() {
-		//----穴判定Ray当たり判定
+		//----当たり判定
 		HoleRay_Judge();
 
 		//----向き変更
 		HoleRay_Rotate();
 	}
 
-	//----穴判定Ray当たり判定
+	//----当たり判定
 	void HoleRay_Judge() {
 		RaycastHit hit;
 		//何にも当たっていなかったら
 
 		//右のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.langth,
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.length,
 			-transform.up, out hit, holeray.length)) {
 			holeray.hit_right_flg = true;
 		}
@@ -481,7 +490,7 @@ public partial class Enemy : CharaBase
 		}
 
 		//左のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.langth,
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length,
 			-transform.up, out hit, holeray.length)) {
 			holeray.hit_left_flg = true;
 		}
@@ -500,6 +509,57 @@ public partial class Enemy : CharaBase
 			transform.Rotate(0.0f, holeray.spd, 0.0f);
 		}
 	}
+
+
+	//--壁掴み判定Rayによる掴み *********************
+	void WallGrabRay_Grab_Judge() {
+		////----当たり判定
+		//WallGrabRay_Judge();
+
+		////----掴む
+		//WallGrabRay_Grab();
+	}
+
+	//----当たり判定
+	void WallGrabRay_Judge() {
+		RaycastHit hit;
+
+		//空中にいる、自身が壁に当たっている、Rayが壁に当たっていない
+		if (!is_ground && wall_touch_flg) {
+			if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, -wallGrabRay.length) &&
+				hit.collider.gameObject.tag != "Wall") {
+				wallGrabRay.prepare_flg = true;
+			}
+			else wallGrabRay.prepare_flg = false;
+		}
+
+	}
+
+	//----掴む
+	void WallGrabRay_Grab() {
+		RaycastHit hit;
+
+		//Rayが壁に当たっていたら
+		if (!wallGrabRay.flg && wallGrabRay.prepare_flg) {
+			if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, -wallGrabRay.length) &&
+				hit.collider.gameObject.tag == "Wall") {
+				velocity = Vector3.zero;
+				wallGrabRay.flg = true;
+			}
+		}
+
+		if (wallGrabRay.flg) {
+			//アニメーション
+		}
+
+	}
+
+
+	//着地時
+	//wallGrabRay.prepare_flg = false;
+	//wallGrabRay.flg = false;
+
+
 
 
 
@@ -630,13 +690,18 @@ public partial class Enemy : CharaBase
 	// 当たり判定
 	//*******************************************
 	//何かに当たったとき
-
 	private void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player") {
 			if (player_touch_flg == false) {
 				player_touch_flg = true;
 			}
 		}
+		if (other.gameObject.tag == "Wall") {
+			if (wall_touch_flg == false) {
+				wall_touch_flg = true;
+			}
+		}
+
 	}
 
 	//何にも当たっていないとき
@@ -646,6 +711,12 @@ public partial class Enemy : CharaBase
 				player_touch_flg = false;
 			}
 		}
+		if (other.gameObject.tag == "Wall") {
+			if (wall_touch_flg == true) {
+				wall_touch_flg = false;
+			}
+		}
+
 	}
 
 
