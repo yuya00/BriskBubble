@@ -67,10 +67,10 @@ public class CameraTest : MonoBehaviour
 
     void debug()
     {
-        GUILayout.TextArea("pad_rx\n" + pad_rx);
-        GUILayout.TextArea("angle_check()\n" + angle_check());
-        GUILayout.TextArea("direction\n" + direction);
-        GUILayout.TextArea("位置\n" + (player.transform.position - transform.position));
+        //GUILayout.TextArea("pad_rx\n" + pad_rx);
+        //GUILayout.TextArea("angle_check()\n" + angle_check());
+        //GUILayout.TextArea("direction\n" + direction);
+        //GUILayout.TextArea("位置\n" + (player.transform.position - transform.position));
         //GUILayout.TextArea("stick_rx\n" + stick_rx);
         //GUILayout.TextArea("stick_rx\n" + stick_rx);
         //GUILayout.TextArea("stick_rx\n" + stick_rx);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed partial class Enemy : CharaBase
+public partial class Enemy : CharaBase
 {
 
 	// Start is called before the first frame update
@@ -41,8 +41,8 @@ public sealed partial class Enemy : CharaBase
 		/*
 		GUILayout.BeginVertical("box", GUILayout.Width(190));
 
-		//スクロール
-		leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+	//	//スクロール
+	//	leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
 		//座標
 		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -95,6 +95,7 @@ public sealed partial class Enemy : CharaBase
 		GUILayout.EndVertical();
 		// */
 	}
+
 
 
 	//*******************************************
@@ -374,7 +375,7 @@ public sealed partial class Enemy : CharaBase
 		}
 	}
 
-	//--壁判定による向き変更 **************
+	//--壁判定による向き変更
 	void WallRay_Rotate_Judge() {
 		//----壁判定Ray当たり判定
 		WallRay_Judge();
@@ -392,7 +393,7 @@ public sealed partial class Enemy : CharaBase
 
 		//右のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.length)) {
+			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.langth)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_right = hit.distance;  //壁との距離保存
 				wallray.hit_right_flg = true;       //壁との当たり判定
@@ -405,7 +406,7 @@ public sealed partial class Enemy : CharaBase
 
 		//左のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.length)) {
+			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.langth)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_left = hit.distance;   //壁との距離保存
 				wallray.hit_left_flg = true;        //壁との当たり判定
@@ -460,22 +461,22 @@ public sealed partial class Enemy : CharaBase
 	}
 
 
-	//--穴判定による向き変更 **************
+	//--穴判定による向き変更
 	void HoleRay_Rotate_Judge() {
-		//----当たり判定
+		//----穴判定Ray当たり判定
 		HoleRay_Judge();
 
 		//----向き変更
 		HoleRay_Rotate();
 	}
 
-	//----当たり判定
+	//----穴判定Ray当たり判定
 	void HoleRay_Judge() {
 		RaycastHit hit;
 		//何にも当たっていなかったら
 
 		//右のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.length,
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.langth,
 			-transform.up, out hit, holeray.length)) {
 			holeray.hit_right_flg = true;
 		}
@@ -484,7 +485,7 @@ public sealed partial class Enemy : CharaBase
 		}
 
 		//左のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length,
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.langth,
 			-transform.up, out hit, holeray.length)) {
 			holeray.hit_left_flg = true;
 		}
@@ -637,6 +638,7 @@ public sealed partial class Enemy : CharaBase
 	// 当たり判定
 	//*******************************************
 	//何かに当たったとき
+
 	private void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player") {
 			if (player_touch_flg == false) {

@@ -31,7 +31,8 @@ public class Fade : MonoBehaviour
 	void Start ()
 	{
 		Init ();
-		fade.Range = cutoutRange;
+        // ここに1.0fを代入したら初期に黒画面から始まる
+		fade.Range = cutoutRange = 1.0f;
 	}
 
 	float cutoutRange;
