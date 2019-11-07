@@ -24,8 +24,10 @@ public partial class Player : CharaBase//
     private float jump_anim_count = 0;
     private const float NORMALIZE = 1.0f;
     private bool ray_fg;
-    // あにめ
-    private Animator animator;
+	private bool wall_touch_flg = false;        //壁との当たり判定
+
+	// あにめ
+	private Animator animator;
     private const int COUNT = 23;
 
     // 状態
@@ -56,8 +58,33 @@ public partial class Player : CharaBase//
     };
 
 
-    // Start is called before the first frame update
-    public override void Start()
+	//壁掴み判定Ray ---------------------------------------------
+	[System.Serializable]
+	public struct WallGrabRay {
+		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
+		public float height;    //1.3f
+
+		[SerializeField, Range(0.0f, 5.0f), Header("Rayの長さ")]
+		public float length;    //2.0f
+
+		[System.NonSerialized] //掴み準備判定
+		public bool prepare_flg;
+
+		[System.NonSerialized] //レイ判定
+		public bool ray_flg;
+
+		[System.NonSerialized] //掴み判定
+		public bool flg;
+
+	}
+	[Header("壁掴み判定Ray")]
+	public WallGrabRay wallGrabRay;
+
+
+
+
+	// Start is called before the first frame update
+	public override void Start()
     {
         base.Start();
         // 初期値設定
@@ -94,7 +121,7 @@ public partial class Player : CharaBase//
     private Vector2 leftScrollPos = Vector2.zero;
     void OnGUI()
     {
-		/*
+		//*
         GUILayout.BeginVertical("box");
 
         // スクロールビュー
@@ -105,14 +132,27 @@ public partial class Player : CharaBase//
         // スペース
         GUILayout.Space(10);
 
-        // スペース
-        GUILayout.EndScrollView();
+		GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
+		GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+
+		GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
+
+
+		// スペース
+		GUILayout.EndScrollView();
 
         GUILayout.EndVertical();
 		//*/
     }
 
-    void debug()
+	void OnDrawGizmos() {
+		//壁掴み判定Ray
+		Gizmos.color = new Color(0.5f, 0.0f, 1.0f, 0.8f);
+		Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
+
+	}
+
+	void debug()
     {
         GUILayout.TextArea("is_ground\n" + is_ground);
         GUILayout.TextArea("velocity\n" + velocity);
@@ -127,7 +167,7 @@ public partial class Player : CharaBase//
         // きっちり足元判定
         for (int i = 0; i < 9; ++i)
         {
-            Debug.DrawRay(chara_ray.position + ofset_layer_pos[i], chara_ray.position + ofset_layer_pos[i] + Vector3.down * (chara_ray_length * 0.5f), Color.green);
+            //Debug.DrawRay(chara_ray.position + ofset_layer_pos[i], chara_ray.position + ofset_layer_pos[i] + Vector3.down * (chara_ray_length * 0.5f), Color.green);
         }
         //*********************************************************************//
     }
@@ -160,7 +200,10 @@ public partial class Player : CharaBase//
         // ショットに乗った時にジャンプをjump_power_up倍
         if (down_hit_shot()) jump(jump_power * jump_power_up);
 
-    }
+		//--壁掴み判定Rayによる掴み
+		WallGrabRay_Grab_Judge();
+
+	}
 
     // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
     void lstick_move()
@@ -311,19 +354,8 @@ public partial class Player : CharaBase//
         }
     }
 
-    // 当たった時に呼ばれる
-    void OnCollisionEnter(Collision col)
-    {
-        // 上方向に進んでる途中
-        if (jump_now())
-        {
-            // 頭当たった時に落下
-            velocity.y = 0;
-        }
-    }
-
-    // 飛んでる判定
-    bool jump_now()
+	// 飛んでる判定
+	bool jump_now()
     {
         if (velocity.y > 0) return true;
         return false;
@@ -345,9 +377,69 @@ public partial class Player : CharaBase//
         return false;
     }
 
-    //---------------------------------------------//
+	//--壁掴み判定Rayによる掴み *********************
+	void WallGrabRay_Grab_Judge() {
+		//----当たり判定
+		WallGrabRay_Judge();
 
-    public override void Debug_Log()
+		//----掴む
+		WallGrabRay_Grab();
+	}
+
+	//----当たり判定
+	void WallGrabRay_Judge() {
+		RaycastHit hit;
+
+		//空中にいる、自身が壁に当たっている、レイが当たっていない
+		if (!is_ground && wall_touch_flg && !wallGrabRay.ray_flg) {
+			wallGrabRay.prepare_flg = true;
+		}
+		else wallGrabRay.prepare_flg = false;
+
+		//レイ判定
+		if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, wallGrabRay.length) &&
+			hit.collider.gameObject.tag == "Wall") {
+			wallGrabRay.ray_flg = true;
+		}
+		else wallGrabRay.ray_flg = false;
+
+
+		//上記二つが完了してたら
+		if (!wallGrabRay.flg && wallGrabRay.prepare_flg && wallGrabRay.ray_flg) {
+			wallGrabRay.flg = true;
+		}
+
+
+	}
+
+	//----掴む
+	void WallGrabRay_Grab() {
+		if (wallGrabRay.flg) {
+			//登るアニメーション
+			velocity.y = 0;
+			velocity.z = 0;
+
+			
+			if (Input.GetKeyDown(KeyCode.UpArrow)) {
+				transform.position += new Vector3(0, 4.5f, 1.0f);
+				wallGrabRay.flg = false;
+			}
+			if (Input.GetKeyDown(KeyCode.DownArrow)) {
+				wallGrabRay.flg = false;
+			}
+		}
+
+	}
+
+
+	//着地時
+	//wallGrabRay.prepare_flg = false;
+	//wallGrabRay.flg = false;
+
+
+	//---------------------------------------------//
+
+	public override void Debug_Log()
     {
         base.Debug_Log();
     }
@@ -356,6 +448,38 @@ public partial class Player : CharaBase//
     {
         get { return run_spd; }
     }
+
+
+
+	//*******************************************
+	// 当たり判定
+	//*******************************************
+	//何かに当たったとき
+	void OnCollisionEnter(Collision col) {
+		// 上方向に進んでる途中
+		if (jump_now()) {
+			// 頭当たった時に落下
+			velocity.y = 0;
+		}
+
+		//壁との当たり判定
+		if (col.gameObject.tag == "Wall") {
+			if (wall_touch_flg == false) {
+				wall_touch_flg = true;
+			}
+		}
+
+	}
+
+	//何にも当たっていないとき
+	private void OnCollisionExit(Collision other) {
+		if (other.gameObject.tag == "Wall") {
+			if (wall_touch_flg == true) {
+				wall_touch_flg = false;
+			}
+		}
+
+	}
 
 
 }

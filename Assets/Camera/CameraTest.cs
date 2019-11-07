@@ -47,20 +47,22 @@ public class CameraTest : MonoBehaviour
 
     void OnGUI()
     {
+		/*
         GUILayout.BeginVertical("box");
 
-        // スクロールビュー
-        //leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+		// スクロールビュー
+		//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-        debug();
+		debug();
 
         // スペース
         GUILayout.Space(10);
 
-        // スペース
-        //GUILayout.EndScrollView();
+		// スペース
+		//GUILayout.EndScrollView();
 
-        GUILayout.EndVertical();
+		GUILayout.EndVertical();
+		//*/
     }
 
     void debug()

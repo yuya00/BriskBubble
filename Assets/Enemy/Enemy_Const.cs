@@ -10,7 +10,6 @@ public sealed partial class Enemy : CharaBase
 	private int					wait_timer;         //汎用待機タイマー
 	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
-	private bool				wall_touch_flg;		//壁との当たり判定
 	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
 	private Player				p_player; 
 	private float				spd_ratio = 1.8f;	//プレイヤー速度を割る割合
@@ -170,24 +169,6 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//壁掴み判定Ray ---------------------------------------------
-	[System.Serializable]
-	public struct WallGrabRay {
-		[SerializeField, Range(0.0f, 2.0f),Header("Rayの高さ")]
-		public float height;    //1.3f
-
-		[SerializeField, Range(0.0f, 5.0f), Header("Rayの長さ")]
-		public float length;    //2.0f
-
-		[System.NonSerialized] //掴み準備判定
-		public bool prepare_flg;
-
-		[System.NonSerialized] //掴み判定
-		public bool flg;
-
-	}
-	[Header("壁掴み判定Ray")]
-	public WallGrabRay wallGrabRay;
 
 
 
