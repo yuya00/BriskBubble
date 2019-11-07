@@ -393,7 +393,7 @@ public partial class Enemy : CharaBase
 
 		//右のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.langth)) {
+			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_right = hit.distance;  //壁との距離保存
 				wallray.hit_right_flg = true;       //壁との当たり判定
@@ -406,7 +406,7 @@ public partial class Enemy : CharaBase
 
 		//左のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.langth)) {
+			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_left = hit.distance;   //壁との距離保存
 				wallray.hit_left_flg = true;        //壁との当たり判定
@@ -476,7 +476,7 @@ public partial class Enemy : CharaBase
 		//何にも当たっていなかったら
 
 		//右のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.langth,
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.length,
 			-transform.up, out hit, holeray.length)) {
 			holeray.hit_right_flg = true;
 		}
@@ -485,7 +485,7 @@ public partial class Enemy : CharaBase
 		}
 
 		//左のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.langth,
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length,
 			-transform.up, out hit, holeray.length)) {
 			holeray.hit_left_flg = true;
 		}
