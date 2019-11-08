@@ -2088,7 +2088,7 @@ MonoBehaviour:
   zoom_out_spd: 400
   zoom_len: 8
   approach_timer_max: 1
-  scene_move_spd: 70
+  scene_move_spd: 25
 --- !u!4 &2066760147
 Transform:
   m_ObjectHideFlags: 0

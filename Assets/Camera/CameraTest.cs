@@ -32,6 +32,7 @@ public class CameraTest : MonoBehaviour
     public float zoom_len = 8.0f;           // どこまで近づくか
     public float approach_timer_max = 1.0f; // 近づいてから何秒とめるか
     public float scene_move_spd = 1.0f;
+    public float LOOK_SPD = 15.0f;          // 徐々に向かせる回転の速さ
 
     private float init_zoom_out_spd;        // 遠ざかる速さ(初期化用)
     private float approach_timer;
@@ -43,7 +44,6 @@ public class CameraTest : MonoBehaviour
     private const int NONE = 0;             // 何も演出なし
     private const int ENM_HIT = 1;          // 敵倒すとき
     private const int SCENE = 2;            // シーン始まったとき
-    private const float LOOK_SPD = 15.0f;   // 徐々に向かせる回転の速さ
     //--------------------------------------------           
 
     // 初期化
@@ -62,7 +62,8 @@ public class CameraTest : MonoBehaviour
         // ジャンプ中は追従させないように位置を代入
         init_up_pos = player.transform.position.y;
 
-        camera_state = SCENE;
+        //camera_state = SCENE;
+        camera_state = 0;
 
         // 演出初期化
         approach_state = 0;
@@ -117,9 +118,9 @@ public class CameraTest : MonoBehaviour
         switch (camera_state)
         {
             // 演出無いとき
-            case NONE: look_pos = player_target(); break;
-            case ENM_HIT: look_pos = enemy_target(look_pos); break;
-            case SCENE: look_pos = world_target(); break;
+            case NONE:      look_pos = player_target();         break;
+            case ENM_HIT:   look_pos = enemy_target(look_pos);  break;
+            case SCENE:     look_pos = world_target();          break;
         }
 
         // 注視点の方に向く
@@ -180,7 +181,8 @@ public class CameraTest : MonoBehaviour
     void follow_camera(Vector3 vec)
     {
         // 内積チェックしてカメラを移動させる
-        if (angle_check()) direction = Vector3.Lerp(direction, vec, LOOK_SPD * Time.deltaTime);
+        if (angle_check()) //look_lerp(direction, transform.position + vec, 1);
+        direction = Vector3.Lerp(direction, vec, 1 * Time.deltaTime);
     }
 
     // プレイヤーとカメラの角度チェック
@@ -316,8 +318,6 @@ public class CameraTest : MonoBehaviour
 
     }
 
-
-
     //-----------------------------------------
     #endregion
 
@@ -377,7 +377,7 @@ public class CameraTest : MonoBehaviour
 
         GUILayout.TextArea("camera_state\n" + camera_state);
         GUILayout.TextArea("scene_pos_no\n" + scene_pos_no);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        GUILayout.TextArea("pad_lx_check(pad_lx)\n" + pad_lx_check(pad_lx));//save_pos
         //GUILayout.TextArea("pos\n" + pos);//save_pos
         //GUILayout.TextArea("pos\n" + pos);//save_pos
         //GUILayout.TextArea("pos\n" + pos);//save_pos
