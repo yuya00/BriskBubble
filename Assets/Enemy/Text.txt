@@ -148,10 +148,12 @@ Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
 ・重力
 
-・掴んだとき、すぐ入力出来ないようにする
-
 ・masterにブランチを統合してから
 　origin/masterと同期
+
+
+
+・掴んだとき、すぐ入力出来ないようにする
 
 ・memo.txt用意
 

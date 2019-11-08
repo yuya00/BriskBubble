@@ -18,6 +18,8 @@ public class CharaBase : MonoBehaviour {
 	public float		 gravity_power		 = 5;				//重力の倍率
 	protected int[]		 iwork				 = new int[8];		//汎用
 	protected float[]	 fwork				 = new float[8];    //汎用
+	[Header("落下速度の上限")]
+	public float		 fallspd_limit		 = 30.0f;
 
 	//壁判定Ray ---------------------------------------------
 	public int angle_mag = 3; //角度調整
@@ -246,7 +248,7 @@ public class CharaBase : MonoBehaviour {
         else
         {
             is_ground = false;
-			if (velocity.y >= -60.0f) { //落下速度の上限
+			if (velocity.y >= -fallspd_limit) { //落下速度の上限
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
 			}
 			else {
