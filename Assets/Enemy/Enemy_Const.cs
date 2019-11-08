@@ -30,6 +30,11 @@ public sealed partial class Enemy : CharaBase
 	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 
 
+	[Header("敵GUIの表示")]
+	public bool gui_on;
+
+
+
 	//Transform wall_ray;
 	//Quaternion wall_ray;
 	//GameObject wall_ray;

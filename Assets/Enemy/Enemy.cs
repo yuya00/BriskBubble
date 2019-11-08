@@ -70,62 +70,63 @@ public sealed partial class Enemy : CharaBase
 	// GUI表示
 	//*******************************************
 	void OnGUI() {
-		/*
-		GUILayout.BeginVertical("box", GUILayout.Width(190));
+		if (gui_on) {
 
-		//スクロール
-		//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+			GUILayout.BeginVertical("box", GUILayout.Width(190));
 
-		//座標
-		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-		float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-		float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
-		GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+			//スクロール
+			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
-		//速さ
-		float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-		float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-		float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-		GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+			//座標
+			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+			float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+			float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
 
-		//汎用待機タイマー
-		GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
+			//速さ
+			float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+			float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+			float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-		//状態(待機や警戒など)
-		GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+			//汎用待機タイマー
+			GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
 
-		//状態内の行動(首振りやジャンプなど)
-		GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+			//状態(待機や警戒など)
+			GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
 
-		////ランダム値
-		//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
-		//	+ " isfinish：" + once_random.isfinish.ToString());
+			//状態内の行動(首振りやジャンプなど)
+			GUILayout.TextArea("行動\n act：" + enum_act.ToString());
 
-		////首振りの行動
-		//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
+			////ランダム値
+			//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
+			//	+ " isfinish：" + once_random.isfinish.ToString());
 
-		//回転
-		GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+			////首振りの行動
+			//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
 
-		//レイが両方当たった回数
-		//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
+			//回転
+			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
-		//斜めベクトル
-		//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
-		//GUILayout.TextArea("dist_angle\n" + dist_angle);
+			//レイが両方当たった回数
+			//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
 
-		//穴判定
-		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
-		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
+			//斜めベクトル
+			//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
+			//GUILayout.TextArea("dist_angle\n" + dist_angle);
 
-
-		//スクロール終了
-		//GUILayout.EndScrollView();
+			//穴判定
+			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
+			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
 
+			//スクロール終了
+			GUILayout.EndScrollView();
 
-		GUILayout.EndVertical();
-		// */
+
+
+			GUILayout.EndVertical();
+		}
 	}
 
 	//*******************************************

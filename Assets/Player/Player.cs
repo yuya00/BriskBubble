@@ -104,6 +104,10 @@ public partial class Player : CharaBase//
 	//存在しない大きな値
 	private int NOTEXIST_BIG_VALUE = 999;
 
+	[Header("プレイヤーGUIの表示")]
+	public bool gui_on;
+
+
 
 
 	// Start is called before the first frame update
@@ -145,39 +149,39 @@ public partial class Player : CharaBase//
     private Vector2 leftScrollPos = Vector2.zero;
     void OnGUI()
     {
-		//*
-		GUILayout.BeginVertical("box", GUILayout.Width(190));
+		if (gui_on) {
+			GUILayout.BeginVertical("box", GUILayout.Width(190));
 
-		// スクロール
-		leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+			// スクロール
+			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
-        //debug();
+			//debug();
 
-		// スペース
-		GUILayout.Space(10);
+			// スペース
+			GUILayout.Space(10);
 
-		////壁掴み判定
-		//GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
-		//GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
-		//GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+			////壁掴み判定
+			//GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
+			//GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
+			//GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
 
-		////縦入力
-		//GUILayout.TextArea("L_Stick_V\n" + Input.GetAxis("L_Stick_V").ToString());
+			////縦入力
+			//GUILayout.TextArea("L_Stick_V\n" + Input.GetAxis("L_Stick_V").ToString());
 
-		//壁
-		GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
-		GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
-		GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
-		GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
+			//壁
+			GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
+			GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
+			GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
+			GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
 
-		GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+			GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
 
 
-		//スクロール終了
-		GUILayout.EndScrollView();
+			//スクロール終了
+			GUILayout.EndScrollView();
 
-        GUILayout.EndVertical();
-		//*/
+			GUILayout.EndVertical();
+		}
     }
 
 	void debug()
