@@ -28,7 +28,8 @@ public partial class Player : CharaBase//
 
 	// あにめ
 	private Animator animator;
-    private const int COUNT = 23;
+    private float COUNT;
+    private float anim_spd = 3.0f;
 
     // 状態
     private const int WAIT = 0;
@@ -115,6 +116,7 @@ public partial class Player : CharaBase//
         init_back_spd = back_spd;
         chara_ray = transform.Find("CharaRay");
         animator = GetComponent<Animator>();
+        COUNT = 23 / anim_spd;
     }
 
     // Update is called once per frame
@@ -376,31 +378,33 @@ public partial class Player : CharaBase//
         //is_ground = false;
         velocity.y = 0;
         velocity.y = jump_power;
-        animator.SetBool("JumpStart", true);
-        animator.SetBool("Fall", true);
-        //animator.SetBool("JumpEnd", true);
+        //animator.SetBool("JumpStart", jump_fg);
     }
 
     // ジャンプモーション用
     void anime_jump()
     {
+        // 標準速度初期化
+        //if (!jump_fg)
+        animator.speed = 1.0f;
+        //animator.SetBool("JumpStart", jump_fg);
+
         // 着地してるとき
         if (is_ground)
         {
-            animator.SetBool("JumpStart", false);
             animator.SetBool("Fall", false);
-
             // 着地したときに1回だけ着地をtrueにする
             jump_end_anim();
         }
 
-        // 浮いてるとき
+        // 落ちてる
+        //if (fall())
         if (!is_ground)
         {
             jump_anim_count = 0;
             animator.SetBool("JumpStart", false);
             animator.SetBool("Fall", true);
-            animator.SetBool("JumpEnd", true);
+            //animator.SetBool("JumpEnd", true);
         }
     }
 
@@ -412,16 +416,17 @@ public partial class Player : CharaBase//
         if (jump_anim_count < COUNT)
         {
             animator.SetBool("JumpEnd", true);
+            animator.speed = anim_spd;
         }
         else
         {
-            jump_anim_count = COUNT;
             animator.SetBool("JumpEnd", false);
+            jump_anim_count = COUNT;
         }
     }
 
-	// 飛んでる判定
-	bool jump_now()
+    // 飛んでる判定
+    bool jump_now()
     {
         if (velocity.y > 0) return true;
         return false;
@@ -431,7 +436,31 @@ public partial class Player : CharaBase//
     bool jump_on()
     {
         // モーションが終わってるときにジャンプできる
-        if (Input.GetButtonDown("Jump") && is_ground && !animator.GetBool("JumpEnd")) return true;
+        if (is_ground)
+        {
+            if (!animator.GetBool("JumpEnd"))
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    //jump_fg = true;
+                    //jump_fg = false;
+                    //jump_timer = 0;
+                    return true;
+                }
+            }
+        }
+        //if (jump_fg)
+        //{
+        //    animator.speed = anim_spd;
+        //    jump_timer += Time.deltaTime;
+        //}
+        //if (jump_timer > jump_timer_max)
+        //{
+        //    jump_fg = false;
+        //    jump_timer = 0;
+        //    return true;
+        //}
+
         return false;
     }
 
