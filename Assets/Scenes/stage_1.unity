@@ -21083,9 +21083,9 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807537156}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a46fbc8abca843b3a095e3f7b6ea63f, type: 3}
+  m_Script: {fileID: 11500000, guid: 566c5da1b423a114abfdce1819d5ada2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1807537158
@@ -23785,6 +23785,7 @@ MonoBehaviour:
   zoom_len: 8
   approach_timer_max: 1
   scene_move_spd: 30
+  LOOK_SPD: 15
 --- !u!4 &2066760147
 Transform:
   m_ObjectHideFlags: 0
