@@ -138,19 +138,11 @@ Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
 
 
-
+・//--
+・ctl+m+o 畳む
 
 
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-
-
-・GUIにボタン
-
-・重力
-
-・masterにブランチを統合してから
-　origin/masterと同期
-
 
 
 ・掴んだとき、すぐ入力出来ないようにする
@@ -161,7 +153,6 @@ Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
 ・向き調整再調整
 
-・//--
 
 
 
