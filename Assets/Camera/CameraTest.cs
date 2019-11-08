@@ -5,26 +5,44 @@ using UnityEngine.UI;
 
 public class CameraTest : MonoBehaviour
 {
-
-    #region 今回カメラ
+    #region 最新カメラ
 #if true
-
-    public GameObject player;                 // プレイヤー
-    public float UP = 4.0f;     // カメラの高さ
-    public float UP_TARGET = 4.0f;     // 注視点の高さ
-    public float TURN = 0.035f;   // 手動カメラ移動の速さ
-    public float DIST = 10.0f;    // プレイヤーからどれだけ離れてるか
-
+    public GameObject player;               // プレイヤー
     private Vector3 direction;              // 方向ベクトル
-    private float init_up_pos;            // 初期プレイヤーのＹ位置
-    private float pad_rx;               // スティック情報の値
-    private float pad_lx; // 左スティック
 
-    public float spd = 1;                // カメラが動くときの速度
-    public float ANGLE = 75.0f;          // カメラを追従させるまでのプレイヤーとの角度
-    public float ANGLE_MAX = 145.0f;     // 角度の最大量
+    public float UP = 4.0f;                 // カメラの高さ
+    public float UP_TARGET = 4.0f;          // 注視点の高さ
+    public float TURN = 0.035f;             // 手動カメラ移動の速さ
+    public float DIST = 10.0f;              // プレイヤーからどれだけ離れてるか
+    public float ANGLE = 75.0f;             // カメラを追従させるまでのプレイヤーとの角度
+    public float ANGLE_MAX = 145.0f;        // 角度の最大量
 
-    private int follow_state = 0;
+    private float init_up_pos;              // 初期プレイヤーのＹ位置
+    private float pad_rx;                   // スティック情報の値
+    private float pad_lx;                   // 左スティック
+
+    //--------------------------------------------
+    // 演出                          
+    //--------------------------------------------           
+    public GameObject enemy;                // 敵のオブジェクトを取得
+    private Vector3 save_pos;               // 演出前の位置を保存
+
+    public float zoom_in_spd = 30.0f;       // 近づく早さ
+    public float zoom_out_spd = 50.0f;      // 遠ざかる速さ
+    public float zoom_len = 8.0f;           // どこまで近づくか
+    public float approach_timer_max = 1.0f; // 近づいてから何秒とめるか
+
+    private float init_zoom_out_spd;        // 遠ざかる速さ(初期化用)
+    private float approach_timer;
+
+    private int camera_state = 0;           // 通常時と演出時を分ける
+    private int approach_state;             // 演出時のステート
+
+    private const int NONE = 0;             // 何も演出なし
+    private const int ENM_HIT = 1;          // 敵倒すとき
+    private const int SCENE = 2;            // シーン始まったとき
+    private const float LOOK_SPD = 15.0f;   // 徐々に向かせる回転の速さ
+    //--------------------------------------------           
 
     // 初期化
     void Start()
@@ -37,70 +55,94 @@ public class CameraTest : MonoBehaviour
 
         // ジャンプ中は追従させないように位置を代入
         init_up_pos = player.transform.position.y;
+
+
+        // 演出初期化
+        approach_state = 0;
+        approach_timer = 0;
+        init_zoom_out_spd = zoom_out_spd;
+    }
+
+    void Update()
+    {
+        // コンポーネント取得
+        //enemy = GetComponent<Enemy>().gameObject;
     }
 
     // 処理が終わってから呼び出される
     void FixedUpdate()
     {
-        cam();
+        camera_update();
     }
 
-    void OnGUI()
+    //--------------------------------------------
+    // カメラまとめ                         
+    //--------------------------------------------           
+    void camera_update()
     {
-		/*
-        GUILayout.BeginVertical("box");
+        switch (camera_state)
+        {
+            // 演出無いとき
+            case NONE: camera_none(); break;
+            case ENM_HIT: enemy_hit_camera(enemy.transform.position); break;
+            case SCENE: break;
+        }
 
-		// スクロールビュー
-		//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+        // debug
+        // ステート切り替え(ショットが当たった判定になったら)
+        if (Input.GetKeyDown(KeyCode.V)) camera_state++;
+        if (camera_state > 2) camera_state = 0;
 
-		debug();
-
-        // スペース
-        GUILayout.Space(10);
-
-		// スペース
-		//GUILayout.EndScrollView();
-
-		GUILayout.EndVertical();
-		//*/
+        // カメラが何を見るかまとめ
+        look();
     }
+    //--------------------------------------------
 
-    void debug()
+    //--------------------------------------------
+    // カメラが何を見るかまとめ
+    //--------------------------------------------           
+    void look()
     {
-        //GUILayout.TextArea("pad_rx\n" + pad_rx);
-        //GUILayout.TextArea("angle_check()\n" + angle_check());
-        //GUILayout.TextArea("direction\n" + direction);
-        //GUILayout.TextArea("位置\n" + (player.transform.position - transform.position));
-        //GUILayout.TextArea("stick_rx\n" + stick_rx);
-        //GUILayout.TextArea("stick_rx\n" + stick_rx);
-        //GUILayout.TextArea("stick_rx\n" + stick_rx);
+        // 最終的に見る方向初期化
+        Vector3 look_pos = Vector3.zero;
 
-        GUILayout.Space(10);
-        GUILayout.Space(10);
-        GUILayout.Space(10);
-    }
-
-    // カメラまとめ
-    void cam()
-    {
-        // カメラ位置
-        Vector3 pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
-
-        // tps時の注視点
-        Vector3 target = new Vector3(player.transform.position.x, player.transform.position.y + UP_TARGET, player.transform.position.z);
+        // 演出時と通常時の注視点の切り替え
+        switch (camera_state)
+        {
+            // 演出無いとき
+            case NONE: look_pos = player_target(); break;
+            case ENM_HIT: look_pos = enemy_target(look_pos); break;
+            case SCENE: look_pos = world_target(); break;
+        }
 
         // 注視点の方に向く
-        transform.LookAt(target);
+        look_lerp(transform.position, look_pos, LOOK_SPD);
+    }
+
+    //--------------------------------------------
+
+    // CAMETA_STATE.NONE
+    #region プレイヤー追従カメラ(通常時)
+    //--------------------------------------------
+    // 通常時まとめ
+    //--------------------------------------------           
+    void camera_none()
+    {
+        // カメラ位置
+        Vector3 cam_pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
 
         // パッド情報を取得
         pad_rx = -Input.GetAxis("R_Stick_H");
         pad_lx = Input.GetAxis("L_Stick_H");
 
         // カメラの位置変更
-        rotate(pos, pad_rx);
+        rotate(cam_pos, pad_rx);
 
         // 左スティックで入力してる時に条件付でカメラ追従
         if (pad_lx_check(pad_lx)) follow_camera(player.transform.right.normalized - player.transform.forward.normalized);
+
+        // 位置が戻ってきたらここに来て初期化
+        clear_enemy_hit_camera();
     }
 
     // 右スティックでカメラ移動
@@ -130,41 +172,13 @@ public class CameraTest : MonoBehaviour
     // カメラの追従
     void follow_camera(Vector3 vec)
     {
-        //// 内積チェック
-        //if (angle_check())
-        // ステートで追跡
-        state_check(vec, pad_lx);
-    }
-
-    void state_check(Vector3 vec, float pad_lx)
-    {
-        switch (follow_state)
-        {
-            case 0:
-                // 内積で角度がありすぎたらカメラ追跡
-                if (angle_check()) follow_state = 1;
-                break;
-            case 1:
-                // ベクトルを徐々にその方向に持っていく
-                direction = Vector3.Lerp(direction, vec, spd * Time.deltaTime);
-
-                // 入力をやめたらカメラの追跡をやめる
-                if (Mathf.Abs(pad_lx) <= 0.1f) follow_state = 0;
-                break;
-        }
+        // 内積チェックしてカメラを移動させる
+        if (angle_check()) direction = Vector3.Lerp(direction, vec, LOOK_SPD * Time.deltaTime);
     }
 
     // プレイヤーとカメラの角度チェック
     bool angle_check()
     {
-        //*************************************************************//
-        //*************************************************************//
-        // int型の引数にしてswitchで左右の移動させるか、
-        // Lerpを自分で作るか、
-        // がたつかんように急に位置変更しない
-        //*************************************************************//
-        //*************************************************************//
-
         // 角度がANGLEとANGLE_MAXの間やったら、trueを返す、それを左右やってる
         if ((int)rotate_angle() > ANGLE && (int)rotate_angle() < ANGLE_MAX) return true;
         if ((int)rotate_angle() < -ANGLE && (int)rotate_angle() > -ANGLE_MAX) return true;
@@ -196,6 +210,160 @@ public class CameraTest : MonoBehaviour
         float angle = Vector3.Angle(-player.transform.forward, vec) * (axis.y < 0 ? -1 : 1);
 
         return angle;
+    }
+
+    //--------------------------------------------           
+    #endregion
+
+    // CAMETA_STATE.ENM_HIT
+    #region エネミー演出カメラ(近づく)
+    //--------------------------------------------
+    // エネミーに近づく演出カメラまとめ  
+    //--------------------------------------------           
+    void enemy_hit_camera(Vector3 obj_pos)
+    {
+        // どこまで近づいてどこまで遠ざかる(下がる)処理
+        approach(obj_pos, save_pos, zoom_len, zoom_in_spd, zoom_out_spd);
+    }
+
+    // 近づいて遠ざかる処理
+    void approach(Vector3 near_pos, Vector3 back_pos, float len, float zoom_in_spd, float zoom_out_spd)
+    {
+        // 初期化
+        Vector3 vec = Vector3.zero;
+
+        switch (approach_state)
+        {
+            case 0:
+                // 送られてきた位置(敵位置)とのベクトル取得
+                vec = near_pos - transform.position;
+
+                // 近づける(Lerpなしで)
+                transform.position += vec.normalized * (zoom_in_spd * Time.deltaTime);
+
+                // 近づいたら次のステート
+                if (vec.magnitude < len) approach_state++;
+                break;
+            case 1:
+                // 戻る位置とのベクトル取得
+                vec = back_pos - transform.position;
+
+                // 時間経ったら遠ざける
+                if (timer_check_enemy_hit_camera(approach_timer_max))
+                    transform.position += vec.normalized * (zoom_out_spd * Time.deltaTime);
+
+                // 遠ざかったらカメラステート変更（approach_stateを初期化するのはNONEで）
+                if (vec.magnitude < zoom_out_spd * Time.deltaTime) camera_state = NONE;
+                break;
+        }
+    }
+
+    // 1回演出が終わったら初期化する
+    void clear_enemy_hit_camera()
+    {
+        // ここで位置を保存してここの位置に戻らせる
+        save_pos = transform.position;
+
+        // ステートの初期化
+        approach_state = 0;
+
+        // 遠ざける速度の初期化
+        zoom_out_spd = init_zoom_out_spd;
+
+        approach_timer = 0;
+    }
+
+    //--------------------------------------------           
+    #endregion
+
+    // CAMETA_STATE.SCENE
+    #region シーン始まったときのカメラ
+    //-----------------------------------------
+    // シーン始まったときのカメラ 
+    //-----------------------------------------
+
+
+    //-----------------------------------------
+    #endregion
+
+    #region カメラ便利関数
+    //-----------------------------------------
+    // カメラ便利関数 
+    //-----------------------------------------
+    // 徐々に注視点の方を向くようにする
+    void look_lerp(Vector3 cam_pos, Vector3 target, float spd)
+    {
+        // 注視点 - カメラ位置で注視点の方向を取得
+        Vector3 vec = target - cam_pos;
+
+        // 最終的に見る方向を取得
+        Vector3 target_pos = cam_pos + vec.normalized;
+
+        // 徐々に方向を変える
+        Vector3 target_look = Vector3.Lerp(cam_pos + transform.forward.normalized, target_pos, spd * Time.deltaTime);
+
+        // ここに設定したら角度が変わる
+        set_target(target_look);
+    }
+
+    // セットしたほうを向く
+    void set_target(Vector3 vec) { transform.LookAt(vec); }
+
+    bool timer_check_enemy_hit_camera(float timer_max)
+    {
+        approach_timer += Time.deltaTime;
+        if (approach_timer > timer_max)
+        {
+            //approach_timer = 0;
+            return true;
+        }
+        return false;
+
+    }
+
+    #region 注視点設定
+    Vector3 player_target()                 { return new Vector3(player.transform.position.x, player.transform.position.y + UP_TARGET, player.transform.position.z); }
+    Vector3 enemy_target(Vector3 look_pos)  { return Vector3.Lerp(transform.position + look_pos, enemy.transform.position, LOOK_SPD * Time.deltaTime); }
+    Vector3 world_target()                  { return Vector3.zero; }
+
+    //--------------------------------------------
+    #endregion
+
+    //-----------------------------------------
+    #endregion
+
+    void OnGUI()
+    {
+        //*
+        GUILayout.BeginVertical("box");
+
+        // スクロールビュー
+        //leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+
+        GUILayout.TextArea("camera_state\n" + camera_state);
+        GUILayout.TextArea("transform.position\n" + transform.position);
+        GUILayout.TextArea("save_pos\n" + save_pos);//approach_state
+        GUILayout.TextArea("approach_state\n" + approach_state);//save_target
+        GUILayout.TextArea("zoom_out_spd\n" + zoom_out_spd);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+
+        // スペース
+        GUILayout.Space(200);
+        GUILayout.Space(10);
+        // スペース
+        //GUILayout.EndScrollView();
+
+        GUILayout.EndVertical();
+        // */
     }
 
 #endif
