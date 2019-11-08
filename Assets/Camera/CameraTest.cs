@@ -31,12 +31,14 @@ public class CameraTest : MonoBehaviour
     public float zoom_out_spd = 50.0f;      // 遠ざかる速さ
     public float zoom_len = 8.0f;           // どこまで近づくか
     public float approach_timer_max = 1.0f; // 近づいてから何秒とめるか
+    public float scene_move_spd = 1.0f;
 
     private float init_zoom_out_spd;        // 遠ざかる速さ(初期化用)
     private float approach_timer;
 
     private int camera_state = 0;           // 通常時と演出時を分ける
     private int approach_state;             // 演出時のステート
+    private int scene_pos_no;
 
     private const int NONE = 0;             // 何も演出なし
     private const int ENM_HIT = 1;          // 敵倒すとき
@@ -47,8 +49,12 @@ public class CameraTest : MonoBehaviour
     // 初期化
     void Start()
     {
-        // カメラの位置をプレイヤーの位置に設定
-        transform.position = player.transform.position;
+        //// カメラの位置をプレイヤーの位置に設定
+        //transform.position = player.transform.position;
+        float x = 60;
+        float y = 20;
+        float z = -80;
+        transform.position = new Vector3(x, y, z);
 
         // カメラの位置をプレイヤーの後ろにする為の方向ベクトル
         direction = -player.transform.forward.normalized;
@@ -56,6 +62,7 @@ public class CameraTest : MonoBehaviour
         // ジャンプ中は追従させないように位置を代入
         init_up_pos = player.transform.position.y;
 
+        camera_state = SCENE;
 
         // 演出初期化
         approach_state = 0;
@@ -85,7 +92,7 @@ public class CameraTest : MonoBehaviour
             // 演出無いとき
             case NONE: camera_none(); break;
             case ENM_HIT: enemy_hit_camera(enemy.transform.position); break;
-            case SCENE: break;
+            case SCENE: scene_camera(); break;
         }
 
         // debug
@@ -281,6 +288,34 @@ public class CameraTest : MonoBehaviour
     //-----------------------------------------
     // シーン始まったときのカメラ 
     //-----------------------------------------
+    void scene_camera()
+    {
+        float x = 60;
+        float y = 20;
+        float z = -80;
+
+        Vector3[] pos = { new Vector3(x, y, z), new Vector3(x, y, z * -1) };
+
+        float len = (pos[scene_pos_no] - transform.position).magnitude;
+
+        if(len < 1.0f)
+        {
+            scene_pos_no++;
+        }
+        if(scene_pos_no > 1)
+        {
+            scene_pos_no = 0;
+            camera_state = NONE;
+        }
+
+        Vector3 vec = pos[scene_pos_no] - transform.position;
+
+        // 移動方法
+        transform.position += vec.normalized * (scene_move_spd * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, pos[scene_pos_no], scene_move_spd * Time.deltaTime);
+
+    }
+
 
 
     //-----------------------------------------
@@ -341,10 +376,15 @@ public class CameraTest : MonoBehaviour
         //leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
         GUILayout.TextArea("camera_state\n" + camera_state);
-        GUILayout.TextArea("transform.position\n" + transform.position);
-        GUILayout.TextArea("save_pos\n" + save_pos);//approach_state
-        GUILayout.TextArea("approach_state\n" + approach_state);//save_target
-        GUILayout.TextArea("zoom_out_spd\n" + zoom_out_spd);//save_pos
+        GUILayout.TextArea("scene_pos_no\n" + scene_pos_no);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
+        //GUILayout.TextArea("pos\n" + pos);//save_pos
         //GUILayout.TextArea("pos\n" + pos);//save_pos
         //GUILayout.TextArea("pos\n" + pos);//save_pos
         //GUILayout.TextArea("pos\n" + pos);//save_pos
