@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class Enemy : CharaBase
+public sealed partial class Enemy : CharaBase
 {
 
 	// Start is called before the first frame update
@@ -37,12 +37,44 @@ public partial class Enemy : CharaBase
 
 	}
 
+
+	//*******************************************
+	// デバッグログ表示
+	//*******************************************
+	public override void Debug_Log() {
+		/*
+		base.Debug_Log();
+		Debug.Log("touch:" + player_touch_flg);
+		Debug.Log("enum:" + enum_state);
+		Debug.Log("enum_act:" + enum_act);
+		Debug.Log(velocity);
+		Debug.Log(transform.localEulerAngles);
+
+		Debug.DrawRay(
+			transform.position,
+			(transform.forward + transform.forward + transform.right).normalized * -30.0f);
+
+
+
+		new_angle = transform.eulerAngles;
+		dist_angle = new_angle - old_angle;
+
+		//斜めのベクトルを出す方法 ※要修正
+		Debug.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
+
+		old_angle = new_angle;
+		// */
+	}
+
+	//*******************************************
+	// GUI表示
+	//*******************************************
 	void OnGUI() {
 		/*
 		GUILayout.BeginVertical("box", GUILayout.Width(190));
 
-	//	//スクロール
-	//	leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+		//スクロール
+		//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
 		//座標
 		float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -82,13 +114,13 @@ public partial class Enemy : CharaBase
 		//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
 		//GUILayout.TextArea("dist_angle\n" + dist_angle);
 
-
+		//穴判定
 		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
 		//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
 
 		//スクロール終了
-		GUILayout.EndScrollView();
+		//GUILayout.EndScrollView();
 
 
 
@@ -96,35 +128,9 @@ public partial class Enemy : CharaBase
 		// */
 	}
 
-
-
 	//*******************************************
-	// デバッグログ表示
+	// ギズモ表示
 	//*******************************************
-	public override void Debug_Log() {
-		base.Debug_Log();
-		//Debug.Log("touch:" + player_touch_flg);
-		//Debug.Log("enum:"+enum_state);
-		//Debug.Log("enum_act:" + enum_act);
-		//Debug.Log(velocity);
-		//Debug.Log(transform.localEulerAngles);
-
-		//Debug.DrawRay(
-		//	transform.position,
-		//	(transform.forward + transform.forward + transform.right).normalized * -30.0f);
-
-
-
-		//new_angle = transform.eulerAngles;
-		//dist_angle = new_angle - old_angle;
-
-		////斜めのベクトルを出す方法 ※要修正
-		//Debug.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
-
-		//old_angle = new_angle;
-
-	}
-
 	Vector3 localAngle = Vector3.zero;
 	void OnDrawGizmos() {
 
@@ -138,24 +144,27 @@ public partial class Enemy : CharaBase
 		//old_angle = new_angle;
 		#endregion
 
-		//*
+		if (wallray.gizmo_on) {
+			//壁判定Ray
+			Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
+			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
+			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
+		}
 
-		//壁判定Ray
-		Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * -wallray.length);
-		Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length);
+		if (holeray.gizmo_on) {
+			//穴判定Ray
+			Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
+		}
 
-		//穴判定Ray
-		Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.length, -transform.up * holeray.length);
-		Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length, -transform.up * holeray.length);
-
-		
-		// */
 	}
 
 
-	// ********************************************
-	// stateに応じて個別関数に飛ぶ
-	// ********************************************
+
+	//********************************************
+	//stateに応じて個別関数に飛ぶ
+	//********************************************
 	void Action() {
 		//他のstateに行くとき初期化
 		if (old_state != enum_state) {
@@ -188,9 +197,9 @@ public partial class Enemy : CharaBase
 		old_state = enum_state;
 	}
 
-	// ********************************************
-	// --個別行動関数
-	// ********************************************
+	//********************************************
+	//--個別行動関数
+	//********************************************
 	#region 個別行動関数
 
 	//初期化
@@ -221,6 +230,8 @@ public partial class Enemy : CharaBase
 		}
 		old_act = enum_act;
 		#endregion
+
+		//velocity = transform.forward * 10.0f;
 
 		switch (enum_act) {
 			case Enum_Act.CLEAR:
@@ -299,7 +310,7 @@ public partial class Enemy : CharaBase
 				break;
 			//その場で小さくジャンプ
 			case Enum_Act.JUMP:
-				Vector3 distr = transform.position - player.transform.position;
+				Vector3 distr = player.transform.position - transform.position;
 				distr.y = 0;
 				transform.LookAt(transform.position + distr); //プレイヤーの方向を向く
 				Jump(jump_power);
@@ -321,8 +332,9 @@ public partial class Enemy : CharaBase
 	//逃走(プレイヤーから逆方向に逃げ、一定距離で止まる)
 	void Away() {
 		// プレイヤーと逆方向のベクトルを取得
-		dist.x = transform.position.x - player.transform.position.x;
-		dist.y = transform.position.z - player.transform.position.z;
+		dist.x = player.transform.position.x - transform.position.x;
+		dist.y = player.transform.position.z - transform.position.z;
+
 
 		switch (enum_act) {
 			case Enum_Act.CLEAR:
@@ -330,10 +342,19 @@ public partial class Enemy : CharaBase
 				dist.Normalize();
 				dist_normal_vec = dist;
 
+				#region ±指定角度内でランダムにベクトル変更(保留)
+				/*
 				//±指定角度内でベクトル変更(-10度ではなく350度になるので注意!)
 				float rand_num = Random.Range(-awayact.angle, awayact.angle);
-				dist_normal_vec.x += Mathf.Sin(rand_num * Mathf.Deg2Rad);
-				dist_normal_vec.y += Mathf.Cos(rand_num * Mathf.Deg2Rad);
+				Vector3 localAngle = transform.localEulerAngles;
+				localAngle += new Vector3(0, rand_num, 0);
+				transform.localEulerAngles = localAngle;
+
+				//float rand_num = Random.Range(-awayact.angle, awayact.angle);
+				//dist_normal_vec.x += Mathf.Sin(rand_num * Mathf.Deg2Rad);
+				//dist_normal_vec.y += Mathf.Cos(rand_num * Mathf.Deg2Rad);
+				// */
+				#endregion
 
 				//プレイヤーと逆方向のベクトルの速さ代入
 				velocity.x = dist_normal_vec.x;
@@ -343,13 +364,15 @@ public partial class Enemy : CharaBase
 				transform.LookAt(transform.position - velocity);
 
 				//前方向の速さ代入
-				velocity = transform.forward * (-run_spd);
+				velocity = transform.forward * (run_spd);
 
 				goto case Enum_Act.RUN;
+				//goto case Enum_Act.SWING;
 				//break;
 			case Enum_Act.RUN:     //走る
 				enum_act = Enum_Act.RUN;
 
+				//少し曲がりながら走る
 				//transform.Rotate(0, 0.1f, 0);
 
 				//--壁判定による向き変更
@@ -367,16 +390,19 @@ public partial class Enemy : CharaBase
 				}
 				break;
 			case Enum_Act.END:      //state変更
-				//プレイヤーの方向を向く ※要修正
-				transform.LookAt(transform.position + velocity);
+				//プレイヤーの方向を向く
+				transform.LookAt(transform.position - velocity);
 				Clear();
 				enum_state = Enum_State.WAIT;
+				break;
+			case Enum_Act.SWING:
+				enum_act = Enum_Act.SWING;
 				break;
 		}
 	}
 
-	//--壁判定による向き変更
-	void WallRay_Rotate_Judge() {
+
+	public override void WallRay_Rotate_Judge() {
 		//----壁判定Ray当たり判定
 		WallRay_Judge();
 
@@ -385,38 +411,6 @@ public partial class Enemy : CharaBase
 
 		//----向き変更
 		WallRay_Rotate();
-	}
-
-	//----壁判定Ray当たり判定
-	void WallRay_Judge() {
-		RaycastHit hit;
-
-		//右のレイ
-		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + transform.right).normalized * -1, out hit, wallray.length)) {
-			if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_right = hit.distance;  //壁との距離保存
-				wallray.hit_right_flg = true;       //壁との当たり判定
-			}
-		}
-		else {
-			wallray.dist_right = 0;
-			wallray.hit_right_flg = false;
-		}
-
-		//左のレイ
-		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + (-transform.right)).normalized * -1, out hit, wallray.length)) {
-			if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_left = hit.distance;   //壁との距離保存
-				wallray.hit_left_flg = true;        //壁との当たり判定
-			}
-		}
-		else {
-			wallray.dist_left = 0;
-			wallray.hit_left_flg = false;
-		}
-
 	}
 
 	//----めり込み判定
@@ -450,62 +444,6 @@ public partial class Enemy : CharaBase
 		}
 	}
 
-	//----向き変更
-	void WallRay_Rotate() {
-		if (wallray.hit_right_flg) {
-			transform.Rotate(0.0f, -wallray.spd, 0.0f);
-		}
-		else if (wallray.hit_left_flg) {
-			transform.Rotate(0.0f, wallray.spd, 0.0f);
-		}
-	}
-
-
-	//--穴判定による向き変更
-	void HoleRay_Rotate_Judge() {
-		//----穴判定Ray当たり判定
-		HoleRay_Judge();
-
-		//----向き変更
-		HoleRay_Rotate();
-	}
-
-	//----穴判定Ray当たり判定
-	void HoleRay_Judge() {
-		RaycastHit hit;
-		//何にも当たっていなかったら
-
-		//右のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * -wallray.length,
-			-transform.up, out hit, holeray.length)) {
-			holeray.hit_right_flg = true;
-		}
-		else {
-			holeray.hit_right_flg = false;
-		}
-
-		//左のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * -wallray.length,
-			-transform.up, out hit, holeray.length)) {
-			holeray.hit_left_flg = true;
-		}
-		else {
-			holeray.hit_left_flg = false;
-		}
-
-	}
-
-	//----向き変更
-	void HoleRay_Rotate() {
-		if (holeray.hit_right_flg) {
-			transform.Rotate(0.0f, -holeray.spd, 0.0f);
-		}
-		else if (holeray.hit_left_flg) {
-			transform.Rotate(0.0f, holeray.spd, 0.0f);
-		}
-	}
-
-
 
 
 
@@ -516,18 +454,18 @@ public partial class Enemy : CharaBase
 		//120f毎にプレイヤーの方向に向いて60fほど速度が1 / 2になる
 		if (!lookback_flg && WaitTime(awayact.lookback_interval)) {
 			lookback_flg = true;
-			velocity = transform.forward * (-run_spd / 2);
+			velocity = transform.forward * (run_spd / 2);
 		}
 		if (lookback_flg && WaitTime(awayact.lookback_time)) {
 			lookback_flg = false;
-			velocity = transform.forward * (-run_spd);
+			velocity = transform.forward * (run_spd);
 		}
 	}
 
 
 	//攻撃
 	void Attack() {
-		velocity = transform.forward * (-run_spd);
+		velocity = transform.forward * (run_spd);
 	}
 
 
@@ -595,9 +533,9 @@ public partial class Enemy : CharaBase
 
 	#endregion
 
-	// ********************************************
-	// プレイヤーとの当たり判定でstate変更
-	// ********************************************
+	//********************************************
+	//プレイヤーとの当たり判定でstate変更
+	//********************************************
 	void StateChange() {
 		//近くにプレイヤーがいたら(待機の時)
 		if (enemynear.HitFlg) {
@@ -638,11 +576,15 @@ public partial class Enemy : CharaBase
 	// 当たり判定
 	//*******************************************
 	//何かに当たったとき
-
 	private void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player") {
 			if (player_touch_flg == false) {
 				player_touch_flg = true;
+			}
+		}
+		if (other.gameObject.tag == "Shot") {
+			if (shot_touch_flg == false) {
+				shot_touch_flg = true;
 			}
 		}
 
@@ -655,8 +597,22 @@ public partial class Enemy : CharaBase
 				player_touch_flg = false;
 			}
 		}
+		if (other.gameObject.tag == "Shot") {
+			if (shot_touch_flg == true) {
+				shot_touch_flg = false;
+			}
+		}
+
 
 	}
 
+
+
+	//*******************************************
+	// get
+	//*******************************************
+	public bool Shot_touch_flg {
+		get { return shot_touch_flg; }
+	}
 
 }
