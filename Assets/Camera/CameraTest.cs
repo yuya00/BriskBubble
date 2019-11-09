@@ -44,10 +44,14 @@ public class CameraTest : MonoBehaviour
     private const int NONE = 0;             // 何も演出なし
     private const int ENM_HIT = 1;          // 敵倒すとき
     private const int SCENE = 2;            // シーン始まったとき
-    //--------------------------------------------           
+	//--------------------------------------------
 
-    // 初期化
-    void Start()
+	[Header("カメラGUIの表示")]
+	public bool gui_on;
+
+
+	// 初期化
+	void Start()
     {
         //// カメラの位置をプレイヤーの位置に設定
         //transform.position = player.transform.position;
@@ -393,41 +397,42 @@ public class CameraTest : MonoBehaviour
 
     void OnGUI()
     {
-        /*
-        GUILayout.BeginVertical("box");
+		if (gui_on) {
 
-        // スクロールビュー
-        //leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+			GUILayout.BeginVertical("box");
 
-        GUILayout.TextArea("camera_state\n" + camera_state);
-        GUILayout.TextArea("scene_pos_no\n" + scene_pos_no);//save_pos
-        GUILayout.TextArea("pad_lx_check(pad_lx)\n" + pad_lx_check(pad_lx));//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
-        //GUILayout.TextArea("pos\n" + pos);//save_pos
+			// スクロールビュー
+			//leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-        // スペース
-        GUILayout.Space(200);
-        GUILayout.Space(10);
-        // スペース
-        //GUILayout.EndScrollView();
+			GUILayout.TextArea("camera_state\n" + camera_state);
+			GUILayout.TextArea("scene_pos_no\n" + scene_pos_no);//save_pos
+			GUILayout.TextArea("pad_lx_check(pad_lx)\n" + pad_lx_check(pad_lx));//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
+			//GUILayout.TextArea("pos\n" + pos);//save_pos
 
-        GUILayout.EndVertical();
-        // */
+			// スペース
+			GUILayout.Space(200);
+			GUILayout.Space(10);
+			// スペース
+			//GUILayout.EndScrollView();
+
+			GUILayout.EndVertical();
+		}
     }
 
 #endif

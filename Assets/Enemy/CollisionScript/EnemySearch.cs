@@ -64,14 +64,18 @@ public class EnemySearch : MonoBehaviour
 	}
 
 	private bool CheckFoundObject(GameObject i_target) {
-		Vector3 targetPosition = i_target.transform.position;
-		Vector3 myPosition = transform.position;
+		Vector3 targetPosition	 = i_target.transform.position;
+		Vector3 myPosition		 = transform.position;
 
-		Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
+		Vector3 myPositionXZ	 = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 		Vector3 targetPositionXZ = Vector3.Scale(targetPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
-		Vector3 toTargetFlatDir = (targetPositionXZ - myPositionXZ).normalized;
-		Vector3 myForward = transform.forward;
+		Vector3 toTargetFlatDir	 = (targetPositionXZ - myPositionXZ).normalized;
+
+		//Vector3 myForward = transform.forward;
+		//↑が正しいはずだけど、逆方向に扇型判定がついてしまうので、無理やり逆にした。
+		Vector3 myForward		= transform.forward * -1;
+
 		if (!IsWithinRangeAngle(myForward, toTargetFlatDir, m_cos)) {
 			return false;
 		}
@@ -80,6 +84,7 @@ public class EnemySearch : MonoBehaviour
 		if (!IsHitRay(myPosition, toTargetDir, i_target)) {
 			return false;
 		}
+
 
 		return true;
 	}

@@ -20,9 +20,11 @@ public class EnemySearchGizmo : MonoBehaviour
 		Transform	 transform	 = search_object.transform;
 		Vector3		 pos		 = transform.position + Vector3.up * 0.01f; //地面より少し上
 		Quaternion	 rot		 = transform.rotation;
-		Vector3		 scale		 = Vector3.one * search_object.Radius;
+		//Vector3		 scale		 = Vector3.one * search_object.Radius;
+		//↑が正しいはずだけど、逆方向に扇型ギズモがついてしまうので、無理やり逆にした。
+		Vector3 scale			 = Vector3.one * search_object.Radius * -1;
 		//Gizmos.color			 = GIZMO_COLOR;
-		Gizmos.color = search_object.Gizmo_Color;
+		Gizmos.color			 = search_object.Gizmo_Color;
 
 
 		if (search_object.Angle > 0.0f) {

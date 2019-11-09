@@ -10,13 +10,13 @@ public sealed partial class Enemy : CharaBase
 	private int					wait_timer;         //汎用待機タイマー
 	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
+	private bool				shot_touch_flg;   //プレイヤーとの当たり判定
 	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
 	private Player				p_player; 
 	private float				spd_ratio = 1.8f;	//プレイヤー速度を割る割合
 	private EnemyNear			enemynear;
 	private Vector2				dist;				//プレイヤーと逆方向のベクトル
 	private Vector2				dist_normal_vec;    //プレイヤーと逆方向のベクトル
-
 
 
 	private EnemySoundDetect	enemy_sound_detect;
@@ -30,6 +30,11 @@ public sealed partial class Enemy : CharaBase
 	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 
 
+	[Header("敵GUIの表示")]
+	public bool gui_on;
+
+
+
 	//Transform wall_ray;
 	//Quaternion wall_ray;
 	//GameObject wall_ray;
@@ -39,7 +44,7 @@ public sealed partial class Enemy : CharaBase
 	Vector3 dist_angle;
 
 
-
+	[Space]
 	[SerializeField]
 	private GameObject player;
 
@@ -87,10 +92,13 @@ public sealed partial class Enemy : CharaBase
 		//逃走時,音探知範囲の1.5倍
 		[SerializeField, Header("音探知範囲*mag分離れたら止まる")]
 		public float mag;				//1.5f
-		[SerializeField, Header("逃走時のランダム±角度")]
-		public float angle;				//30
+
+		//[SerializeField, Header("逃走時のランダム±角度")]
+		//public float angle;				//30
+
 		[SerializeField, Header("振り向く間隔")]
 		public int lookback_interval;	//120
+
 		[SerializeField, Header("振り向いている時間")]
 		public int lookback_time;		//60
 	}
@@ -99,72 +107,8 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//壁判定Ray ---------------------------------------------
-	private int angle_mag = 3; //角度調整
-	[System.Serializable]
-	public struct WallRay {
-		[SerializeField, Header("Rayの角度")]
-		public float	 angle;     //00.0f 未使用
-		[SerializeField, Header("Rayの長さ")]
-		public float	 length;    //20.0f
-
-		[System.NonSerialized] //壁との距離保存用
-		public float	 dist_right, dist_left;
-
-		[System.NonSerialized] //壁との当たり判定
-		public bool		 hit_right_flg, hit_left_flg;
-
-		[System.NonSerialized] //両方のRayが当たった回数
-		public int		 both_count;
-
-		[System.NonSerialized] //両方のRayが当たった回数判定
-		public bool		 both_flg;
-
-		[SerializeField, Header("向き変更の速さ")]
-		public float	 spd;		//2.0f
-	}
-	[Header("壁判定Ray")]
-	public WallRay wallray;
-
-	void WallRay_Clear() {
-		wallray.dist_right		 = 0;
-		wallray.dist_left		 = 0;
-		wallray.hit_right_flg	 = false;
-		wallray.hit_left_flg	 = false;
-		wallray.both_flg		 = false;
-	}
 
 
-	//穴判定Ray ---------------------------------------------
-	[System.Serializable]
-	public struct HoleRay {
-		[SerializeField, Header("Rayの角度")]
-		public float angle;     //00.0f 未使用
-		[SerializeField, Header("Rayの長さ")]
-		public float length;    //100.0f
-
-		//[System.NonSerialized] //穴との距離保存用
-		//public float dist_right, dist_left;
-
-		[System.NonSerialized] //穴との当たり判定
-		public bool hit_right_flg, hit_left_flg;
-
-		//[System.NonSerialized] //両方のRayが当たった回数
-		//public int both_count;
-
-		//[System.NonSerialized] //両方のRayが当たった回数判定
-		//public bool both_flg;
-
-		[SerializeField, Header("向き変更の速さ")]
-		public float spd;       //2.0f
-	}
-	[Header("穴判定Ray")]
-	public HoleRay holeray;
-
-	void HoleRay_Clear() {
-		holeray.hit_right_flg = false;
-		holeray.hit_left_flg = false;
-	}
 
 
 
