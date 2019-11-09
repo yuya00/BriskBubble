@@ -129,7 +129,7 @@ public class CameraTest : MonoBehaviour
 
     //--------------------------------------------
 
-    // CAMETA_STATE.NONE
+    // NONE
     #region プレイヤー追従カメラ(通常時)
     //--------------------------------------------
     // 通常時まとめ
@@ -180,9 +180,32 @@ public class CameraTest : MonoBehaviour
     // カメラの追従
     void follow_camera(Vector3 vec)
     {
+        //Vector3 v = player.transform.right.normalized * 10 + player.transform.forward.normalized * 30;
         // 内積チェックしてカメラを移動させる
-        if (angle_check()) //look_lerp(direction, transform.position + vec, 1);
-        direction = Vector3.Lerp(direction, vec, 1 * Time.deltaTime);
+        //if (angle_check())
+        //{
+        //    //look_lerp(transform.position, player.transform.position + v, LOOK_SPD);
+        //    direction = Vector3.Lerp(direction, vec, 1 * Time.deltaTime);
+        //}
+        state_check(vec, pad_lx);
+    }
+    private int follow_state;
+    void state_check(Vector3 vec, float pad_lx)
+    {
+        switch (follow_state)
+        {
+            case 0:
+                // 内積で角度がありすぎたらカメラ追跡
+                if (angle_check()) follow_state = 1;
+                break;
+            case 1:
+                // ベクトルを徐々にその方向に持っていく
+                direction = Vector3.Lerp(direction, vec, 1 * Time.deltaTime);
+
+                // 入力をやめたらカメラの追跡をやめる
+                if (Mathf.Abs(pad_lx) <= 0.2f) follow_state = 0;
+                break;
+        }
     }
 
     // プレイヤーとカメラの角度チェック
@@ -224,7 +247,7 @@ public class CameraTest : MonoBehaviour
     //--------------------------------------------           
     #endregion
 
-    // CAMETA_STATE.ENM_HIT
+    // ENM_HIT
     #region エネミー演出カメラ(近づく)
     //--------------------------------------------
     // エネミーに近づく演出カメラまとめ  
@@ -285,7 +308,7 @@ public class CameraTest : MonoBehaviour
     //--------------------------------------------           
     #endregion
 
-    // CAMETA_STATE.SCENE
+    // SCENE
     #region シーン始まったときのカメラ
     //-----------------------------------------
     // シーン始まったときのカメラ 
@@ -321,6 +344,7 @@ public class CameraTest : MonoBehaviour
     //-----------------------------------------
     #endregion
 
+        
     #region カメラ便利関数
     //-----------------------------------------
     // カメラ便利関数 
@@ -369,7 +393,7 @@ public class CameraTest : MonoBehaviour
 
     void OnGUI()
     {
-        //*
+        /*
         GUILayout.BeginVertical("box");
 
         // スクロールビュー

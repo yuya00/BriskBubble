@@ -134,10 +134,10 @@ public partial class Player : CharaBase//
         // スペース
         GUILayout.Space(10);
 
-		GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
-		GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+		//GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
+		//GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
 
-		GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
+		//GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
 
 
 		// スペース
@@ -154,11 +154,11 @@ public partial class Player : CharaBase//
 
 	}
 
-	void debug()
+    void debug()
     {
-        GUILayout.TextArea("is_ground\n" + is_ground);
-        GUILayout.TextArea("velocity\n" + velocity);
-        GUILayout.TextArea("status.velocity\n" + status.velocity);
+        //GUILayout.TextArea("is_ground\n" + is_ground);
+        //GUILayout.TextArea("velocity\n" + velocity);
+        //GUILayout.TextArea("status.velocity\n" + status.velocity);
     }
 
     void raydebug()

@@ -31,26 +31,24 @@ public partial class Player : CharaBase
             // ショットの時間を固定
             shot_interval_time = shot_interval_time_max;
 
-            // ショットのチャージ
-            if (Input.GetButton("Shot"))
+            // ショットのチャージが終わる前に発射したら、飛べるやつを配置
+            if (Input.GetButton("Shot_L"))
             {
+                // ショットのチャージ
                 shot_charge();
+
+                // ショットをチャージしてるときにショットの選択
+                if (Input.GetButton("Shot_R")) shot_state = 1;
             }
 
-            // ショットの発射
-            if (Input.GetButtonUp("Shot"))
+            // 最終ショット発射
+            if (Input.GetButtonUp("Shot_R"))
             {
                 // ショットをstateの値で選択
                 shot_select(shot_object[shot_state]);
-
-                // ショット、チャージリセット
-                charge_time = 0;
-                shot_state = 0;
-
-                // ショット間隔の時間リセット
-                shot_interval_time = 0;
             }
         }
+
     }
 
     // ショットの間隔
@@ -63,7 +61,6 @@ public partial class Player : CharaBase
         }
     }
 
-
     // ショットのチャージ
     void shot_charge()
     {
@@ -71,10 +68,20 @@ public partial class Player : CharaBase
         charge_time += Time.deltaTime;
 
         // ショットをstateで管理
-        if (charge_time <= 1) shot_state = 0;
-        if (charge_time > 1 && charge_time <= 2) shot_state = 1;
         if (charge_time > 2) shot_state = 2;
     }
+
+    // ショットの設定リセット
+    void riset()
+    {
+        // ショット、チャージリセット
+        charge_time = 0;
+        shot_state = 0;
+
+        // ショット間隔の時間リセット
+        shot_interval_time = 0;
+    }
+
 
     // ショットの選択
     void shot_select(GameObject obj)
@@ -99,6 +106,8 @@ public partial class Player : CharaBase
                 back_player = true;
                 break;
         }
+        // ショットが出たら値リセット
+        riset();
     }
 
     // ショット3を撃った後、プレイヤーを後ろに飛ばす
