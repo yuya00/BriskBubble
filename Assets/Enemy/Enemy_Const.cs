@@ -7,7 +7,7 @@ public sealed partial class Enemy : CharaBase
 
 	private bool				jump_flg;
 	private int					timer;				//汎用
-	private int					wait_timer;         //汎用待機タイマー
+	//private int					wait_timer;         //汎用待機タイマー
 	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
 	private bool				shot_touch_flg;   //プレイヤーとの当たり判定

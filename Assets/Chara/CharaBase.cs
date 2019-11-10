@@ -18,6 +18,7 @@ public class CharaBase : MonoBehaviour {
 	public float		 gravity_power		 = 5;				//重力の倍率
 	protected int[]		 iwork				 = new int[8];		//汎用
 	protected float[]	 fwork				 = new float[8];    //汎用
+	protected int		 wait_timer;         //汎用待機タイマー
 	[Header("落下速度の上限")]
 	public float		 fallspd_limit		 = 30.0f;
 
@@ -284,6 +285,21 @@ public class CharaBase : MonoBehaviour {
     public virtual void FixedUpdate(){
 		//キャラクターを移動させる処理
 		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+	}
+
+
+
+
+
+
+	protected bool WaitTime_Once(int wait_time) {
+		if (wait_timer >= wait_time) {
+			return true;
+		}
+		else {
+			wait_timer++;
+			return false;
+		}
 	}
 
 }

@@ -83,6 +83,9 @@ public partial class Player : CharaBase//
 
 		[SerializeField, Range(0.0f, 2.0f), Header("横移動制限")]
 		public float side_length;	//1.2f;
+
+		[Header("入力待ち")]
+		public int delaytime;	//10
 	}
 	[Header("壁掴み判定Ray")]
 	public WallGrabRay wallGrabRay;
@@ -175,6 +178,7 @@ public partial class Player : CharaBase//
 			GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
 
 			GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+
 
 
 			//スクロール終了
@@ -585,10 +589,9 @@ public partial class Player : CharaBase//
 		RaycastHit hit;
 
 		if (wallGrabRay.flg) {
-			velocity = Vector3.zero;
-			//velocity.x = 0;	//横移動したかったらここだけコメント
-			//velocity.y = 0;
-			//velocity.z = 0;
+			velocity.x = 0; //横移動したかったらここだけコメント
+			velocity.y = 0;
+			velocity.z = 0;
 
 			//横移動制限
 			if (!Physics.Raycast(transform.position + transform.right * wallGrabRay.side_length, transform.forward, out hit, wallGrabRay.length)) {
@@ -600,15 +603,21 @@ public partial class Player : CharaBase//
 				wallGrabRay.flg = false;
 			}
 
-			//上入力で登る
-			if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
-				transform.position += new Vector3(0, 4.5f, 1.0f);
-				wallGrabRay.flg = false;
+			if (WaitTime_Once(wallGrabRay.delaytime)) {
+				//上入力で登る
+				if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+					transform.position += new Vector3(0, 4.5f, 1.0f);
+					wallGrabRay.flg = false;
+				}
+				//下入力で降りる
+				else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
+					wallGrabRay.flg = false;
+				}
 			}
-			//下入力で降りる
-			else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
-				wallGrabRay.flg = false;
-			}
+
+		}
+		else {
+			wait_timer = 0;
 		}
 
 	}

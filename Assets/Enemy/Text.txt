@@ -144,9 +144,6 @@ Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-
-・掴んだとき、すぐ入力出来ないようにする
-
 ・memo.txt用意
 
 ・プレイヤーの当たり判定　カプセル
