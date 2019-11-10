@@ -1311,6 +1311,21 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 2066760144}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: wallGrabRay.delaytime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: wallGrabRay.length
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: wallGrabRay.gizmo_on
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
 --- !u!1 &1632052768
