@@ -195,34 +195,37 @@ public partial class Player : CharaBase//
         GUILayout.TextArea("status.velocity\n" + status.velocity);
     }
 
-	void OnDrawGizmos() {
+    void OnDrawGizmos()
+    {
 
-		if (wallray.gizmo_on) {
-			//壁判定Ray
-			Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
-			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
-		}
+        if (wallray.gizmo_on)
+        {
+            //壁判定Ray
+            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
+            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
+        }
 
-		if (holeray.gizmo_on) {
-			//穴判定Ray
-			Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
-		}
+        if (holeray.gizmo_on)
+        {
+            //穴判定Ray
+            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
+            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
+        }
 
-		if (wallGrabRay.gizmo_on) {
-			//壁掴み判定Ray
-			Gizmos.color = new Color(0.5f, 0.0f, 1.0f, 0.8f);
-			Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
+        if (wallGrabRay.gizmo_on)
+        {
+            //壁掴み判定Ray
+            Gizmos.color = new Color(0.5f, 0.0f, 1.0f, 0.8f);
+            Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
 
-			//--横移動制限Ray
-			Gizmos.DrawRay(transform.position + transform.right * wallGrabRay.side_length, transform.forward * wallGrabRay.length);
-			Gizmos.DrawRay(transform.position + transform.right * -wallGrabRay.side_length, transform.forward * wallGrabRay.length);
-		}
+            //--横移動制限Ray
+            Gizmos.DrawRay(transform.position + transform.right * wallGrabRay.side_length, transform.forward * wallGrabRay.length);
+            Gizmos.DrawRay(transform.position + transform.right * -wallGrabRay.side_length, transform.forward * wallGrabRay.length);
+        }
 
-	}
-
+    }
 
 	void raydebug()
     {
