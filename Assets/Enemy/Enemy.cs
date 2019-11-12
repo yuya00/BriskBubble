@@ -37,6 +37,7 @@ public sealed partial class Enemy : CharaBase
 
 
 
+
 	//デバッグログ表示 -------------------------------------------
 	public override void Debug_Log() {
 		/*

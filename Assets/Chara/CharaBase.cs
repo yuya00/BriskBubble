@@ -108,21 +108,6 @@ public class CharaBase : MonoBehaviour {
 	}
 
 
-	//*********************************************************************//
-	//*********************************************************************//
-	//*********************************************************************//
-	public struct STATUS
-    {
-        public bool ray_fg;
-        public bool is_ground;
-        public Vector3 velocity;
-        public bool line_cast;
-        public Vector3 ray_pos;
-    }
-    public STATUS status;
-    //*********************************************************************//
-    //*********************************************************************//
-    //*********************************************************************//
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -255,7 +240,6 @@ public class CharaBase : MonoBehaviour {
             rigid.useGravity = true;
             is_ground = true;
             velocity.y = 0;
-            status.velocity = velocity;
         }
         else
         {
