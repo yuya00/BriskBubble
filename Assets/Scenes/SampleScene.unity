@@ -469,7 +469,6 @@ GameObject:
   - component: {fileID: 883972376}
   - component: {fileID: 883972375}
   - component: {fileID: 883972374}
-  - component: {fileID: 883972378}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Wall
@@ -550,22 +549,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &883972378
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883972373}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!1 &884886647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1276,7 +1259,7 @@ PrefabInstance:
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 4.4
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -1330,38 +1313,18 @@ PrefabInstance:
       objectReference: {fileID: 2066760144}
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
-      propertyPath: wallGrabRay.height
-      value: 1.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: wallGrabRay.length
-      value: 1.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: holeray.length
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: holeray.spd
+      propertyPath: wallGrabRay.delaytime
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
-      propertyPath: wallray.length
-      value: 20
+      propertyPath: wallGrabRay.length
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
-      propertyPath: wallray.spd
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: wallGrabRay.side_length
-      value: 0.8
+      propertyPath: wallGrabRay.gizmo_on
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
@@ -2011,40 +1974,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1328487012}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &2047487349
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047487348}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 59e0b941900ef794093d19a09ea510a3, type: 3}
-  m_Controller: {fileID: 9100000, guid: a8555c0cff30527479e32562cef9141f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!111 &2047487350
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047487348}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &2054901045
 GameObject:
   m_ObjectHideFlags: 0
@@ -2223,6 +2152,8 @@ MonoBehaviour:
   zoom_len: 8
   approach_timer_max: 1
   scene_move_spd: 25
+  LOOK_SPD: 15
+  gui_on: 0
 --- !u!4 &2066760147
 Transform:
   m_ObjectHideFlags: 0
@@ -2549,6 +2480,11 @@ PrefabInstance:
         type: 3}
       propertyPath: wallray.length
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: gui_on
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 139099625, guid: 6582a8460615bbc41aa8df265ad41b1f, type: 3}
       propertyPath: m_Radius

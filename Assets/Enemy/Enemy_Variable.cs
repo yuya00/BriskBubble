@@ -4,10 +4,9 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
-
 	private bool				jump_flg;
 	private int					timer;				//汎用
-	private int					wait_timer;         //汎用待機タイマー
+	//private int					wait_timer;         //汎用待機タイマー
 	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
 	private bool				shot_touch_flg;   //プレイヤーとの当たり判定
@@ -17,7 +16,6 @@ public sealed partial class Enemy : CharaBase
 	private EnemyNear			enemynear;
 	private Vector2				dist;				//プレイヤーと逆方向のベクトル
 	private Vector2				dist_normal_vec;    //プレイヤーと逆方向のベクトル
-
 
 	private EnemySoundDetect	enemy_sound_detect;
 	private struct OnceRondom {
@@ -29,24 +27,15 @@ public sealed partial class Enemy : CharaBase
 
 	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 
-
-	[Header("敵GUIの表示")]
-	public bool gui_on;
-
-
-
 	//Transform wall_ray;
 	//Quaternion wall_ray;
 	//GameObject wall_ray;
 
-	Vector3 old_angle;
-	Vector3 new_angle;
-	Vector3 dist_angle;
+	private Vector3 old_angle;
+	private Vector3 new_angle;
+	private Vector3 dist_angle;
 
 
-	[Space]
-	[SerializeField]
-	private GameObject player;
 
 	//待機 ---------------------------------------------
 	[System.Serializable]
@@ -108,6 +97,9 @@ public sealed partial class Enemy : CharaBase
 
 
 
+	[Space]
+	[SerializeField]
+	private GameObject player;
 
 
 

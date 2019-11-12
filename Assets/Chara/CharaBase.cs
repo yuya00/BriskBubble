@@ -1,28 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pixeye.Unity;
+
 
 public class CharaBase : MonoBehaviour {
 
+	[Header("GUIの表示")]
+	public bool gui_on;
+
+	[Foldout("BaseParameter" ,true)]
 	protected			 Rigidbody			 rigid;
 	protected			 Vector3			 velocity;			//速さ(rigd.velocityでも良いかも)
-	public float		 run_spd			 = 15.0f;			//通常の速さ
+	[Tooltip("走りの速さ")]
+	public float		 run_spd			 = 15.0f;			//走りの速さ
+	[Tooltip("歩きの速さ")]
     public float		 walk_spd			 = 3.0f;			//歩きの速さ
+	[Tooltip("ジャンプ力")]
     public float		 jump_power			 = 15.0f;			//ジャンプ力
+	[Tooltip("慣性(停止)")]
 	public float		 stop_fric			 = 0.3f;			//慣性(停止)
 	protected float		 jump_fric			 = 0;				//慣性(ジャンプ)
 	protected float		 jump_fric_power	 = 0.7f;			//慣性(ジャンプ)
 	protected bool		 is_ground			 = false;           //地面接地判定
-    protected Transform			 chara_ray;			//レイを飛ばす位置(地面判別に使用)
-	public float		 chara_ray_length	 = 2f;				//レイの距離
+    protected Transform	 chara_ray;								//レイを飛ばす位置(地面判別に使用)
+	[Tooltip("レイの距離")]
+	public float		 chara_ray_length	 = 2f;              //レイの距離
+    [Tooltip("重力の倍率")]
 	public float		 gravity_power		 = 5;				//重力の倍率
 	protected int[]		 iwork				 = new int[8];		//汎用
 	protected float[]	 fwork				 = new float[8];    //汎用
-	[Header("落下速度の上限")]
+	protected int		 wait_timer;         //汎用待機タイマー
+	[Tooltip("落下速度の速さ上限")]
 	public float		 fallspd_limit		 = 30.0f;
+	[Foldout("BaseParameter" ,false)]
+
+
 
 	//壁判定Ray ---------------------------------------------
-	public int angle_mag = 3; //角度調整
+	[System.NonSerialized]
+	protected int angle_mag = 3; //角度調整
 	[System.Serializable]
 	public struct WallRay {
 		[Header("Gizmoの表示")]
@@ -96,21 +113,6 @@ public class CharaBase : MonoBehaviour {
 	}
 
 
-	//*********************************************************************//
-	//*********************************************************************//
-	//*********************************************************************//
-	public struct STATUS
-    {
-        public bool ray_fg;
-        public bool is_ground;
-        public Vector3 velocity;
-        public bool line_cast;
-        public Vector3 ray_pos;
-    }
-    public STATUS status;
-    //*********************************************************************//
-    //*********************************************************************//
-    //*********************************************************************//
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -243,7 +245,6 @@ public class CharaBase : MonoBehaviour {
             rigid.useGravity = true;
             is_ground = true;
             velocity.y = 0;
-            status.velocity = velocity;
         }
         else
         {
@@ -284,6 +285,21 @@ public class CharaBase : MonoBehaviour {
     public virtual void FixedUpdate(){
 		//キャラクターを移動させる処理
 		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+	}
+
+
+
+
+
+
+	protected bool WaitTime_Once(int wait_time) {
+		if (wait_timer >= wait_time) {
+			return true;
+		}
+		else {
+			wait_timer++;
+			return false;
+		}
 	}
 
 }

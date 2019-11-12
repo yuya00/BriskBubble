@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Pixeye.Unity;
 
-public class CameraTest : MonoBehaviour
+public sealed class Camera_Sprict : MonoBehaviour
 {
-    #region 最新カメラ
-#if true
+    [Header("カメラGUIの表示")]
+    public bool gui_on;
+
+    [Foldout("CameraFollowPlayer", true)]
     public GameObject player;               // プレイヤー
-    private Vector3 direction;              // 方向ベクトル
 
     public float UP = 4.0f;                 // カメラの高さ
     public float UP_TARGET = 4.0f;          // 注視点の高さ
@@ -17,6 +19,9 @@ public class CameraTest : MonoBehaviour
     public float ANGLE = 75.0f;             // カメラを追従させるまでのプレイヤーとの角度
     public float ANGLE_MAX = 145.0f;        // 角度の最大量
 
+    [Foldout("CameraFollowPlayer", false)]
+
+    private Vector3 direction;              // 方向ベクトル
     private float init_up_pos;              // 初期プレイヤーのＹ位置
     private float pad_rx;                   // スティック情報の値
     private float pad_lx;                   // 左スティック
@@ -24,8 +29,8 @@ public class CameraTest : MonoBehaviour
     //--------------------------------------------
     // 演出                          
     //--------------------------------------------           
+    [Foldout("CameraProduction", true)]
     public GameObject enemy;                // 敵のオブジェクトを取得
-    private Vector3 save_pos;               // 演出前の位置を保存
 
     public float zoom_in_spd = 30.0f;       // 近づく早さ
     public float zoom_out_spd = 50.0f;      // 遠ざかる速さ
@@ -33,6 +38,10 @@ public class CameraTest : MonoBehaviour
     public float approach_timer_max = 1.0f; // 近づいてから何秒とめるか
     public float scene_move_spd = 1.0f;
     public float LOOK_SPD = 15.0f;          // 徐々に向かせる回転の速さ
+
+    [Foldout("CameraProduction", false)]
+
+    private Vector3 save_pos;               // 演出前の位置を保存
 
     private float init_zoom_out_spd;        // 遠ざかる速さ(初期化用)
     private float approach_timer;
@@ -44,10 +53,7 @@ public class CameraTest : MonoBehaviour
     private const int NONE = 0;             // 何も演出なし
     private const int ENM_HIT = 1;          // 敵倒すとき
     private const int SCENE = 2;            // シーン始まったとき
-	//--------------------------------------------
-
-	[Header("カメラGUIの表示")]
-	public bool gui_on;
+    //--------------------------------------------
 
 
 	// 初期化
@@ -434,8 +440,5 @@ public class CameraTest : MonoBehaviour
 			GUILayout.EndVertical();
 		}
     }
-
-#endif
-    #endregion
 
 }

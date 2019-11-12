@@ -5,7 +5,6 @@ using UnityEngine;
 public sealed partial class Enemy : CharaBase
 {
 
-	// Start is called before the first frame update
 	public override void Start()
     {
         base.Start();
@@ -26,7 +25,6 @@ public sealed partial class Enemy : CharaBase
 		//dist_angle = Vector3.zero;
 	}
 
-	// Update is called once per frame
 	void Update()
     {
 		base.Move();
@@ -38,9 +36,9 @@ public sealed partial class Enemy : CharaBase
 	}
 
 
-	//*******************************************
-	// デバッグログ表示
-	//*******************************************
+
+
+	//デバッグログ表示 -------------------------------------------
 	public override void Debug_Log() {
 		/*
 		base.Debug_Log();
@@ -66,9 +64,7 @@ public sealed partial class Enemy : CharaBase
 		// */
 	}
 
-	//*******************************************
-	// GUI表示
-	//*******************************************
+	//GUI表示 -----------------------------------------------------
 	void OnGUI() {
 		if (gui_on) {
 
@@ -129,9 +125,7 @@ public sealed partial class Enemy : CharaBase
 		}
 	}
 
-	//*******************************************
-	// ギズモ表示
-	//*******************************************
+	//ギズモ表示 --------------------------------------------------
 	Vector3 localAngle = Vector3.zero;
 	void OnDrawGizmos() {
 
@@ -163,9 +157,8 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//********************************************
-	//stateに応じて個別関数に飛ぶ
-	//********************************************
+
+	//stateに応じて個別関数に飛ぶ ---------------------------------
 	void Action() {
 		//他のstateに行くとき初期化
 		if (old_state != enum_state) {
@@ -198,9 +191,7 @@ public sealed partial class Enemy : CharaBase
 		old_state = enum_state;
 	}
 
-	//********************************************
-	//--個別行動関数
-	//********************************************
+	//--個別行動関数 ----------------------------------------------
 	#region 個別行動関数
 
 	//初期化
@@ -402,7 +393,7 @@ public sealed partial class Enemy : CharaBase
 		}
 	}
 
-
+	//--壁判定による向き変更
 	public override void WallRay_Rotate_Judge() {
 		//----壁判定Ray当たり判定
 		WallRay_Judge();
@@ -445,11 +436,6 @@ public sealed partial class Enemy : CharaBase
 		}
 	}
 
-
-
-
-
-
 	//--振り向き
 	void Away_LookBack() {
 		//120f毎にプレイヤーの方向に向いて60fほど速度が1 / 2になる
@@ -484,8 +470,7 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//首振り関数
-	//首振る速さ、首振る時間、待機時間、次のstate
+	//首振り関数(首振る速さ、首振る時間、待機時間、次のstate)
 	void Swing(int spd, int time, int wait_time, Enum_Act next_state) {
 		switch (enum_swingact) {
 			case Enum_SwingAct.SWING:    //首振り
@@ -503,7 +488,7 @@ public sealed partial class Enemy : CharaBase
 		}
 	}
 
-	// ジャンプ
+	//ジャンプ
 	void Jump(float power) {
 		velocity.y = power;
 		rigid.useGravity = false;
@@ -534,9 +519,7 @@ public sealed partial class Enemy : CharaBase
 
 	#endregion
 
-	//********************************************
-	//プレイヤーとの当たり判定でstate変更
-	//********************************************
+	//プレイヤーとの当たり判定でstate変更 ---------------------------
 	void StateChange() {
 		//近くにプレイヤーがいたら(待機の時)
 		if (enemynear.HitFlg) {
@@ -572,12 +555,9 @@ public sealed partial class Enemy : CharaBase
 
 
 
-
-	//*******************************************
-	// 当たり判定
-	//*******************************************
-	//何かに当たったとき
+	//当たり判定 ---------------------------------------------------
 	private void OnCollisionEnter(Collision other) {
+		//何かに当たったとき
 		if (other.gameObject.tag == "Player") {
 			if (player_touch_flg == false) {
 				player_touch_flg = true;
@@ -591,8 +571,8 @@ public sealed partial class Enemy : CharaBase
 
 	}
 
-	//何にも当たっていないとき
 	private void OnCollisionExit(Collision other) {
+		//何にも当たっていないとき
 		if (other.gameObject.tag == "Player") {
 			if (player_touch_flg == true) {
 				player_touch_flg = false;
@@ -609,9 +589,7 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//*******************************************
-	// get
-	//*******************************************
+	//get ------------------------------------------------------------
 	public bool Shot_touch_flg {
 		get { return shot_touch_flg; }
 	}
