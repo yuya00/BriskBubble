@@ -4,7 +4,6 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
-
 	private bool				jump_flg;
 	private int					timer;				//汎用
 	//private int					wait_timer;         //汎用待機タイマー

@@ -146,9 +146,15 @@ Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
 ・memo.txt用意
 
+・記法変える?
+
 ・プレイヤーの当たり判定　カプセル
 
 ・向き調整再調整
+
+・敵が崖に追い詰められたら落ちる
+
+・敵が段差に近づいたらジャンプ
 
 
 
