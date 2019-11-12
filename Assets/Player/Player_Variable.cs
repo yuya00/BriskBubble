@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class Player : CharaBase
+public sealed partial class Player : CharaBase
 {
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
-    public GameObject[] shot_object;
     public float jump_power_up;          // ショットに乗ったときにジャンプ力を何倍にするか
 
     private float init_spd;               // 初期速度
     private float init_fric;              // 初期慣性STOP
-    public float rotate = 1.0f;
     public float slope = 0.3f;           // スティックの傾き具合設定用
     private float jump_anim_count = 0;
     private const float NORMALIZE = 1.0f;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pixeye.Unity;
 
-public partial class Player : CharaBase
+public sealed partial class Player : CharaBase
 {
     [Foldout("ShotParameter", true)]
     public GameObject[] shot_object;        // ショットのobj

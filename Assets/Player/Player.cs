@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 
-public partial class Player : CharaBase//
+public sealed partial class Player : CharaBase//
 {
 
 
