@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pixeye.Unity;
 
-public partial class Player : CharaBase
+public sealed partial class Player : CharaBase
 {
+	[Foldout( "Base" ,true)]
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
-    public GameObject[] shot_object;
     public float jump_power_up;          // ショットに乗ったときにジャンプ力を何倍にするか
 
     private float init_spd;               // 初期速度
     private float init_fric;              // 初期慣性STOP
-    public float rotate = 1.0f;
     public float slope = 0.3f;           // スティックの傾き具合設定用
     private float jump_anim_count = 0;
     private const float NORMALIZE = 1.0f;
@@ -32,6 +32,8 @@ public partial class Player : CharaBase
     //--- カメラ用↓ ---//
     public GameObject cam;
     public float rot_spd = 10.0f;
+
+	[Foldout( "Base" ,false)]
 
     // プレイヤーの足元用データ
     private Vector3[] ofset_layer_pos =

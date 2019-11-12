@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 
-public partial class Player : CharaBase//
+public sealed partial class Player : CharaBase//
 {
 
 
@@ -57,9 +57,6 @@ public partial class Player : CharaBase//
 	//存在しない大きな値
 	private int NOTEXIST_BIG_VALUE = 999;
 
-	[Header("プレイヤーGUIの表示")]
-	public bool gui_on;
-
 
 
 
@@ -90,6 +87,20 @@ public partial class Player : CharaBase//
 
         raydebug();
     }
+
+	void raydebug()
+    {
+        //*********************************************************************//
+        Debug.DrawLine(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, Color.red);
+
+        // きっちり足元判定
+        for (int i = 0; i < 9; ++i)
+        {
+            //Debug.DrawRay(chara_ray.position + ofset_layer_pos[i], Vector3.down * (chara_ray_length * 0.5f), Color.green);
+        }
+        //*********************************************************************//
+    }
+
 
     public override void FixedUpdate()
     {
@@ -140,11 +151,6 @@ public partial class Player : CharaBase//
 		}
     }
 
-	void debug()
-    {
-
-    }
-
     void OnDrawGizmos()
     {
 
@@ -177,18 +183,6 @@ public partial class Player : CharaBase//
 
     }
 
-	void raydebug()
-    {
-        //*********************************************************************//
-        Debug.DrawLine(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, Color.red);
-
-        // きっちり足元判定
-        for (int i = 0; i < 9; ++i)
-        {
-            //Debug.DrawRay(chara_ray.position + ofset_layer_pos[i], Vector3.down * (chara_ray_length * 0.5f), Color.green);
-        }
-        //*********************************************************************//
-    }
 
 
 	//---------------------------------------------
@@ -432,9 +426,6 @@ public partial class Player : CharaBase//
         if (velocity.y < 0.0f) return true;
         return false;
     }
-
-
-
 
 	//--壁掴み判定Rayによる掴み
 	void WallGrabRay_Grab_Judge() {

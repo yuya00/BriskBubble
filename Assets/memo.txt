@@ -143,3 +143,12 @@ Vector3 myPositionXZ = Vector3.Scale(myPosition, new Vector3(1.0f, 0.0f, 1.0f));
 
 
 ctl+m+o 畳む
+
+
+if()
+{
+
+}
+
+
+ctl + shift + v
