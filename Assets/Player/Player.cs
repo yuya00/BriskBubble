@@ -67,7 +67,7 @@ public sealed partial class Player : CharaBase//
         // 初期値設定
         init_spd = run_spd;
         init_fric = stop_fric;
-        init_back_spd = back_spd;
+        init_back_spd = back_spd;	
         chara_ray = transform.Find("CharaRay");
         animator = GetComponent<Animator>();
         COUNT = 23 / anim_spd;
