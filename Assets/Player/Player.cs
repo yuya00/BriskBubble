@@ -14,7 +14,6 @@ public partial class Player : CharaBase//
 {
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
-    public GameObject[] shot_object;
     public float jump_power_up;          // ショットに乗ったときにジャンプ力を何倍にするか
 
     private float init_spd;               // 初期速度
@@ -158,10 +157,12 @@ public partial class Player : CharaBase//
 			// スクロール
 			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
-			//debug();
+            //GUILayout.TextArea("is_ground\n" + is_ground);
+            //GUILayout.TextArea("velocity\n" + velocity);
+            //GUILayout.TextArea("status.velocity\n" + status.velocity);
 
-			// スペース
-			GUILayout.Space(10);
+            // スペース
+            GUILayout.Space(10);
 
 			////壁掴み判定
 			//GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
@@ -190,9 +191,7 @@ public partial class Player : CharaBase//
 
 	void debug()
     {
-        GUILayout.TextArea("is_ground\n" + is_ground);
-        GUILayout.TextArea("velocity\n" + velocity);
-        GUILayout.TextArea("status.velocity\n" + status.velocity);
+
     }
 
     void OnDrawGizmos()

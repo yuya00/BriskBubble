@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pixeye.Unity;
 
 public partial class Player : CharaBase
 {
-    //--- shot用↓ ---//
-    private const float SHOT_POSITION = 2.8f;   // ショットを出す正面方向の位置補正
+    [Foldout("ShotParameter", true)]
+    public GameObject[] shot_object;        // ショットのobj
+    public float shot_interval_time_max;    // ショットを撃つまでの間隔
+    public float stop_time_max;             // どれだけ動けないか
+    public float back_spd = 0.5f;           // 後ろ方向に進む速度
+    [Foldout("ShotParameter", false)]
 
+    private const float SHOT_POSITION = 2.8f;   // ショットを出す正面方向の位置補正
     private int shot_state;                 // debugでpublicにしてる
     private float charge_time;              // チャージ時間
     private float shot_interval_time;       // ショットの間隔
-    public float shot_interval_time_max;    // ショットを撃つまでの間隔
     private bool back_player;               // ショット3を撃った後にプレイヤーを後ろに飛ばす
     private float stop_time;                // 動けない時間
-    public float stop_time_max;             // どれだけ動けないか
-    public float back_spd = 0.5f;           // 後ろ方向に進む速度
     private float init_back_spd;            // 初期速度保存用
 
     //---------------------------------------------//

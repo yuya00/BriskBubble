@@ -22,8 +22,9 @@ public class CharaBase : MonoBehaviour {
 	protected float		 jump_fric_power	 = 0.7f;			//慣性(ジャンプ)
 	protected bool		 is_ground			 = false;           //地面接地判定
     protected Transform	 chara_ray;								//レイを飛ばす位置(地面判別に使用)
-	public float		 chara_ray_length	 = 2f;				//レイの距離
-	[Tooltip("重力の倍率")]
+	public float		 chara_ray_length	 = 2f;              //レイの距離
+    [Header("k")]
+    [Tooltip("重力の倍率")]
 	public float		 gravity_power		 = 5;				//重力の倍率
 	protected int[]		 iwork				 = new int[8];		//汎用
 	protected float[]	 fwork				 = new float[8];    //汎用
