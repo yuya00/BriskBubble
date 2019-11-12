@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shot03 : ShotBase
+public sealed class Shot03 : ShotBase
 {
     // Start is called before the first frame update
     public override void Start()

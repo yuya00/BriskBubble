@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shot02 : ShotBase
+public sealed class Shot02 : ShotBase
 {
     public override void Start()
     {
