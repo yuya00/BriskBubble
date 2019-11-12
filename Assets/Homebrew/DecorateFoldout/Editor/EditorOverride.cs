@@ -133,8 +133,8 @@ namespace Pixeye.Unity
 
 			if (cache.expanded)
 			{
-				//EditorGUI.indentLevel = 1;
-				EditorGUI.indentLevel = 0;
+				EditorGUI.indentLevel = 1;
+				//EditorGUI.indentLevel = 0;
 
 				for (int i = 0; i < cache.props.Count; i++)
 				{
@@ -148,7 +148,7 @@ namespace Pixeye.Unity
 			foreach (var pair in cacheFolds)
 			{
 				this.UseVerticalLayout(() => Foldout(pair.Value), StyleFramework.box);
-				EditorGUI.indentLevel = 1;
+				EditorGUI.indentLevel = 0;
 			}
 
 			EditorGUILayout.Space();
