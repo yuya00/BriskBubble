@@ -9,7 +9,7 @@ public sealed partial class Enemy : CharaBase
 	//private int					wait_timer;         //汎用待機タイマー
 	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
-	public static bool				shot_touch_flg;   //プレイヤーとの当たり判定
+	private bool				shot_touch_flg;   //プレイヤーとの当たり判定
 	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
 	private Player				p_player; 
 	private float				spd_ratio = 1.8f;	//プレイヤー速度を割る割合
