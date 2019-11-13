@@ -637,4 +637,5 @@ public sealed partial class Enemy : CharaBase
 		get { return shot_touch_flg; }
 	}
 
+
 }
