@@ -546,4 +546,8 @@ public sealed partial class Player : CharaBase
 		get { return run_spd; }
 	}
 
+	public Vector3 Transform_position {
+		get { return transform.position; }
+	}
+
 }

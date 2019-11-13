@@ -11,20 +11,20 @@ public sealed partial class Enemy : CharaBase
         Clear(); //初期化
         enum_state = Enum_State.WAIT;
         old_state = enum_state;
-        p_player = new Player();
-        run_spd = p_player.Run_spd / spd_ratio;
-        dist = new Vector2(0, 0);
+		dist = new Vector2(0, 0);
         WallRay_Clear();
         wallray.both_count = 0;
         enemynear = GetComponentInChildren<EnemyNear>();
         enemy_sound_detect = GetComponentInChildren<EnemySoundDetect>();
+		player_obj = GameObject.Find("Player");
+		run_spd = player_obj.GetComponent<Player>().Run_spd / spd_ratio;
 
-        //new_angle = transform.eulerAngles;
-        //old_angle = new_angle;
-        //dist_angle = Vector3.zero;
-    }
+		//new_angle = transform.eulerAngles;
+		//old_angle = new_angle;
+		//dist_angle = Vector3.zero;
+	}
 
-    void Update()
+	void Update()
     {
         base.Move();
         StateChange();  // プレイヤーとの当たり判定でstate変更
@@ -270,8 +270,26 @@ public sealed partial class Enemy : CharaBase
     //警戒(ゆっくり首を振る)
     void Warning()
     {
-        //見つけてないとき
-        if (!finder_flg)
+		//近くにプレイヤーがいた場合なら
+		if (enemynear.HitFlg) {
+			Vector3 dist = player_obj.GetComponent<Player>().Transform_position - transform.position;
+			dist.y = 0;
+			transform.LookAt(transform.position + dist); //プレイヤーの方向を向く
+			Clear();
+		}
+
+		//音範囲内で音があったら
+		if (enemy_sound_detect.HitFlg) {
+			Vector3 dist = player_obj.GetComponent<Player>().Transform_position - transform.position;
+			dist.y = 0;
+			transform.LookAt(transform.position + dist); //プレイヤーの方向を向く
+			Clear();
+		}
+
+
+		/*
+		//見つけてないとき
+		if (!finder_flg)
         {
             //ゆっくり体を回して音源、プレイヤーを探す
             switch (enum_act)
@@ -301,17 +319,18 @@ public sealed partial class Enemy : CharaBase
                     Clear();
                     enum_state = Enum_State.WAIT; //待機
                 }
-            } //if(enemynear.HitFlg)
+            }
 
             if (WaitTime(60 * 10))
             {
                 Clear();
                 enum_state = Enum_State.WAIT; //待機
-            } //if (WaitTime(180)
+            }
 
-        } //if (!finder_flg)
+        }
+		// */
 
-    }
+	}
 
 
     //発見(ジャンプして逃走に移行)
@@ -324,9 +343,10 @@ public sealed partial class Enemy : CharaBase
                 break;
             //その場で小さくジャンプ
             case Enum_Act.JUMP:
-                Vector3 distr = player.transform.position - transform.position;
-                distr.y = 0;
-                transform.LookAt(transform.position + distr); //プレイヤーの方向を向く
+				Vector3 dist = player_obj.GetComponent<Player>().Transform_position - transform.position;
+				dist.y = 0;
+                transform.LookAt(transform.position + dist); //プレイヤーの方向を向く
+
                 Jump(jump_power);
                 enum_act = Enum_Act.WAIT;
                 break;
@@ -347,10 +367,9 @@ public sealed partial class Enemy : CharaBase
     //逃走(プレイヤーから逆方向に逃げ、一定距離で止まる)
     void Away()
     {
-        // プレイヤーと逆方向のベクトルを取得
-        dist.x = player.transform.position.x - transform.position.x;
-        dist.y = player.transform.position.z - transform.position.z;
-
+		// プレイヤーと逆方向のベクトルを取得
+		dist.x = player_obj.GetComponent<Player>().Transform_position.x - transform.position.x;
+        dist.y = player_obj.GetComponent<Player>().Transform_position.z - transform.position.z;
 
         switch (enum_act)
         {
@@ -384,8 +403,7 @@ public sealed partial class Enemy : CharaBase
                 velocity = transform.forward * (run_spd);
 
                 goto case Enum_Act.RUN;
-            //goto case Enum_Act.SWING;
-            //break;
+				//break;
             case Enum_Act.RUN:     //走る
                 enum_act = Enum_Act.RUN;
 
@@ -408,7 +426,7 @@ public sealed partial class Enemy : CharaBase
                 }
                 break;
             case Enum_Act.END:      //state変更
-                                    //プレイヤーの方向を向く
+				//プレイヤーの方向を向く
                 transform.LookAt(transform.position - velocity);
                 Clear();
                 enum_state = Enum_State.WAIT;

@@ -72,9 +72,9 @@ public class EnemySearch : MonoBehaviour
 
 		Vector3 toTargetFlatDir	 = (targetPositionXZ - myPositionXZ).normalized;
 
-		//Vector3 myForward = transform.forward;
+		Vector3 myForward = transform.forward;
 		//↑が正しいはずだけど、逆方向に扇型判定がついてしまうので、無理やり逆にした。
-		Vector3 myForward		= transform.forward * -1;
+		//Vector3 myForward		= transform.forward * -1;
 
 		if (!IsWithinRangeAngle(myForward, toTargetFlatDir, m_cos)) {
 			return false;
