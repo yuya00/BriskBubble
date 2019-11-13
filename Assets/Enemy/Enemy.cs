@@ -637,4 +637,8 @@ public sealed partial class Enemy : CharaBase
 		get { return shot_touch_flg; }
 	}
 
+	public Vector3 Transform_position {
+		get { return transform.position; }
+	}
+
 }
