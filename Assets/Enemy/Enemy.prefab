@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 139099623}
   - component: {fileID: 139099625}
   - component: {fileID: 139099624}
+  - component: {fileID: 5905847386614628173}
   m_Layer: 0
   m_Name: AreaSearch
   m_TagString: Untagged
@@ -43,7 +44,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 27.97
+  m_Radius: 34.2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &139099624
 MonoBehaviour:
@@ -59,6 +60,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_angle: 50
   gizmo_color: {r: 0.990566, g: 0.70617574, b: 0, a: 0.38431373}
+--- !u!54 &5905847386614628173
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139099622}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &436513350
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,6 +87,7 @@ GameObject:
   - component: {fileID: 436513351}
   - component: {fileID: 436513352}
   - component: {fileID: 436513353}
+  - component: {fileID: 5588091663216071209}
   m_Layer: 0
   m_Name: AreaSoundDetect
   m_TagString: Untagged
@@ -102,7 +120,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 23.98
+  m_Radius: 30.58
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &436513353
 MonoBehaviour:
@@ -117,6 +135,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gizmo_color: {r: 0.93613964, g: 1, b: 0.25098038, a: 0.78431374}
+--- !u!54 &5588091663216071209
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436513350}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1128233431
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,6 +162,7 @@ GameObject:
   - component: {fileID: 1128233432}
   - component: {fileID: 1128233434}
   - component: {fileID: 1128233433}
+  - component: {fileID: 4284355678195277802}
   m_Layer: 0
   m_Name: AreaNear
   m_TagString: Untagged
@@ -160,7 +195,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 7.6
+  m_Radius: 8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1128233433
 MonoBehaviour:
@@ -175,6 +210,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gizmo_color: {r: 1, g: 0.36196488, b: 0.1462264, a: 0.63529414}
+--- !u!54 &4284355678195277802
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128233431}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &342418731120657594
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,24 +305,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965b51e0d7bfb59448f964c2f70fdc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gui_on: 0
   run_spd: 15
+  walk_spd: 3
   jump_power: 10
   stop_fric: 0.3
   chara_ray_length: 0.4
   gravity_power: 5
-  player: {fileID: 0}
+  fallspd_limit: 30
+  wallray:
+    gizmo_on: 0
+    angle: 0
+    length: 20
+    spd: 1.5
+  holeray:
+    gizmo_on: 0
+    angle: 0
+    length: 100
+    spd: 10
   waitact:
     wait_time: 240
-    wait_random: 1
+    wait_random: 0
     swing_time: 70
-    swing_random: 1
+    swing_random: 0
     swing_spd: 30
+    swing_space_time: 15
+  warningact:
+    swing_spd: 100
+    swing_time: 10
     swing_space_time: 15
   awayact:
     mag: 2
-    angle: 0
-  defaultMaterial: {fileID: 2100000, guid: 9f205293e8e31e343bae570a71875cf0, type: 2}
-  foundMaterial: {fileID: 2100000, guid: 3640531daa0f2624e8f96ba7a081343f, type: 2}
+    lookback_interval: 120
+    lookback_time: 30
+  player: {fileID: 0}
 --- !u!1 &342418731150941022
 GameObject:
   m_ObjectHideFlags: 0

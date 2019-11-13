@@ -5,10 +5,9 @@ using Pixeye.Unity;
 
 public sealed partial class Player : CharaBase
 {
-	[Foldout( "Base" ,true)]
+	[Foldout("PlayerParameter", true)]
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
-    public float jump_power_up;          // ショットに乗ったときにジャンプ力を何倍にするか
 
     private float init_spd;               // 初期速度
     private float init_fric;              // 初期慣性STOP
@@ -33,7 +32,7 @@ public sealed partial class Player : CharaBase
     public GameObject cam;
     public float rot_spd = 10.0f;
 
-	[Foldout( "Base" ,false)]
+	[Foldout("PlayerParameter", false)]
 
     // プレイヤーの足元用データ
     private Vector3[] ofset_layer_pos =

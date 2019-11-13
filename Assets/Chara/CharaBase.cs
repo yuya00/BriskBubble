@@ -14,7 +14,6 @@ public class CharaBase : MonoBehaviour {
 	protected			 Vector3			 velocity;			//速さ(rigd.velocityでも良いかも)
 	[Tooltip("")]
 	public float		 run_spd			 = 15.0f;			//通常の速さ
-	public float		 runSpd			 = 15.0f;			//通常の速さ
 	[Tooltip("")]
     public float		 walk_spd			 = 3.0f;			//歩きの速さ
 	[Tooltip("")]
