@@ -70,13 +70,11 @@ public sealed partial class Enemy : CharaBase
         if (gui_on)
         {
             GUILayout.BeginVertical("box", GUILayout.Width(190));
-
-            //スクロール
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
-
-			//タイトル
 			GUILayout.Box("Enemy");
 
+
+			#region ここに追加
 			//座標
 			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
             float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
@@ -120,13 +118,10 @@ public sealed partial class Enemy : CharaBase
             //GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
             GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
+			#endregion
 
 
-            //スクロール終了
-            GUILayout.EndScrollView();
-
-
-
+			GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }

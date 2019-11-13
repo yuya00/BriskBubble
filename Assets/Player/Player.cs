@@ -62,16 +62,13 @@ public sealed partial class Player : CharaBase
     {
 		if (gui_on) {
 			GUILayout.BeginVertical("box", GUILayout.Width(190));
-
-			// スクロール
 			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
-
-			//タイトル
 			GUILayout.Box("Player");
 
-			//GUILayout.TextArea("is_ground\n" + is_ground);
-			//GUILayout.TextArea("velocity\n" + velocity);
-			//GUILayout.TextArea("status.velocity\n" + status.velocity);
+
+			#region ここに追加
+			GUILayout.TextArea("is_ground\n" + is_ground);
+			GUILayout.TextArea("velocity\n" + velocity);
 
 			// スペース
 			//GUILayout.Space(10);
@@ -85,18 +82,16 @@ public sealed partial class Player : CharaBase
 			//GUILayout.TextArea("L_Stick_V\n" + Input.GetAxis("L_Stick_V").ToString());
 
 			//壁
-			GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
-			GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
-			GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
-			GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
+			//GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
+			//GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
+			//GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
+			//GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
 
-			GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+			//GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+			#endregion
 
 
-
-			//スクロール終了
 			GUILayout.EndScrollView();
-
 			GUILayout.EndVertical();
 		}
     }

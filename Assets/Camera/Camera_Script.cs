@@ -396,13 +396,11 @@ public sealed partial class Camera_Script : MonoBehaviour
         if (gui_on)
         {
             GUILayout.BeginVertical("box");
-
-            // スクロールビュー
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
-
-			//タイトル
 			GUILayout.Box("Camera");
 
+
+			#region ここに追加
 			GUILayout.TextArea("obj\n" + obj);//save_pos
             GUILayout.TextArea("obj.Length\n" + obj.Length);//save_pos
             for (int i = 0; i < obj.Length; i++)//obj[i].GetComponent<Enemy>().Transform_position;
@@ -423,9 +421,10 @@ public sealed partial class Camera_Script : MonoBehaviour
             // スペース
             GUILayout.Space(200);
             GUILayout.Space(10);
-            // スペース
-            GUILayout.EndScrollView();
+			#endregion
 
+
+			GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }
