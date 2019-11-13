@@ -9,9 +9,7 @@ Angular Drag 0.5 →　1
 
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-・敵にショットが当たった後、destoryするとexitが反応しなくtrueのまま
-・消去する前に移動
-・カメラの値参照することで解決
+
 
 ・貼り付けた時ずれる
 
@@ -20,12 +18,6 @@ Angular Drag 0.5 →　1
 
 ・プレイヤー　コメント修正
 
-private void OnTriggerStay(Collider other) {
-	if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
-		hit_flg = true;
-	}
-
-}
 
 
 

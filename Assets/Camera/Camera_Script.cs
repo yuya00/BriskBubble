@@ -400,7 +400,10 @@ public sealed partial class Camera_Script : MonoBehaviour
             // スクロールビュー
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-            GUILayout.TextArea("obj\n" + obj);//save_pos
+			//タイトル
+			GUILayout.Box("Camera");
+
+			GUILayout.TextArea("obj\n" + obj);//save_pos
             GUILayout.TextArea("obj.Length\n" + obj.Length);//save_pos
             for (int i = 0; i < obj.Length; i++)//obj[i].GetComponent<Enemy>().Transform_position;
             {

@@ -66,12 +66,15 @@ public sealed partial class Player : CharaBase
 			// スクロール
 			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
-            //GUILayout.TextArea("is_ground\n" + is_ground);
-            //GUILayout.TextArea("velocity\n" + velocity);
-            //GUILayout.TextArea("status.velocity\n" + status.velocity);
+			//タイトル
+			GUILayout.Box("Player");
 
-            // スペース
-            GUILayout.Space(10);
+			//GUILayout.TextArea("is_ground\n" + is_ground);
+			//GUILayout.TextArea("velocity\n" + velocity);
+			//GUILayout.TextArea("status.velocity\n" + status.velocity);
+
+			// スペース
+			//GUILayout.Space(10);
 
 			////壁掴み判定
 			//GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());

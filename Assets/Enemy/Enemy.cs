@@ -69,14 +69,16 @@ public sealed partial class Enemy : CharaBase
     {
         if (gui_on)
         {
-
             GUILayout.BeginVertical("box", GUILayout.Width(190));
 
             //スクロール
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 
-            //座標
-            float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+			//タイトル
+			GUILayout.Box("Enemy");
+
+			//座標
+			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
             float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
             float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
             GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
