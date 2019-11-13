@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 139099623}
   - component: {fileID: 139099625}
   - component: {fileID: 139099624}
+  - component: {fileID: 2048757249}
   m_Layer: 0
   m_Name: AreaSearch
-  m_TagString: Untagged
+  m_TagString: Area
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139099622}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 0.8484816, z: -0, w: -0.52922493}
   m_LocalPosition: {x: 0, y: 0, z: 0.0000014881771}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 342418731120657599}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 243.906, z: 0}
 --- !u!135 &139099625
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -59,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_angle: 50
   gizmo_color: {r: 0.990566, g: 0.70617574, b: 0, a: 0.38431373}
---- !u!54 &5905847386614628173
+--- !u!54 &2048757249
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,13 +68,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139099622}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &436513350
 GameObject:
@@ -86,7 +87,7 @@ GameObject:
   - component: {fileID: 436513351}
   - component: {fileID: 436513352}
   - component: {fileID: 436513353}
-  - component: {fileID: 5588091663216071209}
+  - component: {fileID: 1713479417}
   m_Layer: 0
   m_Name: AreaSoundDetect
   m_TagString: Area
@@ -134,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gizmo_color: {r: 0.93613964, g: 1, b: 0.25098038, a: 0.78431374}
---- !u!54 &5588091663216071209
+--- !u!54 &1713479417
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,7 +143,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436513350}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -161,7 +162,7 @@ GameObject:
   - component: {fileID: 1128233432}
   - component: {fileID: 1128233434}
   - component: {fileID: 1128233433}
-  - component: {fileID: 4284355678195277802}
+  - component: {fileID: 1384993261}
   m_Layer: 0
   m_Name: AreaNear
   m_TagString: Area
@@ -209,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gizmo_color: {r: 1, g: 0.36196488, b: 0.1462264, a: 0.63529414}
---- !u!54 &4284355678195277802
+--- !u!54 &1384993261
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,7 +218,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128233431}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -304,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965b51e0d7bfb59448f964c2f70fdc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 0
+  gui_on: 1
   run_spd: 15
   walk_spd: 3
   jump_power: 10
