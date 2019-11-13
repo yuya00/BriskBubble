@@ -4,7 +4,6 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
-
     public override void Start()
     {
         base.Start();
@@ -64,8 +63,9 @@ public sealed partial class Enemy : CharaBase
 		// */
     }
 
-    //GUI表示 -----------------------------------------------------
-    void OnGUI()
+	//GUI表示 -----------------------------------------------------
+	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+	void OnGUI()
     {
         if (gui_on)
         {

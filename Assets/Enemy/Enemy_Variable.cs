@@ -25,7 +25,6 @@ public sealed partial class Enemy : CharaBase
 	OnceRondom					once_random;
 	private bool				clear_flg;			//行動初期化判定
 
-	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 
 	//Transform wall_ray;
 	//Quaternion wall_ray;
