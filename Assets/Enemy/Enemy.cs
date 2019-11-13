@@ -32,7 +32,11 @@ public sealed partial class Enemy : CharaBase
 		Action();       // stateに応じて個別関数に飛ぶ
 
 		Debug_Log();
-	}
+        //if(Camera_Script.enemy_hit_flg)
+        //{
+        //    shot_touch_flg = false;
+        //}
+    }
 
 
 
@@ -103,23 +107,18 @@ public sealed partial class Enemy : CharaBase
 			//回転
 			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
-			//レイが両方当たった回数
-			//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
+            //レイが両方当たった回数
+            //GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
 
-			//斜めベクトル
-			//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
-			//GUILayout.TextArea("dist_angle\n" + dist_angle);
+            //斜めベクトル
+            //GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
+            //GUILayout.TextArea("dist_angle\n" + dist_angle);
 
-			//穴判定
-			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
-			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
+            //穴判定
+            //GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
+            //GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
-			//ショット
-			//GUILayout.TextArea("ショットとの当たり判定\n" + shot_touch_flg);
-			//GUILayout.TextArea("triggered\n" + triggered);
-			//if (this.shotObject != null) {
-			//	GUILayout.TextArea("shotObject\n" + this.shotObject.tag);
-			//}
+            GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
 
 
 			//スクロール終了
