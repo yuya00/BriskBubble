@@ -105,24 +105,24 @@ public sealed partial class Player : CharaBase
 
         if (wallray.gizmo_on)
         {
-            //壁判定Ray
-            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
+			//壁判定Ray
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
             Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
         }
 
         if (holeray.gizmo_on)
         {
-            //穴判定Ray
-            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
+			//穴判定Ray
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
             Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
         }
 
         if (wallGrabRay.gizmo_on)
         {
             //壁掴み判定Ray
-            Gizmos.color = new Color(0.5f, 0.0f, 1.0f, 0.8f);
+			Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.2f);
             Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
 
             //--横移動制限Ray

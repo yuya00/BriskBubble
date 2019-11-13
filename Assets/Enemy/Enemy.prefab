@@ -314,12 +314,12 @@ MonoBehaviour:
   gravity_power: 5
   fallspd_limit: 30
   wallray:
-    gizmo_on: 0
+    gizmo_on: 1
     angle: 0
     length: 20
     spd: 1.5
   holeray:
-    gizmo_on: 0
+    gizmo_on: 1
     angle: 0
     length: 100
     spd: 10
@@ -338,7 +338,12 @@ MonoBehaviour:
     mag: 2
     lookback_interval: 120
     lookback_time: 30
-  player: {fileID: 0}
+  jumpray:
+    gizmo_on: 1
+    foot_height: 1.92
+    can_jump_height: 1.76
+    length: 4.32
+    power: 16.3
 --- !u!1 &342418731150941022
 GameObject:
   m_ObjectHideFlags: 0
