@@ -50,4 +50,54 @@ public sealed partial class Player : CharaBase
          new Vector3(  0, 0,  1 ),
          new Vector3(  1, 0,  1 ),
     };
+
+
+		//壁掴み判定Ray ---------------------------------------------
+	[System.Serializable]
+	public struct WallGrabRay {
+
+		[Header("Gizmoの表示")]
+		public bool gizmo_on;
+
+		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
+		public float height;		//1.3f
+
+		[SerializeField, Range(0.0f, 5.0f), Header("Rayの長さ")]
+		public float length;		//2.0f
+
+		[System.NonSerialized]	//掴み準備判定
+		public bool prepare_flg;
+
+		[System.NonSerialized]	//レイ判定
+		public bool ray_flg;
+
+		[System.NonSerialized]	//掴み判定
+		public bool flg;
+
+		[SerializeField, Range(0.0f, 2.0f), Header("横移動制限")]
+		public float side_length;	//1.2f;
+
+		[Header("入力待ち")]
+		public int delaytime;	//10
+	}
+	[Header("壁掴み判定Ray")]
+	public WallGrabRay wallGrabRay;
+
+
+	#region 壁掴み向き調整
+	private Vector2 wall_forward;
+	private Vector2 wall_back;
+	private Vector2 wall_right;
+	private Vector2 wall_left;
+	private Vector2 player_forward;
+
+	private float wall_forward_angle;
+	private float wall_back_angle;
+	private float wall_right_angle;
+	private float wall_left_angle;
+	#endregion
+
+	//存在しない大きな値
+	private int NOTEXIST_BIG_VALUE = 999;
+
 }
