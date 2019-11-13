@@ -36,7 +36,6 @@ public sealed partial class Enemy : CharaBase
 	private Vector3 dist_angle;
 
 
-
 	//待機 ---------------------------------------------
 	[System.Serializable]
 	public struct WaitAct {

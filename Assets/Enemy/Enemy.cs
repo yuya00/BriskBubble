@@ -32,7 +32,6 @@ public sealed partial class Enemy : CharaBase
 		Action();       // stateに応じて個別関数に飛ぶ
 
 		Debug_Log();
-
 	}
 
 
@@ -114,6 +113,13 @@ public sealed partial class Enemy : CharaBase
 			//穴判定
 			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
 			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
+
+			//ショット
+			//GUILayout.TextArea("ショットとの当たり判定\n" + shot_touch_flg);
+			//GUILayout.TextArea("triggered\n" + triggered);
+			//if (this.shotObject != null) {
+			//	GUILayout.TextArea("shotObject\n" + this.shotObject.tag);
+			//}
 
 
 			//スクロール終了
@@ -563,11 +569,11 @@ public sealed partial class Enemy : CharaBase
 				player_touch_flg = true;
 			}
 		}
-		if (other.gameObject.tag == "Shot") {
-			if (shot_touch_flg == false) {
-				shot_touch_flg = true;
-			}
-		}
+		//if (other.gameObject.tag == "Shot") {
+		//	if (shot_touch_flg == false) {
+		//		shot_touch_flg = true;
+		//	}
+		//}
 
 	}
 
@@ -578,15 +584,53 @@ public sealed partial class Enemy : CharaBase
 				player_touch_flg = false;
 			}
 		}
-		if (other.gameObject.tag == "Shot") {
-			if (shot_touch_flg == true) {
-				shot_touch_flg = false;
-			}
-		}
+		//if (other.gameObject.tag == "Shot") {
+		//	if (shot_touch_flg == true) {
+		//		shot_touch_flg = false;
+		//	}
+		//}
 
 
 	}
 
+	private void OnTriggerStay(Collider other) {
+		//if (other.gameObject.name == "AreaSearch" ||
+		//	other.gameObject.name == "AreaNear" ||
+		//	other.gameObject.name == "AreaSoundDetect") {
+		//	return;
+		//}
+		//if (other.gameObject.tag == "Shot") {
+		//	if (shot_touch_flg == false) {
+		//		shot_touch_flg = true;
+		//		triggered = true;
+		//		this.shotObject = other.gameObject;
+		//		this.shotname = other.gameObject.name;
+		//	}
+		//}
+		//else this.shotname = null;
+
+	}
+
+	private void OnTriggerEnter(Collider other) {
+		if (other.gameObject.tag == "Area") {
+			return;
+		}
+
+		if (other.gameObject.tag == "Shot") {
+			if (shot_touch_flg == false) {
+				shot_touch_flg = true;
+			}
+		}
+	}
+
+	private void OnTriggerExit(Collider other) {
+		//if (other.gameObject.tag == "Shot") {
+		//	if (shot_touch_flg == true) {
+		//		shot_touch_flg = false;
+		//	}
+		//}
+		//Debug.Log("shotOther" + this.shotOther);
+	}
 
 
 	//get ------------------------------------------------------------
