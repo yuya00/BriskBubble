@@ -179,6 +179,7 @@ public sealed partial class Enemy : CharaBase
 
 
 
+
 	//stateに応じて個別関数に飛ぶ ---------------------------------
 	void Action()
     {
