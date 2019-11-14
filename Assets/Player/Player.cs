@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
 public sealed partial class Player : CharaBase
 {
-	// Start is called before the first frame update
 	public override void Start()
     {
         base.Start();
@@ -20,7 +17,6 @@ public sealed partial class Player : CharaBase
         COUNT = 23 / anim_spd;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // 移動
@@ -32,6 +28,7 @@ public sealed partial class Player : CharaBase
         // ジャンプアニメーション
         anime_jump();
 
+		Debug_Log();
         raydebug();
     }
 
@@ -48,8 +45,15 @@ public sealed partial class Player : CharaBase
         //*********************************************************************//
     }
 
+	public override void Debug_Log() {
+		/*
+		base.Debug_Log();
 
-    public override void FixedUpdate()
+		//*/
+	}
+
+
+	public override void FixedUpdate()
     {
         base.FixedUpdate();
 
@@ -57,70 +61,68 @@ public sealed partial class Player : CharaBase
         lstick_move();
     }
 
-    private Vector2 leftScrollPos = Vector2.zero;
-    void OnGUI()
+
+
+
+	//GUI表示 -----------------------------------------------------
+	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+	void OnGUI()
     {
 		if (gui_on) {
 			GUILayout.BeginVertical("box", GUILayout.Width(190));
-
-			// スクロール
 			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
-
-            //GUILayout.TextArea("is_ground\n" + is_ground);
-            //GUILayout.TextArea("velocity\n" + velocity);
-            //GUILayout.TextArea("status.velocity\n" + status.velocity);
-
-            // スペース
-            GUILayout.Space(10);
-
-			////壁掴み判定
-			//GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
-			//GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
-			//GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
-
-			////縦入力
-			//GUILayout.TextArea("L_Stick_V\n" + Input.GetAxis("L_Stick_V").ToString());
-
-			//壁
-			GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
-			GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
-			GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
-			GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
-
-			GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+			GUILayout.Box("Player");
 
 
+			#region ここに追加
+			GUILayout.TextArea("着地判定\n" + is_ground);
+			GUILayout.TextArea("速さ\n" + velocity);
 
-			//スクロール終了
+			//壁掴み判定
+			GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
+			GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
+			GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+
+			//壁掴んだ瞬間
+			//GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
+			//GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
+			//GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
+			//GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
+			//GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+
+
+			#endregion
+
+
 			GUILayout.EndScrollView();
-
 			GUILayout.EndVertical();
 		}
     }
 
-    void OnDrawGizmos()
+	//ギズモ表示 --------------------------------------------------
+	void OnDrawGizmos()
     {
 
         if (wallray.gizmo_on)
         {
-            //壁判定Ray
-            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
+			//壁判定Ray
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
             Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
         }
 
         if (holeray.gizmo_on)
         {
-            //穴判定Ray
-            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
+			//穴判定Ray
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
             Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
         }
 
         if (wallGrabRay.gizmo_on)
         {
             //壁掴み判定Ray
-            Gizmos.color = new Color(0.5f, 0.0f, 1.0f, 0.8f);
+			Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.2f);
             Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
 
             //--横移動制限Ray
@@ -130,11 +132,13 @@ public sealed partial class Player : CharaBase
 
     }
 
+
+
 	//---------------------------------------------
 	// 移動                     
 	//---------------------------------------------
 
-	// 移動まとめ
+	// 移動 -------------------------------------------------------
 	public override void Move()
     {
         base.Move();
@@ -509,25 +513,19 @@ public sealed partial class Player : CharaBase
 			wait_timer = 0;
 		}
 
-	}
-
 	//---------------------------------------------//
 
 	public override void Debug_Log()
     {
         base.Debug_Log();
     }
+	}
 
-    public float Run_spd
-    {
-        get { return run_spd; }
-    }
 
-	//*******************************************
-	// 当たり判定
-	//*******************************************
-	//何かに当たったとき
-	void OnCollisionEnter(Collision col) {
+
+
+	//当たり判定 -----------------------------------------------
+	private void OnCollisionEnter(Collision other) {
 		// 上方向に進んでる途中
 		if (jump_now()) {
 			// 頭当たった時に落下
@@ -535,7 +533,7 @@ public sealed partial class Player : CharaBase
 		}
 
 		//壁との当たり判定
-		if (col.gameObject.tag == "Wall") {
+		if (other.gameObject.tag == "Wall") {
 			if (wall_touch_flg == false) {
 				wall_touch_flg = true;
 			}
@@ -543,7 +541,6 @@ public sealed partial class Player : CharaBase
 
 	}
 
-	//何にも当たっていないとき
 	private void OnCollisionExit(Collision other) {
 		if (other.gameObject.tag == "Wall") {
 			if (wall_touch_flg == true) {
@@ -553,5 +550,14 @@ public sealed partial class Player : CharaBase
 
 	}
 
+
+	//get ------------------------------------------------------------
+	public float Run_spd {
+		get { return run_spd; }
+	}
+
+	public Vector3 Transform_position {
+		get { return transform.position; }
+	}
 
 }

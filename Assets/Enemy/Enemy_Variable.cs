@@ -11,7 +11,6 @@ public sealed partial class Enemy : CharaBase
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
 	private bool				shot_touch_flg;   //プレイヤーとの当たり判定
 	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
-	private Player				p_player; 
 	private float				spd_ratio = 1.8f;	//プレイヤー速度を割る割合
 	private EnemyNear			enemynear;
 	private Vector2				dist;				//プレイヤーと逆方向のベクトル
@@ -23,9 +22,8 @@ public sealed partial class Enemy : CharaBase
 		public bool	 isfinish;
 	}
 	OnceRondom					once_random;
-	private bool				clear_flg;			//行動初期化判定
-
-	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+	private bool				clear_flg;          //行動初期化判定
+	private GameObject player_obj;      // プレイヤーのオブジェクト取得
 
 	//Transform wall_ray;
 	//Quaternion wall_ray;
@@ -94,13 +92,36 @@ public sealed partial class Enemy : CharaBase
 	public AwayAct awayact;
 
 
+	//段差ジャンプ ----------------------------------------
+	[System.Serializable]
+	public struct JumpRay {
+		[Header("Gizmoの表示")]
+		public bool gizmo_on;
 
+		[System.NonSerialized]			//BoxCast計算用
+		public float total;
 
-	[Space]
-	[SerializeField]
-	private GameObject player;
+		[System.NonSerialized]			//BoxCast計算用
+		public Vector3 pos;
 
+		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(足元)")]
+		public float foot_height;		//1.9f
 
+		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(ジャンプ出来る高さ)")]
+		public float can_jump_height;	//1.7f
+
+		[SerializeField, Range(0.0f, 12.0f), Header("Rayの長さ")]
+		public float length;			//4.0f
+
+		[System.NonSerialized]			//壁との当たり判定
+		public bool flg;
+
+		[SerializeField, Range(0.0f, 40.0f), Header("ジャンプ力")]
+		public float power;				//16.0f
+
+	}
+	[Header("ジャンプRay")]
+	public JumpRay jumpray;
 
 
 

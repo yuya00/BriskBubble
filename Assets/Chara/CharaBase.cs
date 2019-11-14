@@ -146,7 +146,7 @@ public class CharaBase : MonoBehaviour {
 		//右のレイ
 		if (Physics.Raycast(transform.position,
 			(transform.forward * angle_mag + transform.right).normalized * 1, out hit, wallray.length)) {
-			Debug.Log(hit.collider.gameObject.name);
+			//Debug.Log(hit.collider.gameObject.name);
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_right = hit.distance;  //壁との距離保存
 				wallray.hit_right_flg = true;       //壁との当たり判定
@@ -160,7 +160,7 @@ public class CharaBase : MonoBehaviour {
 		//左のレイ
 		if (Physics.Raycast(transform.position,
 			(transform.forward * angle_mag + (-transform.right)).normalized * 1, out hit, wallray.length)) {
-			Debug.Log(hit.collider.gameObject.name);
+			//Debug.Log(hit.collider.gameObject.name);
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_left = hit.distance;   //壁との距離保存
 				wallray.hit_left_flg = true;        //壁との当たり判定

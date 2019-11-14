@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139099622}
-  m_LocalRotation: {x: -0, y: 0.8484816, z: -0, w: -0.52922493}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0000014881771}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 342418731120657599}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 243.906, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &139099625
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &1128233431
 GameObject:
@@ -224,7 +224,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &342418731120657594
 GameObject:
@@ -314,12 +314,12 @@ MonoBehaviour:
   gravity_power: 5
   fallspd_limit: 30
   wallray:
-    gizmo_on: 0
+    gizmo_on: 1
     angle: 0
     length: 20
     spd: 1.5
   holeray:
-    gizmo_on: 0
+    gizmo_on: 1
     angle: 0
     length: 100
     spd: 10
@@ -338,7 +338,12 @@ MonoBehaviour:
     mag: 2
     lookback_interval: 120
     lookback_time: 30
-  player: {fileID: 0}
+  jumpray:
+    gizmo_on: 1
+    foot_height: 1.92
+    can_jump_height: 1.76
+    length: 4.32
+    power: 16.3
 --- !u!1 &342418731150941022
 GameObject:
   m_ObjectHideFlags: 0

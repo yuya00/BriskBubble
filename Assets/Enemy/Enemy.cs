@@ -4,7 +4,6 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
-
     public override void Start()
     {
         base.Start();
@@ -12,20 +11,20 @@ public sealed partial class Enemy : CharaBase
         Clear(); //初期化
         enum_state = Enum_State.WAIT;
         old_state = enum_state;
-        p_player = new Player();
-        run_spd = p_player.Run_spd / spd_ratio;
-        dist = new Vector2(0, 0);
+		dist = new Vector2(0, 0);
         WallRay_Clear();
         wallray.both_count = 0;
         enemynear = GetComponentInChildren<EnemyNear>();
         enemy_sound_detect = GetComponentInChildren<EnemySoundDetect>();
+		player_obj = GameObject.Find("Player");
+		run_spd = player_obj.GetComponent<Player>().Run_spd / spd_ratio;
 
-        //new_angle = transform.eulerAngles;
-        //old_angle = new_angle;
-        //dist_angle = Vector3.zero;
-    }
+		//new_angle = transform.eulerAngles;
+		//old_angle = new_angle;
+		//dist_angle = Vector3.zero;
+	}
 
-    void Update()
+	void Update()
     {
         base.Move();
         StateChange();  // プレイヤーとの当たり判定でstate変更
@@ -64,19 +63,20 @@ public sealed partial class Enemy : CharaBase
 		// */
     }
 
-    //GUI表示 -----------------------------------------------------
-    void OnGUI()
+	//GUI表示 -----------------------------------------------------
+	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+	void OnGUI()
     {
         if (gui_on)
         {
-
             GUILayout.BeginVertical("box", GUILayout.Width(190));
-
-            //スクロール
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+			GUILayout.Box("Enemy");
 
-            //座標
-            float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+
+			#region ここに追加
+			//座標
+			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
             float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
             float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
             GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
@@ -118,13 +118,10 @@ public sealed partial class Enemy : CharaBase
             //GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
             GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
+			#endregion
 
 
-            //スクロール終了
-            GUILayout.EndScrollView();
-
-
-
+			GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }
@@ -146,27 +143,44 @@ public sealed partial class Enemy : CharaBase
 
         if (wallray.gizmo_on)
         {
-            //壁判定Ray
-            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
+			//壁判定Ray
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
             Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
         }
 
         if (holeray.gizmo_on)
         {
-            //穴判定Ray
-            Gizmos.color = new Color(0.4f, 0.4f, 0.5f, 0.8f);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
+			//穴判定Ray
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
             Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
         }
 
-    }
+		if (jumpray.gizmo_on) {
+			//ジャンプ判定Ray
+			Gizmos.color = Color.cyan - new Color(0, 0, 0, 0.5f);
+			Jump_BoxCast_Calc(); //--ジャンプ判定の計算
+			Gizmos.DrawWireCube(jumpray.pos + transform.forward * jumpray.length / 2, new Vector3(0, jumpray.total, jumpray.length));
+
+			Gizmos.color = Color.blue - new Color(0, 0, 0, 0.6f);
+			Gizmos.DrawRay(transform.position + new Vector3(0, jumpray.can_jump_height, 0), transform.forward * jumpray.length);
+		}
+
+	}
+
+	//--ジャンプ判定の計算
+	void Jump_BoxCast_Calc() {
+		jumpray.pos = transform.position;
+		jumpray.pos.y -= jumpray.foot_height;
+		jumpray.total = jumpray.foot_height + jumpray.can_jump_height;
+		jumpray.pos.y += jumpray.total / 2;
+	}
 
 
 
-
-    //stateに応じて個別関数に飛ぶ ---------------------------------
-    void Action()
+	//stateに応じて個別関数に飛ぶ ---------------------------------
+	void Action()
     {
         //他のstateに行くとき初期化
         if (old_state != enum_state)
@@ -236,9 +250,9 @@ public sealed partial class Enemy : CharaBase
             once_random.isfinish = false;
         }
         old_act = enum_act;
-        #endregion
+		#endregion
 
-        //velocity = transform.forward * 10.0f;
+		//velocity = transform.forward * 10.0f;
 
         switch (enum_act)
         {
@@ -273,8 +287,27 @@ public sealed partial class Enemy : CharaBase
     //警戒(ゆっくり首を振る)
     void Warning()
     {
-        //見つけてないとき
-        if (!finder_flg)
+		//近くにプレイヤーがいた場合なら
+		if (enemynear.HitFlg) {
+			Vector3 dist = player_obj.GetComponent<Player>().Transform_position - transform.position;
+			dist.y = 0;
+			transform.LookAt(transform.position + dist); //プレイヤーの方向を向く
+			Clear();
+		}
+
+		//音範囲内で音があったら
+		if (enemy_sound_detect.HitFlg) {
+			Vector3 dist = enemy_sound_detect.Hitpos - transform.position;
+			dist.y = 0;
+			transform.LookAt(transform.position + dist); //ショットの方向を向く
+			Clear();
+			enum_state = Enum_State.WAIT;
+		}
+
+		#region 見回す処理
+		/*
+		//見つけてないとき
+		if (!finder_flg)
         {
             //ゆっくり体を回して音源、プレイヤーを探す
             switch (enum_act)
@@ -304,32 +337,35 @@ public sealed partial class Enemy : CharaBase
                     Clear();
                     enum_state = Enum_State.WAIT; //待機
                 }
-            } //if(enemynear.HitFlg)
+            }
 
             if (WaitTime(60 * 10))
             {
                 Clear();
                 enum_state = Enum_State.WAIT; //待機
-            } //if (WaitTime(180)
+            }
 
-        } //if (!finder_flg)
+        }
+		// */
+		#endregion
 
-    }
+	}
 
 
-    //発見(ジャンプして逃走に移行)
-    void Find()
+	//発見(ジャンプして逃走に移行)
+	void Find()
     {
         switch (enum_act)
         {
             case Enum_Act.CLEAR:
-                enum_act = Enum_Act.JUMP;
+				wait_timer = 0;
+				enum_act = Enum_Act.JUMP;
                 break;
-            //その場で小さくジャンプ
-            case Enum_Act.JUMP:
-                Vector3 distr = player.transform.position - transform.position;
-                distr.y = 0;
-                transform.LookAt(transform.position + distr); //プレイヤーの方向を向く
+            case Enum_Act.JUMP: //その場で小さくジャンプ
+				Vector3 dist = player_obj.GetComponent<Player>().Transform_position - transform.position;
+				dist.y = 0;
+                transform.LookAt(transform.position + dist); //プレイヤーの方向を向く
+
                 Jump(jump_power);
                 enum_act = Enum_Act.WAIT;
                 break;
@@ -350,10 +386,9 @@ public sealed partial class Enemy : CharaBase
     //逃走(プレイヤーから逆方向に逃げ、一定距離で止まる)
     void Away()
     {
-        // プレイヤーと逆方向のベクトルを取得
-        dist.x = player.transform.position.x - transform.position.x;
-        dist.y = player.transform.position.z - transform.position.z;
-
+		// プレイヤーと逆方向のベクトルを取得
+		dist.x = player_obj.GetComponent<Player>().Transform_position.x - transform.position.x;
+        dist.y = player_obj.GetComponent<Player>().Transform_position.z - transform.position.z;
 
         switch (enum_act)
         {
@@ -387,8 +422,7 @@ public sealed partial class Enemy : CharaBase
                 velocity = transform.forward * (run_spd);
 
                 goto case Enum_Act.RUN;
-            //goto case Enum_Act.SWING;
-            //break;
+				//break;
             case Enum_Act.RUN:     //走る
                 enum_act = Enum_Act.RUN;
 
@@ -401,8 +435,11 @@ public sealed partial class Enemy : CharaBase
                 //--穴判定による向き変更
                 HoleRay_Rotate_Judge();
 
-                //--振り向き
-                Away_LookBack();
+				//--ジャンプ判定によるジャンプ
+				JumpRay_Jump_Judge();
+
+				//--振り向き
+				Away_LookBack();
 
                 //二人の距離が(音探知範囲*awayact.mag)より離れたら
                 if (dist.magnitude >= enemy_sound_detect.Radius * awayact.mag)
@@ -411,7 +448,7 @@ public sealed partial class Enemy : CharaBase
                 }
                 break;
             case Enum_Act.END:      //state変更
-                                    //プレイヤーの方向を向く
+				//プレイヤーの方向を向く
                 transform.LookAt(transform.position - velocity);
                 Clear();
                 enum_state = Enum_State.WAIT;
@@ -429,10 +466,10 @@ public sealed partial class Enemy : CharaBase
         WallRay_Judge();
 
         //----めり込み判定
-        WallRay_Cavein();
+        //WallRay_Cavein();
 
         //----向き変更
-        WallRay_Rotate();
+        //WallRay_Rotate();
     }
 
     //----めり込み判定
@@ -474,18 +511,75 @@ public sealed partial class Enemy : CharaBase
     //--振り向き
     void Away_LookBack()
     {
-        //120f毎にプレイヤーの方向に向いて60fほど速度が1 / 2になる
+        //120f毎にプレイヤーの方向に向いて60fほど速度が1 / 2になる(平面時のみ)
         if (!lookback_flg && WaitTime(awayact.lookback_interval))
         {
             lookback_flg = true;
-            velocity = transform.forward * (run_spd / 2);
-        }
+			if (velocity.y == 0) {
+				velocity.x = transform.forward.x * (run_spd / 2);
+				velocity.z = transform.forward.z * (run_spd / 2);
+			}
+			else {
+				velocity.x = transform.forward.x * run_spd;
+				velocity.z = transform.forward.z * run_spd;
+			}
+		}
         if (lookback_flg && WaitTime(awayact.lookback_time))
         {
             lookback_flg = false;
-            velocity = transform.forward * (run_spd);
-        }
+			velocity.x = transform.forward.x * run_spd;
+			velocity.z = transform.forward.z * run_spd;
+		}
     }
+
+	//--ジャンプ判定によるジャンプ
+	void JumpRay_Jump_Judge() 
+	{
+		//----ジャンプ判定Ray当たり判定
+		JumpRay_Judge();
+
+		//----ジャンプ
+		JumpRay_Jump();
+	}
+
+	//----ジャンプ判定Ray当たり判定
+	void JumpRay_Judge() {
+		RaycastHit hit;
+
+		//Box:true ジャンプ上限Ray:false
+		if (Physics.BoxCast(jumpray.pos,new Vector3(0, jumpray.total / 2, jumpray.length / 2),
+			transform.forward,out hit,
+			Quaternion.identity,jumpray.length / 2)) 
+			{
+			if (hit.collider.gameObject.tag == "Wall") 
+				{
+				if (!Physics.Raycast(transform.position + new Vector3(0, jumpray.can_jump_height, 0),
+					transform.forward, out hit, jumpray.length)) 
+					{
+					jumpray.flg = true;
+				}
+			}
+		}
+		//if (Physics.Raycast(transform.position - new Vector3(0, jumpray.foot_height, 0),
+		//	transform.forward, out hit, jumpray.length)) {
+		//	if (hit.collider.gameObject.tag == "Wall") {
+		//		if (!Physics.Raycast(transform.position + new Vector3(0, jumpray.can_jump_height, 0),
+		//			transform.forward, out hit, jumpray.length)) {
+		//			jumpray.flg = true;
+		//		}
+		//	}
+		//}
+
+
+	}
+
+	//----ジャンプ
+	void JumpRay_Jump() {
+		if (jumpray.flg) {
+			Jump(jumpray.power);
+			jumpray.flg = false;
+		}
+	}
 
 
     //攻撃
@@ -540,7 +634,6 @@ public sealed partial class Enemy : CharaBase
         rigid.useGravity = false;
         is_ground = false;
         player_touch_flg = false;
-        //Debug.Log("Jump");
     }
 
     //一度だけランダム値設定
