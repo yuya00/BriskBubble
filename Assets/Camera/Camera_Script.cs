@@ -5,15 +5,11 @@ using UnityEngine.UI;
 
 public sealed partial class Camera_Script : MonoBehaviour
 {
-    // 初期化
+    // 初期化---------------------------------------------
     void Start()
     {
-        //// カメラの位置をプレイヤーの位置に設定
-        //transform.position = player.transform.position;
-        float x = 60;
-        float y = 20;
-        float z = -80;
-        transform.position = new Vector3(x, y, z);
+        // カメラの位置を設定
+        transform.position = init_pos;
 
         // カメラの位置をプレイヤーの後ろにする為の方向ベクトル
         direction = -player.transform.forward.normalized;
@@ -29,74 +25,70 @@ public sealed partial class Camera_Script : MonoBehaviour
         approach_timer = 0;
         init_zoom_out_spd = zoom_out_spd;
         enemy_hit_flg = false;
-
-        //find = GameObject.Find("Enemy" + 1);
-        obj = GameObject.FindGameObjectsWithTag("Enemy");
         enm_id = 0;
+
+        // 敵を検索
+        obj = GameObject.FindGameObjectsWithTag("Enemy");
+        // 敵の数を初めに保存しておかないとLengthをそのまま使ったら
+        // 4とか、初期値のままで処理されるからバグ出るかもしらん
+        // 敵倒して時とかに保存しといた変数を-1とかしてやったらいけるかも
     }
 
+    // 更新-----------------------------------------------
     void Update()
     {
         camera_enemy_approach();
     }
 
-    // 処理が終わってから呼び出される
+    // 処理が終わってから呼び出される---------------------
     void FixedUpdate()
     {
         camera_update();
     }
 
-    //--------------------------------------------
-    // カメラまとめ                         
-    //--------------------------------------------           
+    // カメラまとめ---------------------------------------
     void camera_update()
     {
         switch (camera_state)
         {
-            // 演出無いとき
-            case NONE: camera_none(); break;
-            case ENM_HIT:
-                enemy_hit_camera(enm_pos);
-                break;
-            case SCENE: scene_camera(); break;
+            case NONE: camera_none(); break;            // 演出なし
+            case ENM_HIT: enemy_hit_camera(); break;    // 敵に近づく
+            case SCENE: scene_camera(); break;          // シーン開始カメラ
         }
-
-        // debug
-        // ステート切り替え(ショットが当たった判定になったら)
-        //if (Input.GetKeyDown(KeyCode.V)) camera_state++;
-        //if (camera_state > 2) camera_state = 0;
 
         // カメラが何を見るかまとめ
         look();
     }
 
+    // カメラが敵に近づく演出するための処理---------------
     void camera_enemy_approach()
     {
         // 敵を全て探す
         for (int i = 0; i < obj.Length; i++)
         {
-            // 敵の当たり判定がtrueになった敵の位置を取得
-            if (obj[i].GetComponent<Enemy>().Shot_touch_flg)
+            // そのオブジェクトが存在していたら
+            if (obj[i])
             {
-                // 当たった敵の番号を保存
-                enm_id = i;
+                // 敵の当たり判定がtrueになった敵の位置を取得
+                if (obj[i].GetComponent<Enemy>().Shot_touch_flg)
+                {
+                    // 当たった敵の番号を保存
+                    enm_id = i;
 
-                // 位置を保存
-                enm_pos = obj[i].GetComponent<Enemy>().Transform_position;
+                    // 位置を保存
+                    enm_pos = obj[i].GetComponent<Enemy>().Transform_position;
 
-                // 演出させる
-                enemy_hit_flg = true;
+                    // 演出させる
+                    enemy_hit_flg = true;
+                }
             }
         }
 
         // 演出処理する
         if (enemy_hit_flg) camera_state = ENM_HIT;
     }
-    //--------------------------------------------
 
-    //--------------------------------------------
-    // カメラが何を見るかまとめ
-    //--------------------------------------------           
+    // カメラが何を見るかまとめ---------------------------
     void look()
     {
         // 最終的に見る方向初期化
@@ -115,13 +107,8 @@ public sealed partial class Camera_Script : MonoBehaviour
         look_lerp(transform.position, look_pos, LOOK_SPD);
     }
 
-    //--------------------------------------------
-
-    // NONE
+    // NONE-----------------------------------------------
     #region プレイヤー追従カメラ(通常時)
-    //--------------------------------------------
-    // 通常時まとめ
-    //--------------------------------------------           
     void camera_none()
     {
         // カメラ位置
@@ -168,6 +155,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     // カメラの追従
     void follow_camera(Vector3 vec)
     {
+        state_check(vec, pad_lx);
         //Vector3 v = player.transform.right.normalized * 10 + player.transform.forward.normalized * 30;
         // 内積チェックしてカメラを移動させる
         //if (angle_check())
@@ -175,9 +163,9 @@ public sealed partial class Camera_Script : MonoBehaviour
         //    //look_lerp(transform.position, player.transform.position + v, LOOK_SPD);
         //    direction = Vector3.Lerp(direction, vec, 1 * Time.deltaTime);
         //}
-        state_check(vec, pad_lx);
     }
 
+    // カメラとプレイヤーの角度によって追従を変更
     void state_check(Vector3 vec, float pad_lx)
     {
         switch (follow_state)
@@ -210,10 +198,8 @@ public sealed partial class Camera_Script : MonoBehaviour
     // 左スティックのパッド操作をしているか
     bool pad_lx_check(float pad_lx)
     {
-        // 入力していない
+        // 入力してるか
         if (pad_lx == 0) return false;
-
-        // 入力あり
         return true;
     }
 
@@ -232,22 +218,18 @@ public sealed partial class Camera_Script : MonoBehaviour
         return angle;
     }
 
-    //--------------------------------------------           
     #endregion
 
-    // ENM_HIT
+    // ENM_HIT--------------------------------------------
     #region エネミー演出カメラ(近づく)
-    //--------------------------------------------
-    // エネミーに近づく演出カメラまとめ  
-    //--------------------------------------------           
-    void enemy_hit_camera(Vector3 obj_pos)
+    void enemy_hit_camera()
     {
         // どこまで近づいてどこまで遠ざかる(下がる)処理
-        approach(obj_pos, save_pos, zoom_len, zoom_in_spd, zoom_out_spd);
+        approach(enm_pos, save_pos, zoom_len, zoom_in_spd, zoom_out_spd);
     }
 
-    // 近づいて遠ざかる処理
-    void approach(Vector3 near_pos, Vector3 back_pos, float len, float zoom_in_spd, float zoom_out_spd)
+            // 近づいて遠ざかる処理
+            void approach(Vector3 near_pos, Vector3 back_pos, float len, float zoom_in_spd, float zoom_out_spd)
     {
         // 初期化
         Vector3 vec = Vector3.zero;
@@ -270,19 +252,21 @@ public sealed partial class Camera_Script : MonoBehaviour
 
                 // 時間経ったら遠ざける
                 if (timer_check_enemy_hit_camera(approach_timer_max))
+                {
                     transform.position += vec.normalized * (zoom_out_spd * Time.deltaTime);
 
-                // 遠ざかったらカメラステート変更（approach_stateを初期化するのはNONEで）
-                if (vec.magnitude < zoom_out_spd * Time.deltaTime)
-                {
-                    // 近づいた敵の判定を初期化する
-                    obj[enm_id].GetComponent<Enemy>().Shot_touch_flg_false();
+                    // 遠ざかったらカメラステート変更（approach_stateを初期化するのはNONEで）
+                    if (vec.magnitude < zoom_out_spd * Time.deltaTime)
+                    {
+                        // 近づいた敵の判定を初期化する
+                        obj[enm_id].GetComponent<Enemy>().Shot_touch_flg_false();
 
-                    // 演出用の判定を初期化
-                    enemy_hit_flg = false;
+                        // 演出用の判定を初期化
+                        enemy_hit_flg = false;
 
-                    // カメラ状態をプレイヤー追従に
-                    camera_state = NONE;
+                        // カメラ状態をプレイヤー追従に
+                        camera_state = NONE;
+                    }
                 }
                 break;
         }
@@ -303,50 +287,35 @@ public sealed partial class Camera_Script : MonoBehaviour
         approach_timer = 0;
     }
 
-    //--------------------------------------------           
     #endregion
 
-    // SCENE
+    // SCENE----------------------------------------------
     #region シーン始まったときのカメラ
-    //-----------------------------------------
-    // シーン始まったときのカメラ 
-    //-----------------------------------------
+    // シーンを見下ろすカメラ
     void scene_camera()
     {
-        float x = 60;
-        float y = 20;
-        float z = -80;
+        Vector3[] scene_camera_pos = { init_pos, new Vector3(init_pos.x, init_pos.y, init_pos.z * -1) };
 
-        Vector3[] pos = { new Vector3(x, y, z), new Vector3(x, y, z * -1) };
+        float len = (scene_camera_pos[scene_pos_no] - transform.position).magnitude;
 
-        float len = (pos[scene_pos_no] - transform.position).magnitude;
-
-        if (len < 1.0f)
-        {
-            scene_pos_no++;
-        }
-        if (scene_pos_no > 1)
+        if (len < SCENE_LEN) scene_pos_no++;
+        if (scene_pos_no > SCENE_POS_MAX)
         {
             scene_pos_no = 0;
             camera_state = NONE;
         }
 
-        Vector3 vec = pos[scene_pos_no] - transform.position;
+        Vector3 pos = scene_camera_pos[scene_pos_no] - transform.position;
 
         // 移動方法
-        transform.position += vec.normalized * (scene_move_spd * Time.deltaTime);
-        //transform.position = Vector3.Lerp(transform.position, pos[scene_pos_no], scene_move_spd * Time.deltaTime);
+        transform.position += pos.normalized * (scene_move_spd * Time.deltaTime);
 
     }
 
-    //-----------------------------------------
     #endregion
 
-
+    // カメラ関連カメラ-----------------------------------
     #region カメラ便利関数
-    //-----------------------------------------
-    // カメラ便利関数 
-    //-----------------------------------------
     // 徐々に注視点の方を向くようにする
     void look_lerp(Vector3 cam_pos, Vector3 target, float spd)
     {
@@ -366,30 +335,20 @@ public sealed partial class Camera_Script : MonoBehaviour
     // セットしたほうを向く
     void set_target(Vector3 vec) { transform.LookAt(vec); }
 
+    // 時間経過の判定
     bool timer_check_enemy_hit_camera(float timer_max)
     {
         approach_timer += Time.deltaTime;
-        if (approach_timer > timer_max)
-        {
-            //approach_timer = 0;
-            return true;
-        }
+        if (approach_timer > timer_max) return true;
         return false;
-
     }
 
-    #region 注視点設定
+    // 注視点設定
     Vector3 player_target() { return new Vector3(player.transform.position.x, player.transform.position.y + UP_TARGET, player.transform.position.z); }
     Vector3 enemy_target(Vector3 look_pos) { return Vector3.Lerp(transform.position + look_pos, enm_pos, LOOK_SPD * Time.deltaTime); }
     Vector3 world_target() { return Vector3.zero; }
 
-    //--------------------------------------------
     #endregion
-
-    //-----------------------------------------
-    #endregion
-
-    private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 
     void OnGUI()
     {
@@ -397,25 +356,30 @@ public sealed partial class Camera_Script : MonoBehaviour
         {
             GUILayout.BeginVertical("box");
 
+            //uGUIスクロールビュー用
+            Vector2 leftScrollPos = Vector2.zero;
+
             // スクロールビュー
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-            GUILayout.TextArea("obj\n" + obj);//save_pos
-            GUILayout.TextArea("obj.Length\n" + obj.Length);//save_pos
-            for (int i = 0; i < obj.Length; i++)//obj[i].GetComponent<Enemy>().Transform_position;
+            GUILayout.TextArea("obj\n" + obj);
+            GUILayout.TextArea("obj.Length\n" + obj.Length);
+
+            for (int i = 0; i < obj.Length; i++)
             {
-                GUILayout.TextArea("Shot_touch_flg\n" + obj[i].GetComponent<Enemy>().Shot_touch_flg);//save_pos
-                GUILayout.TextArea("pos\n" + obj[i].GetComponent<Enemy>().Transform_position);//save_pos
+                GUILayout.TextArea("Shot_touch_flg\n" + obj[i].GetComponent<Enemy>().Shot_touch_flg);
+                GUILayout.TextArea("pos\n" + obj[i].GetComponent<Enemy>().Transform_position);
             }
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
-            //GUILayout.TextArea("pos\n" + pos);//save_pos
+
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);     
 
             // スペース
             GUILayout.Space(200);

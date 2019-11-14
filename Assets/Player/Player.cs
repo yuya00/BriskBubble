@@ -130,8 +130,6 @@ public sealed partial class Player : CharaBase
 
     }
 
-
-
 	//---------------------------------------------
 	// 移動                     
 	//---------------------------------------------
@@ -513,11 +511,6 @@ public sealed partial class Player : CharaBase
 
 	}
 
-
-
-
-
-
 	//---------------------------------------------//
 
 	public override void Debug_Log()
@@ -529,8 +522,6 @@ public sealed partial class Player : CharaBase
     {
         get { return run_spd; }
     }
-
-
 
 	//*******************************************
 	// 当たり判定

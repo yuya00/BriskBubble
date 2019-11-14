@@ -44,6 +44,7 @@ public sealed partial class Player : CharaBase
                 // ショットをチャージしてるときにショットの選択
                 if (Input.GetButton("Shot_R")) shot_state = 1;
             }
+            //else  charge_time = 0;
 
             // 最終ショット発射
             if (Input.GetButtonUp("Shot_R"))

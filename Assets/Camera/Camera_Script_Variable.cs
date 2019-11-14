@@ -32,7 +32,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     // 演出                          
     //--------------------------------------------           
     [Foldout("CameraProduction", true)]
-    //public GameObject enemy;                // 敵のオブジェクトを取得
+    public Vector3 init_pos = new Vector3(60, 20, -80);               // 見渡し始める位置
 
     public float zoom_in_spd = 30.0f;       // 近づく早さ
     public float zoom_out_spd = 50.0f;      // 遠ざかる速さ
@@ -60,7 +60,9 @@ public sealed partial class Camera_Script : MonoBehaviour
     private const int NONE = 0;             // 何も演出なし
     private const int ENM_HIT = 1;          // 敵倒すとき
     private const int SCENE = 2;            // シーン始まったとき
+    private const int SCENE_POS_MAX = 1;    // カメラが向かう目的地の数
 
+    private const float SCENE_LEN = 1.0f;   // どこまで近づくか
 
     //--------------------------------------------
 
