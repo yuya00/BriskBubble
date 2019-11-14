@@ -87,6 +87,11 @@ public class EnemyProdaction : MonoBehaviour
         }
     }
 
+    public int State
+    {
+        get { return state; }
+    }
+
     void OnGUI()
     {
         if (gui_on)
