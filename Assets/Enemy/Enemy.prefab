@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965b51e0d7bfb59448f964c2f70fdc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   run_spd: 15
   walk_spd: 3
   jump_power: 10
@@ -315,13 +315,15 @@ MonoBehaviour:
   fallspd_limit: 30
   wallray:
     gizmo_on: 1
+    length: 19.05
+    up_limit: 1.99
+    down_limit: 2.44
     angle: 0
-    length: 20
     spd: 1.5
   holeray:
-    gizmo_on: 1
-    angle: 0
+    gizmo_on: 0
     length: 100
+    angle: 0
     spd: 10
   waitact:
     wait_time: 240
@@ -340,10 +342,11 @@ MonoBehaviour:
     lookback_time: 30
   jumpray:
     gizmo_on: 1
-    foot_height: 1.92
-    can_jump_height: 1.76
     length: 4.32
-    power: 16.3
+    up_limit: 2.88
+    down_limit: 1.92
+    power: 22.1
+    advance_length: 23.45
 --- !u!1 &342418731150941022
 GameObject:
   m_ObjectHideFlags: 0

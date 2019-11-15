@@ -12,7 +12,7 @@ public sealed partial class Enemy : CharaBase
         enum_state = Enum_State.WAIT;
         old_state = enum_state;
 		dist = new Vector2(0, 0);
-        WallRay_Clear();
+		wallray.Clear();
         wallray.both_count = 0;
         enemynear = GetComponentInChildren<EnemyNear>();
         enemy_sound_detect = GetComponentInChildren<EnemySoundDetect>();
@@ -75,6 +75,7 @@ public sealed partial class Enemy : CharaBase
 
 
 			#region ここに追加
+			/*
 			//座標
 			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
             float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
@@ -96,28 +97,41 @@ public sealed partial class Enemy : CharaBase
             //状態内の行動(首振りやジャンプなど)
             GUILayout.TextArea("行動\n act：" + enum_act.ToString());
 
-            ////ランダム値
-            //GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
-            //	+ " isfinish：" + once_random.isfinish.ToString());
+			////ランダム値
+			//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
+			//	+ " isfinish：" + once_random.isfinish.ToString());
 
-            ////首振りの行動
-            //GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
+			////首振りの行動
+			//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
 
-            //回転
-            GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+			//回転
+			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+			//*/
 
-            //レイが両方当たった回数
-            //GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
+			//壁判定
+			GUILayout.TextArea("壁判定右\n" + wallray.hit_right_flg);
+			GUILayout.TextArea("壁判定左\n" + wallray.hit_left_flg);
 
-            //斜めベクトル
-            //GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
-            //GUILayout.TextArea("dist_angle\n" + dist_angle);
+			//レイが両方当たった回数
+			//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
 
-            //穴判定
-            //GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
-            //GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
+			//斜めベクトル
+			//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
+			//GUILayout.TextArea("dist_angle\n" + dist_angle);
 
-            GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
+			//穴判定
+			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
+			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
+
+			//GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
+
+			//GUILayout.TextArea("transform.rotation\n" + transform.rotation);
+			//Debug.Log("transform.rotation" + transform.rotation);
+
+			//ジャンプ事前判定
+			GUILayout.TextArea("ジャンプ事前判定\n" + jumpray.advance_flg);
+
+
 			#endregion
 
 
@@ -131,50 +145,68 @@ public sealed partial class Enemy : CharaBase
     void OnDrawGizmos()
     {
 
-        #region 斜めベクトル
-        //new_angle = transform.eulerAngles;
-        //dist_angle = new_angle - old_angle;
+		#region 斜めベクトル
+		//new_angle = transform.eulerAngles;
+		//dist_angle = new_angle - old_angle;
 
-        ////斜めのベクトルを出す方法 ※要修正
-        //Gizmos.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
+		////斜めのベクトルを出す方法 ※要修正
+		//Gizmos.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
 
-        //old_angle = new_angle;
-        #endregion
+		//old_angle = new_angle;
+		#endregion
 
-        if (wallray.gizmo_on)
+
+		#region 壁判定Ray
+		if (wallray.gizmo_on)
         {
-			//壁判定Ray
-			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-			Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
-        }
+			wallray.BoxCast_Cal(transform);
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.2f);
 
-        if (holeray.gizmo_on)
+			//右ray
+			Gizmos.DrawRay(transform.position + transform.up * wallray.up_limit,
+				(transform.forward * angle_mag + (transform.right)).normalized * wallray.length);	//上
+			Gizmos.DrawRay(transform.position - transform.up * wallray.down_limit,
+				(transform.forward * angle_mag + (transform.right)).normalized * wallray.length);   //下
+			Gizmos.DrawRay(transform.position - transform.up * wallray.down_limit + 
+				(transform.forward * angle_mag + (transform.right)).normalized * wallray.length,
+				transform.up * wallray.box_total);   //奥
+
+			//左ray
+			Gizmos.DrawRay(transform.position + transform.up * wallray.up_limit, 
+				(transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);	//上
+			Gizmos.DrawRay(transform.position - transform.up * wallray.down_limit,
+				(transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);  //下
+			Gizmos.DrawRay(transform.position - transform.up * wallray.down_limit +
+				(transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
+				transform.up * wallray.box_total);   //奥
+		}
+		#endregion
+
+
+		#region 穴判定Ray
+		if (holeray.gizmo_on)
         {
-			//穴判定Ray
 			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
 			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
             Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
         }
+		#endregion
 
-		if (jumpray.gizmo_on) {
-			//ジャンプ判定Ray
-			Gizmos.color = Color.cyan - new Color(0, 0, 0, 0.5f);
-			Jump_BoxCast_Calc(); //--ジャンプ判定の計算
-			Gizmos.DrawWireCube(jumpray.pos + transform.forward * jumpray.length / 2, new Vector3(0, jumpray.total, jumpray.length));
+
+		#region ジャンプ判定Ray
+		if (jumpray.gizmo_on) 
+		{
+			jumpray.BoxCast_Cal(transform);
 
 			Gizmos.color = Color.blue - new Color(0, 0, 0, 0.6f);
-			Gizmos.DrawRay(transform.position + new Vector3(0, jumpray.can_jump_height, 0), transform.forward * jumpray.length);
+			Gizmos.DrawRay(transform.position + transform.up * jumpray.up_limit, transform.forward * jumpray.advance_length);   //上
+
+			Gizmos.color = Color.cyan - new Color(0, 0, 0, 0.0f);
+			Gizmos.DrawRay(transform.position - transform.up * jumpray.down_limit, transform.forward * jumpray.advance_length); //下
+			Gizmos.DrawRay(transform.position - transform.up * jumpray.down_limit + transform.forward * jumpray.length, transform.up * jumpray.box_total);  //縦前
+			Gizmos.DrawRay(transform.position - transform.up * jumpray.down_limit + transform.forward * jumpray.advance_length, transform.up * jumpray.box_total);  //縦奥
 		}
-
-	}
-
-	//--ジャンプ判定の計算
-	void Jump_BoxCast_Calc() {
-		jumpray.pos = transform.position;
-		jumpray.pos.y -= jumpray.foot_height;
-		jumpray.total = jumpray.foot_height + jumpray.can_jump_height;
-		jumpray.pos.y += jumpray.total / 2;
+		#endregion
 	}
 
 
@@ -237,7 +269,7 @@ public sealed partial class Enemy : CharaBase
         once_random.num = 0;
         once_random.isfinish = false;
         wait_timer = 0;
-        WallRay_Clear();
+		wallray.Clear();
     }
 
 
@@ -359,6 +391,7 @@ public sealed partial class Enemy : CharaBase
         {
             case Enum_Act.CLEAR:
 				wait_timer = 0;
+				jumpray.advance_flg = false;
 				enum_act = Enum_Act.JUMP;
                 break;
             case Enum_Act.JUMP: //その場で小さくジャンプ
@@ -426,17 +459,18 @@ public sealed partial class Enemy : CharaBase
             case Enum_Act.RUN:     //走る
                 enum_act = Enum_Act.RUN;
 
-                //少し曲がりながら走る
-                //transform.Rotate(0, 0.1f, 0);
+				//少し曲がりながら走る
+				//transform.Rotate(0, 0.1f, 0);
 
-                //--壁判定による向き変更
-                WallRay_Rotate_Judge();
+				//--ジャンプ判定によるジャンプ
+				JumpRay_Jump_Judge();
+
+				//--壁判定による向き変更
+				WallRay_Rotate_Judge();
 
                 //--穴判定による向き変更
                 HoleRay_Rotate_Judge();
 
-				//--ジャンプ判定によるジャンプ
-				JumpRay_Jump_Judge();
 
 				//--振り向き
 				Away_LookBack();
@@ -462,15 +496,20 @@ public sealed partial class Enemy : CharaBase
     //--壁判定による向き変更
     public override void WallRay_Rotate_Judge()
     {
-        //----壁判定Ray当たり判定
-        WallRay_Judge();
+		//ジャンプの準備してたら飛ばす
+		if (jumpray.advance_flg || (velocity.y != 0)) {
+			return;
+		}
 
-        //----めり込み判定
-        //WallRay_Cavein();
+		//----壁判定Ray当たり判定
+		WallRay_Judge();
 
-        //----向き変更
-        //WallRay_Rotate();
-    }
+		//----めり込み判定
+		//WallRay_Cavein();
+
+		//----向き変更
+		WallRay_Rotate();
+	}
 
     //----めり込み判定
     void WallRay_Cavein()
@@ -535,6 +574,9 @@ public sealed partial class Enemy : CharaBase
 	//--ジャンプ判定によるジャンプ
 	void JumpRay_Jump_Judge() 
 	{
+		//----ジャンプ事前判定Ray当たり判定
+		JumpRay_Judge_Advance();
+
 		//----ジャンプ判定Ray当たり判定
 		JumpRay_Judge();
 
@@ -542,10 +584,44 @@ public sealed partial class Enemy : CharaBase
 		JumpRay_Jump();
 	}
 
+	//----ジャンプ事前判定Ray当たり判定
+	void JumpRay_Judge_Advance() {
+		RaycastHit hit;
+
+		//Box:true ジャンプ上限Ray:false
+		if (Physics.BoxCast(jumpray.box_pos, new Vector3(0, jumpray.box_total / 2, jumpray.advance_length / 2),
+			transform.forward, out hit,
+			transform.rotation, jumpray.advance_length / 2)) 
+			{
+			if (hit.collider.gameObject.tag == "Wall") {
+				if (!Physics.Raycast(transform.position + transform.up * jumpray.up_limit,
+					transform.forward, jumpray.advance_length)) 
+					{
+					jumpray.advance_flg = true;
+				}
+				//else jumpray.advance_flg = false;
+			}
+		}
+
+	}
+
 	//----ジャンプ判定Ray当たり判定
 	void JumpRay_Judge() {
 		RaycastHit hit;
 
+		if (jumpray.advance_flg) {
+			if (Physics.BoxCast(jumpray.box_pos,jumpray.box_size,
+				transform.forward, out hit,
+				transform.rotation, jumpray.length / 2)) 
+				{
+				if (hit.collider.gameObject.tag == "Wall") {
+					jumpray.flg = true;
+				}
+			}
+		}
+
+		#region 事前処理無しver
+		/*
 		//Box:true ジャンプ上限Ray:false
 		if (Physics.BoxCast(jumpray.pos,new Vector3(0, jumpray.total / 2, jumpray.length / 2),
 			transform.forward,out hit,
@@ -553,23 +629,15 @@ public sealed partial class Enemy : CharaBase
 			{
 			if (hit.collider.gameObject.tag == "Wall") 
 				{
-				if (!Physics.Raycast(transform.position + new Vector3(0, jumpray.can_jump_height, 0),
+				if (!Physics.Raycast(transform.position + new Vector3(0, jumpray.up_limit, 0),
 					transform.forward, out hit, jumpray.length)) 
 					{
 					jumpray.flg = true;
 				}
 			}
 		}
-		//if (Physics.Raycast(transform.position - new Vector3(0, jumpray.foot_height, 0),
-		//	transform.forward, out hit, jumpray.length)) {
-		//	if (hit.collider.gameObject.tag == "Wall") {
-		//		if (!Physics.Raycast(transform.position + new Vector3(0, jumpray.can_jump_height, 0),
-		//			transform.forward, out hit, jumpray.length)) {
-		//			jumpray.flg = true;
-		//		}
-		//	}
-		//}
-
+		// */
+		#endregion
 
 	}
 
@@ -578,12 +646,14 @@ public sealed partial class Enemy : CharaBase
 		if (jumpray.flg) {
 			Jump(jumpray.power);
 			jumpray.flg = false;
+			jumpray.advance_flg = false;
 		}
+
 	}
 
 
-    //攻撃
-    void Attack()
+	//攻撃
+	void Attack()
     {
         velocity = transform.forward * (run_spd);
     }

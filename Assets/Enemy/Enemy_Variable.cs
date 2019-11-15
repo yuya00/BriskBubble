@@ -94,24 +94,10 @@ public sealed partial class Enemy : CharaBase
 
 	//段差ジャンプ ----------------------------------------
 	[System.Serializable]
-	public struct JumpRay {
-		[Header("Gizmoの表示")]
-		public bool gizmo_on;
-
-		[System.NonSerialized]			//BoxCast計算用
-		public float total;
-
-		[System.NonSerialized]			//BoxCast計算用
-		public Vector3 pos;
-
-		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(足元)")]
-		public float foot_height;		//1.9f
-
-		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(ジャンプ出来る高さ)")]
-		public float can_jump_height;	//1.7f
-
-		[SerializeField, Range(0.0f, 12.0f), Header("Rayの長さ")]
-		public float length;			//4.0f
+	public class JumpRay : BoxCast_Base {
+		//public float length;            //4.0f
+		//public float uplimit_height;    //1.7f
+		//public float downlimit_height;  //1.9f
 
 		[System.NonSerialized]			//壁との当たり判定
 		public bool flg;
@@ -119,10 +105,14 @@ public sealed partial class Enemy : CharaBase
 		[SerializeField, Range(0.0f, 40.0f), Header("ジャンプ力")]
 		public float power;				//16.0f
 
+		[SerializeField,Header("事前判定の長さ")]
+		public float advance_length;    //22.0f
+
+		[System.NonSerialized]			//壁との事前当たり判定
+		public bool advance_flg;
 	}
 	[Header("ジャンプRay")]
 	public JumpRay jumpray;
-
 
 
 
