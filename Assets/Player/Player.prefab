@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46cdee3edec9f042a9bba7294d2c67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   run_spd: 15
   walk_spd: 3
   jump_power: 25
@@ -89,13 +89,15 @@ MonoBehaviour:
   fallspd_limit: 30
   wallray:
     gizmo_on: 0
-    angle: 0
     length: 20
+    up_limit: 0
+    down_limit: 0
+    angle: 0
     spd: 1.5
   holeray:
     gizmo_on: 0
-    angle: 0
     length: 100
+    angle: 0
     spd: 10
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}

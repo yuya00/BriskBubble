@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965b51e0d7bfb59448f964c2f70fdc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   run_spd: 15
   walk_spd: 3
   jump_power: 10
