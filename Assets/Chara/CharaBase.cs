@@ -30,26 +30,62 @@ public class CharaBase : MonoBehaviour {
 	public float		 gravity_power		 = 5;				//重力の倍率
 	protected int[]		 iwork				 = new int[8];		//汎用
 	protected float[]	 fwork				 = new float[8];    //汎用
-	protected int		 wait_timer;         //汎用待機タイマー
 	[Tooltip("落下速度の速さ上限")]
 	public float		 fallspd_limit		 = 30.0f;
 	[Foldout("BaseParameter" ,false)]
+	protected int        wait_timer;         //汎用待機タイマー
 
+
+
+
+
+	// Ray基底 ------------------------------------------
+	public class Ray_Base {
+		[Header("Gizmoの表示")]
+		public bool gizmo_on;
+
+		[SerializeField, Header("Rayの長さ")]
+		public float length;
+	}
+
+	// BoxCast基底 ------------------------------------------
+	public class BoxCast_Base : Ray_Base {
+		[System.NonSerialized]
+		public float box_total;
+
+		[System.NonSerialized]
+		public Vector3 box_pos;
+
+		[System.NonSerialized]
+		public Vector3 box_size;
+
+		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(上限)")]
+		public float up_limit;
+
+		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(下限)")]
+		public float down_limit;
+
+		//Boxcastの計算
+		public void BoxCast_Cal(Transform self_trans) {
+			box_total = down_limit + up_limit;
+			box_size = new Vector3(0, box_total / 2, length / 2);
+			box_pos = self_trans.position;
+			box_pos = box_pos - (self_trans.up * down_limit) + (self_trans.transform.up * box_total / 2);
+		}
+	}
 
 
 	//壁判定Ray ---------------------------------------------
 	[System.NonSerialized]
 	protected int angle_mag = 3; //角度調整
 	[System.Serializable]
-	public struct WallRay {
-		[Header("Gizmoの表示")]
-		public bool gizmo_on;
+	public class WallRay : BoxCast_Base {
+		//public float length;		//20.0f
+		//public float up_limit;	//
+		//public float down_limit;	//
 
 		[SerializeField, Header("Rayの角度")]
 		public float angle;     //00.0f 未使用
-
-		[SerializeField, Header("Rayの長さ")]
-		public float length;    //20.0f
 
 		[System.NonSerialized] //壁との距離保存用
 		public float dist_right, dist_left;
@@ -65,29 +101,28 @@ public class CharaBase : MonoBehaviour {
 
 		[SerializeField, Header("向き変更の速さ")]
 		public float spd;       //2.0f
+
+		//初期化
+		public void Clear() {
+			dist_right		 = 0;
+			dist_left		 = 0;
+			hit_right_flg	 = false;
+			hit_left_flg	 = false;
+			both_flg		 = false;
+		}
+
 	}
 	[Header("壁判定Ray")]
 	public WallRay wallray;
 
-	public void WallRay_Clear() {
-		wallray.dist_right = 0;
-		wallray.dist_left = 0;
-		wallray.hit_right_flg = false;
-		wallray.hit_left_flg = false;
-		wallray.both_flg = false;
-	}
 
 	//穴判定Ray ---------------------------------------------
 	[System.Serializable]
-	public struct HoleRay {
-		[Header("Gizmoの表示")]
-		public bool gizmo_on;
+	public class HoleRay : Ray_Base {
+		//public float length;    //100.0f
 
 		[SerializeField, Header("Rayの角度")]
 		public float angle;     //00.0f 未使用
-
-		[SerializeField, Header("Rayの長さ")]
-		public float length;    //100.0f
 
 		//[System.NonSerialized] //穴との距離保存用
 		//public float dist_right, dist_left;
@@ -103,14 +138,16 @@ public class CharaBase : MonoBehaviour {
 
 		[SerializeField, Header("向き変更の速さ")]
 		public float spd;       //2.0f
+
+		public void Clear() {
+			hit_right_flg = false;
+			hit_left_flg = false;
+		}
+
 	}
 	[Header("穴判定Ray")]
 	public HoleRay holeray;
 
-	public void HoleRay_Clear() {
-		holeray.hit_right_flg = false;
-		holeray.hit_left_flg = false;
-	}
 
 
 
@@ -143,6 +180,42 @@ public class CharaBase : MonoBehaviour {
 	public void WallRay_Judge() {
 		RaycastHit hit;
 
+		#region BoxCast
+		//*
+		//右のレイ
+		if (Physics.BoxCast(wallray.box_pos, wallray.box_size,
+				(transform.forward * angle_mag + transform.right).normalized, out hit,
+				transform.rotation, wallray.length / 2)) 
+			{
+			if (hit.collider.gameObject.tag == "Wall") {
+				wallray.dist_right = hit.distance;  //壁との距離保存
+				wallray.hit_right_flg = true;       //壁との当たり判定
+			}
+		}
+		else {
+			wallray.dist_right = 0;
+			wallray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (Physics.BoxCast(wallray.box_pos, wallray.box_size,
+			(transform.forward * angle_mag + (-transform.right)).normalized, out hit,
+			transform.rotation, wallray.length / 2)) 
+			{
+			if (hit.collider.gameObject.tag == "Wall") {
+				wallray.dist_left = hit.distance;  //壁との距離保存
+				wallray.hit_left_flg = true;       //壁との当たり判定
+			}
+		}
+		else {
+			wallray.dist_left = 0;
+			wallray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region RayCast
+		/*
 		//右のレイ
 		if (Physics.Raycast(transform.position,
 			(transform.forward * angle_mag + transform.right).normalized * 1, out hit, wallray.length)) {
@@ -170,7 +243,8 @@ public class CharaBase : MonoBehaviour {
 			wallray.dist_left = 0;
 			wallray.hit_left_flg = false;
 		}
-
+		// */
+		#endregion
 	}
 
 	//----向き変更
@@ -230,7 +304,7 @@ public class CharaBase : MonoBehaviour {
 
 
 
-
+	//着地時にfalse
 	public virtual void Move()
     {
         /***********************/
