@@ -108,6 +108,12 @@ public sealed partial class Enemy : CharaBase
 			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 			//*/
 
+			//速さ
+			float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+			float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+			float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+
 			//壁判定
 			GUILayout.TextArea("壁判定右\n" + wallray.hit_right_flg);
 			GUILayout.TextArea("壁判定左\n" + wallray.hit_left_flg);
@@ -430,8 +436,8 @@ public sealed partial class Enemy : CharaBase
                 dist.Normalize();
                 dist_normal_vec = dist;
 
-                #region ±指定角度内でランダムにベクトル変更(保留)
-                /*
+				#region ±指定角度内でランダムにベクトル変更(保留)
+				/*
 				//±指定角度内でベクトル変更(-10度ではなく350度になるので注意!)
 				float rand_num = Random.Range(-awayact.angle, awayact.angle);
 				Vector3 localAngle = transform.localEulerAngles;
@@ -442,17 +448,18 @@ public sealed partial class Enemy : CharaBase
 				//dist_normal_vec.x += Mathf.Sin(rand_num * Mathf.Deg2Rad);
 				//dist_normal_vec.y += Mathf.Cos(rand_num * Mathf.Deg2Rad);
 				// */
-                #endregion
+				#endregion
 
-                //プレイヤーと逆方向のベクトルの速さ代入
-                velocity.x = dist_normal_vec.x;
-                velocity.z = dist_normal_vec.y;
+				//プレイヤーと逆方向のベクトルの速さ代入
+				Vector3 dir = new Vector3(0, 0, 0);
+				dir.x = dist_normal_vec.x;
+				dir.z = dist_normal_vec.y;
 
-                //プレイヤーと逆+ランダムベクトル視点を見る
-                transform.LookAt(transform.position - velocity);
+				//プレイヤーと逆+ランダムベクトル視点を見る
+				transform.LookAt(transform.position - dir);
 
-                //前方向の速さ代入
-                velocity = transform.forward * (run_spd);
+				//前方向の速さ代入
+				velocity = transform.forward * (run_spd);
 
                 goto case Enum_Act.RUN;
 				//break;
