@@ -10,6 +10,8 @@ public class EnemyProdaction : MonoBehaviour
     public GameObject obj;
     public GameObject prodaction_shot;
 
+    private Vector3 init_pos;
+
     public float big_spd = 0.5f;
     public float small_spd = 2.0f;
 
@@ -38,6 +40,9 @@ public class EnemyProdaction : MonoBehaviour
             prodaction_shot.SetActive(true);
             scale();
         }
+
+        // 位置修正
+        //pos_check();
     }
 
     // スケール変更まとめ
@@ -76,6 +81,14 @@ public class EnemyProdaction : MonoBehaviour
             transform.localScale.z + spd * Time.deltaTime);
     }
 
+    // 位置修正
+    void pos_check()
+    {
+        //transform.position = obj.transform.position;
+
+        obj.transform.position = transform.position;
+    }
+
     // 削除処理
     void destroy()
     {
@@ -104,8 +117,8 @@ public class EnemyProdaction : MonoBehaviour
             // スクロールビュー
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
+            GUILayout.TextArea("init_pos\n" + init_pos);
+            GUILayout.TextArea("transform.position\n" + transform.position);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);     
             //GUILayout.TextArea("pos\n" + pos);
