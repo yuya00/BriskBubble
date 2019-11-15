@@ -779,7 +779,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -895,7 +895,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -1088,7 +1088,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 7.3e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2146,7 +2146,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -2484,7 +2484,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -3240,7 +3240,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -3265,6 +3265,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239078, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -3583,7 +3588,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -3921,7 +3926,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: scale_spd
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533383, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -4218,6 +4223,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 342418731120657594, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 342418731120657599, guid: 6582a8460615bbc41aa8df265ad41b1f,
         type: 3}
@@ -4698,7 +4708,7 @@ PrefabInstance:
     - target: {fileID: 342418731120657594, guid: 6582a8460615bbc41aa8df265ad41b1f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 342418731120657594, guid: 6582a8460615bbc41aa8df265ad41b1f,
         type: 3}
