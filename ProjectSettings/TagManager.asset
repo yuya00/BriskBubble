@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Shot
   - Wall
+  - Area
   layers:
   - Default
   - TransparentFX

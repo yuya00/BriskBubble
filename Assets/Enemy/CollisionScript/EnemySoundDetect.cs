@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemySoundDetect : MonoBehaviour {
 	private SphereCollider m_sphereCollider = null;
-	[System.NonSerialized]
-	public bool hit_flg;
+	private bool hit_flg;
+	private Vector3 hit_pos;
 	[SerializeField]
 	private Color gizmo_color;
 
@@ -20,36 +20,38 @@ public class EnemySoundDetect : MonoBehaviour {
 	}
 
 
-	// ****************************************************************
-	// 当たり判定
-	// ****************************************************************
+	// 当たり判定 -------------------------------------------------------
 	private void OnTriggerStay(Collider other) {
 		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
 			hit_flg = true;
+			hit_pos = other.gameObject.transform.position;
 		}
 
 	}
 	private void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
 			hit_flg = true;
+			hit_pos = other.gameObject.transform.position;
 		}
 	}
 
 
+	// GUI表示 -----------------------------------------------------------
+	void OnGUI() {
+		//GUILayout.Space(50);
+		//GUILayout.TextArea("hit_flg\n" + hit_flg);
+	}
 
-	//void OnGUI() {
-	//	GUILayout.Space(50);
-	//	GUILayout.TextArea("hit_flg\n" + hit_flg);
-	//}
 
-
-	// ****************************************************************
-	// get
-	// ****************************************************************
-
+	// get -----------------------------------------------------------
 	//当たり判定を返す
 	public bool HitFlg {
 		get { return hit_flg; }
+	}
+
+	//当たり判定を返す
+	public Vector3 Hitpos {
+		get { return hit_pos; }
 	}
 
 	//ギズモ用の色を返す
