@@ -10,7 +10,7 @@ public class EnemyProdaction : MonoBehaviour
     public GameObject obj;
     public GameObject prodaction_shot;
 
-    private Vector3 init_pos;
+    private Vector3 save_pos;
 
     public float big_spd = 0.5f;
     public float small_spd = 2.0f;
@@ -25,13 +25,19 @@ public class EnemyProdaction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        save_pos = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
         // ショットが敵に当たった時に実行
-        if (obj.GetComponent<Enemy>().Shot_touch_flg) scale_chenge_on = true;
+        if (obj.GetComponent<Enemy>().Shot_touch_flg)
+        {
+            scale_chenge_on = true;
+            // 位置修正
+            pos_check();
+        }
 
         // スケール変更
         if (scale_chenge_on)
@@ -41,8 +47,7 @@ public class EnemyProdaction : MonoBehaviour
             scale();
         }
 
-        // 位置修正
-        //pos_check();
+        
     }
 
     // スケール変更まとめ
@@ -84,8 +89,7 @@ public class EnemyProdaction : MonoBehaviour
     // 位置修正
     void pos_check()
     {
-        //transform.position = obj.transform.position;
-
+        transform.position = obj.transform.position;
         obj.transform.position = transform.position;
     }
 
@@ -117,9 +121,9 @@ public class EnemyProdaction : MonoBehaviour
             // スクロールビュー
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-            GUILayout.TextArea("init_pos\n" + init_pos);
+            GUILayout.TextArea("save_pos\n" + save_pos);
             GUILayout.TextArea("transform.position\n" + transform.position);
-            //GUILayout.TextArea("pos\n" + pos);
+            GUILayout.TextArea("obj.transform.position\n" + obj.transform.position);
             //GUILayout.TextArea("pos\n" + pos);     
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);

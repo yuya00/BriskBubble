@@ -325,6 +325,7 @@ MonoBehaviour:
     length: 100
     angle: 0
     spd: 10
+  spd_ratio: 0.5
   waitact:
     wait_time: 240
     wait_random: 0
