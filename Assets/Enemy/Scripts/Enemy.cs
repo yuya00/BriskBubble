@@ -455,16 +455,22 @@ public sealed partial class Enemy : CharaBase
 				// */
 				#endregion
 
-				//プレイヤーと逆方向のベクトルの速さ代入
+				//プレイヤーと逆ベクトル
 				Vector3 dir = new Vector3(0, 0, 0);
 				dir.x = dist_normal_vec.x;
 				dir.z = dist_normal_vec.y;
 
-				//プレイヤーと逆+ランダムベクトル視点を見る
+				//プレイヤーと逆ベクトルの方向を見る
 				transform.LookAt(transform.position - dir);
 
+				//穴に向かわないように向き変更
+				do {
+					HoleRay_Rotate_Judge(); //--穴判定による向き変更
+				} while (holeray.hit_right_flg || holeray.hit_left_flg);
+
+
 				//前方向の速さ代入
-				velocity = transform.forward * (run_spd);
+				velocity = transform.forward * run_spd;
 
                 goto case Enum_Act.RUN;
 				//break;
