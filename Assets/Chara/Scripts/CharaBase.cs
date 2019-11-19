@@ -179,6 +179,7 @@ public class CharaBase : MonoBehaviour {
 	//----壁判定Ray当たり判定
 	public void WallRay_Judge() {
 		RaycastHit hit;
+		wallray.BoxCast_Cal(transform);
 
 		#region BoxCast
 		//*

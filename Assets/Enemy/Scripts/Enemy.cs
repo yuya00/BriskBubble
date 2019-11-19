@@ -611,6 +611,7 @@ public sealed partial class Enemy : CharaBase
 	//----ジャンプ事前判定Ray当たり判定
 	void JumpRay_Judge_Advance() {
 		RaycastHit hit;
+		jumpray.BoxCast_Cal(transform);
 
 		//Box:true ジャンプ上限Ray:false
 		if (Physics.BoxCast(jumpray.box_pos, new Vector3(0, jumpray.box_total / 2, jumpray.advance_length / 2),

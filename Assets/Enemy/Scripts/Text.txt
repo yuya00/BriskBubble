@@ -11,6 +11,14 @@
 　ぶつかったらプレイヤーの反対に行くしかなく落ちる
 　向き反転を調整する
 
+　maximizeをオフにすると飛ぶ
+　maximizeをオフにして上のGizomoもオフにしても飛ぶ
+　maximizeをオフにして下のGizomoもオフにしても飛ぶ
+
+　maximizeをオンにすると飛ばない
+　maximizeをオンにして下のGizomoもオンにすると飛ぶ
+
+　GizmoをオフにするとGizmo自体が実行されない
 
 
 ・曲がりきらない
