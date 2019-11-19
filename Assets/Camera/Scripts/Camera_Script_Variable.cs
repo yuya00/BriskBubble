@@ -41,7 +41,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     public float approach_timer_max = 1.0f; // 近づいてから何秒とめるか
     public float scene_move_spd = 1.0f;
     public float LOOK_SPD = 15.0f;          // 徐々に向かせる回転の速さ
-
+    public float Y_CLEAR_SPD = 4.0f;        // カメラY位置初期化速度
     [Foldout("CameraProduction", false)]
     private GameObject[] obj;               // 敵のオブジェクト取得
 
@@ -66,7 +66,6 @@ public sealed partial class Camera_Script : MonoBehaviour
     private const float SCENE_LEN = 1.0f;   // どこまで近づくか
     private const float FOLLOW_SPD = 1.0f;
     private const float STATE_CHECK = 0.2f;
-    private const float Y_CLEAR_SPD = 4.0f;
 
     //--------------------------------------------
 

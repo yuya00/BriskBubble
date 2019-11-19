@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 685224401}
   prodaction_shot: {fileID: 1930379052}
   big_spd: 0.3
@@ -1383,7 +1383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 1292747294}
   prodaction_shot: {fileID: 1670523297}
   big_spd: 0.3
@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 1592333089}
   prodaction_shot: {fileID: 1097815551}
   big_spd: 0.3
@@ -2077,7 +2077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 588402157}
   prodaction_shot: {fileID: 1828089330}
   big_spd: 0.3
@@ -2533,7 +2533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 1697454168}
   prodaction_shot: {fileID: 907852070}
   big_spd: 0.3
@@ -2999,7 +2999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 397367360}
   prodaction_shot: {fileID: 530931426}
   big_spd: 0.3
@@ -3412,7 +3412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 644601556}
   prodaction_shot: {fileID: 27771671}
   big_spd: 0.3
@@ -5396,8 +5396,9 @@ MonoBehaviour:
   zoom_out_spd: 400
   zoom_len: 11
   approach_timer_max: 1
-  scene_move_spd: 25
+  scene_move_spd: 50
   LOOK_SPD: 15
+  Y_CLEAR_SPD: 2
   enemy_hit_flg: 0
 --- !u!4 &1606191279
 Transform:
@@ -5562,7 +5563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 1353933131}
   prodaction_shot: {fileID: 850735090}
   big_spd: 0.3
@@ -5838,7 +5839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 1009321730}
   prodaction_shot: {fileID: 36993557}
   big_spd: 0.3
@@ -6599,7 +6600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1aef111d8c269c4a90a36902166a34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui_on: 0
   obj: {fileID: 1608108598}
   prodaction_shot: {fileID: 699930257}
   big_spd: 0.3
