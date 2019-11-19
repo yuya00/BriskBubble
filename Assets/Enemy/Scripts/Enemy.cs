@@ -119,6 +119,12 @@ public sealed partial class Enemy : CharaBase
 			float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
 			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
+			//状態(待機や警戒など)
+			GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+
+			//状態内の行動(首振りやジャンプなど)
+			GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+
 			//壁判定
 			GUILayout.TextArea("壁判定右\n" + wallray.hit_right_flg);
 			GUILayout.TextArea("壁判定左\n" + wallray.hit_left_flg);
