@@ -470,9 +470,9 @@ public sealed partial class Enemy : CharaBase
 				transform.LookAt(transform.position - dir);
 
 				//穴に向かわないように向き変更
-				do {
-					HoleRay_Rotate_Judge(); //--穴判定による向き変更
-				} while (holeray.hit_right_flg || holeray.hit_left_flg);
+				//do {
+				//	HoleRay_Rotate_Judge(); //--穴判定による向き変更
+				//} while (holeray.hit_right_flg || holeray.hit_left_flg);
 
 
 				//前方向の速さ代入
