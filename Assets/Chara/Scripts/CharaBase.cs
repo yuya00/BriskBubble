@@ -72,6 +72,14 @@ public class CharaBase : MonoBehaviour {
 			box_pos = self_trans.position;
 			box_pos = box_pos - (self_trans.up * down_limit) + (self_trans.transform.up * box_total / 2);
 		}
+
+		public void BoxCast_Cal2(Transform self_trans) {
+			box_total = down_limit + up_limit;
+			box_size = new Vector3(box_total / 2, box_total / 2, box_total / 2);
+			//box_pos = self_trans.position;
+			//box_pos = box_pos - (self_trans.forward * down_limit) + (self_trans.transform.forward * box_total / 2);
+		}
+
 	}
 
 
@@ -118,7 +126,7 @@ public class CharaBase : MonoBehaviour {
 
 	//穴判定Ray ---------------------------------------------
 	[System.Serializable]
-	public class HoleRay : Ray_Base {
+	public class HoleRay : BoxCast_Base {
 		//public float length;    //100.0f
 
 		[SerializeField, Header("Rayの角度")]
@@ -272,6 +280,110 @@ public class CharaBase : MonoBehaviour {
 	public void HoleRay_Judge() {
 		RaycastHit hit;
 		//何にも当たっていなかったら
+
+		#region CheckBox
+		/*
+		
+		if (!Physics.CheckBox(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, 
+			new Vector3(1.5f, 1.5f, 1.5f), transform.rotation)){
+			holeray.hit_right_flg = true;
+
+		}
+		else {
+			Debug.Log("Hit");
+			holeray.hit_right_flg = false;
+		}
+
+		if (!Physics.CheckBox(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
+			new Vector3(1.5f, holeray.length, 1.5f), transform.rotation)) {
+			holeray.hit_left_flg = true;
+		}
+		else {
+			holeray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region BoxCast
+		/*
+		holeray.BoxCast_Cal2(transform);
+
+
+		//右のレイ
+		if (Physics.BoxCast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, holeray.box_size,
+			-transform.up, out hit,
+			transform.rotation, holeray.length / 3)) {
+			if (hit.collider.gameObject.tag != "Wall") {
+				holeray.hit_right_flg = true;
+			}
+			holeray.hit_right_flg = false;
+		}
+		else {
+			holeray.hit_right_flg = true;
+		}
+
+		//左のレイ
+		if (Physics.BoxCast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, holeray.box_size,
+			-transform.up, out hit,
+			transform.rotation, holeray.length / 3)) {
+			if (hit.collider.gameObject.tag != "Wall") {
+				holeray.hit_left_flg = true;
+			}
+			holeray.hit_left_flg = false;
+		}
+		else {
+			holeray.hit_left_flg = true;
+		}
+		// */
+		#endregion
+
+		#region Double_RayCast
+		/*
+		//右のレイ
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (wallray.length + 2),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (wallray.length - 2),
+			-transform.up, out hit, holeray.length))) {
+			holeray.hit_right_flg = true;
+		}
+		else {
+			holeray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (wallray.length + 2),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (wallray.length - 2),
+			-transform.up, out hit, holeray.length))) {
+			holeray.hit_left_flg = true;
+		}
+		else {
+			holeray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region RayCast
+		//*
+		//右のレイ
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length,
+			-transform.up, out hit, holeray.length)) {
+			holeray.hit_right_flg = true;
+		}
+		else {
+			holeray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
+			-transform.up, out hit, holeray.length)) {
+			holeray.hit_left_flg = true;
+		}
+		else {
+			holeray.hit_left_flg = false;
+		}
+		// */
+		#endregion
 
 		//右のレイ
 		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length,

@@ -129,6 +129,11 @@ public sealed partial class Enemy : CharaBase
 			GUILayout.TextArea("壁判定右\n" + wallray.hit_right_flg);
 			GUILayout.TextArea("壁判定左\n" + wallray.hit_left_flg);
 
+			//穴判定
+			GUILayout.TextArea("穴判定右\n" + holeray.hit_right_flg);
+			GUILayout.TextArea("穴判定左\n" + holeray.hit_left_flg);
+
+
 			//レイが両方当たった回数
 			//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
 
@@ -201,12 +206,16 @@ public sealed partial class Enemy : CharaBase
 
 
 		#region 穴判定Ray
-		if (holeray.gizmo_on)
-        {
+		if (holeray.gizmo_on) {
+			//holeray.BoxCast_Cal2(transform);
 			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+
+			Gizmos.DrawWireCube(transform.position + ((transform.forward * angle_mag + transform.right).normalized * wallray.length) + (-transform.up * holeray.length / 2),
+					new Vector3(3, holeray.length, 3));
+
 			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
-        }
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
+		}
 		#endregion
 
 
@@ -468,6 +477,14 @@ public sealed partial class Enemy : CharaBase
 
 				//プレイヤーと逆ベクトルの方向を見る
 				transform.LookAt(transform.position - dir);
+
+				//穴に向かわないように向き変更
+				for (int i = 0; i < 30; i++) {
+					HoleRay_Rotate_Judge(); //--穴判定による向き変更
+					if (!holeray.hit_right_flg && !holeray.hit_left_flg) {
+						break;
+					}
+				}
 
 				//穴に向かわないように向き変更
 				//do {
