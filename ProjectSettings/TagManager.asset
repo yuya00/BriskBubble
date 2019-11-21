@@ -9,6 +9,8 @@ TagManager:
   - Shot
   - Wall
   - Area
+  - ProdactionEnemy
+  - Coin
   layers:
   - Default
   - TransparentFX
