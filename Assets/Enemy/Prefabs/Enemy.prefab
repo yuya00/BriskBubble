@@ -306,8 +306,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui_on: 1
-  run_spd: 15
-  walk_spd: 3
+  run_spd: 0
+  walk_spd: 0
   jump_power: 10
   stop_fric: 0.3
   chara_ray_length: 0.4
@@ -316,13 +316,15 @@ MonoBehaviour:
   wallray:
     gizmo_on: 1
     length: 19.05
-    up_limit: 1.99
-    down_limit: 2.44
+    up_limit: 1.9
+    down_limit: 1.7
     angle: 0
     spd: 1.5
   holeray:
     gizmo_on: 0
     length: 100
+    up_limit: 2.9
+    down_limit: 3
     angle: 0
     spd: 10
   spd_ratio: 0.5

@@ -1275,10 +1275,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239078, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 95
+      value: 99.9
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -1826,13 +1831,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
         type: 3}
-      propertyPath: run_spd
-      value: 0
+      propertyPath: wallray.down_limit
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
         type: 3}
-      propertyPath: walk_spd
-      value: 0
+      propertyPath: wallray.up_limit
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: holeray.up_limit
+      value: 2.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: holeray.down_limit
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: holeray.gizmo_on
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: holeray.spd
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189943293915746484, guid: 6582a8460615bbc41aa8df265ad41b1f,
+        type: 3}
+      propertyPath: holeray.startLength
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6582a8460615bbc41aa8df265ad41b1f, type: 3}
@@ -3567,6 +3597,7 @@ MonoBehaviour:
   approach_timer_max: 1
   scene_move_spd: 25
   LOOK_SPD: 15
+  Y_CLEAR_SPD: 4
   enemy_hit_flg: 0
 --- !u!4 &1554282991
 Transform:

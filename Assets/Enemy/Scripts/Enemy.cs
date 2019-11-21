@@ -119,9 +119,20 @@ public sealed partial class Enemy : CharaBase
 			float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
 			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
+			//状態(待機や警戒など)
+			GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+
+			//状態内の行動(首振りやジャンプなど)
+			GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+
 			//壁判定
 			GUILayout.TextArea("壁判定右\n" + wallray.hit_right_flg);
 			GUILayout.TextArea("壁判定左\n" + wallray.hit_left_flg);
+
+			//穴判定
+			GUILayout.TextArea("穴判定右\n" + holeray.hit_right_flg);
+			GUILayout.TextArea("穴判定左\n" + holeray.hit_left_flg);
+
 
 			//レイが両方当たった回数
 			//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
@@ -195,13 +206,21 @@ public sealed partial class Enemy : CharaBase
 
 
 		#region 穴判定Ray
-		if (holeray.gizmo_on)
-        {
-			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
-        }
+		if (holeray.gizmo_on) {
+			//holeray.BoxCast_Cal2(transform);
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.0f);
+
+			//if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 2)
+
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 2), -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right * 2), -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right * 2), -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right * 2), -transform.up * holeray.length);
+			//Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * holeray.startLength, -transform.up * holeray.length);
+			//Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * holeray.startLength, -transform.up * holeray.length);
+		}
 		#endregion
+
 
 
 		#region ジャンプ判定Ray
@@ -455,16 +474,30 @@ public sealed partial class Enemy : CharaBase
 				// */
 				#endregion
 
-				//プレイヤーと逆方向のベクトルの速さ代入
+				//プレイヤーと逆ベクトル
 				Vector3 dir = new Vector3(0, 0, 0);
 				dir.x = dist_normal_vec.x;
 				dir.z = dist_normal_vec.y;
 
-				//プレイヤーと逆+ランダムベクトル視点を見る
+				//プレイヤーと逆ベクトルの方向を見る
 				transform.LookAt(transform.position - dir);
 
+				//穴に向かわないように向き変更
+				for (int i = 0; i < 30; i++) {
+					if (!holeray.hit_right_flg && !holeray.hit_left_flg) {
+						break;
+					}
+					HoleRay_Rotate_Judge(); //--穴判定による向き変更
+				}
+
+				//穴に向かわないように向き変更
+				//do {
+				//	HoleRay_Rotate_Judge(); //--穴判定による向き変更
+				//} while (holeray.hit_right_flg || holeray.hit_left_flg);
+
+
 				//前方向の速さ代入
-				velocity = transform.forward * (run_spd);
+				velocity = transform.forward * run_spd;
 
                 goto case Enum_Act.RUN;
 				//break;
@@ -478,7 +511,7 @@ public sealed partial class Enemy : CharaBase
 				JumpRay_Jump_Judge();
 
 				//--壁判定による向き変更
-				WallRay_Rotate_Judge();
+				//WallRay_Rotate_Judge();
 
                 //--穴判定による向き変更
                 HoleRay_Rotate_Judge();
@@ -599,6 +632,7 @@ public sealed partial class Enemy : CharaBase
 	//----ジャンプ事前判定Ray当たり判定
 	void JumpRay_Judge_Advance() {
 		RaycastHit hit;
+		jumpray.BoxCast_Cal(transform);
 
 		//Box:true ジャンプ上限Ray:false
 		if (Physics.BoxCast(jumpray.box_pos, new Vector3(0, jumpray.box_total / 2, jumpray.advance_length / 2),
