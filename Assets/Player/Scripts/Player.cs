@@ -388,7 +388,7 @@ public sealed partial class Player : CharaBase
 
     bool fall_check(float fall_y,float fall_y_max)
     {
-        if (fall_y - transform.position.y > fall_y_max) return true;
+        if (fall_y + transform.position.y < fall_y_max) return true;
         return false;
     }
 
