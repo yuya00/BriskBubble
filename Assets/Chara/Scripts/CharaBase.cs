@@ -59,10 +59,10 @@ public class CharaBase : MonoBehaviour {
 		[System.NonSerialized]
 		public Vector3 box_size;
 
-		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(上限)")]
+		[SerializeField, Range(0.0f, 8.0f), Header("Rayの高さ(上限)")]
 		public float up_limit;
 
-		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(下限)")]
+		[SerializeField, Range(0.0f, 8.0f), Header("Rayの高さ(下限)")]
 		public float down_limit;
 
 		//Boxcastの計算
