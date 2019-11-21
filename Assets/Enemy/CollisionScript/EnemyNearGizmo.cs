@@ -9,6 +9,8 @@ public class EnemyNearGizmo : MonoBehaviour
 	//ギズモ描画
 	[DrawGizmo(GizmoType.NonSelected | GizmoType.Selected)]
 	private static void DrawEnemyGizmo(EnemyNear search_object, GizmoType gizmo_type) {
+		//オフならスキップ
+		if (!search_object.gizmo_on) return;
 		//設定されてなかったらスキップ
 		if (search_object.Radius <= 0.0f) return;
 

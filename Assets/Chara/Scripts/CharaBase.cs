@@ -41,8 +41,10 @@ public class CharaBase : MonoBehaviour {
 
 	// Ray基底 ------------------------------------------
 	public class Ray_Base {
-		[Header("Gizmoの表示")]
 		public bool gizmo_on;
+
+		[Header("判定の実行")]
+		public bool judge_on;
 
 		[SerializeField, Header("Rayの長さ")]
 		public float length;
@@ -173,6 +175,9 @@ public class CharaBase : MonoBehaviour {
 
 	//--壁判定による向き変更
 	public virtual void WallRay_Rotate_Judge() {
+		if (wallray.judge_on) {
+			return;
+		}
 		//----壁判定Ray当たり判定
 		WallRay_Judge();
 
@@ -265,6 +270,9 @@ public class CharaBase : MonoBehaviour {
 
 	//--穴判定による向き変更
 	public void HoleRay_Rotate_Judge() {
+		if (holeray.judge_on) {
+			return;
+		}
 		//----穴判定Ray当たり判定
 		HoleRay_Judge();
 

@@ -185,6 +185,7 @@ MonoBehaviour:
   fallspd_limit: 30
   wallray:
     gizmo_on: 1
+    judge_on: 1
     length: 19.05
     up_limit: 1.9
     down_limit: 1.7
@@ -192,6 +193,7 @@ MonoBehaviour:
     spd: 1.5
   holeray:
     gizmo_on: 1
+    judge_on: 1
     length: 100
     startLength: 11
     angle: 0
@@ -214,6 +216,7 @@ MonoBehaviour:
     lookback_time: 30
   jumpray:
     gizmo_on: 1
+    judge_on: 1
     length: 4.32
     up_limit: 2.88
     down_limit: 1.92
@@ -334,6 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158cf52db8ed94243a807bc252e6793d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gizmo_on: 1
   m_angle: 50
   gizmo_color: {r: 0.990566, g: 0.70617574, b: 0, a: 0.38431373}
 --- !u!54 &2821904174694689442
@@ -502,6 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51afcdf315697e146a3bf4b0d7d7e820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gizmo_on: 1
   gizmo_color: {r: 0.93613964, g: 1, b: 0.25098038, a: 0.78431374}
 --- !u!54 &2821904174627846746
 Rigidbody:
@@ -577,6 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b4109257d180c469c59e14abac1bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gizmo_on: 1
   gizmo_color: {r: 1, g: 0.36196488, b: 0.1462264, a: 0.63529414}
 --- !u!54 &2821904175356360014
 Rigidbody:

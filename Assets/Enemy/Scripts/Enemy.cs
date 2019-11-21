@@ -227,7 +227,6 @@ public sealed partial class Enemy : CharaBase
 		#endregion
 
 
-
 		#region ジャンプ判定Ray
 		if (jumpray.gizmo_on) 
 		{
@@ -549,6 +548,9 @@ public sealed partial class Enemy : CharaBase
     //--壁判定による向き変更
     public override void WallRay_Rotate_Judge()
     {
+		if (wallray.judge_on) {
+			return;
+		}
 		//ジャンプの準備してたら飛ばす
 		if (jumpray.advance_flg || (velocity.y != 0)) {
 			return;
@@ -627,6 +629,9 @@ public sealed partial class Enemy : CharaBase
 	//--ジャンプ判定によるジャンプ
 	void JumpRay_Jump_Judge() 
 	{
+		if (jumpray.judge_on) {
+			return;
+		}
 		//----ジャンプ事前判定Ray当たり判定
 		JumpRay_Judge_Advance();
 

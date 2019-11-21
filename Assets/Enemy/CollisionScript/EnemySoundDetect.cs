@@ -6,6 +6,8 @@ public class EnemySoundDetect : MonoBehaviour {
 	private SphereCollider m_sphereCollider = null;
 	private bool hit_flg;
 	private Vector3 hit_pos;
+
+	public bool gizmo_on;
 	[SerializeField]
 	private Color gizmo_color;
 
