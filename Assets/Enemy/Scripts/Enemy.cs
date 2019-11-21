@@ -526,15 +526,18 @@ public sealed partial class Enemy : CharaBase
 				Away_LookBack();
 
                 //二人の距離が(音探知範囲*awayact.mag)より離れたら
-                if (dist.magnitude >= enemy_sound_detect.Radius * awayact.mag)
+                if ((dist.magnitude >= enemy_sound_detect.Radius * awayact.mag) && (velocity.y == 0))
                 {
                     enum_act = Enum_Act.END;
                 }
                 break;
-            case Enum_Act.END:      //state変更
+            case Enum_Act.END:
 				//プレイヤーの方向を向く
-                transform.LookAt(transform.position - velocity);
-                Clear();
+				//transform.LookAt(transform.position - velocity);
+				//進行方向と逆を見る
+				transform.LookAt(transform.position - transform.forward);
+
+				Clear();
                 enum_state = Enum_State.WAIT;
                 break;
             case Enum_Act.SWING:
