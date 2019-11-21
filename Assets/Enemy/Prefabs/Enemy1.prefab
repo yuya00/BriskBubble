@@ -188,7 +188,7 @@ MonoBehaviour:
     judge_on: 1
     length: 19.05
     up_limit: 1.9
-    down_limit: 1.7
+    down_limit: 3.83
     angle: 0
     spd: 1.5
   holeray:
@@ -218,8 +218,8 @@ MonoBehaviour:
     gizmo_on: 1
     judge_on: 1
     length: 4.32
-    up_limit: 2.88
-    down_limit: 1.92
+    up_limit: 2.06
+    down_limit: 4.28
     power: 22.1
     advance_length: 23.45
 --- !u!136 &2821904174435107906

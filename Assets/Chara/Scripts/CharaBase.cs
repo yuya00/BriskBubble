@@ -175,7 +175,7 @@ public class CharaBase : MonoBehaviour {
 
 	//--壁判定による向き変更
 	public virtual void WallRay_Rotate_Judge() {
-		if (wallray.judge_on) {
+		if (!wallray.judge_on) {
 			return;
 		}
 		//----壁判定Ray当たり判定
@@ -270,7 +270,7 @@ public class CharaBase : MonoBehaviour {
 
 	//--穴判定による向き変更
 	public void HoleRay_Rotate_Judge() {
-		if (holeray.judge_on) {
+		if (!holeray.judge_on) {
 			return;
 		}
 		//----穴判定Ray当たり判定

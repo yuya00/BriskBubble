@@ -5,16 +5,14 @@
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 
-壁Gizmo切り替え
-壁判定切り替え
-
-
 
 準備判定falseの処理
 
 
 maptipのMeshColliderのConvexを消す
 
+
+spd_ratio
 
 
 ・敵が崖に追い詰められたら落ちてしまう

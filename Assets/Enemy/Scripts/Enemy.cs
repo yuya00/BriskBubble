@@ -130,12 +130,10 @@ public sealed partial class Enemy : CharaBase
 			GUILayout.TextArea("行動\n act：" + enum_act.ToString());
 
 			//壁判定
-			GUILayout.TextArea("壁判定右\n" + wallray.hit_right_flg);
-			GUILayout.TextArea("壁判定左\n" + wallray.hit_left_flg);
+			GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
 
 			//穴判定
-			GUILayout.TextArea("穴判定右\n" + holeray.hit_right_flg);
-			GUILayout.TextArea("穴判定左\n" + holeray.hit_left_flg);
+			GUILayout.TextArea("穴判定左右\n" + holeray.hit_left_flg + "  " + holeray.hit_right_flg);
 
 
 			//レイが両方当たった回数
@@ -144,10 +142,6 @@ public sealed partial class Enemy : CharaBase
 			//斜めベクトル
 			//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
 			//GUILayout.TextArea("dist_angle\n" + dist_angle);
-
-			//穴判定
-			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_right_flg);
-			//GUILayout.TextArea("holeray_flg\n" + holeray.hit_left_flg);
 
 			//GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
 
@@ -548,7 +542,7 @@ public sealed partial class Enemy : CharaBase
     //--壁判定による向き変更
     public override void WallRay_Rotate_Judge()
     {
-		if (wallray.judge_on) {
+		if (!wallray.judge_on) {
 			return;
 		}
 		//ジャンプの準備してたら飛ばす
@@ -629,7 +623,7 @@ public sealed partial class Enemy : CharaBase
 	//--ジャンプ判定によるジャンプ
 	void JumpRay_Jump_Judge() 
 	{
-		if (jumpray.judge_on) {
+		if (!jumpray.judge_on) {
 			return;
 		}
 		//----ジャンプ事前判定Ray当たり判定
