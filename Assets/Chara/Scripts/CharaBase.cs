@@ -73,13 +73,6 @@ public class CharaBase : MonoBehaviour {
 			box_pos = box_pos - (self_trans.up * down_limit) + (self_trans.transform.up * box_total / 2);
 		}
 
-		public void BoxCast_Cal2(Transform self_trans) {
-			box_total = down_limit + up_limit;
-			box_size = new Vector3(box_total / 2, box_total / 2, box_total / 2);
-			//box_pos = self_trans.position;
-			//box_pos = box_pos - (self_trans.forward * down_limit) + (self_trans.transform.forward * box_total / 2);
-		}
-
 	}
 
 
@@ -126,8 +119,11 @@ public class CharaBase : MonoBehaviour {
 
 	//穴判定Ray ---------------------------------------------
 	[System.Serializable]
-	public class HoleRay : BoxCast_Base {
+	public class HoleRay : Ray_Base {
 		//public float length;    //100.0f
+
+		[SerializeField, Header("Rayの始点")]
+		public float startLength;	//11.0f
 
 		[SerializeField, Header("Rayの角度")]
 		public float angle;     //00.0f 未使用
@@ -145,7 +141,7 @@ public class CharaBase : MonoBehaviour {
 		//public bool both_flg;
 
 		[SerializeField, Header("向き変更の速さ")]
-		public float spd;       //2.0f
+		public float spd;       //15.0f
 
 		public void Clear() {
 			hit_right_flg = false;
@@ -279,70 +275,50 @@ public class CharaBase : MonoBehaviour {
 	//----穴判定Ray当たり判定
 	public void HoleRay_Judge() {
 		RaycastHit hit;
+
 		//何にも当たっていなかったら
-
-		#region CheckBox
-		/*
-		
-		if (!Physics.CheckBox(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, 
-			new Vector3(1.5f, 1.5f, 1.5f), transform.rotation)){
-			holeray.hit_right_flg = true;
-
-		}
-		else {
-			Debug.Log("Hit");
-			holeray.hit_right_flg = false;
-		}
-
-		if (!Physics.CheckBox(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
-			new Vector3(1.5f, holeray.length, 1.5f), transform.rotation)) {
-			holeray.hit_left_flg = true;
-		}
-		else {
-			holeray.hit_left_flg = false;
-		}
-		// */
-		#endregion
-
-		#region BoxCast
-		/*
-		holeray.BoxCast_Cal2(transform);
-
-
+		#region 4RayCast 縦横
+		//*
 		//右のレイ
-		if (Physics.BoxCast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, holeray.box_size,
-			-transform.up, out hit,
-			transform.rotation, holeray.length / 3)) {
-			if (hit.collider.gameObject.tag != "Wall") {
-				holeray.hit_right_flg = true;
-			}
-			holeray.hit_right_flg = false;
+		float var = 1;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * var),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right * var),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength + var)),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength - var)),
+			-transform.up, out hit, holeray.length)) ) {
+			holeray.hit_right_flg = true;
 		}
 		else {
-			holeray.hit_right_flg = true;
+			holeray.hit_right_flg = false;
 		}
 
 		//左のレイ
-		if (Physics.BoxCast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, holeray.box_size,
-			-transform.up, out hit,
-			transform.rotation, holeray.length / 3)) {
-			if (hit.collider.gameObject.tag != "Wall") {
-				holeray.hit_left_flg = true;
-			}
-			holeray.hit_left_flg = false;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right * var),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right * var),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength + var)),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength - var)),
+			-transform.up, out hit, holeray.length))) {
+			holeray.hit_left_flg = true;
 		}
 		else {
-			holeray.hit_left_flg = true;
+			holeray.hit_left_flg = false;
 		}
 		// */
 		#endregion
 
-		#region Double_RayCast
+		#region 2RayCast 横
 		/*
 		//右のレイ
-		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (wallray.length + 2),
+		float var = 1;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right*var),
 			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (wallray.length - 2),
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right* var),
 			-transform.up, out hit, holeray.length))) {
 			holeray.hit_right_flg = true;
 		}
@@ -351,9 +327,35 @@ public class CharaBase : MonoBehaviour {
 		}
 
 		//左のレイ
-		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (wallray.length + 2),
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right* var),
 			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (wallray.length - 2),
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right* var),
+			-transform.up, out hit, holeray.length))) {
+			holeray.hit_left_flg = true;
+		}
+		else {
+			holeray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region 2RayCast 縦
+		/*
+		//右のレイ
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength + 1),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength - 1),
+			-transform.up, out hit, holeray.length))) {
+			holeray.hit_right_flg = true;
+		}
+		else {
+			holeray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength + 1),
+			-transform.up, out hit, holeray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength - 1),
 			-transform.up, out hit, holeray.length))) {
 			holeray.hit_left_flg = true;
 		}
@@ -364,7 +366,7 @@ public class CharaBase : MonoBehaviour {
 		#endregion
 
 		#region RayCast
-		//*
+		/*
 		//右のレイ
 		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length,
 			-transform.up, out hit, holeray.length)) {
@@ -384,24 +386,6 @@ public class CharaBase : MonoBehaviour {
 		}
 		// */
 		#endregion
-
-		//右のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length,
-			-transform.up, out hit, holeray.length)) {
-			holeray.hit_right_flg = true;
-		}
-		else {
-			holeray.hit_right_flg = false;
-		}
-
-		//左のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
-			-transform.up, out hit, holeray.length)) {
-			holeray.hit_left_flg = true;
-		}
-		else {
-			holeray.hit_left_flg = false;
-		}
 
 	}
 

@@ -208,15 +208,19 @@ public sealed partial class Enemy : CharaBase
 		#region 穴判定Ray
 		if (holeray.gizmo_on) {
 			//holeray.BoxCast_Cal2(transform);
-			Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
+			Gizmos.color = Color.green - new Color(0, 0, 0, 0.0f);
 
-			Gizmos.DrawWireCube(transform.position + ((transform.forward * angle_mag + transform.right).normalized * wallray.length) + (-transform.up * holeray.length / 2),
-					new Vector3(3, holeray.length, 3));
+			//if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 2)
 
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 2), -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right * 2), -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right * 2), -transform.up * holeray.length);
+			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right * 2), -transform.up * holeray.length);
+			//Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * holeray.startLength, -transform.up * holeray.length);
+			//Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * holeray.startLength, -transform.up * holeray.length);
 		}
 		#endregion
+
 
 
 		#region ジャンプ判定Ray
@@ -480,10 +484,10 @@ public sealed partial class Enemy : CharaBase
 
 				//穴に向かわないように向き変更
 				for (int i = 0; i < 30; i++) {
-					HoleRay_Rotate_Judge(); //--穴判定による向き変更
 					if (!holeray.hit_right_flg && !holeray.hit_left_flg) {
 						break;
 					}
+					HoleRay_Rotate_Judge(); //--穴判定による向き変更
 				}
 
 				//穴に向かわないように向き変更
@@ -507,7 +511,7 @@ public sealed partial class Enemy : CharaBase
 				JumpRay_Jump_Judge();
 
 				//--壁判定による向き変更
-				WallRay_Rotate_Judge();
+				//WallRay_Rotate_Judge();
 
                 //--穴判定による向き変更
                 HoleRay_Rotate_Judge();
