@@ -111,7 +111,11 @@ public sealed partial class Enemy : CharaBase
 
 			//回転
 			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+
+			//着地判定
+			GUILayout.TextArea("着地判定\n" + is_ground);
 			//*/
+
 
 			//速さ
 			float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
@@ -212,12 +216,13 @@ public sealed partial class Enemy : CharaBase
 
 			//if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 2)
 
-			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 2), -transform.up * holeray.length);
-			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right * 2), -transform.up * holeray.length);
-			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right * 2), -transform.up * holeray.length);
-			Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right * 2), -transform.up * holeray.length);
-			//Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * holeray.startLength, -transform.up * holeray.length);
-			//Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * holeray.startLength, -transform.up * holeray.length);
+			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * 1), -transform.up * holeray.length);
+			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right * 1), -transform.up * holeray.length);
+			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right * 1), -transform.up * holeray.length);
+			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right * 1), -transform.up * holeray.length);
+
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * holeray.startLength, -transform.up * holeray.length);
+			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * holeray.startLength, -transform.up * holeray.length);
 		}
 		#endregion
 
@@ -511,7 +516,7 @@ public sealed partial class Enemy : CharaBase
 				JumpRay_Jump_Judge();
 
 				//--壁判定による向き変更
-				//WallRay_Rotate_Judge();
+				WallRay_Rotate_Judge();
 
                 //--穴判定による向き変更
                 HoleRay_Rotate_Judge();

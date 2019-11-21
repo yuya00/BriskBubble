@@ -409,16 +409,14 @@ public class CharaBase : MonoBehaviour {
         // ショットのレイヤーは8番
         // shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
         LayerMask shot_layer = ~(1 << 8);
-        /***********************/
-        //下レイが当たっていたら着地
-        if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer))
-        {
-            rigid.useGravity = true;
-            is_ground = true;
-            velocity.y = 0;
-        }
-        else
-        {
+		/***********************/
+		//下レイが当たっていたら着地
+		if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
+			rigid.useGravity = true;
+			is_ground = true;
+			velocity.y = 0;
+		}
+		else {
             is_ground = false;
 			if (velocity.y >= -fallspd_limit) { //落下速度の上限
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
