@@ -15,6 +15,7 @@ public sealed partial class Player : CharaBase
         chara_ray = transform.Find("CharaRay");
         animator = GetComponent<Animator>();
         COUNT = 23 / anim_spd;
+        respawn_pos = transform.position;
     }
 
     void Update()
@@ -63,8 +64,6 @@ public sealed partial class Player : CharaBase
     }
 
 
-
-
     //GUI表示 -----------------------------------------------------
     private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
     void OnGUI()
@@ -77,13 +76,13 @@ public sealed partial class Player : CharaBase
 
 
             #region ここに追加
-            GUILayout.TextArea("着地判定\n" + is_ground);
-            GUILayout.TextArea("速さ\n" + velocity);
+            GUILayout.TextArea("fall_y\n" + fall_y);
+            //GUILayout.TextArea("速さ\n" + velocity);
 
-            //壁掴み判定
-            GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
-            GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
-            GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+            ////壁掴み判定
+            //GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
+            //GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
+            //GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
 
             //壁掴んだ瞬間
             //GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
@@ -144,7 +143,11 @@ public sealed partial class Player : CharaBase
         stop_fric = init_fric;
 
         //ジャンプ時の移動慣性
-        if (is_ground) jump_fric = 1;
+        if (is_ground)
+        {
+            jump_fric = 1;
+            fall_y = transform.position.y;  // 着地してるときは自分のy位置を保存
+        }
         else jump_fric = jump_fric_power;
 
         // バブル状態のとき
@@ -159,6 +162,8 @@ public sealed partial class Player : CharaBase
         // ショットに乗った時にジャンプをjump_power_up倍
         if (down_hit_shot()) jump(jump_power * jump_power_up);
 
+        // リスポーン
+        fall_max();
 
         ////--壁判定による向き変更
         //WallRay_Rotate_Judge();
@@ -326,6 +331,14 @@ public sealed partial class Player : CharaBase
         }
     }
 
+    void fall_max()
+    {
+        if(fall_check(fall_y,fall_y_max))
+        {
+            transform.position = respawn_pos;
+        }
+    }
+
     // 飛んでる判定
     bool jump_now()
     {
@@ -370,6 +383,12 @@ public sealed partial class Player : CharaBase
     {
         // 落下判定
         if (velocity.y < 0.0f) return true;
+        return false;
+    }
+
+    bool fall_check(float fall_y,float fall_y_max)
+    {
+        if (fall_y + transform.position.y < fall_y_max) return true;
         return false;
     }
 
@@ -566,6 +585,15 @@ public sealed partial class Player : CharaBase
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Coin")
+        {
+            coin_count++;
+            Destroy(other.gameObject);
+        }
+
+    }
 
     //get ------------------------------------------------------------
     public float Run_spd
@@ -578,5 +606,9 @@ public sealed partial class Player : CharaBase
         get { return transform.position; }
     }
 
+    public int Coin_count
+    {
+        get { return coin_count; }
+    }
 }
 

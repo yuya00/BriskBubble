@@ -11,14 +11,24 @@ public sealed partial class Player : CharaBase
 
     private float init_spd;               // 初期速度
     private float init_fric;              // 初期慣性STOP
+
     public float slope = 0.3f;           // スティックの傾き具合設定用
+    private float fall_y;
+    public float fall_y_max = -100.0f;
+
+    private Vector3 respawn_pos;
+
     private float jump_anim_count = 0;
     private const float NORMALIZE = 1.0f;
     private bool ray_fg;
 	private bool wall_touch_flg = false;        //壁との当たり判定
 
-	// あにめ
-	private Animator animator;
+    private int coin_count;     // コイン入手数
+
+
+
+    // あにめ
+    private Animator animator;
     private float COUNT;
     private float anim_spd = 3.0f;
 
@@ -51,9 +61,25 @@ public sealed partial class Player : CharaBase
          new Vector3(  1, 0,  1 ),
     };
 
+    [Foldout("ShotParameter", true)]
+    public GameObject[] shot_object;        // ショットのobj
+    public float shot_interval_time_max;    // ショットを撃つまでの間隔
+    public float stop_time_max;             // どれだけ動けないか
+    public float back_spd = 0.5f;           // 後ろ方向に進む速度
+    public float jump_power_up;             // ショットに乗ったときにジャンプ力を何倍にするか
+    [Foldout("ShotParameter", false)]
 
-		//壁掴み判定Ray ---------------------------------------------
-	[System.Serializable]
+    private const float SHOT_POSITION = 2.8f;   // ショットを出す正面方向の位置補正
+    private int shot_state;                 // debugでpublicにしてる
+    private float charge_time;              // チャージ時間
+    private float shot_interval_time;       // ショットの間隔
+    private bool back_player;               // ショット3を撃った後にプレイヤーを後ろに飛ばす
+    private float stop_time;                // 動けない時間
+    private float init_back_spd;            // 初期速度保存用
+
+
+    //壁掴み判定Ray ---------------------------------------------
+    [System.Serializable]
 	public struct WallGrabRay {
 
 		[Header("Gizmoの表示")]
