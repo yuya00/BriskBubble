@@ -9,6 +9,21 @@ public class CharaBase : MonoBehaviour {
 	[Header("GUIの表示")]
 	public bool gui_on;
 
+	[System.Serializable]
+	public struct GUI {
+		[Header("GUIの表示")]
+		public bool on;
+
+		[Header("全値表示")]
+		public bool all_view;
+
+		[Header("開発用値表示")]
+		public bool debug_view;
+	}
+	[Header("GUI")]
+	public GUI gui;
+
+
 	[Foldout("BaseParameter" ,true)]
 	protected			 Rigidbody			 rigid;
 	protected			 Vector3			 velocity;			//速さ(rigd.velocityでも良いかも)

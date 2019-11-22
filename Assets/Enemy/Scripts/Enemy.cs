@@ -72,90 +72,78 @@ public sealed partial class Enemy : CharaBase
 	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
 	void OnGUI()
     {
-        if (gui_on)
+        if (gui.on)
         {
             GUILayout.BeginVertical("box", GUILayout.Width(190));
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
 			GUILayout.Box("Enemy");
-
+			float spdx,spdy,spdz;
 
 			#region ここに追加
-			/*
-			//座標
-			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-            float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-            float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
-            GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+			if (gui.all_view) {
+				//座標
+				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+				float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+				float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+				GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
 
-            //速さ
-            float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-            float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-            float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-            GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+				//速さ
+				spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+				spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+				spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+				GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-            //汎用待機タイマー
-            GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
+				//汎用待機タイマー
+				GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
 
-            //状態(待機や警戒など)
-            GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+				//状態(待機や警戒など)
+				GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
 
-            //状態内の行動(首振りやジャンプなど)
-            GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+				//状態内の行動(首振りやジャンプなど)
+				GUILayout.TextArea("行動\n act：" + enum_act.ToString());
 
-			////ランダム値
-			//GUILayout.TextArea("ランダム値\n num：" + once_random.num.ToString() + "\n"
-			//	+ " isfinish：" + once_random.isfinish.ToString());
+				//回転
+				GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
-			////首振りの行動
-			//GUILayout.TextArea("首振り\n swingact：" + enum_swingact.ToString());
+				//着地判定
+				GUILayout.TextArea("着地判定\n" + is_ground);
 
-			//回転
-			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+				//壁判定
+				GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
+				GUILayout.TextArea("壁判定両方左右\n" + wallray.cavein_left_flg + "  " + wallray.cavein_right_flg);
+				GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
+				GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
 
-			//着地判定
-			GUILayout.TextArea("着地判定\n" + is_ground);
+				//穴判定
+				GUILayout.TextArea("穴判定左右\n" + holeray.hit_left_flg + "  " + holeray.hit_right_flg);
 
-			//*/
-			//速さ
-			float spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-			float spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-			float spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+				//ジャンプ事前判定
+				GUILayout.TextArea("ジャンプ事前判定\n" + jumpray.advance_flg);
 
-			////状態(待機や警戒など)
-			//GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+				//ショットに当たった判定
+				GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
 
-			////状態内の行動(首振りやジャンプなど)
-			//GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+			}
+			else if (gui.debug_view) {
+				//速さ
+				spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+				spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+				spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+				GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-			//壁判定
-			GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
-			GUILayout.TextArea("壁判定両方左右\n" + wallray.cavein_left_flg + "  " + wallray.cavein_right_flg);
-			GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
-			GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
+				//壁判定
+				GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
+				GUILayout.TextArea("壁判定両方左右\n" + wallray.cavein_left_flg + "  " + wallray.cavein_right_flg);
+				GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
+				GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
 
-			//穴判定
-			GUILayout.TextArea("穴判定左右\n" + holeray.hit_left_flg + "  " + holeray.hit_right_flg);
+				//穴判定
+				GUILayout.TextArea("穴判定左右\n" + holeray.hit_left_flg + "  " + holeray.hit_right_flg);
 
+				//ジャンプ事前判定
+				GUILayout.TextArea("ジャンプ事前判定\n" + jumpray.advance_flg);
 
-
-
-			//レイが両方当たった回数
-			//GUILayout.TextArea("レイが両方当たった回数\n " + wallray.both_count.ToString());
-
-			//斜めベクトル
-			//GUILayout.TextArea("eulerAngles\n" + transform.eulerAngles);
-			//GUILayout.TextArea("dist_angle\n" + dist_angle);
-
-			//GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
-
-			//GUILayout.TextArea("transform.rotation\n" + transform.rotation);
-			//Debug.Log("transform.rotation" + transform.rotation);
-
-			//ジャンプ事前判定
-			GUILayout.TextArea("ジャンプ事前判定\n" + jumpray.advance_flg);
-
-
+			}
 			#endregion
 
 
@@ -168,18 +156,17 @@ public sealed partial class Enemy : CharaBase
     Vector3 localAngle = Vector3.zero;
     void OnDrawGizmos()
     {
-
 		#region 斜めベクトル
-		//new_angle = transform.eulerAngles;
-		//dist_angle = new_angle - old_angle;
-
-		////斜めのベクトルを出す方法 ※要修正
-		//Gizmos.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
-
-		//old_angle = new_angle;
+				//new_angle = transform.eulerAngles;
+				//dist_angle = new_angle - old_angle;
+		
+				////斜めのベクトルを出す方法 ※要修正
+				//Gizmos.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
+		
+				//old_angle = new_angle;
 		#endregion
-
-
+		
+		
 		#region 壁判定Ray
 		if (wallray.gizmo_on)
         {
@@ -204,9 +191,9 @@ public sealed partial class Enemy : CharaBase
 				(transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
 				transform.up * wallray.box_total);   //奥
 		}
-		#endregion
-
-
+#endregion
+		
+		
 		#region 穴判定Ray
 		if (holeray.gizmo_on) {
 			//holeray.BoxCast_Cal2(transform);
@@ -222,9 +209,9 @@ public sealed partial class Enemy : CharaBase
 			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * holeray.startLength, -transform.up * holeray.length);
 			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * holeray.startLength, -transform.up * holeray.length);
 		}
-		#endregion
-
-
+#endregion
+		
+		
 		#region ジャンプ判定Ray
 		if (jumpray.gizmo_on) 
 		{
@@ -238,7 +225,7 @@ public sealed partial class Enemy : CharaBase
 			Gizmos.DrawRay(transform.position - transform.up * jumpray.down_limit + transform.forward * jumpray.length, transform.up * jumpray.box_total);  //縦前
 			Gizmos.DrawRay(transform.position - transform.up * jumpray.down_limit + transform.forward * jumpray.advance_length, transform.up * jumpray.box_total);  //縦奥
 		}
-		#endregion
+#endregion
 	}
 
 
@@ -280,7 +267,7 @@ public sealed partial class Enemy : CharaBase
     }
 
     //--個別行動関数 ----------------------------------------------
-    #region 個別行動関数
+	#region 個別行動関数
 
     //初期化
     void Clear()
@@ -308,7 +295,7 @@ public sealed partial class Enemy : CharaBase
     //待機(定期的に正面から20度程左右に首を振る)
     void Wait()
     {
-        #region enum_actが変更した時,ランダム値設定可能
+		#region enum_actが変更した時,ランダム値設定可能
         if (old_act != enum_act)
         {
             once_random.isfinish = false;
@@ -758,7 +745,7 @@ public sealed partial class Enemy : CharaBase
 			}
 		}
 		#endregion
-
+		
 		#region BoxCast
 		/*
 		if (jumpray.advance_flg) {
@@ -773,7 +760,7 @@ public sealed partial class Enemy : CharaBase
 		}
 		// */
 		#endregion
-
+		
 		#region BoxCast(事前判定無しver)
 		/*
 		//Box:true ジャンプ上限Ray:false
@@ -885,7 +872,7 @@ public sealed partial class Enemy : CharaBase
         }
     }
 
-    #endregion
+	#endregion
 
     //プレイヤーとの当たり判定でstate変更 ---------------------------
     void StateChange()
