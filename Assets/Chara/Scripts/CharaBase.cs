@@ -6,9 +6,6 @@ using Pixeye.Unity;
 
 public class CharaBase : MonoBehaviour {
 
-	[Header("GUIの表示")]
-	public bool gui_on;
-
 	[System.Serializable]
 	public struct GUI {
 		[Header("GUIの表示")]

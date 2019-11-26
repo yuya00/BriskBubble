@@ -6,10 +6,25 @@ using Pixeye.Unity;
 public sealed partial class Camera_Script : MonoBehaviour
 {
 
-    [Header("カメラGUIの表示")]
-    public bool gui_on;
+	//[Header("カメラGUIの表示")]
+	//public bool gui_on;
 
-    [Foldout("CameraFollowPlayer", true)]
+	[System.Serializable]
+	public struct GUI {
+		[Header("GUIの表示")]
+		public bool on;
+
+		[Header("全値表示")]
+		public bool all_view;
+
+		[Header("開発用値表示")]
+		public bool debug_view;
+	}
+	[Header("GUI")]
+	public GUI gui;
+
+
+	[Foldout("CameraFollowPlayer", true)]
     public GameObject player;               // プレイヤー
 
     public float UP = 4.0f;                 // カメラの高さ

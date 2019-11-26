@@ -756,44 +756,73 @@ public sealed partial class Camera_Script : MonoBehaviour
     Vector3 enemy_target(Vector3 look_pos) { return Vector3.Lerp(transform.position + look_pos, enm_pos, LOOK_SPD * Time.deltaTime); }
     Vector3 world_target() { return Vector3.zero; }
 
-    #endregion
+	#endregion
 
-    void OnGUI()
+	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+	private float scroll_height = 330;
+	void OnGUI()
     {
-        if (gui_on)
+        if (gui.on)
         {
-            GUILayout.BeginVertical("box");
+			//スクロール高さを変更
+			//(出来ればmaximize on playがonならに変更したい)
+			if (gui.all_view) {
+				scroll_height = 700;
+			}
+			else scroll_height = 330;
 
-            //uGUIスクロールビュー用
-            Vector2 leftScrollPos = Vector2.zero;
+			GUILayout.BeginVertical("box", GUILayout.Width(190));
+			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+			GUILayout.Box("Camera");
 
-            // スクロールビュー
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
-            GUILayout.Box("Camera");
-
-
-            #region ここに追加
-            GUILayout.TextArea("pad_rx\n" + pad_rx);
-            GUILayout.TextArea("pad_ry\n" + pad_ry);
-            GUILayout.TextArea("direction\n" + direction);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);     
-
-            // スペース
-            GUILayout.Space(200);
-            GUILayout.Space(10);
-    #endregion
-
+			#region ここに追加
+			#region 全値
+			if (gui.all_view) {
+				GUILayout.TextArea("pad_rx\n" + pad_rx);
+				GUILayout.TextArea("pad_ry\n" + pad_ry);
+				GUILayout.TextArea("direction\n" + direction);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+			}
+			#endregion
+			#region 開発用
+			else if (gui.debug_view) {
+				GUILayout.TextArea("pad_rx\n" + pad_rx);
+				GUILayout.TextArea("pad_ry\n" + pad_ry);
+				GUILayout.TextArea("direction\n" + direction);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+				//GUILayout.TextArea("pos\n" + pos);
+			}
+			#endregion
+			#endregion
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }
+
+	//ギズモ表示 ------------------------------------------
+	void OnDrawGizmos() {
+		#region ※GUIの判定
+		//※GUIの処理(ランタイム以外でも判定したいのでここに記述)
+		if (!gui.on) {
+			gui.all_view = false;
+			gui.debug_view = false;
+		}
+		#endregion
+
+
+	}
+
 #endif
-    #endregion
+	#endregion
 
 }
