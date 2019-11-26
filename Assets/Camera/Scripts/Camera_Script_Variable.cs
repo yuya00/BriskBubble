@@ -42,8 +42,14 @@ public sealed partial class Camera_Script : MonoBehaviour
     public float scene_move_spd = 1.0f;
     public float LOOK_SPD = 15.0f;          // 徐々に向かせる回転の速さ
     public float Y_CLEAR_SPD = 4.0f;        // カメラY位置初期化速度
+
+    public float clear_cam_spd = 1.0f;
+    public float clear_wait_timer_max = 10.0f;
+    private float clear_wait_timer = 0f;
+
     [Foldout("CameraProduction", false)]
     private GameObject[] obj;               // 敵のオブジェクト取得
+    private GameObject scene;               // クリアフラグ取得
 
     private Vector3 save_pos;               // 演出前の位置を保存
     private Vector3 enm_pos;                // 敵の位置取得
@@ -52,6 +58,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     private float approach_timer;
 
     public bool enemy_hit_flg;              // 敵の判定取得
+    private bool clear_end;                 // クリア演出終わったのをゲームマネージャーに
 
     private int camera_state = 0;           // 通常時と演出時を分ける
     private int approach_state;             // 演出時のステート
@@ -61,6 +68,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     private const int NONE = 0;             // 何も演出なし
     private const int ENM_HIT = 1;          // 敵倒すとき
     private const int SCENE = 2;            // シーン始まったとき
+    private const int CLEAR = 3;
     private const int SCENE_POS_MAX = 1;    // カメラが向かう目的地の数
 
     private const float SCENE_LEN = 1.0f;   // どこまで近づくか

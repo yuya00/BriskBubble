@@ -11,6 +11,8 @@ TagManager:
   - Area
   - ProdactionEnemy
   - Coin
+  - Camera
+  - GameManager
   layers:
   - Default
   - TransparentFX

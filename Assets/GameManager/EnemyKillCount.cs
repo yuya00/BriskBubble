@@ -40,4 +40,9 @@ public sealed class EnemyKillCount : MonoBehaviour
             }
         }
     }
+
+    public int Enm_num_max
+    {
+        get { return enm_num_max; }
+    }
 }
