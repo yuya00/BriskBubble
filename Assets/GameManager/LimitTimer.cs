@@ -11,7 +11,7 @@ public sealed class LimitTimer : MonoBehaviour
 
     public float sec;   // 秒
 
-    public bool stop;
+    private bool timer_stop;
 
     // Start is called before the first frame update
     void Start()
@@ -32,19 +32,19 @@ public sealed class LimitTimer : MonoBehaviour
     void limit_time()
     {
         // 一秒づつ減らす
-        if (!stop) sec -= Time.deltaTime;
+        if (!timer_stop) sec -= Time.deltaTime;
 
         // 時間をとめる条件
         if (min <= 0 && sec <= 0)
         {
-            stop = true;
+            timer_stop = true;
             sec = 0;
         }
 
         // 秒が減ったら分減らす
         if (sec <= 0)
         {
-            if (!stop) sec = 60;
+            if (!timer_stop) sec = 60;
             if (min > 0) min--;
         }
     }
@@ -53,5 +53,10 @@ public sealed class LimitTimer : MonoBehaviour
     void set_text()
     {
         time_text.text = min + "分" + (int)sec + "秒";
+    }
+
+    public bool Timer_stop
+    {
+        get { return timer_stop; }
     }
 }
