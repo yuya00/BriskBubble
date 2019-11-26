@@ -468,6 +468,16 @@ PrefabInstance:
       propertyPath: jumpray.advance_length
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: gui.on
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: gui.all_view
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2821904174435107906, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: m_Enabled
@@ -847,7 +857,7 @@ PrefabInstance:
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: gui_on
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -3561,6 +3571,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui_on: 1
+  gui:
+    on: 0
+    all_view: 0
+    debug_view: 0
   run_spd: 0
   walk_spd: 0
   jump_power: 10
