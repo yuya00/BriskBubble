@@ -70,12 +70,21 @@ public sealed partial class Enemy : CharaBase
 
 	//GUI表示 -----------------------------------------------------
 	private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+	private float scroll_height = 330;
 	void OnGUI()
     {
         if (gui.on)
         {
-            GUILayout.BeginVertical("box", GUILayout.Width(190));
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+
+			//スクロール高さを変更
+			//(出来ればmaximize on playがonならに変更したい)
+			if (gui.all_view) {
+				scroll_height = 700;
+			}
+			else scroll_height = 330;
+
+			GUILayout.BeginVertical("box", GUILayout.Width(190));
+            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
 			GUILayout.Box("Enemy");
 			float spdx,spdy,spdz;
 
@@ -488,13 +497,20 @@ public sealed partial class Enemy : CharaBase
 				//前方向の速さ代入
 				velocity = transform.forward * run_spd;
 
-                goto case Enum_Act.RUN;
+				//カーブの向き
+				if (Random.Range(0, 1) == 0) {
+					curve_spd = 0.1f;
+				}
+				else curve_spd = -0.1f;
+
+
+				goto case Enum_Act.RUN;
 				//break;
             case Enum_Act.RUN:     //走る
                 enum_act = Enum_Act.RUN;
 
 				//少し曲がりながら走る
-				//transform.Rotate(0, 0.1f, 0);
+				transform.Rotate(0, curve_spd, 0);
 
 				//--ジャンプ判定によるジャンプ
 				JumpRay_Jump_Judge();
@@ -639,7 +655,14 @@ public sealed partial class Enemy : CharaBase
 			velocity.x = transform.forward.x * run_spd;
 			velocity.z = transform.forward.z * run_spd;
 		}
-    }
+
+		//穴判定で曲がっている時は遅くなる
+		if (holeray.hit_right_flg || holeray.hit_left_flg) {
+			velocity.x = transform.forward.x * (run_spd / 2);
+			velocity.z = transform.forward.z * (run_spd / 2);
+		}
+
+	}
 
 	//--ジャンプ判定によるジャンプ
 	void JumpRay_Jump_Judge() 

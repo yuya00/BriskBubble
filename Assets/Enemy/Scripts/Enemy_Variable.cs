@@ -15,6 +15,8 @@ public sealed partial class Enemy : CharaBase
 	private EnemyNear			enemynear;
 	private Vector2				dist;				//プレイヤーと逆方向のベクトル
 	private Vector2				dist_normal_vec;    //プレイヤーと逆方向のベクトル
+	private float               curve_spd = 0.1f;   //曲がりながら走る
+
 
 	private EnemySoundDetect	enemy_sound_detect;
 	private struct OnceRondom {
