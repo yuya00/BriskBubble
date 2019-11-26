@@ -6,8 +6,20 @@ using Pixeye.Unity;
 
 public class CharaBase : MonoBehaviour {
 
-	[Header("GUIの表示")]
-	public bool gui_on;
+	[System.Serializable]
+	public struct GUI {
+		[Header("GUIの表示")]
+		public bool on;
+
+		[Header("全値表示")]
+		public bool all_view;
+
+		[Header("開発用値表示")]
+		public bool debug_view;
+	}
+	[Header("GUI")]
+	public GUI gui;
+
 
 	[Foldout("BaseParameter" ,true)]
 	protected			 Rigidbody			 rigid;
@@ -41,8 +53,10 @@ public class CharaBase : MonoBehaviour {
 
 	// Ray基底 ------------------------------------------
 	public class Ray_Base {
-		[Header("Gizmoの表示")]
 		public bool gizmo_on;
+
+		[Header("判定の実行")]
+		public bool judge_on;
 
 		[SerializeField, Header("Rayの長さ")]
 		public float length;
@@ -59,10 +73,10 @@ public class CharaBase : MonoBehaviour {
 		[System.NonSerialized]
 		public Vector3 box_size;
 
-		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(上限)")]
+		[SerializeField, Range(0.0f, 8.0f), Header("Rayの高さ(上限)")]
 		public float up_limit;
 
-		[SerializeField, Range(0.0f, 4.0f), Header("Rayの高さ(下限)")]
+		[SerializeField, Range(0.0f, 8.0f), Header("Rayの高さ(下限)")]
 		public float down_limit;
 
 		//Boxcastの計算
@@ -93,6 +107,9 @@ public class CharaBase : MonoBehaviour {
 
 		[System.NonSerialized] //壁との当たり判定
 		public bool hit_right_flg, hit_left_flg;
+
+		[System.NonSerialized] //めり込み判定
+		public bool cavein_right_flg, cavein_left_flg;
 
 		[System.NonSerialized] //両方のRayが当たった回数
 		public int both_count;
@@ -173,6 +190,9 @@ public class CharaBase : MonoBehaviour {
 
 	//--壁判定による向き変更
 	public virtual void WallRay_Rotate_Judge() {
+		if (!wallray.judge_on) {
+			return;
+		}
 		//----壁判定Ray当たり判定
 		WallRay_Judge();
 
@@ -182,11 +202,11 @@ public class CharaBase : MonoBehaviour {
 
 	//----壁判定Ray当たり判定
 	public void WallRay_Judge() {
-		RaycastHit hit;
+		//RaycastHit hit;
 		wallray.BoxCast_Cal(transform);
 
 		#region BoxCast
-		//*
+		/*
 		//右のレイ
 		if (Physics.BoxCast(wallray.box_pos, wallray.box_size,
 				(transform.forward * angle_mag + transform.right).normalized, out hit,
@@ -219,12 +239,45 @@ public class CharaBase : MonoBehaviour {
 		// */
 		#endregion
 
+		#region RayCast_Three
+		//*
+		//右のレイ(上,下,真ん中)
+		if (WallRay_Right(wallray.up_limit, 1, 1)) {
+			wallray.hit_right_flg = true;
+		}
+		else if (WallRay_Right(wallray.down_limit, -1, 1)) {
+			wallray.hit_right_flg = true;
+		}
+		else if (WallRay_Right(0, 0, 1)) {
+			wallray.hit_right_flg = true;
+		}
+		else {
+			wallray.dist_right = 0;
+			wallray.hit_right_flg = false;
+		}
+
+		//左のレイ(上,下,真ん中)
+		if (WallRay_Left(wallray.up_limit, 1, -1)) {
+			wallray.hit_left_flg = true;
+		}
+		else if (WallRay_Left(wallray.down_limit, -1, -1)) {
+			wallray.hit_left_flg = true;
+		}
+		else if (WallRay_Left(0, 0, -1)) {
+			wallray.hit_left_flg = true;
+		}
+		else {
+			wallray.dist_left = 0;
+			wallray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
 		#region RayCast
 		/*
 		//右のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + transform.right).normalized * 1, out hit, wallray.length)) {
-			//Debug.Log(hit.collider.gameObject.name);
+			(transform.forward * angle_mag + transform.right).normalized, out hit, wallray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_right = hit.distance;  //壁との距離保存
 				wallray.hit_right_flg = true;       //壁との当たり判定
@@ -237,8 +290,7 @@ public class CharaBase : MonoBehaviour {
 
 		//左のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + (-transform.right)).normalized * 1, out hit, wallray.length)) {
-			//Debug.Log(hit.collider.gameObject.name);
+			(transform.forward * angle_mag + (-transform.right)).normalized, out hit, wallray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_left = hit.distance;   //壁との距離保存
 				wallray.hit_left_flg = true;        //壁との当たり判定
@@ -251,6 +303,36 @@ public class CharaBase : MonoBehaviour {
 		// */
 		#endregion
 	}
+
+	//------右レイ
+	bool WallRay_Right(float limit, int limit_one, int right_one) {
+		RaycastHit hit;
+
+		if (Physics.Raycast(wallray.box_pos + (transform.up * limit * limit_one),
+			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wallray.length)) {
+			if (hit.collider.gameObject.tag == "Wall") {
+				wallray.dist_right = hit.distance;  //壁との距離保存
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//------左レイ
+	bool WallRay_Left(float limit, int limit_one, int right_one) {
+		RaycastHit hit;
+
+		if (Physics.Raycast(wallray.box_pos + (transform.up * limit * limit_one),
+			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wallray.length)) {
+			if (hit.collider.gameObject.tag == "Wall") {
+				wallray.dist_left = hit.distance;  //壁との距離保存
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 
 	//----向き変更
 	public void WallRay_Rotate() {
@@ -265,6 +347,9 @@ public class CharaBase : MonoBehaviour {
 
 	//--穴判定による向き変更
 	public void HoleRay_Rotate_Judge() {
+		if (!holeray.judge_on) {
+			return;
+		}
 		//----穴判定Ray当たり判定
 		HoleRay_Judge();
 
@@ -409,16 +494,14 @@ public class CharaBase : MonoBehaviour {
         // ショットのレイヤーは8番
         // shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
         LayerMask shot_layer = ~(1 << 8);
-        /***********************/
-        //下レイが当たっていたら着地
-        if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer))
-        {
-            rigid.useGravity = true;
-            is_ground = true;
-            velocity.y = 0;
-        }
-        else
-        {
+		/***********************/
+		//下レイが当たっていたら着地
+		if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
+			rigid.useGravity = true;
+			is_ground = true;
+			velocity.y = 0;
+		}
+		else {
             is_ground = false;
 			if (velocity.y >= -fallspd_limit) { //落下速度の上限
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;

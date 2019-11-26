@@ -12,6 +12,8 @@ public class EnemySearchGizmo : MonoBehaviour
 	//ギズモ描画
 	[DrawGizmo(GizmoType.NonSelected | GizmoType.Selected)]
 	private static void DrawEnemyGizmo(EnemySearch search_object, GizmoType gizmo_type) {
+		//オフならスキップ
+		if (!search_object.gizmo_on) return;
 		//設定されてなかったらスキップ
 		if (search_object.Radius <= 0.0f) return;
 		if (search_object.Angle <= 0.0f) return;

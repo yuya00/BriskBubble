@@ -410,16 +410,18 @@ public sealed partial class Camera_Script : MonoBehaviour
 
     void OnGUI()
     {
-        if (gui_on)
+        if (gui.on)
         {
-            GUILayout.BeginVertical("box");
+			//スクロール高さを変更
+			//(出来ればmaximize on playがonならに変更したい)
+			if (gui.all_view) {
+				scroll_height = 700;
+			}
+			else scroll_height = 330;
 
-            //uGUIスクロールビュー用
-            Vector2 leftScrollPos = Vector2.zero;
-
-            // スクロールビュー
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
-            GUILayout.Box("Camera");
+			GUILayout.BeginVertical("box", GUILayout.Width(190));
+			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+			GUILayout.Box("Camera");
 
 
             #region ここに追加
@@ -435,12 +437,25 @@ public sealed partial class Camera_Script : MonoBehaviour
             GUILayout.Space(10);
             #endregion
 
-
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }
+
+	//ギズモ表示 ------------------------------------------
+	void OnDrawGizmos() {
+		#region ※GUIの判定
+		//※GUIの処理(ランタイム以外でも判定したいのでここに記述)
+		if (!gui.on) {
+			gui.all_view = false;
+			gui.debug_view = false;
+		}
+		#endregion
+
+
+	}
+
 #endif
-    #endregion
+	#endregion
 
 }

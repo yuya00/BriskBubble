@@ -323,10 +323,9 @@ MonoBehaviour:
   holeray:
     gizmo_on: 0
     length: 100
-    up_limit: 2.9
-    down_limit: 3
+    startLength: 11
     angle: 0
-    spd: 10
+    spd: 15
   spd_ratio: 0.5
   waitact:
     wait_time: 240

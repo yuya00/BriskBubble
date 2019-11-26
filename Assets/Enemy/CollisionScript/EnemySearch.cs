@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EnemySearch : MonoBehaviour
 {
+	public bool gizmo_on;
 	[SerializeField, Range(0.0f, 360.0f),Header("視界の広さ")]
 	private float m_angle = 0.0f;
 	private float m_cos = 0.0f;
+
 	[SerializeField]
 	private Color gizmo_color;
 

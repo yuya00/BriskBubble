@@ -7,6 +7,8 @@ public class EnemyNear : MonoBehaviour
 	private SphereCollider m_sphereCollider = null;
 	[System.NonSerialized]
 	public bool hit_flg;
+
+	public bool gizmo_on;
 	[SerializeField]
 	private Color gizmo_color;
 

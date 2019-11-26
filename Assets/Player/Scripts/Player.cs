@@ -66,36 +66,77 @@ public sealed partial class Player : CharaBase
 
     //GUI表示 -----------------------------------------------------
     private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
-    void OnGUI()
+	private float scroll_height = 330;
+	void OnGUI()
     {
-        if (gui_on)
+        if (gui.on)
         {
-            GUILayout.BeginVertical("box", GUILayout.Width(190));
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(330));
+			//スクロール高さを変更
+			//(出来ればmaximize on playがonならに変更したい)
+			if (gui.all_view) {
+				scroll_height = 700;
+			}
+			else scroll_height = 330;
+
+			GUILayout.BeginVertical("box", GUILayout.Width(190));
+            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
             GUILayout.Box("Player");
+			float spdx, spdy, spdz;
+
+			#region ここに追加
+			#region 全値
+			if (gui.all_view) {
+				//座標
+				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+				float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+				float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+				GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+
+				//速さ
+				spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+				spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+				spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+				GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+
+				//回転
+				GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+
+				//着地判定
+				GUILayout.TextArea("着地判定\n" + is_ground);
+
+				//壁掴み判定
+				GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
+				GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
+				GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+
+				////壁掴んだ瞬間
+				//GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
+				//GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
+				//GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
+				//GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
+				//GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
+
+				//壁判定
+				GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
+				GUILayout.TextArea("壁判定両方左右\n" + wallray.cavein_left_flg + "  " + wallray.cavein_right_flg);
+				GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
+				GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
+
+				//穴判定
+				GUILayout.TextArea("穴判定左右\n" + holeray.hit_left_flg + "  " + holeray.hit_right_flg);
+
+			}
+			#endregion
+			#region 開発用
+			else if (gui.debug_view) {
+				GUILayout.TextArea("fall_y\n" + fall_y);
+
+			}
+			#endregion
+			#endregion
 
 
-            #region ここに追加
-            GUILayout.TextArea("fall_y\n" + fall_y);
-            //GUILayout.TextArea("速さ\n" + velocity);
-
-            ////壁掴み判定
-            //GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
-            //GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
-            //GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
-
-            //壁掴んだ瞬間
-            //GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
-            //GUILayout.TextArea("壁後方向との内積\n" + wall_back_angle.ToString());
-            //GUILayout.TextArea("壁右方向との内積\n" + wall_right_angle.ToString());
-            //GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
-            //GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
-
-
-            #endregion
-
-
-            GUILayout.EndScrollView();
+			GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }
@@ -103,26 +144,38 @@ public sealed partial class Player : CharaBase
     //ギズモ表示 --------------------------------------------------
     void OnDrawGizmos()
     {
+		#region ※GUIの判定
+		//※GUIの処理(ランタイム以外でも判定したいのでここに記述)
+		if (!gui.on) {
+			gui.all_view = false;
+			gui.debug_view = false;
+		}
+		#endregion
 
-        if (wallray.gizmo_on)
+
+		#region 壁判定Ray
+		if (wallray.gizmo_on)
         {
-            //壁判定Ray
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
             Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
             Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
         }
+		#endregion
 
-        if (holeray.gizmo_on)
+
+		#region 穴判定Ray
+		if (holeray.gizmo_on)
         {
-            //穴判定Ray
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
             Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
             Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
         }
+		#endregion
 
-        if (wallGrabRay.gizmo_on)
+
+		#region 壁掴み判定Ray
+		if (wallGrabRay.gizmo_on)
         {
-            //壁掴み判定Ray
             Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.2f);
             Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
 
@@ -130,11 +183,11 @@ public sealed partial class Player : CharaBase
             Gizmos.DrawRay(transform.position + transform.right * wallGrabRay.side_length, transform.forward * wallGrabRay.length);
             Gizmos.DrawRay(transform.position + transform.right * -wallGrabRay.side_length, transform.forward * wallGrabRay.length);
         }
+		#endregion
+	}
 
-    }
-
-    // 移動 -------------------------------------------------------
-    public override void Move()
+	// 移動 -------------------------------------------------------
+	public override void Move()
     {
         base.Move();
 
