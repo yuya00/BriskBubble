@@ -408,6 +408,9 @@ public sealed partial class Camera_Script : MonoBehaviour
         return clear_end;
     }
 
+    //GUI表示 -----------------------------------------------------
+    private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+    private float scroll_height = 330;
     void OnGUI()
     {
         if (gui.on)
