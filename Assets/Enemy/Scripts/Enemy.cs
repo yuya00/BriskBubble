@@ -75,7 +75,6 @@ public sealed partial class Enemy : CharaBase
     {
         if (gui.on)
         {
-
 			//スクロール高さを変更
 			//(出来ればmaximize on playがonならに変更したい)
 			if (gui.all_view) {
@@ -89,6 +88,7 @@ public sealed partial class Enemy : CharaBase
 			float spdx,spdy,spdz;
 
 			#region ここに追加
+			#region 全値
 			if (gui.all_view) {
 				//座標
 				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -133,6 +133,8 @@ public sealed partial class Enemy : CharaBase
 				GUILayout.TextArea("shot_touch_flg\n" + shot_touch_flg);
 
 			}
+			#endregion
+			#region 開発用
 			else if (gui.debug_view) {
 				//速さ
 				spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
@@ -154,6 +156,7 @@ public sealed partial class Enemy : CharaBase
 
 			}
 			#endregion
+			#endregion
 
 
 			GUILayout.EndScrollView();
@@ -165,17 +168,26 @@ public sealed partial class Enemy : CharaBase
     Vector3 localAngle = Vector3.zero;
     void OnDrawGizmos()
     {
-		#region 斜めベクトル
-				//new_angle = transform.eulerAngles;
-				//dist_angle = new_angle - old_angle;
-		
-				////斜めのベクトルを出す方法 ※要修正
-				//Gizmos.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
-		
-				//old_angle = new_angle;
+		#region ※GUIの判定
+		//※GUIの処理(ランタイム以外でも判定したいのでここに記述)
+		if (!gui.on) {
+			gui.all_view = false;
+			gui.debug_view = false;
+		}
 		#endregion
-		
-		
+
+
+		#region 斜めベクトル
+		//new_angle = transform.eulerAngles;
+		//dist_angle = new_angle - old_angle;
+
+		////斜めのベクトルを出す方法 ※要修正
+		//Gizmos.DrawRay(transform.position, (new Vector3(30 * Mathf.Deg2Rad, 0, 30 * Mathf.Deg2Rad) + dist_angle) * -wallray.langth);
+
+		//old_angle = new_angle;
+		#endregion
+
+
 		#region 壁判定Ray
 		if (wallray.gizmo_on)
         {
