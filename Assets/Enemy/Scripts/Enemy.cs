@@ -511,9 +511,11 @@ public sealed partial class Enemy : CharaBase
 
 				//カーブの向き
 				if (Random.Range(0, 1) == 0) {
-					curve_spd = 0.1f;
+					curve_spd = 0.05f;
 				}
-				else curve_spd = -0.1f;
+				else {
+					curve_spd = -0.05f;
+				}
 
 
 				goto case Enum_Act.RUN;

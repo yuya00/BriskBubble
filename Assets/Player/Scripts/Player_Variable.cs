@@ -89,16 +89,10 @@ public sealed partial class Player : CharaBase
 
     //壁掴み判定Ray ---------------------------------------------
     [System.Serializable]
-	public struct WallGrabRay {
-
-		[Header("Gizmoの表示")]
-		public bool gizmo_on;
+	public class WallGrabRay : Ray_Base {
 
 		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
 		public float height;		//1.3f
-
-		[SerializeField, Range(0.0f, 5.0f), Header("Rayの長さ")]
-		public float length;		//2.0f
 
 		[System.NonSerialized]	//掴み準備判定
 		public bool prepare_flg;

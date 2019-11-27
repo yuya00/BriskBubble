@@ -310,10 +310,10 @@ public class CharaBase : MonoBehaviour {
 
 		if (Physics.Raycast(wallray.box_pos + (transform.up * limit * limit_one),
 			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wallray.length)) {
-			if (hit.collider.gameObject.tag == "Wall") {
+			//if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_right = hit.distance;  //壁との距離保存
 				return true;
-			}
+			//}
 		}
 		return false;
 	}
@@ -324,10 +324,10 @@ public class CharaBase : MonoBehaviour {
 
 		if (Physics.Raycast(wallray.box_pos + (transform.up * limit * limit_one),
 			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wallray.length)) {
-			if (hit.collider.gameObject.tag == "Wall") {
+			//if (hit.collider.gameObject.tag == "Wall") {
 				wallray.dist_left = hit.distance;  //壁との距離保存
 				return true;
-			}
+			//}
 		}
 		return false;
 	}
