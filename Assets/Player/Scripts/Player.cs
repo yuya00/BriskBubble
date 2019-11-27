@@ -11,6 +11,8 @@ public sealed partial class Player : CharaBase
         // 初期値設定
         game_manager = GameObject.FindGameObjectWithTag("GameManager");
         state = START;
+		sphere_collider = GetComponent<SphereCollider>();
+		state = GAME;
         init_spd = run_spd;
         init_fric = stop_fric;
         init_back_spd = back_spd;
@@ -163,9 +165,15 @@ public sealed partial class Player : CharaBase
 			else if (gui.debug_view) {
                 GUILayout.TextArea("shot_jump_fg\n" + shot_jump_fg);
 
-            }
-            #endregion
-            #endregion
+				//GUILayout.TextArea("先行入力キー\n" + lead_key);
+				//GUILayout.TextArea("先行入力押されたキー");
+				//for (int i = 0; i < leadkey_num; i++) {
+				//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
+				//	GUILayout.TextArea("" + lead_inputs[i].frame);
+				//}
+			}
+			#endregion
+			#endregion
 
 
             GUILayout.EndScrollView();
@@ -505,19 +513,21 @@ public sealed partial class Player : CharaBase
         }
     }
 
-    // 頭当たったか
-    bool head_hit_judge()
-    {
-        // 頭からレイ飛ばし
-        if (Physics.Raycast(transform.position, transform.up.normalized, 1.5f))
-        {
-            return true;
-        }
-        return false;
-    }
+	// 頭当たったか
+	bool head_hit_judge() {
+		// 頭からレイ飛ばし
+		RaycastHit hit;
+		if (Physics.Raycast(transform.position,transform.up, out hit, 1.5f)) {
+			if (hit.collider.tag == "Area") {
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
 
-    //--壁掴み判定Rayによる掴み
-    void WallGrabRay_Grab_Judge()
+	//--壁掴み判定Rayによる掴み
+	void WallGrabRay_Grab_Judge()
     {
 		if (!wallGrabRay.judge_on) {
 			return;
@@ -530,39 +540,53 @@ public sealed partial class Player : CharaBase
         WallGrabRay_Grab();
     }
 
-    //----当たり判定
-    void WallGrabRay_Judge()
-    {
-        RaycastHit hit;
+	//----当たり判定
+	void WallGrabRay_Judge() {
+		RaycastHit hit;
 
-        //空中にいる、自身が壁に当たっている、レイが当たっていない
-        if (!is_ground && wall_touch_flg && !wallGrabRay.ray_flg)
-        {
-            wallGrabRay.prepare_flg = true;
-        }
-        else wallGrabRay.prepare_flg = false;
+		//------子球Colliderの判定切り替え
+		Child_Sphere_IsTrigger();
 
-        //レイ判定
-        if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, wallGrabRay.length) &&
-            hit.collider.gameObject.tag == "Wall")
-        {
-            wallGrabRay.ray_flg = true;
-        }
-        else wallGrabRay.ray_flg = false;
+		//空中にいる、自身が壁に当たっている、レイが当たっていない
+		if (!is_ground && wall_touch_flg && !wallGrabRay.ray_flg) {
+			wallGrabRay.prepare_flg = true;
+		}
+		else {
+			wallGrabRay.prepare_flg = false;
+		}
+
+		//レイ判定
+		if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, wallGrabRay.length) &&
+			hit.collider.gameObject.tag == "Wall") {
+			wallGrabRay.ray_flg = true;
+		}
+		else {
+			wallGrabRay.ray_flg = false;
+		}
 
 
-        //上記二つが完了してたら掴む
-        if (!wallGrabRay.flg && wallGrabRay.prepare_flg && wallGrabRay.ray_flg)
-        {
-            wallGrabRay.flg = true;
-            //------掴んだ時の向き調整
-            Angle_Adjust();
-        }
+		//上記二つが完了してたら掴む
+		if (!wallGrabRay.flg && wallGrabRay.prepare_flg && wallGrabRay.ray_flg) {
+			wallGrabRay.flg = true;
+			//------掴んだ時の向き調整
+			Angle_Adjust();
+		}
 
-    }
+	}
 
-    //------掴んだ時の向き調整
-    void Angle_Adjust()
+	//------子球Colliderの判定切り替え
+	void Child_Sphere_IsTrigger() {
+		if (!is_ground) {
+			sphere_collider.isTrigger = true;
+		}
+		else {
+			sphere_collider.isTrigger = false;
+		}
+
+	}
+
+	//------掴んだ時の向き調整
+	void Angle_Adjust()
     {
         RaycastHit hit;
 
