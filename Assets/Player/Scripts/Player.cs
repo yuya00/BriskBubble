@@ -448,6 +448,10 @@ public sealed partial class Player : CharaBase
     //--壁掴み判定Rayによる掴み
     void WallGrabRay_Grab_Judge()
     {
+		if (!wallGrabRay.judge_on) {
+			return;
+		}
+
         //----当たり判定
         WallGrabRay_Judge();
 
