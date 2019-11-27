@@ -30,9 +30,10 @@ public sealed partial class Player : CharaBase
     private int coin_count;     // コイン入手数
 
     private GameObject game_manager;
+	private SphereCollider sphere_collider = null;
 
-    // あにめ
-    private Animator animator;
+	// あにめ
+	private Animator animator;
     private float COUNT;
     private float INIT_ANIME_SPD = 1.0f;
     private const float ANIME_SPD = 3.0f;

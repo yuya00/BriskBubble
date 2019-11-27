@@ -41,9 +41,10 @@ GameObject:
   - component: {fileID: 6363856407093239075}
   - component: {fileID: 6363856407093239077}
   - component: {fileID: 6363856407093239074}
+  - component: {fileID: 7661159937772239182}
+  - component: {fileID: 618636960}
   - component: {fileID: 2047487350}
   - component: {fileID: 2047487349}
-  - component: {fileID: 7661159937772239182}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -79,7 +80,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46cdee3edec9f042a9bba7294d2c67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 0
+  gui:
+    on: 0
+    all_view: 0
+    debug_view: 0
   run_spd: 15
   walk_spd: 3
   jump_power: 25
@@ -89,6 +93,7 @@ MonoBehaviour:
   fallspd_limit: 30
   wallray:
     gizmo_on: 0
+    judge_on: 0
     length: 20
     up_limit: 0
     down_limit: 0
@@ -96,9 +101,15 @@ MonoBehaviour:
     spd: 1.5
   holeray:
     gizmo_on: 0
+    judge_on: 0
     length: 100
+    startLength: 0
     angle: 0
     spd: 10
+  slope: 0.3
+  fall_y_max: -100
+  cam: {fileID: 0}
+  rot_spd: 10
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}
   - {fileID: 8580679673519122975, guid: 814522e3fb027ea4a870ebbc1ae939a5, type: 3}
@@ -106,16 +117,15 @@ MonoBehaviour:
   shot_interval_time_max: 1
   stop_time_max: 1
   back_spd: 20
-  jump_power_up: 1.15
-  slope: 0.3
-  cam: {fileID: 0}
-  rot_spd: 10
+  jump_power_up: 1.5
   wallGrabRay:
     gizmo_on: 1
-    height: 1.66
+    judge_on: 1
     length: 1.69
+    height: 0.6
     side_length: 0.8
     delaytime: 10
+  lead_input_on: 1
 --- !u!54 &6363856407093239074
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,6 +142,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &7661159937772239182
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363856407093239078}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &618636960
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363856407093239078}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Center: {x: 0, y: -1.1, z: 0.7}
 --- !u!111 &2047487350
 Animation:
   m_ObjectHideFlags: 0
@@ -166,20 +203,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &7661159937772239182
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6363856407093239078}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 1
-  m_Height: 4
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8283557968748350552
 PrefabInstance:
   m_ObjectHideFlags: 0
