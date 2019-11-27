@@ -239,6 +239,9 @@ public sealed partial class Player : CharaBase
         // リスポーン
         fall_max();
 
+        // 頭方向に何か当たったか
+        head_hit();
+
         ////--壁判定による向き変更
         //WallRay_Rotate_Judge();
 
@@ -471,6 +474,32 @@ public sealed partial class Player : CharaBase
         return false;
     }
 
+    // 頭に何か当たった
+    void head_hit()
+    {
+        //Debug.DrawRay(transform.position, transform.up.normalized * 3, Color.green);
+        // ジャンプ中
+        if (jump_now())
+        {
+            // 頭当たった
+            if(head_hit_judge())
+            {
+                velocity.y = 0;
+            }
+        }
+    }
+
+    // 頭当たったか
+    bool head_hit_judge()
+    {
+        // 頭からレイ飛ばし
+        if (Physics.Raycast(transform.position, transform.up.normalized, 1.5f))
+        {
+            return true;
+        }
+        return false;
+    }
+
     //--壁掴み判定Rayによる掴み
     void WallGrabRay_Grab_Judge()
     {
@@ -638,13 +667,6 @@ public sealed partial class Player : CharaBase
     //当たり判定 -----------------------------------------------
     private void OnCollisionEnter(Collision other)
     {
-        // 上方向に進んでる途中
-        if (jump_now())
-        {
-            // 頭当たった時に落下
-            velocity.y = 0;
-        }
-
         //壁との当たり判定
         if (other.gameObject.tag == "Wall")
         {
