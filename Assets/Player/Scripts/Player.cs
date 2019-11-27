@@ -9,25 +9,38 @@ public sealed partial class Player : CharaBase
     {
         base.Start();
         // 初期値設定
+        game_manager = GameObject.FindGameObjectWithTag("GameManager");
+        state = GAME;
         init_spd = run_spd;
         init_fric = stop_fric;
         init_back_spd = back_spd;
         chara_ray = transform.Find("CharaRay");
         animator = GetComponent<Animator>();
-        COUNT = 23 / anim_spd;
+        COUNT = 23 / ANIME_SPD;
         respawn_pos = transform.position;
     }
 
     void Update()
     {
-        // 移動
-        Move();
+        switch(state)
+        {
+            case GAME:
+                // アニメ初期化
+                init_anime();
+                // 移動
+                Move();
+                // ショット
+                Shot();
+                // ジャンプアニメーション
+                anime_jump();
+                break;
+            case CLEAR:
 
-        // ショット
-        Shot();
+                break;
+        }
 
-        // ジャンプアニメーション
-        anime_jump();
+        if (game_manager.GetComponent<Scene>().Clear_fg())
+            state = CLEAR;
 
         Debug_Log();
         raydebug();
@@ -57,10 +70,18 @@ public sealed partial class Player : CharaBase
 
     public override void FixedUpdate()
     {
-        base.FixedUpdate();
+        switch (state)
+        {
+            case GAME:
+                base.FixedUpdate();
+                // 移動
+                lstick_move();
+                break;
+            case CLEAR:
 
-        // 移動
-        lstick_move();
+                break;
+
+        }
     }
 
 
@@ -343,11 +364,6 @@ public sealed partial class Player : CharaBase
     // ジャンプモーション用
     void anime_jump()
     {
-        // 標準速度初期化
-        //if (!jump_fg)
-        animator.speed = 1.0f;
-        //animator.SetBool("JumpStart", jump_fg);
-
         // 着地してるとき
         if (is_ground)
         {
@@ -375,7 +391,7 @@ public sealed partial class Player : CharaBase
         if (jump_anim_count < COUNT)
         {
             animator.SetBool("JumpEnd", true);
-            animator.speed = anim_spd;
+            animator.speed = ANIME_SPD;
         }
         else
         {
@@ -384,8 +400,17 @@ public sealed partial class Player : CharaBase
         }
     }
 
+    // アニメ速度初期化
+    void init_anime()
+    {
+        // 標準速度初期化
+        animator.speed = INIT_ANIME_SPD;
+    }
+
+    // リスポーン処理
     void fall_max()
     {
+        // 最大限落ちた
         if(fall_check(fall_y,fall_y_max))
         {
             transform.position = respawn_pos;
@@ -407,7 +432,7 @@ public sealed partial class Player : CharaBase
         {
             if (!animator.GetBool("JumpEnd"))
             {
-                if (Input.GetButtonDown("Jump"))
+                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2)))
                 {
                     //jump_fg = true;
                     //jump_fg = false;
@@ -439,6 +464,7 @@ public sealed partial class Player : CharaBase
         return false;
     }
 
+    // 最大限落ちた
     bool fall_check(float fall_y,float fall_y_max)
     {
         if (fall_y + transform.position.y < fall_y_max) return true;

@@ -9,6 +9,10 @@ public sealed partial class Player : CharaBase
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
 
+    private int state;  // 状態
+    private const int GAME = 0;
+    private const int CLEAR = 1;
+
     private float init_spd;               // 初期速度
     private float init_fric;              // 初期慣性STOP
 
@@ -25,12 +29,17 @@ public sealed partial class Player : CharaBase
 
     private int coin_count;     // コイン入手数
 
-
+    private GameObject game_manager;
 
     // あにめ
     private Animator animator;
     private float COUNT;
-    private float anim_spd = 3.0f;
+    private float INIT_ANIME_SPD = 1.0f;
+    private const float ANIME_SPD = 3.0f;
+    private const float SHOT_ANIME_SPD = 5.0f;
+
+    private float shot_anime_timer = 0;
+    private float shot_anime_timer_max = 5;
 
     // 状態
     private const int WAIT = 0;

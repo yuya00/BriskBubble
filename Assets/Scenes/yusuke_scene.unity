@@ -7712,7 +7712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8431ac708ccfd3c469bfde214e02128d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui:
+    on: 0
+    all_view: 0
+    debug_view: 0
   player: {fileID: 491933055}
   UP: -1.5
   UP_TARGET: 3
@@ -8790,7 +8793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time_text: {fileID: 55193579}
-  min: 0
+  min: 3
   sec: 5
 --- !u!4 &1838250699
 Transform:

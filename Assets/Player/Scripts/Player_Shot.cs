@@ -11,6 +11,9 @@ public sealed partial class Player : CharaBase
     //---------------------------------------------//
     void Shot()
     {
+        // アニメーション
+        shot_anime();
+
         // 次ショットまでの時間加算
         shot_interval();
 
@@ -45,6 +48,34 @@ public sealed partial class Player : CharaBase
 
     }
 
+    // ショットのアニメーション
+    void shot_anime()
+    {
+        // ショットのアニメーションがtrueのとき速度を上げる
+        if (animator.GetBool("Shot"))
+        {
+            animator.speed = SHOT_ANIME_SPD;
+        }
+
+        // ショットが撃てるとき
+        if (shot_interval_check())
+        {
+            // ショットを撃った
+            if (Input.GetButtonUp("Shot_R"))
+            {
+                animator.SetBool("Shot", true);
+                shot_anime_timer = 0;
+            }
+        }
+
+        // ショットアニメの初期化
+        if(shot_anime_timer++ > shot_anime_timer_max)
+        {
+            animator.SetBool("Shot", false);
+            shot_anime_timer = 0;
+        }
+    }
+
     // ショットの間隔
     void shot_interval()
     {
@@ -74,6 +105,9 @@ public sealed partial class Player : CharaBase
 
         // ショット間隔の時間リセット
         shot_interval_time = 0;
+
+        //animator.speed = init_anim_spd;
+        //animator.SetBool("Shot", false);
     }
 
 
