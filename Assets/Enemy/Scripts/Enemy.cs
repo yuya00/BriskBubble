@@ -18,8 +18,6 @@ public sealed partial class Enemy : CharaBase
         enemy_sound_detect = GetComponentInChildren<EnemySoundDetect>();
 		player_obj = GameObject.Find("Player");
 		
-		run_spd = player_obj.GetComponent<Player>().Run_spd * spd_ratio;
-	
 		//new_angle = transform.eulerAngles;
 		//old_angle = new_angle;
 		//dist_angle = Vector3.zero;
