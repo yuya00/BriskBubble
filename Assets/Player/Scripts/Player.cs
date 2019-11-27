@@ -513,19 +513,21 @@ public sealed partial class Player : CharaBase
         }
     }
 
-    // 頭当たったか
-    bool head_hit_judge()
-    {
-        // 頭からレイ飛ばし
-        if (Physics.Raycast(transform.position, transform.up.normalized, 1.5f))
-        {
-            return true;
-        }
-        return false;
-    }
+	// 頭当たったか
+	bool head_hit_judge() {
+		// 頭からレイ飛ばし
+		RaycastHit hit;
+		if (Physics.Raycast(transform.position,transform.up, out hit, 1.5f)) {
+			if (hit.collider.tag == "Area") {
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
 
-    //--壁掴み判定Rayによる掴み
-    void WallGrabRay_Grab_Judge()
+	//--壁掴み判定Rayによる掴み
+	void WallGrabRay_Grab_Judge()
     {
 		if (!wallGrabRay.judge_on) {
 			return;
