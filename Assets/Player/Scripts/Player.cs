@@ -9,26 +9,40 @@ public sealed partial class Player : CharaBase
     {
         base.Start();
         // 初期値設定
+        game_manager = GameObject.FindGameObjectWithTag("GameManager");
+        state = GAME;
         init_spd = run_spd;
         init_fric = stop_fric;
         init_back_spd = back_spd;
         chara_ray = transform.Find("CharaRay");
         animator = GetComponent<Animator>();
-        COUNT = 23 / anim_spd;
+        COUNT = 23 / ANIME_SPD;
         respawn_pos = transform.position;
     }
 
     void Update()
     {
-        // 移動
-        Move();
+        switch(state)
+        {
+            case GAME:
+                // アニメ初期化
+                init_anime();
+                // 移動
+                Move();
+                // ショット
+                Shot();
+                // ジャンプアニメーション
+                anime_jump();
+                break;
+            case CLEAR:
 
-        // ショット
-        Shot();
+                break;
+        }
 
-        // ジャンプアニメーション
-        anime_jump();
+        if (game_manager.GetComponent<Scene>().Clear_fg())
+            state = CLEAR;
 
+        Debug_Log();
 		//先行入力まとめ
 		LeadKey_All();
 
@@ -60,10 +74,18 @@ public sealed partial class Player : CharaBase
 
     public override void FixedUpdate()
     {
-        base.FixedUpdate();
+        switch (state)
+        {
+            case GAME:
+                base.FixedUpdate();
+                // 移動
+                lstick_move();
+                break;
+            case CLEAR:
 
-        // 移動
-        lstick_move();
+                break;
+
+        }
     }
 
 
@@ -227,6 +249,9 @@ public sealed partial class Player : CharaBase
         // リスポーン
         fall_max();
 
+        // 頭方向に何か当たったか
+        head_hit();
+
         ////--壁判定による向き変更
         //WallRay_Rotate_Judge();
 
@@ -352,11 +377,6 @@ public sealed partial class Player : CharaBase
     // ジャンプモーション用
     void anime_jump()
     {
-        // 標準速度初期化
-        //if (!jump_fg)
-        animator.speed = 1.0f;
-        //animator.SetBool("JumpStart", jump_fg);
-
         // 着地してるとき
         if (is_ground)
         {
@@ -384,7 +404,7 @@ public sealed partial class Player : CharaBase
         if (jump_anim_count < COUNT)
         {
             animator.SetBool("JumpEnd", true);
-            animator.speed = anim_spd;
+            animator.speed = ANIME_SPD;
         }
         else
         {
@@ -393,8 +413,17 @@ public sealed partial class Player : CharaBase
         }
     }
 
+    // アニメ速度初期化
+    void init_anime()
+    {
+        // 標準速度初期化
+        animator.speed = INIT_ANIME_SPD;
+    }
+
+    // リスポーン処理
     void fall_max()
     {
+        // 最大限落ちた
         if(fall_check(fall_y,fall_y_max))
         {
             transform.position = respawn_pos;
@@ -416,7 +445,7 @@ public sealed partial class Player : CharaBase
         {
             if (!animator.GetBool("JumpEnd"))
             {
-                if (Input.GetButtonDown("Jump") || (lead_key == Leadkey_Kind.JUMP))
+                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == Leadkey_Kind.JUMP) ))
                 {
                     //jump_fg = true;
                     //jump_fg = false;
@@ -448,9 +477,36 @@ public sealed partial class Player : CharaBase
         return false;
     }
 
+    // 最大限落ちた
     bool fall_check(float fall_y,float fall_y_max)
     {
         if (fall_y + transform.position.y < fall_y_max) return true;
+        return false;
+    }
+
+    // 頭に何か当たった
+    void head_hit()
+    {
+        //Debug.DrawRay(transform.position, transform.up.normalized * 3, Color.green);
+        // ジャンプ中
+        if (jump_now())
+        {
+            // 頭当たった
+            if(head_hit_judge())
+            {
+                velocity.y = 0;
+            }
+        }
+    }
+
+    // 頭当たったか
+    bool head_hit_judge()
+    {
+        // 頭からレイ飛ばし
+        if (Physics.Raycast(transform.position, transform.up.normalized, 1.5f))
+        {
+            return true;
+        }
         return false;
     }
 
@@ -696,13 +752,6 @@ public sealed partial class Player : CharaBase
 	//当たり判定 -----------------------------------------------
 	private void OnCollisionEnter(Collision other)
     {
-        // 上方向に進んでる途中
-        if (jump_now())
-        {
-            // 頭当たった時に落下
-            velocity.y = 0;
-        }
-
         //壁との当たり判定
         if (other.gameObject.tag == "Wall")
         {

@@ -87,7 +87,7 @@ public class Scene : MonoBehaviour
         // タイトル
         if (SceneManager.GetActiveScene().name == "title")
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetButtonDown("Start"))
             {
                 scene_last_fadein();
             }
