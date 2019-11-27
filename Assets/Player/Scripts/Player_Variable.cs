@@ -120,4 +120,26 @@ public sealed partial class Player : CharaBase
 	//存在しない大きな値
 	private int NOTEXIST_BIG_VALUE = 999;
 
+
+
+	#region 先行入力
+	[Header("先行入力の実行")]
+	public  bool		 lead_input_on;			//先行入力オンオフ
+	private const int	 leadkey_num	= 3;	//保存するキー数
+	private const int	 keyserve_time	= 8;	//保存時間
+	private Leadkey_Kind lead_key		= 0;	//保存されたキー
+
+	enum Leadkey_Kind{
+		NONE,
+		JUMP,
+	}
+
+	struct LeadInputs {
+		public Leadkey_Kind pushed_key;	//押されたキー
+		public int frame;				//キー保存時間
+	};
+	LeadInputs[] lead_inputs = new LeadInputs[leadkey_num];
+	#endregion
+
+
 }
