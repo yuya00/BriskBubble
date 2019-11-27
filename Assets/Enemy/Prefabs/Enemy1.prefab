@@ -175,7 +175,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965b51e0d7bfb59448f964c2f70fdc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 1
+  gui:
+    on: 1
+    all_view: 0
+    debug_view: 1
   run_spd: 0
   walk_spd: 0
   jump_power: 10
@@ -188,7 +191,7 @@ MonoBehaviour:
     judge_on: 1
     length: 19.05
     up_limit: 1.9
-    down_limit: 3.83
+    down_limit: 3.06
     angle: 0
     spd: 1.5
   holeray:
@@ -198,7 +201,6 @@ MonoBehaviour:
     startLength: 11
     angle: 0
     spd: 15
-  spd_ratio: 0.5
   waitact:
     wait_time: 240
     wait_random: 0
@@ -219,7 +221,7 @@ MonoBehaviour:
     judge_on: 1
     length: 4.32
     up_limit: 2.06
-    down_limit: 4.28
+    down_limit: 3.89
     power: 22.1
     advance_length: 23.45
 --- !u!136 &2821904174435107906
@@ -506,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51afcdf315697e146a3bf4b0d7d7e820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gizmo_on: 1
+  gizmo_on: 0
   gizmo_color: {r: 0.93613964, g: 1, b: 0.25098038, a: 0.78431374}
 --- !u!54 &2821904174627846746
 Rigidbody:
@@ -582,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b4109257d180c469c59e14abac1bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gizmo_on: 1
+  gizmo_on: 0
   gizmo_color: {r: 1, g: 0.36196488, b: 0.1462264, a: 0.63529414}
 --- !u!54 &2821904175356360014
 Rigidbody:

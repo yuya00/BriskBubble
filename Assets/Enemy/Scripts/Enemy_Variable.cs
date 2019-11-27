@@ -11,7 +11,7 @@ public sealed partial class Enemy : CharaBase
 	private bool				player_touch_flg;   //プレイヤーとの当たり判定
 	private bool				shot_touch_flg;   //プレイヤーとの当たり判定
 	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
-	public float				spd_ratio = 0.5f;	//プレイヤー速度を割る割合
+	private float				spd_ratio = 0.5f;	//プレイヤー速度を割る割合
 	private EnemyNear			enemynear;
 	private Vector2				dist;				//プレイヤーと逆方向のベクトル
 	private Vector2				dist_normal_vec;    //プレイヤーと逆方向のベクトル
