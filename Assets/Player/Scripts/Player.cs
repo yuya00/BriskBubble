@@ -49,6 +49,10 @@ public sealed partial class Player : CharaBase
         }
 
         Debug_Log();
+		//先行入力まとめ
+		LeadKey_All();
+
+		Debug_Log();
         raydebug();
     }
 
@@ -445,7 +449,7 @@ public sealed partial class Player : CharaBase
         {
             if (!animator.GetBool("JumpEnd"))
             {
-                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2)))
+                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == Leadkey_Kind.JUMP) ))
                 {
                     //jump_fg = true;
                     //jump_fg = false;
@@ -676,8 +680,83 @@ public sealed partial class Player : CharaBase
         }
     }
 
-    //当たり判定 -----------------------------------------------
-    private void OnCollisionEnter(Collision other)
+
+	//先行入力まとめ
+	void LeadKey_All() {
+		if (!lead_input_on) {
+			return;
+		}
+		Key_Serve();		//--先行キー保存
+		KeyFrame_Sub();		//--先行キーframe減算処理
+		LeadKey_Choice();	//--frameを元にキー選択
+	}
+
+	//--先行キー保存
+	void Key_Serve() {
+		Leadkey_Kind leadkey_kind;
+
+		//入力から一時保存
+		if (Input.GetButtonDown("Jump")) {
+			leadkey_kind = Leadkey_Kind.JUMP;
+		}
+		//else if (Input.GetButtonDown("Jump")) {
+		//	leadkey_kind = Leadkey_Kind.JUMP;
+		//}
+		else {
+			leadkey_kind = 0;
+		}
+
+		//入力されていなければスキップ
+		if (leadkey_kind == 0) {
+			return;
+		}
+		//配列に保存
+		for (int i = 0; i < leadkey_num; ++i) {
+			//既に値があればスキップ
+			if (lead_inputs[i].pushed_key != 0) {
+				continue;
+			}
+			lead_inputs[i].pushed_key = leadkey_kind;
+			break;
+		}
+	}
+
+	//--先行キーframe減算処理
+	void KeyFrame_Sub() {
+		for (int i = 0; i < leadkey_num; i++) {
+			//値があれば減算
+			if (lead_inputs[i].pushed_key != 0) {
+				lead_inputs[i].frame--;
+			}
+			//一定フレーム経ったら消去
+			if (lead_inputs[i].frame <= 0) {
+				lead_inputs[i].pushed_key = 0;
+				lead_inputs[i].frame = keyserve_time;
+			}
+		}
+	}
+
+	//--frameを元にキー選択
+	void LeadKey_Choice() {
+		int frame_max = 0;
+		lead_key = 0;
+
+		for (int i = 0; i < leadkey_num; i++) {
+			//値が無ければスキップ
+			if (lead_inputs[i].pushed_key == 0) {
+				continue;
+			}
+			//直近で入力されたものを代入
+			if (frame_max < lead_inputs[i].frame) {
+				frame_max = lead_inputs[i].frame;
+				lead_key = lead_inputs[i].pushed_key;
+			}
+		}
+	}
+
+
+	//当たり判定 -----------------------------------------------
+	private void OnCollisionEnter(Collision other)
     {
         //壁との当たり判定
         if (other.gameObject.tag == "Wall")
