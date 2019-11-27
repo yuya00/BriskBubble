@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public sealed class LimitTimer : MonoBehaviour
 {
+    private GameObject game_manager;
     public Text time_text;
 
     public int min;     // 分
@@ -13,20 +14,32 @@ public sealed class LimitTimer : MonoBehaviour
 
     private bool timer_stop;
 
+    private int state;
+    private const int START = 0;
+    private const int GAME = 1;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        game_manager = GameObject.FindGameObjectWithTag("GameManager");
+        state = START;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        // 制限時間計算
-        limit_time();
-
-        // 文字設定
-        set_text();
+        switch(state)
+        {
+            case START:
+                if (game_manager.GetComponent<Scene>().Start_fg()) state = GAME;
+                break;
+            case GAME:
+                // 制限時間計算
+                limit_time();
+                // 文字設定
+                set_text();
+                break;
+        }
     }
 
     void limit_time()

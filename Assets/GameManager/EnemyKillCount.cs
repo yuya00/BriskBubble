@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class EnemyKillCount : MonoBehaviour
 {
@@ -8,14 +9,18 @@ public sealed class EnemyKillCount : MonoBehaviour
     private int kill_count;
     private int enm_num_max;
 
+    public Text enemy_num_text;
+
     void Start()
     {
         enm_count_init();
+        enemy_num_text.text = "残り : " + enm_num_max + "体";
     }
 
     void Update()
     {
         enemy_kill_count();
+        enemy_num_text.text = "残り : " + enm_num_max + "体";
     }
 
     // Start is called before the first frame update

@@ -41,10 +41,9 @@ GameObject:
   - component: {fileID: 6363856407093239075}
   - component: {fileID: 6363856407093239077}
   - component: {fileID: 6363856407093239074}
-  - component: {fileID: 7661159937772239182}
-  - component: {fileID: 618636960}
   - component: {fileID: 2047487350}
   - component: {fileID: 2047487349}
+  - component: {fileID: 7661159937772239182}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -117,15 +116,14 @@ MonoBehaviour:
   shot_interval_time_max: 1
   stop_time_max: 1
   back_spd: 20
-  jump_power_up: 1.5
+  jump_power_up: 1.15
   wallGrabRay:
     gizmo_on: 1
-    judge_on: 1
+    judge_on: 0
     length: 1.69
-    height: 0.6
+    height: 1.66
     side_length: 0.8
     delaytime: 10
-  lead_input_on: 1
 --- !u!54 &6363856407093239074
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -142,33 +140,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &7661159937772239182
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6363856407093239078}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 1
-  m_Height: 4
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &618636960
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6363856407093239078}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6
-  m_Center: {x: 0, y: -1.1, z: 0.7}
 --- !u!111 &2047487350
 Animation:
   m_ObjectHideFlags: 0
@@ -203,6 +174,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &7661159937772239182
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363856407093239078}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8283557968748350552
 PrefabInstance:
   m_ObjectHideFlags: 0

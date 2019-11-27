@@ -10,8 +10,11 @@ public sealed partial class Player : CharaBase
     private Vector3 input;                  //入力値
 
     private int state;  // 状態
-    private const int GAME = 0;
-    private const int CLEAR = 1;
+    private const int START = 0;
+    private const int GAME = 1;
+    private const int CLEAR = 2;
+
+    private bool shot_jump_fg;
 
     private float init_spd;               // 初期速度
     private float init_fric;              // 初期慣性STOP
@@ -79,7 +82,7 @@ public sealed partial class Player : CharaBase
     public float jump_power_up;             // ショットに乗ったときにジャンプ力を何倍にするか
     [Foldout("ShotParameter", false)]
 
-    private const float SHOT_POSITION = 2.8f;   // ショットを出す正面方向の位置補正
+    private const float SHOT_POSITION = 3.5f;   // ショットを出す正面方向の位置補正
     private int shot_state;                 // debugでpublicにしてる
     private float charge_time;              // チャージ時間
     private float shot_interval_time;       // ショットの間隔
