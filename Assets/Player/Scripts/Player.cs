@@ -10,7 +10,7 @@ public sealed partial class Player : CharaBase
         base.Start();
         // 初期値設定
         game_manager = GameObject.FindGameObjectWithTag("GameManager");
-        state = GAME;
+        state = START;
         init_spd = run_spd;
         init_fric = stop_fric;
         init_back_spd = back_spd;
@@ -18,12 +18,20 @@ public sealed partial class Player : CharaBase
         animator = GetComponent<Animator>();
         COUNT = 23 / ANIME_SPD;
         respawn_pos = transform.position;
+        shot_jump_fg = false;
     }
 
     void Update()
     {
-        switch(state)
+        switch (state)
         {
+            case START:
+                base.Move();
+                // ジャンプアニメーション
+                anime_jump();
+                if (game_manager.GetComponent<Scene>().Start_fg())
+                    state = GAME;
+                break;
             case GAME:
                 // アニメ初期化
                 init_anime();
@@ -31,16 +39,14 @@ public sealed partial class Player : CharaBase
                 Move();
                 // ショット
                 Shot();
-                // ジャンプアニメーション
-                anime_jump();
+
+                // クリアしたら
+                if (game_manager.GetComponent<Scene>().Clear_fg()) state = CLEAR;
                 break;
             case CLEAR:
 
                 break;
         }
-
-        if (game_manager.GetComponent<Scene>().Clear_fg())
-            state = CLEAR;
 
         Debug_Log();
         raydebug();
@@ -72,6 +78,9 @@ public sealed partial class Player : CharaBase
     {
         switch (state)
         {
+            case START:
+                if (game_manager.GetComponent<Scene>().Start_fg()) state = GAME;
+                break;
             case GAME:
                 base.FixedUpdate();
                 // 移動
@@ -80,7 +89,6 @@ public sealed partial class Player : CharaBase
             case CLEAR:
 
                 break;
-
         }
     }
 
@@ -103,10 +111,9 @@ public sealed partial class Player : CharaBase
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
             GUILayout.Box("Player");
 			float spdx, spdy, spdz;
-
-			#region ここに追加
-			#region 全値
-			if (gui.all_view) {
+            #region ここに追加
+            #region 全値
+            if (gui.all_view) {
 				//座標
 				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
 				float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
@@ -150,14 +157,14 @@ public sealed partial class Player : CharaBase
 			#endregion
 			#region 開発用
 			else if (gui.debug_view) {
-				GUILayout.TextArea("fall_y\n" + fall_y);
+                GUILayout.TextArea("shot_jump_fg\n" + shot_jump_fg);
 
-			}
-			#endregion
-			#endregion
+            }
+            #endregion
+            #endregion
 
 
-			GUILayout.EndScrollView();
+            GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }
@@ -235,6 +242,9 @@ public sealed partial class Player : CharaBase
 
         // ショットに乗った時にジャンプをjump_power_up倍
         if (down_hit_shot()) jump(jump_power * jump_power_up);
+
+        // ジャンプアニメーション
+        anime_jump();
 
         // リスポーン
         fall_max();
@@ -462,6 +472,8 @@ public sealed partial class Player : CharaBase
     // 落下中判定
     bool fall()
     {
+        // ショットに乗ったときの判定を初期化
+        shot_jump_fg = false;
         // 落下判定
         if (velocity.y < 0.0f) return true;
         return false;

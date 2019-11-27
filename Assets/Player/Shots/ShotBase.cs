@@ -13,7 +13,7 @@ public class ShotBase : MonoBehaviour
     private float timer;              // 経過時間
     protected float spd_down_timer;     // 減速するまでの時間
     public float spd_down_timer_max;
-    public float spd;                   // 速度
+    public float spd = 15;                   // 速度
     public int destroy_time = 3;            // 何秒たったら消すか
 
     public float down_spd;
@@ -25,6 +25,9 @@ public class ShotBase : MonoBehaviour
     private Color col;                  // 色取得
     private bool hit_fg;                // 消えてからは当たり判定なくす
 
+    protected GameObject player;
+    protected float PLR_SPD = 0.2f;
+
 	//----------------------------------------------------------//
 
 	
@@ -35,6 +38,8 @@ public class ShotBase : MonoBehaviour
     public virtual void Start()
     {
         spd_down_timer = 0;
+
+        player = GameObject.FindGameObjectWithTag("Player");
 
         // 物理取得
         rigid = this.GetComponent<Rigidbody>();
@@ -86,6 +91,12 @@ public class ShotBase : MonoBehaviour
             apper_fg = false;
             timer_fg = 0;
         }
+
+        if(player.GetComponent<Player>().Shot_jump_fg)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     //----------------------------------------------------------//
@@ -161,6 +172,10 @@ public class ShotBase : MonoBehaviour
             performance();
         }
 
+        if(col.tag == "Player")
+        {
+            Destroy(gameObject);
+        }
     }
 
     //----------------------------------------------------------//

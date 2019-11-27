@@ -9,6 +9,7 @@ public sealed class Shot01 : ShotBase
     public override void Start()
     {
         base.Start();
+        spd += player.GetComponent<Player>().Run_spd * PLR_SPD;
     }
 
     // Update is called once per frame

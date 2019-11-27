@@ -79,7 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46cdee3edec9f042a9bba7294d2c67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 0
+  gui:
+    on: 0
+    all_view: 0
+    debug_view: 0
   run_spd: 15
   walk_spd: 3
   jump_power: 25
@@ -89,6 +92,7 @@ MonoBehaviour:
   fallspd_limit: 30
   wallray:
     gizmo_on: 0
+    judge_on: 0
     length: 20
     up_limit: 0
     down_limit: 0
@@ -96,9 +100,15 @@ MonoBehaviour:
     spd: 1.5
   holeray:
     gizmo_on: 0
+    judge_on: 0
     length: 100
+    startLength: 0
     angle: 0
     spd: 10
+  slope: 0.3
+  fall_y_max: -100
+  cam: {fileID: 0}
+  rot_spd: 10
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}
   - {fileID: 8580679673519122975, guid: 814522e3fb027ea4a870ebbc1ae939a5, type: 3}
@@ -107,13 +117,11 @@ MonoBehaviour:
   stop_time_max: 1
   back_spd: 20
   jump_power_up: 1.15
-  slope: 0.3
-  cam: {fileID: 0}
-  rot_spd: 10
   wallGrabRay:
     gizmo_on: 1
-    height: 1.66
+    judge_on: 0
     length: 1.69
+    height: 1.66
     side_length: 0.8
     delaytime: 10
 --- !u!54 &6363856407093239074

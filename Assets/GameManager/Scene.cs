@@ -33,6 +33,14 @@ public class Scene : MonoBehaviour
     private const int CLEAR = 0;
     private const int OVER = 1;
 
+    public Text start_text;
+    private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
+    private int start_buf_no = 0;
+    private float start_timer = 0;
+    private float start_timer_max = 1.0f;
+    private float alpha = 1;
+    private bool start_fg;
+
     void Start()
     {
         fade_fg = false;
@@ -42,10 +50,18 @@ public class Scene : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("Camera");
         end_text.text = "";
         buf_no = 0;
+
+        start_fg = false;
+        start_text.gameObject.SetActive(true);
+        // この番号を配列の番目にして文字を切り替え
+        start_buf_no = 0;
+        start_text.text = start_buf[start_buf_no];
+        alpha = 1;
     }
 
     void Update()
     {
+        
     }
 
     void FixedUpdate()
@@ -62,6 +78,8 @@ public class Scene : MonoBehaviour
             TransScene(scene_name, interval_time_max);
         }
     }
+
+
 
     // シーンはじまったときにfadeoutする
     void scene_init_fadeout()
@@ -93,9 +111,13 @@ public class Scene : MonoBehaviour
             }
         }
 
-        // ゲームシーンで敵全滅させたらシーン移行
+        // ゲームシーン
         if (SceneManager.GetActiveScene().name == "yusuke_scene" || SceneManager.GetActiveScene().name == "stage_1")
         {
+            // スタート文字
+            set_text();
+
+            // 敵全滅させたらシーン移行
             if (GetComponent<EnemyKillCount>().Enm_num_max <= 0)
             {
                 //scene_last_fadein();
@@ -143,10 +165,48 @@ public class Scene : MonoBehaviour
         SceneManager.LoadScene(scene_name);
     }
 
-    //public bool Clear_fg
-    //{
-    //    get { return clear_fg; }
-    //}
+    // 文字切り替え
+    void set_text()
+    {
+        // START!!がなくなるまで加算
+        if (start_buf_no < 5)
+        {
+            // 文字を更新
+            start_text.text = start_buf[start_buf_no];
+            start_timer += Time.deltaTime;
+        }
+
+        if (start_timer > start_timer_max)
+        {
+            start_buf_no++;
+            start_timer = 0;
+        }
+
+        // START!!の文字になったら
+        if (start_buf_no > 3)
+        {
+            start_timer_max = 2.0f;
+            start_fg = true;
+        }
+
+        if (start_buf_no > 4)
+        {
+            text_alpha();
+        }
+    }
+
+    // 文字を消す
+    void text_alpha()
+    {
+        alpha -= Time.deltaTime;
+        start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, alpha);
+        if (alpha <= 0) start_text.gameObject.SetActive(false);
+    }
+
+    public bool Start_fg()
+    {
+        return start_fg;
+    }
 
     // get関数
     public bool Clear_fg()
@@ -170,9 +230,8 @@ public class Scene : MonoBehaviour
 
 
             #region ここに追加
-            GUILayout.TextArea("カメラの演出終了fg\n" + cam.GetComponent<Camera_Script>().Clear_end());
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
+            GUILayout.TextArea("start_fg\n" + start_fg);
+            //GUILayout.TextArea("start_buf_no\n" + start_buf_no);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);     

@@ -171,7 +171,7 @@ public sealed partial class Player : CharaBase
     //           ショットに乗ったとき              //
     //---------------------------------------------//
     // ショットに乗った判定
-    bool down_hit_shot()
+    public bool down_hit_shot()
     {
         // ショットのレイヤーを指定
         LayerMask layer = 1 << 8;
@@ -187,11 +187,18 @@ public sealed partial class Player : CharaBase
                     chara_ray.position + ofset_layer_pos[i],
                     chara_ray.position + ofset_layer_pos[i] + Vector3.down * (chara_ray_length), layer))
                 {
+                    shot_jump_fg = true;
                     return true;
                 }
             }
         }
         return false;
     }
+
+    public bool Shot_jump_fg
+    {
+        get { return shot_jump_fg; }
+    }
+
 
 }
