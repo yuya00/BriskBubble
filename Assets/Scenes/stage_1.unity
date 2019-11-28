@@ -3525,8 +3525,8 @@ MonoBehaviour:
     all_view: 0
     debug_view: 0
   player: {fileID: 1011946338}
-  UP: -8
-  UP_TARGET: 4
+  UP: -9
+  UP_TARGET: 3
   TURN: 0.03
   DIST: 9
   ANGLE: 75
