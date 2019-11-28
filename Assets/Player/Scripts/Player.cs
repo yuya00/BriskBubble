@@ -12,7 +12,7 @@ public sealed partial class Player : CharaBase
         game_manager = GameObject.FindGameObjectWithTag("GameManager");
         state = START;
 		sphere_collider = GetComponent<SphereCollider>();
-		state = GAME;
+		//state = GAME;
         init_spd = run_spd;
         init_fric = stop_fric;
         init_back_spd = back_spd;
@@ -163,7 +163,7 @@ public sealed partial class Player : CharaBase
 			#endregion
 			#region 開発用
 			else if (gui.debug_view) {
-                GUILayout.TextArea("shot_jump_fg\n" + shot_jump_fg);
+                GUILayout.TextArea("state\n" + state);
 
 				//GUILayout.TextArea("先行入力キー\n" + lead_key);
 				//GUILayout.TextArea("先行入力押されたキー");

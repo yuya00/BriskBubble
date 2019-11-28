@@ -92,11 +92,6 @@ public class ShotBase : MonoBehaviour
             timer_fg = 0;
         }
 
-        if(player.GetComponent<Player>().Shot_jump_fg)
-        {
-            Destroy(gameObject);
-        }
-
     }
 
     //----------------------------------------------------------//
