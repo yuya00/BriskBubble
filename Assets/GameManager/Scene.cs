@@ -123,7 +123,7 @@ public class Scene : MonoBehaviour
         }
 
         // カメラのクリア演出が終わったらfadein
-        if (cam.GetComponent<Camera_Script>().Clear_end())
+        if (cam.GetComponent<CameraScript>().ClearEnd())
         {
             // 初期化
             clear_fg = false;

@@ -287,7 +287,7 @@ public sealed partial class Player : CharaBase
         //WallRayRotateJudge();
 
         ////--穴判定による向き変更
-        //HoleRay_Rotate_Judge();
+        //HoleRayRotateJudge();
 
         //--壁掴み判定Rayによる掴み
         WallGrabRayGrabJudge();

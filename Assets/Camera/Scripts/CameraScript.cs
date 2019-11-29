@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public sealed partial class Camera_Script : MonoBehaviour
+public sealed partial class CameraScript : MonoBehaviour
 {
     #region 上みるカメラ追加ver
 #if true
@@ -41,28 +41,28 @@ public sealed partial class Camera_Script : MonoBehaviour
     // 更新-----------------------------------------------
     void Update()
     {
-        camera_enemy_approach();
+        CameraEnemyApproach();
     }
 
     // 処理が終わってから呼び出される---------------------
     void FixedUpdate()
     {
-        camera_update();
+        CameraUpdate();
     }
 
     // カメラまとめ---------------------------------------
-    void camera_update()
+    void CameraUpdate()
     {
         switch (camera_state)
         {
-            case NONE: camera_none(); break;            // 演出なし
-            case ENM_HIT: enemy_hit_camera(); break;    // 敵に近づく
-            case SCENE: scene_camera(); break;          // シーン開始カメラ
-            case CLEAR: clear_camera(); break;
+            case NONE: CameraNone(); break;            // 演出なし
+            case ENM_HIT: EnemyHitCamera(); break;    // 敵に近づく
+            case SCENE: SceneCamera(); break;          // シーン開始カメラ
+            case CLEAR: ClearCamera(); break;
         }
 
         // カメラが何を見るかまとめ
-        look();
+        Look();
 
         // クリア演出にはいる
         if (scene.GetComponent<Scene>().ClearFg())
@@ -73,7 +73,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     }
 
     // カメラが何を見るかまとめ---------------------------
-    void look()
+    void Look()
     {
         // 最終的に見る方向初期化
         Vector3 look_pos = Vector3.zero;
@@ -82,19 +82,19 @@ public sealed partial class Camera_Script : MonoBehaviour
         switch (camera_state)
         {
             // 演出無いとき
-            case NONE: look_pos = player_target(); break;
-            case ENM_HIT: look_pos = enemy_target(look_pos); break;
-            case SCENE: look_pos = world_target(); break;
-            case CLEAR: look_pos = clear_target(); break;
+            case NONE: look_pos = PlayerTarget(); break;
+            case ENM_HIT: look_pos = EnemyTarget(look_pos); break;
+            case SCENE: look_pos = WorldTarget(); break;
+            case CLEAR: look_pos = ClearTarget(); break;
         }
 
         // 注視点の方に向く
-        look_lerp(transform.position, look_pos, LOOK_SPD);
+        LookLerp(transform.position, look_pos, LOOK_SPD);
     }
 
     // NONE-----------------------------------------------
     #region プレイヤー追従カメラ(通常時)
-    void camera_none()
+    void CameraNone()
     {
         // カメラ位置
         Vector3 cam_pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
@@ -105,18 +105,18 @@ public sealed partial class Camera_Script : MonoBehaviour
         pad_lx = Input.GetAxis("L_Stick_H");
 
         // カメラの位置変更
-        x_rotate(cam_pos, pad_rx);
-        y_rotate(cam_pos, pad_ry, pad_rx);
+        RotateX(cam_pos, pad_rx);
+        RotateY(cam_pos, pad_ry, pad_rx);
 
         // 左スティックで入力してる時に条件付でカメラ追従
-        if (pad_lx_check(pad_lx)) follow_camera();
+        if (PadLxCheck(pad_lx)) FollowCamera();
 
         // 位置が戻ってきたらここに来て初期化
-        clear_enemy_hit_camera();
+        ClearEnemyHitCamera();
     }
 
     // 右スティックでカメラ移動
-    void x_rotate(Vector3 cam_pos, float pad_rx)
+    void RotateX(Vector3 cam_pos, float pad_rx)
     {
         // 正規化に使う平方根
         float x_len = Mathf.Sqrt(pad_rx * pad_rx);
@@ -139,7 +139,7 @@ public sealed partial class Camera_Script : MonoBehaviour
         transform.position = cam_pos + (direction * DIST);
     }
 
-    void y_rotate(Vector3 cam_pos, float pad_ry, float pad_rx)
+    void RotateY(Vector3 cam_pos, float pad_ry, float pad_rx)
     {
         // スティックの入力が無いときは0に向かう
         if (pad_ry == 0f && pad_rx == 0)
@@ -158,19 +158,19 @@ public sealed partial class Camera_Script : MonoBehaviour
     }
 
     // カメラの追従
-    void follow_camera()
+    void FollowCamera()
     {
-        state_check(player.transform.right.normalized - player.transform.forward.normalized, pad_lx);
+        StateCheck(player.transform.right.normalized - player.transform.forward.normalized, pad_lx);
     }
 
     // カメラとプレイヤーの角度によって追従を変更
-    void state_check(Vector3 vec, float pad_lx)
+    void StateCheck(Vector3 vec, float pad_lx)
     {
         switch (follow_state)
         {
             case 0:
                 // 内積で角度がありすぎたらカメラ追跡
-                if (angle_check()) follow_state = 1;
+                if (AngleCheck()) follow_state = 1;
                 break;
             case 1:
                 // ベクトルを徐々にその方向に持っていく
@@ -185,18 +185,18 @@ public sealed partial class Camera_Script : MonoBehaviour
     }
 
     // プレイヤーとカメラの角度チェック
-    bool angle_check()
+    bool AngleCheck()
     {
         // 角度がANGLEとANGLE_MAXの間やったら、trueを返す、それを左右やってる
-        if ((int)rotate_angle() > ANGLE && (int)rotate_angle() < ANGLE_MAX) return true;
-        if ((int)rotate_angle() < -ANGLE && (int)rotate_angle() > -ANGLE_MAX) return true;
+        if ((int)RotateAngle() > ANGLE && (int)RotateAngle() < ANGLE_MAX) return true;
+        if ((int)RotateAngle() < -ANGLE && (int)RotateAngle() > -ANGLE_MAX) return true;
 
         // 角度が範囲外
         return false;
     }
 
     // 左スティックのパッド操作をしているか
-    bool pad_lx_check(float pad_lx)
+    bool PadLxCheck(float pad_lx)
     {
         // 入力してるか
         if (pad_lx == 0) return false;
@@ -204,7 +204,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     }
 
     // カメラの位置とプレイヤーの正面で回転角を取得
-    float rotate_angle()
+    float RotateAngle()
     {
         // 方向取得
         Vector3 vec = transform.position - player.transform.position;
@@ -223,7 +223,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     // ENM_HIT--------------------------------------------
     #region エネミー演出カメラ(近づく)
     // カメラが敵に近づく演出するための処理---------------
-    void camera_enemy_approach()
+    void CameraEnemyApproach()
     {
         // 敵を全て探す
         for (int i = 0; i < obj.Length; i++)
@@ -250,14 +250,14 @@ public sealed partial class Camera_Script : MonoBehaviour
         if (enemy_hit_flg) camera_state = ENM_HIT;
     }
 
-    void enemy_hit_camera()
+    void EnemyHitCamera()
     {
         // どこまで近づいてどこまで遠ざかる(下がる)処理
-        approach(enm_pos, save_pos, zoom_len, zoom_in_spd, zoom_out_spd);
+        Approach(enm_pos, save_pos, zoom_len, zoom_in_spd, zoom_out_spd);
     }
 
     // 近づいて遠ざかる処理
-    void approach(Vector3 near_pos, Vector3 back_pos, float len, float zoom_in_spd, float zoom_out_spd)
+    void Approach(Vector3 near_pos, Vector3 back_pos, float len, float zoom_in_spd, float zoom_out_spd)
     {
         // 初期化
         Vector3 vec = Vector3.zero;
@@ -279,7 +279,7 @@ public sealed partial class Camera_Script : MonoBehaviour
                 vec = back_pos - transform.position;
 
                 // 時間経ったら遠ざける
-                if (timer_check_enemy_hit_camera(approach_timer_max))
+                if (TimerCheckEnemyHitCamera(approach_timer_max))
                 {
                     transform.position += vec.normalized * (zoom_out_spd * Time.deltaTime);
 
@@ -301,7 +301,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     }
 
     // 1回演出が終わったら初期化する
-    void clear_enemy_hit_camera()
+    void ClearEnemyHitCamera()
     {
         // ここで位置を保存してここの位置に戻らせる
         save_pos = transform.position;
@@ -320,7 +320,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     // SCENE----------------------------------------------
     #region シーン始まったときのカメラ
     // シーンを見下ろすカメラ
-    void scene_camera()
+    void SceneCamera()
     {
         Vector3[] scene_camera_pos = { init_pos, new Vector3(init_pos.x, init_pos.y, init_pos.z * -1) };
 
@@ -345,7 +345,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     // CLEAR----------------------------------------------
     #region クリア演出
     // 敵を全滅させたらここに来る
-    void clear_camera()
+    void ClearCamera()
     {
         // プレイヤーの前右斜め下(に向かっていく)
         Vector3 pos = player.transform.position + (player.transform.forward.normalized * 4) + (player.transform.right.normalized * 2) - (player.transform.up * 0.5f);
@@ -365,7 +365,7 @@ public sealed partial class Camera_Script : MonoBehaviour
     // カメラ関連カメラ-----------------------------------
     #region カメラ便利関数
     // 徐々に注視点の方を向くようにする
-    void look_lerp(Vector3 cam_pos, Vector3 target, float spd)
+    void LookLerp(Vector3 cam_pos, Vector3 target, float spd)
     {
         // 注視点 - カメラ位置で注視点の方向を取得
         Vector3 vec = target - cam_pos;
@@ -377,14 +377,14 @@ public sealed partial class Camera_Script : MonoBehaviour
         Vector3 target_look = Vector3.Lerp(cam_pos + transform.forward.normalized, target_pos, spd * Time.deltaTime);
 
         // ここに設定したら角度が変わる
-        set_target(target_look);
+        TargetSet(target_look);
     }
 
     // セットしたほうを向く
-    void set_target(Vector3 vec) { transform.LookAt(vec); }
+    void TargetSet(Vector3 vec) { transform.LookAt(vec); }
 
     // 時間経過の判定
-    bool timer_check_enemy_hit_camera(float timer_max)
+    bool TimerCheckEnemyHitCamera(float timer_max)
     {
         approach_timer += Time.deltaTime;
         if (approach_timer > timer_max) return true;
@@ -392,24 +392,24 @@ public sealed partial class Camera_Script : MonoBehaviour
     }
 
     // 注視点設定
-    Vector3 player_target() { return new Vector3(player.transform.position.x, player.transform.position.y + UP_TARGET, player.transform.position.z); }
+    Vector3 PlayerTarget() { return new Vector3(player.transform.position.x, player.transform.position.y + UP_TARGET, player.transform.position.z); }
 
-    Vector3 enemy_target(Vector3 look_pos) { return Vector3.Lerp(transform.position + look_pos, enm_pos, LOOK_SPD * Time.deltaTime); }
+    Vector3 EnemyTarget(Vector3 look_pos) { return Vector3.Lerp(transform.position + look_pos, enm_pos, LOOK_SPD * Time.deltaTime); }
 
-    Vector3 world_target() { return Vector3.zero; }
+    Vector3 WorldTarget() { return Vector3.zero; }
 
-    Vector3 clear_target() { return player.transform.position; }
+    Vector3 ClearTarget() { return player.transform.position; }
 
     #endregion
 
     // クリア演出終了
-    public bool Clear_end()
+    public bool ClearEnd()
     {
         return clear_end;
     }
 
     //GUI表示 -----------------------------------------------------
-    private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+    private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
     private float scroll_height = 330;
     void OnGUI()
     {
@@ -423,7 +423,7 @@ public sealed partial class Camera_Script : MonoBehaviour
 			else scroll_height = 330;
 
 			GUILayout.BeginVertical("box", GUILayout.Width(190));
-			leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+			left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
 			GUILayout.Box("Camera");
 
 
