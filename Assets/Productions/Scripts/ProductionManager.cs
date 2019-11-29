@@ -19,9 +19,9 @@ public class ProductionManager : MonoBehaviour
     }
 
     //シーン切替 .
-    public virtual void load_scene(string scene)
-    {
-        SceneManager.LoadScene(scene);
-    }
+    //public virtual void LoadScene(string scene)
+    //{
+    //    SceneManager.LoadScene(scene);
+    //}
 
 }

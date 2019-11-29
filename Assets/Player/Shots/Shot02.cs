@@ -15,7 +15,7 @@ public sealed class Shot02 : ShotBase
         base.Update();
         base.Destroy();
 
-        if (player.GetComponent<Player>().Shot_jump_fg)
+        if (player.GetComponent<Player>().ShotJumpFg)
         {
             Destroy(gameObject);
         }

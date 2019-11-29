@@ -6,19 +6,17 @@ using Pixeye.Unity;
 public sealed partial class Player : CharaBase
 {
 
-    //---------------------------------------------//
-    //                  ショット                   //
-    //---------------------------------------------//
+    // ショット-------------------------------------------------//
     void Shot()
     {
         // アニメーション
-        shot_anime();
+        ShotAnime();
 
         // 次ショットまでの時間加算
-        shot_interval();
+        ShotInterval();
 
         // 撃てるとき
-        if (shot_interval_check())
+        if (ShotIntervalCheck())
         {
             // ショットの時間を固定
             shot_interval_time = shot_interval_time_max;
@@ -27,7 +25,7 @@ public sealed partial class Player : CharaBase
             if (Input.GetButton("Shot_L"))
             {
                 // ショットのチャージ
-                shot_charge();
+                ShotCharge();
 
                 // ショットをチャージしてるときにショットの選択
                 if (Input.GetButton("Shot_R")) shot_state = 1;
@@ -42,14 +40,14 @@ public sealed partial class Player : CharaBase
             if (Input.GetButtonUp("Shot_R"))
             {
                 // ショットをstateの値で選択
-                shot_select(shot_object[shot_state]);
+                ShotSelect(shot_object[shot_state]);
             }
         }
 
     }
 
     // ショットのアニメーション
-    void shot_anime()
+    void ShotAnime()
     {
         // ショットのアニメーションがtrueのとき速度を上げる
         if (animator.GetBool("Shot"))
@@ -58,7 +56,7 @@ public sealed partial class Player : CharaBase
         }
 
         // ショットが撃てるとき
-        if (shot_interval_check())
+        if (ShotIntervalCheck())
         {
             // ショットを撃った
             if (Input.GetButtonUp("Shot_R"))
@@ -77,17 +75,17 @@ public sealed partial class Player : CharaBase
     }
 
     // ショットの間隔
-    void shot_interval()
+    void ShotInterval()
     {
         // ショットを撃った後
-        if (!shot_interval_check())
+        if (!ShotIntervalCheck())
         {
             shot_interval_time += Time.deltaTime;
         }
     }
 
     // ショットのチャージ
-    void shot_charge()
+    void ShotCharge()
     {
         // ショットのチャージ
         charge_time += Time.deltaTime;
@@ -97,7 +95,7 @@ public sealed partial class Player : CharaBase
     }
 
     // ショットの設定リセット
-    void riset()
+    void Riset()
     {
         // ショット、チャージリセット
         charge_time = 0;
@@ -112,7 +110,7 @@ public sealed partial class Player : CharaBase
 
 
     // ショットの選択
-    void shot_select(GameObject obj)
+    void ShotSelect(GameObject obj)
     {
         // ショットのオブジェクトを設定
         GameObject shot = Instantiate(shot_object[shot_state], transform.position + (transform.forward * SHOT_POSITION), Quaternion.identity);
@@ -130,23 +128,23 @@ public sealed partial class Player : CharaBase
             case 2:
                 // 3段階目
                 shot.GetComponent<Shot03>().SetCharacterObject(gameObject);
-                back_spd = init_back_spd;   // 初期化
+                back_speed = init_back_speed;   // 初期化
                 back_player = true;
                 break;
         }
         // ショットが出たら値リセット
-        riset();
+        Riset();
     }
 
     // ショット3を撃った後、プレイヤーを後ろに飛ばす
-    void back_move()
+    void BackMove()
     {
         // 徐々に遅く
-        if (back_spd > 0) back_spd -= 1.0f;
+        if (back_speed > 0) back_speed -= 1.0f;
 
         // バックの速度をもとに後退
-        velocity.x = -transform.forward.x * back_spd;
-        velocity.z = -transform.forward.z * back_spd;
+        velocity.x = -transform.forward.x * back_speed;
+        velocity.z = -transform.forward.z * back_speed;
 
         // 待機時間が過ぎたらプレイヤーが動ける
         stop_time += Time.deltaTime;
@@ -159,25 +157,21 @@ public sealed partial class Player : CharaBase
     }
 
     // ショットが撃てるか
-    bool shot_interval_check()
+    bool ShotIntervalCheck()
     {
         // ショットを撃った後、時間がたったら再度発射可能
         if (shot_interval_time >= shot_interval_time_max) return true;
         return false;
     }
-    //---------------------------------------------//
 
-    //---------------------------------------------//
-    //           ショットに乗ったとき              //
-    //---------------------------------------------//
     // ショットに乗った判定
-    public bool down_hit_shot()
+    public bool DownHitShot()
     {
         // ショットのレイヤーを指定
         LayerMask layer = 1 << 8;
 
         // 落下中判定
-        if (fall())
+        if (Falling())
         {
             // きっちり足元判定
             for (int i = 0; i < 9; ++i)
@@ -195,7 +189,7 @@ public sealed partial class Player : CharaBase
         return false;
     }
 
-    public bool Shot_jump_fg
+    public bool ShotJumpFg
     {
         get { return shot_jump_fg; }
     }

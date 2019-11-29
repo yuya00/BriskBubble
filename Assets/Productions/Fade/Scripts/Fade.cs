@@ -32,10 +32,10 @@ public class Fade : MonoBehaviour
 	{
 		Init ();
         // ここに1.0fを代入したら初期に黒画面から始まる
-		fade.Range = cutoutRange = 1.0f;
+		fade.Range = cutout_range = 1.0f;
 	}
 
-	float cutoutRange;
+	float cutout_range;
 
 	void Init ()
 	{
@@ -45,23 +45,23 @@ public class Fade : MonoBehaviour
 	void OnValidate ()
 	{
 		Init ();
-		fade.Range = cutoutRange;
+		fade.Range = cutout_range;
 	}
 
 	IEnumerator FadeoutCoroutine (float time, System.Action action)
 	{
-		float endTime = Time.timeSinceLevelLoad + time * (cutoutRange);
+		float endTime = Time.timeSinceLevelLoad + time * (cutout_range);
 
 		var endFrame = new WaitForEndOfFrame ();
 
 		while (Time.timeSinceLevelLoad <= endTime)
         {
-			cutoutRange = (endTime - Time.timeSinceLevelLoad) / time;
-			fade.Range = cutoutRange;
+			cutout_range = (endTime - Time.timeSinceLevelLoad) / time;
+			fade.Range = cutout_range;
 			yield return endFrame;
 		}
-		cutoutRange = 0;
-		fade.Range = cutoutRange;
+		cutout_range = 0;
+		fade.Range = cutout_range;
 
 		if (action != null)
         {
@@ -71,18 +71,18 @@ public class Fade : MonoBehaviour
 
 	IEnumerator FadeinCoroutine (float time, System.Action action)
 	{
-		float endTime = Time.timeSinceLevelLoad + time * (1 - cutoutRange);
+		float endTime = Time.timeSinceLevelLoad + time * (1 - cutout_range);
 		
 		var endFrame = new WaitForEndOfFrame ();
 
 		while (Time.timeSinceLevelLoad <= endTime)
         {
-			cutoutRange = 1 - ((endTime - Time.timeSinceLevelLoad) / time);
-			fade.Range = cutoutRange;
+			cutout_range = 1 - ((endTime - Time.timeSinceLevelLoad) / time);
+			fade.Range = cutout_range;
 			yield return endFrame;
 		}
-		cutoutRange = 1;
-		fade.Range = cutoutRange;
+		cutout_range = 1;
+		fade.Range = cutout_range;
 
 		if (action != null)
         {

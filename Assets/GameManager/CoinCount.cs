@@ -17,7 +17,7 @@ public class CoinCount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coin_num = player.GetComponent<Player>().Coin_count;
+        coin_num = player.GetComponent<Player>().CoinCount;
     }
 
     public bool gui_on;
@@ -26,8 +26,8 @@ public class CoinCount : MonoBehaviour
         if (gui_on)
         {
             GUILayout.BeginVertical("box");
-            Vector2 leftScrollPos = Vector2.zero;
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+            Vector2 left_scroll_pos = Vector2.zero;
+            left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(200), GUILayout.Height(400));
             GUILayout.Box("Camera");
             #region ここに追加
             GUILayout.TextArea("coin_num\n" + coin_num);

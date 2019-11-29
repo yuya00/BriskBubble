@@ -13,7 +13,7 @@ public class ShotBase : MonoBehaviour
     private float timer;              // 経過時間
     protected float spd_down_timer;     // 減速するまでの時間
     public float spd_down_timer_max;
-    public float spd = 15;                   // 速度
+    public float speed = 15;                   // 速度
     public int destroy_time = 3;            // 何秒たったら消すか
 
     public float down_spd;
@@ -68,7 +68,7 @@ public class ShotBase : MonoBehaviour
     //----------------------------------------------------------//
     public virtual void Update()
     {
-        fg_manager();
+        FgManager();
     }
 
     void OnGUI()
@@ -80,7 +80,7 @@ public class ShotBase : MonoBehaviour
     //----------------------------------------------------------//
     //           出現したときの判定をfalseに初期化              //
     //----------------------------------------------------------//
-    void fg_manager()
+    void FgManager()
     {
         // 出現したとき、壊れたときだけ
         if (apper_fg) timer_fg += Time.deltaTime;
@@ -105,12 +105,12 @@ public class ShotBase : MonoBehaviour
     //----------------------------------------------------------//
     //                  速度と位置を落とす                      //
     //----------------------------------------------------------//
-    public virtual void down(float down_spd,float down_pos)
+    public virtual void Down(float down_spd,float down_pos)
     {
         // 速度あるときだけ速度落とす
-        if (spd >= 0)
+        if (speed >= 0)
         {
-            spd -= down_spd * Time.deltaTime;
+            speed -= down_spd * Time.deltaTime;
 
             // 下に移動
             transform.position = new Vector3(
@@ -123,7 +123,7 @@ public class ShotBase : MonoBehaviour
     //----------------------------------------------------------//
     //                    ショットの演出                        //
     //----------------------------------------------------------//
-    void performance()
+    void Performance()
     {
         Destroy(gameObject);
     }
@@ -164,7 +164,7 @@ public class ShotBase : MonoBehaviour
         // ショットが消えてなくて敵と当たった時
         if(hit_fg && col.tag == "Enemy")
         {
-            performance();
+            Performance();
         }
 
         if(col.tag == "Player")
@@ -176,7 +176,7 @@ public class ShotBase : MonoBehaviour
     //----------------------------------------------------------//
     //          　  速度を下げるまでの時間を設定                //
     //----------------------------------------------------------//
-    public virtual bool spd_down_check(float time_max)
+    public virtual bool SpeedDownCheck(float time_max)
     {
         spd_down_timer += Time.deltaTime;
 
@@ -191,7 +191,7 @@ public class ShotBase : MonoBehaviour
     //----------------------------------------------------------//
     //     　 出現したときと壊れたときのフラグをゲット          //
     //----------------------------------------------------------//
-    public bool Apper_fg
+    public bool ApperFg
     {
         get { return apper_fg; }
     }

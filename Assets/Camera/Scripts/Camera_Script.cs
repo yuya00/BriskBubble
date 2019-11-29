@@ -65,7 +65,7 @@ public sealed partial class Camera_Script : MonoBehaviour
         look();
 
         // クリア演出にはいる
-        if (scene.GetComponent<Scene>().Clear_fg())
+        if (scene.GetComponent<Scene>().ClearFg())
         {
             camera_state = CLEAR;
         }
@@ -429,7 +429,7 @@ public sealed partial class Camera_Script : MonoBehaviour
 
             #region ここに追加
             GUILayout.TextArea("clear_end\n" + clear_end);
-            GUILayout.TextArea("scene.Clear_fg()\n" + scene.GetComponent<Scene>().Clear_fg());
+            GUILayout.TextArea("scene.Clear_fg()\n" + scene.GetComponent<Scene>().ClearFg());
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);

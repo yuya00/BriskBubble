@@ -14,156 +14,6 @@ using Pixeye.Unity;
 
 public class UIscript : MonoBehaviour
 {
-    #region 前回
-#if false
-    public bool gui_on;
-    [Foldout("UIParameter", true)]
-
-    public GameObject normal;
-    public GameObject bubble;
-
-    public float scale_spd = 1.0f;
-
-    public float SCALE_MIN = 0.1f;
-    public float SCALE_MAX = 0.2f;
-
-    [Foldout("UIParameter", false)]
-
-    private Vector3 scale_normal;
-    private Vector3 scale_bubble;
-
-    private int state;
-
-    private const int NONE = 0;
-    private const int SCALE_UP = 1;
-    private const int SCALE_DOWN = 2;
-
-    private int none_timer = 0;
-    private int none_timer_max = 60;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        state_check();
-        prodaction();
-        replace(bubble);
-    }
-
-    // 演出判定
-    void state_check()
-    {
-        if (state == SCALE_UP)          state = SCALE_DOWN;
-        if (Input.GetButton("Shot_L"))  state = SCALE_UP;
-    }
-
-    // でかくしたり小さくする
-    void prodaction()
-    {
-        switch (state)
-        {
-            case NONE:
-                if (none_timer++ > none_timer_max) state = SCALE_DOWN;
-                break;
-            case SCALE_UP:
-                if (!scale_limit_max(bubble)) scale_chenge(bubble, scale_spd);
-                break;
-            case SCALE_DOWN:
-                if (!scale_limit_min(bubble)) scale_chenge(bubble, -scale_spd);
-                break;
-        }
-    }
-
-    // 大きさ変える
-    void scale_chenge(GameObject ui, float spd)
-    {
-        ui.transform.localScale = new Vector3(
-            ui.transform.localScale.x + spd * Time.deltaTime,
-            ui.transform.localScale.y + spd * Time.deltaTime,
-            ui.transform.localScale.z);
-    }
-
-    // 大きさの制限
-    bool scale_limit_max(GameObject ui)
-    {
-        if (ui.transform.localScale.x > SCALE_MAX)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    bool scale_limit_min(GameObject ui)
-    {
-        if (ui.transform.localScale.x < SCALE_MIN)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    // L1？押したら即入れ替え
-    void replace(GameObject ui)
-    {
-        // バブル画像の表示を最前面に
-        first_draw(ui);
-
-        if (ui.transform.localScale.x > (SCALE_MAX * 0.5f))
-        {
-            // バブル画像の表示を最奥に
-            last_draw(ui);
-        }
-    }
-
-    // 表示を最奥に
-    void first_draw(GameObject ui) { ui.transform.SetAsFirstSibling(); }
-
-    // 表示を最前面に
-    void last_draw(GameObject ui) { ui.transform.SetAsLastSibling(); }
-
-    void OnGUI()
-    {
-        if (gui_on)
-        {
-            GUILayout.BeginVertical("box");
-
-            //uGUIスクロールビュー用
-            Vector2 leftScrollPos = Vector2.zero;
-
-            // スクロールビュー
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
-            GUILayout.Box("Camera");
-
-
-    #region ここに追加
-
-            GUILayout.TextArea("bubble.transform.localScale\n" + bubble.transform.localScale);
-            GUILayout.TextArea("state\n" + state);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);     
-
-            // スペース
-            GUILayout.Space(200);
-            GUILayout.Space(10);
-    #endregion
-
-
-            GUILayout.EndScrollView();
-            GUILayout.EndVertical();
-        }
-    }
-#endif
-    #endregion
-
     #region 今回
 #if true
     public bool gui_on;
@@ -224,23 +74,23 @@ public class UIscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        state_check();
-        prodaction_scale();
-        prodaction_pos();
-        replace(bubble);
+        StateCheck();
+        ProdactionScale();
+        ProdactionPos();
+        Replace(bubble);
 
         bubble.transform.position = pos_bubble;
     }
 
     // 演出判定
-    void state_check()
+    void StateCheck()
     {
         state_scale = SCALE_DOWN;
-        if (button_state()) state_scale = SCALE_UP;
+        if (ButtonState()) state_scale = SCALE_UP;
     }
 
     // でかくしたり小さくする
-    void prodaction_scale()
+    void ProdactionScale()
     {
         switch (state_scale)
         {
@@ -248,18 +98,18 @@ public class UIscript : MonoBehaviour
                 if (none_timer++ > none_timer_max) state_scale = SCALE_DOWN;
                 break;
             case SCALE_UP:
-                if (!scale_limit_max(bubble)) scale_chenge(bubble, scale_spd);
-                if (scale_limit_max(bubble)) bubble.transform.localScale = scale_bubble_max;
+                if (!ScaleLimitMax(bubble)) ScaleChenge(bubble, scale_spd);
+                if (ScaleLimitMax(bubble)) bubble.transform.localScale = scale_bubble_max;
                     break;
             case SCALE_DOWN:
-                if (!scale_limit_min(bubble)) scale_chenge(bubble, -scale_spd * 0.5f);
-                if (scale_limit_min(bubble)) bubble.transform.localScale = scale_bubble_min;
+                if (!ScaleLimitMin(bubble)) ScaleChenge(bubble, -scale_spd * 0.5f);
+                if (ScaleLimitMin(bubble)) bubble.transform.localScale = scale_bubble_min;
                 break;
         }
     }
 
     // 大きさ変える
-    void scale_chenge(GameObject ui, float spd)
+    void ScaleChenge(GameObject ui, float spd)
     {
         ui.transform.localScale = new Vector3(
             ui.transform.localScale.x + spd * Time.deltaTime,
@@ -268,37 +118,37 @@ public class UIscript : MonoBehaviour
     }
 
     // 大きさの制限
-    bool scale_limit_max(GameObject ui)
+    bool ScaleLimitMax(GameObject ui)
     {
         if (ui.transform.localScale.x > SCALE_MAX) return true;
         return false;
     }
 
-    bool scale_limit_min(GameObject ui)
+    bool ScaleLimitMin(GameObject ui)
     {
         if (ui.transform.localScale.x < SCALE_MIN) return true;
         return false;
     }
 
     // 位置演出----------------------------------------------------------------------------
-    void prodaction_pos()
+    void ProdactionPos()
     {
         // トリガーの入力があったら演出させる
-        if (button_state())
+        if (ButtonState())
         {
             pos_fg = true;
             replace_fg = true;
         }
 
         // 1回だけトリガー入力したらステートを設定
-        if (button_triger())    state_pos = POS_UP;
+        if (ButtonTriger())    state_pos = POS_UP;
 
         // 演出条件
-        if (pos_fg)             pos_chenge(move_spd);
+        if (pos_fg)             PosChenge(move_spd);
     }
 
     // 位置変える
-    void pos_chenge(float spd)
+    void PosChenge(float spd)
     {
         // 初期位置からどれだけ動いたか
         len = pos_bubble.y - init_pos_bubble.y;
@@ -307,7 +157,7 @@ public class UIscript : MonoBehaviour
         {
             case NONE:
                 // トリガーの入力が無かったら初期化
-                if (!button_state()) state_pos = POS_UP;
+                if (!ButtonState()) state_pos = POS_UP;
                 break;
             case POS_UP:
                 // 上に上がる
@@ -318,7 +168,7 @@ public class UIscript : MonoBehaviour
                 break;
             case POS_DOWN:
                 // 入力無かったら描画の順序を変える
-                if (!button_state()) replace_fg = false;
+                if (!ButtonState()) replace_fg = false;
 
                 // 下に下がる
                 pos_bubble.y -= spd * Time.deltaTime;
@@ -336,30 +186,30 @@ public class UIscript : MonoBehaviour
     }
 
     // L1？押したら即入れ替え
-    void replace(GameObject ui)
+    void Replace(GameObject ui)
     {
         // バブル画像の表示を最奥に
-        first_draw(ui);
+        FirstDraw(ui);
 
         // バブル画像の表示を最前面に
         if (replace_fg && ui.transform.localScale.x > (SCALE_MAX * SCALE_PER))
         {
-            last_draw(ui);
+            LastDraw(ui);
         }
     }
 
     // 表示を最奥に
-    void first_draw(GameObject ui) { ui.transform.SetAsFirstSibling(); }
+    void FirstDraw(GameObject ui) { ui.transform.SetAsFirstSibling(); }
 
     // 表示を最前面に
-    void last_draw(GameObject ui) { ui.transform.SetAsLastSibling(); }
+    void LastDraw(GameObject ui) { ui.transform.SetAsLastSibling(); }
 
-    bool button_state()
+    bool ButtonState()
     {
         if (Input.GetButton("Shot_L")) return true;
         return false;
     }
-    bool button_triger()
+    bool ButtonTriger()
     {
         if (Input.GetButtonDown("Shot_L")) return true;
         return false;
