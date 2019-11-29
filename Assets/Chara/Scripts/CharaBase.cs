@@ -30,23 +30,20 @@ public class CharaBase : MonoBehaviour {
     public float		 walk_speed			 = 3.0f;			//歩きの速さ
 	[Tooltip("ジャンプ力")]
     public float		 jump_power			 = 15.0f;			//ジャンプ力
-	[Tooltip("慣性(停止)")]
-	public float		 stop_fric			 = 0.3f;			//慣性(停止)
+	protected float		 stop_fric			 = 0.3f;			//慣性(停止)
 	protected float		 jump_fric			 = 0;				//慣性(ジャンプ)
 	protected float		 jump_fric_power	 = 0.7f;			//慣性(ジャンプ)
 	protected bool		 is_ground			 = false;           //地面接地判定
     protected Transform	 chara_ray;								//レイを飛ばす位置(地面判別に使用)
-	[Tooltip("レイの距離")]
-	public float		 chara_ray_length	 = 2f;              //レイの距離
+	protected float		 chara_ray_length	 = 0.4f;            //レイの距離　2.0f,0.4f
     [Tooltip("重力の倍率")]
 	public float		 gravity_power		 = 5;				//重力の倍率
-	protected int[]		 iwork				 = new int[8];		//汎用
-	protected float[]	 fwork				 = new float[8];    //汎用
+	protected int[]		 iwork				 = new int[8];
+	protected float[]	 fwork				 = new float[8];
 	[Tooltip("落下速度の速さ上限")]
 	public float		 fallspd_limit		 = 30.0f;
+	protected int        wait_timer			 = 0;         //待機タイマー
 	[Foldout("BaseParameter" ,false)]
-	protected int        wait_timer;         //汎用待機タイマー
-
     protected const float HALF = 0.5f;  // 半分計算用
 
 
@@ -173,15 +170,20 @@ public class CharaBase : MonoBehaviour {
 
 
 
-    // Start is called before the first frame update
     public virtual void Start()
     {
 		rigid = GetComponent<Rigidbody>();
 		velocity = Vector3.zero;
+		for (int i = 0; i < 8; i++) {
+			iwork[i] = 0;
+		}
+		for (int i = 0; i < 8; i++) {
+			fwork[i] = 0;
+		}
+
 	}
 
 
-	//Update is called once per frame
 	void Update()
     {
 
@@ -191,7 +193,7 @@ public class CharaBase : MonoBehaviour {
 
 	//--壁判定による向き変更
 	public virtual void WallRayRotate_Judge() {
-		if (!wallray.judge_on) {
+		if (!wall_ray.judge_on) {
 			return;
 		}
 		//----壁判定Ray当たり判定

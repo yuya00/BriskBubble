@@ -26,9 +26,10 @@ public sealed partial class Enemy : CharaBase
         enum_state = Enum_State.WAIT;
         old_state = enum_state;
 
+
 		chara_ray = transform.Find("CharaRay");
-		wallray.Clear();
-        wallray.both_count = 0;
+		wall_ray.Clear();
+		wall_ray.both_count = 0;
 
 	}
 
@@ -44,11 +45,11 @@ public sealed partial class Enemy : CharaBase
 
 		//プレイヤーとの距離
 		dist_to_player = Vector3.Scale(
-			player_obj.GetComponent<Player>().Transform_position - transform.position,
+			player_obj.GetComponent<Player>().TransformPosition - transform.position,
 			new Vector3(1.0f, 0.0f, 1.0f));
 
 
-		Debug_Log();
+		DebugLog();
     }
 
 
@@ -131,8 +132,8 @@ public sealed partial class Enemy : CharaBase
 				GUILayout.TextArea("着地判定\n" + is_ground);
 
 				//壁判定
-				GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
-				GUILayout.TextArea("壁判定両方左右\n" + wallray.cavein_left_flg + "  " + wallray.cavein_right_flg);
+				GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
+				GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
 				//GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
 				//GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
 
@@ -248,7 +249,7 @@ public sealed partial class Enemy : CharaBase
 		#region ジャンプ判定Ray
 		if (jump_ray.gizmo_on) 
 		{
-			jump_ray.BoxCast_Cal(transform);
+			jump_ray.BoxCastCal(transform);
 
 			Gizmos.color = Color.blue - new Color(0, 0, 0, 0.6f);
 			Gizmos.DrawRay(transform.position + transform.up * jump_ray.up_limit, transform.forward * jump_ray.advance_length);   //上
@@ -314,14 +315,6 @@ public sealed partial class Enemy : CharaBase
 		enum_act = Enum_Act.CLEAR;
         enum_swingact = Enum_SwingAct.SWING;
         velocity = Vector3.zero;
-        for (int i = 0; i < 8; i++)
-        {
-            iwork[i] = 0;
-        }
-        for (int i = 0; i < 8; i++)
-        {
-            fwork[i] = 0;
-        }
         wait_timer = 0;
 		wall_ray.Clear();
     }
@@ -584,10 +577,10 @@ public sealed partial class Enemy : CharaBase
 	//--穴に向かわないよう1fで向き修正
 	void FlashRotate() {
 		for (int i = 0; i < 30; i++) {
-			if (!holeray.hit_right_flg && !holeray.hit_left_flg) {
+			if (!hole_ray.hit_right_flg && !hole_ray.hit_left_flg) {
 				break;
 			}
-			HoleRay_Rotate_Judge(); //--穴判定による向き変更
+			HoleRayRotateJudge(); //--穴判定による向き変更
 		}
 	}
 
@@ -698,14 +691,14 @@ public sealed partial class Enemy : CharaBase
         if (away_act.lookback_flg && WaitTime(away_act.lookback_time))
         {
 			away_act.lookback_flg = false;
-			velocity.x = transform.forward.x * run_spd;
-			velocity.z = transform.forward.z * run_spd;
+			velocity.x = transform.forward.x * run_speed;
+			velocity.z = transform.forward.z * run_speed;
 		}
 
 		//穴判定で曲がっている時も遅くなる
-		if (holeray.hit_right_flg || holeray.hit_left_flg) {
-			velocity.x = transform.forward.x * (run_spd / 2);
-			velocity.z = transform.forward.z * (run_spd / 2);
+		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg) {
+			velocity.x = transform.forward.x * (run_speed / 2);
+			velocity.z = transform.forward.z * (run_speed / 2);
 		}
 
 	}
@@ -729,7 +722,7 @@ public sealed partial class Enemy : CharaBase
 	//----ジャンプ事前判定Ray
 	void JumpAdvanceRay() {
 		//RaycastHit hit;
-		jump_ray.BoxCast_Cal(transform);
+		jump_ray.BoxCastCal(transform);
 
 		#region BoxCast
 		/*
@@ -757,7 +750,7 @@ public sealed partial class Enemy : CharaBase
 				jump_ray.advance_flg = true;
 			}
 		}
-		else if (JumpRay_Base(wallray.down_limit, -1, jump_ray.advance_length)) {
+		else if (JumpRay_Base(wall_ray.down_limit, -1, jump_ray.advance_length)) {
 			if (JumpAdvanceRay_Up()) {
 				jump_ray.advance_flg = true;
 			}
@@ -789,10 +782,10 @@ public sealed partial class Enemy : CharaBase
 
 		#region RayCast
 		if (jump_ray.advance_flg) {
-			if (JumpRay_Base(wallray.up_limit, 1, jump_ray.length)) {
+			if (JumpRay_Base(wall_ray.up_limit, 1, jump_ray.length)) {
 				jump_ray.flg = true;
 			}
-			else if (JumpRay_Base(wallray.down_limit, -1, jump_ray.length)) {
+			else if (JumpRay_Base(wall_ray.down_limit, -1, jump_ray.length)) {
 				jump_ray.flg = true;
 			}
 			else if (JumpRay_Base(0, 0, jump_ray.length)) {
