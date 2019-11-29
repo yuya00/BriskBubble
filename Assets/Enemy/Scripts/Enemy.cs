@@ -28,9 +28,6 @@ public sealed partial class Enemy : CharaBase
 
 
 		chara_ray = transform.Find("CharaRay");
-		wall_ray.Clear();
-		wall_ray.both_count = 0;
-
 	}
 
 	void Update()
@@ -306,17 +303,18 @@ public sealed partial class Enemy : CharaBase
     //初期化
     void Clear()
     {
-		wait_timer_swing = 0;
-		once_random.num = 0;
-		once_random.isfinish = false;
-		away_act.lookback_flg = false;
+		wait_timer_swing		 = 0;
+		once_random.num			 = 0;
+		once_random.isfinish	 = false;
+		away_act.lookback_flg	 = false;
 
+		enum_act		 = Enum_Act.CLEAR;
+        enum_swingact	 = Enum_SwingAct.SWING;
 
-		enum_act = Enum_Act.CLEAR;
-        enum_swingact = Enum_SwingAct.SWING;
-        velocity = Vector3.zero;
         wait_timer = 0;
-		wall_ray.Clear();
+
+        //velocity = Vector3.zero;
+		//wall_ray.Clear();
     }
 
 

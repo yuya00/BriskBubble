@@ -42,8 +42,8 @@ public class CharaBase : MonoBehaviour {
 	protected float[]	 fwork				 = new float[8];
 	[Tooltip("落下速度の速さ上限")]
 	public float		 fallspd_limit		 = 30.0f;
-	protected int        wait_timer			 = 0;         //待機タイマー
 	[Foldout("BaseParameter" ,false)]
+	protected int        wait_timer			 = 0;         //待機タイマー
     protected const float HALF = 0.5f;  // 半分計算用
 
 
@@ -98,7 +98,7 @@ public class CharaBase : MonoBehaviour {
 		//public float down_limit;	//
 
 		[SerializeField, Header("Rayの角度")]
-		public float angle;     //00.0f 未使用
+		public float angle;     //0.0f 未使用
 
 		[System.NonSerialized] //壁との距離保存用
 		public float dist_right, dist_left;
@@ -116,7 +116,7 @@ public class CharaBase : MonoBehaviour {
 		public bool both_flg;
 
 		[SerializeField, Header("向き変更の速さ")]
-		public float speed;       //2.0f
+		public float spd;       //2.0f
 
 		//初期化
 		public void Clear() {
@@ -124,6 +124,9 @@ public class CharaBase : MonoBehaviour {
 			dist_left		 = 0;
 			hit_right_flg	 = false;
 			hit_left_flg	 = false;
+			cavein_right_flg = false;
+			cavein_left_flg	 = false;
+			both_count		 = 0;
 			both_flg		 = false;
 		}
 
@@ -180,6 +183,7 @@ public class CharaBase : MonoBehaviour {
 		for (int i = 0; i < 8; i++) {
 			fwork[i] = 0;
 		}
+		wall_ray.Clear();
 
 	}
 
@@ -340,10 +344,10 @@ public class CharaBase : MonoBehaviour {
 	//----向き変更
 	public void WallRayRotate() {
 		if (wall_ray.hit_right_flg) {
-			transform.Rotate(0.0f, -wall_ray.speed, 0.0f);
+			transform.Rotate(0.0f, -wall_ray.spd, 0.0f);
 		}
 		else if (wall_ray.hit_left_flg) {
-			transform.Rotate(0.0f, wall_ray.speed, 0.0f);
+			transform.Rotate(0.0f, wall_ray.spd, 0.0f);
 		}
 	}
 
