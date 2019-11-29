@@ -94,8 +94,8 @@ public class CharaBase : MonoBehaviour {
 	[System.Serializable]
 	public class WallRay : BoxCastBase {
 		//public float length;		//20.0f
-		//public float up_limit;	//
-		//public float down_limit;	//
+		//public float up_limit;	//1.9f	2.7f
+		//public float down_limit;	//3.0f	2.5f
 
 		[SerializeField, Header("Rayの角度")]
 		public float angle;     //0.0f 未使用
@@ -116,7 +116,7 @@ public class CharaBase : MonoBehaviour {
 		public bool both_flg;
 
 		[SerializeField, Header("向き変更の速さ")]
-		public float spd;       //2.0f
+		public float spd;       //1.5f
 
 		//初期化
 		public void Clear() {

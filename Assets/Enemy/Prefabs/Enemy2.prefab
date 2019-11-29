@@ -435,54 +435,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui:
-    on: 1
+    on: 0
     all_view: 0
-    debug_view: 1
-  run_spd: 0
-  walk_spd: 0
+    debug_view: 0
+  run_speed: 15
+  walk_speed: 3
   jump_power: 10
-  stop_fric: 0.3
-  chara_ray_length: 0.4
   gravity_power: 5
   fallspd_limit: 30
-  wallray:
+  wall_ray:
     gizmo_on: 1
     judge_on: 1
-    length: 19.05
-    up_limit: 2.88
-    down_limit: 1.8
+    length: 20
+    up_limit: 2.76
+    down_limit: 2.52
     angle: 0
     spd: 1.5
-  holeray:
+  hole_ray:
     gizmo_on: 1
     judge_on: 1
     length: 100
     startLength: 11
     angle: 0
-    spd: 15
-  waitact:
+    speed: 15
+  wait_act:
     wait_time: 240
     wait_random: 0
     swing_time: 70
     swing_random: 0
     swing_spd: 30
     swing_space_time: 15
-  warningact:
+  warning_act:
     swing_spd: 100
     swing_time: 10
     swing_space_time: 15
-  awayact:
+  away_act:
     mag: 2
     lookback_interval: 120
     lookback_time: 30
-  jumpray:
+  jump_ray:
     gizmo_on: 1
     judge_on: 1
-    length: 4.32
-    up_limit: 2.9
-    down_limit: 2.6
-    power: 22.1
-    advance_length: 23.45
+    length: 4.3
+    up_limit: 2.76
+    down_limit: 3
+    power: 22
+    advance_length: 23
 --- !u!136 &6573222126267743767
 CapsuleCollider:
   m_ObjectHideFlags: 0

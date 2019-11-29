@@ -26,11 +26,11 @@ public sealed partial class Enemy : CharaBase
 		[SerializeField, Header("首振り前待機")]
 		public int wait_time;			//240
 		[SerializeField, Header("首振り前待機ランダム幅")]
-		public int wait_random;			//1
+		public int wait_random;			//0
 		[SerializeField, Header("首振り時間")]
 		public int swing_time;			//70
 		[SerializeField, Header("首振り時間ランダム幅")]
-		public int swing_random;		//1
+		public int swing_random;		//0
 		[SerializeField, Header("首振り速さ")]
 		public int swing_spd;			//30
 		[SerializeField, Header("首振り間の間隔")]
@@ -44,9 +44,9 @@ public sealed partial class Enemy : CharaBase
 	[System.Serializable]
 	public struct WarningAct {
 		[SerializeField, Header("首振り速さ")]
-		public int swing_spd;           //60
+		public int swing_spd;           //100
 		[SerializeField, Header("首振り時間")]
-		public int swing_time;          //80
+		public int swing_time;          //10
 		[SerializeField, Header("首振り間の間隔")]
 		public int swing_space_time;    //15
 	}
@@ -58,7 +58,7 @@ public sealed partial class Enemy : CharaBase
 	[System.Serializable]
 	public struct AwayAct {
 		[SerializeField, Header("音探知範囲*mag分離れたら止まる")]
-		public float mag;               //1.5f
+		public float mag;               //2.0f
 
 		//[SerializeField, Header("逃走時のランダム±角度")]
 		//public float angle;				//30
@@ -70,7 +70,7 @@ public sealed partial class Enemy : CharaBase
 		public int lookback_interval;	//120
 
 		[SerializeField, Header("振り向いている時間")]
-		public int lookback_time;		//60
+		public int lookback_time;		//30
 	}
 	[Header("逃走行動")]
 	public AwayAct away_act;
@@ -79,18 +79,18 @@ public sealed partial class Enemy : CharaBase
 	//段差ジャンプ -------------------------------------
 	[System.Serializable]
 	public class JumpRay : BoxCastBase {
-		//public float length;            //4.0f
-		//public float uplimit_height;    //1.7f
-		//public float downlimit_height;  //1.9f
+		//public float length;            //4.3f
+		//public float uplimit_height;    //2.0f 2.7f
+		//public float downlimit_height;  //3.9f 3.0f
 
 		[System.NonSerialized]			//壁との当たり判定
 		public bool flg;
 
 		[SerializeField, Range(0.0f, 40.0f), Header("ジャンプ力")]
-		public float power;				//16.0f
+		public float power;				//22.0f
 
 		[SerializeField,Header("事前判定の長さ")]
-		public float advance_length;    //22.0f
+		public float advance_length;    //23.0f
 
 		[System.NonSerialized]			//壁との事前当たり判定
 		public bool advance_flg;
