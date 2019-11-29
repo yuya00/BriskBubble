@@ -265,7 +265,7 @@ public sealed partial class Player : CharaBase
         head_hit();
 
         ////--壁判定による向き変更
-        //WallRay_Rotate_Judge();
+        //WallRayRotate_Judge();
 
         ////--穴判定による向き変更
         //HoleRay_Rotate_Judge();

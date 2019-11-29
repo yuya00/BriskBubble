@@ -189,7 +189,7 @@ public class CharaBase : MonoBehaviour {
 
 
 	//--壁判定による向き変更
-	public virtual void WallRay_Rotate_Judge() {
+	public virtual void WallRayRotate_Judge() {
 		if (!wallray.judge_on) {
 			return;
 		}
