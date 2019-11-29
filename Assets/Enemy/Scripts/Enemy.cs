@@ -312,9 +312,6 @@ public sealed partial class Enemy : CharaBase
         enum_swingact	 = Enum_SwingAct.SWING;
 
         wait_timer = 0;
-
-        //velocity = Vector3.zero;
-		//wall_ray.Clear();
     }
 
 

@@ -22,29 +22,30 @@ public class CharaBase : MonoBehaviour {
 
 
 	[Foldout("BaseParameter" ,true)]
-	protected			 Rigidbody			 rigid;
-	protected			 Vector3			 velocity;			//速さ(rigd.velocityでも良いかも)
+	protected				Rigidbody			 rigid;
+	protected				Vector3				 velocity;			//速さ(rigd.velocityでも良いかも)
 	[Tooltip("走りの速さ")]
-	public float		 run_speed			 = 15.0f;			//走りの速さ
+	public float			run_speed			 = 15.0f;
 	[Tooltip("歩きの速さ")]
-    public float		 walk_speed			 = 3.0f;			//歩きの速さ
+    public float			walk_speed			 = 3.0f;
 	[Tooltip("ジャンプ力")]
-    public float		 jump_power			 = 15.0f;			//ジャンプ力
-	protected float		 stop_fric			 = 0.3f;			//慣性(停止)
-	protected float		 jump_fric			 = 0;				//慣性(ジャンプ)
-	protected float		 jump_fric_power	 = 0.7f;			//慣性(ジャンプ)
-	protected bool		 is_ground			 = false;           //地面接地判定
-    protected Transform	 chara_ray;								//レイを飛ばす位置(地面判別に使用)
-	protected float		 chara_ray_length	 = 0.4f;            //レイの距離　2.0f,0.4f
+    public float			jump_power			 = 15.0f;			//ジャンプ力
+	protected float			stop_fric			 = 0.3f;			//慣性(停止)
+	protected float			jump_fric			 = 0;				//慣性(ジャンプ)
+	protected float			jump_fric_power		 = 0.7f;			//慣性(ジャンプ)
+	protected bool			is_ground			 = false;           //地面接地判定
+    protected Transform		chara_ray;								//レイを飛ばす位置(地面判別に使用)
+	protected float			chara_ray_length	 = 0.4f;
     [Tooltip("重力の倍率")]
-	public float		 gravity_power		 = 5;				//重力の倍率
-	protected int[]		 iwork				 = new int[8];
-	protected float[]	 fwork				 = new float[8];
+	public float			gravity_power		 = 5;               //重力の倍率
+	protected const int		WORK_NUM			 = 8;
+	protected int[]			iwork				 = new int[WORK_NUM];
+	protected float[]		fwork				 = new float[WORK_NUM];
 	[Tooltip("落下速度の速さ上限")]
-	public float		 fallspd_limit		 = 30.0f;
+	public float			fallspd_limit		 = 30.0f;
 	[Foldout("BaseParameter" ,false)]
-	protected int        wait_timer			 = 0;         //待機タイマー
-    protected const float HALF = 0.5f;  // 半分計算用
+	protected int			wait_timer			 = 0;				//待機タイマー
+    protected const float	HALF				 = 0.5f;			// 半分計算用
 
 
 
@@ -118,7 +119,6 @@ public class CharaBase : MonoBehaviour {
 		[SerializeField, Header("向き変更の速さ")]
 		public float spd;       //1.5f
 
-		//初期化
 		public void Clear() {
 			dist_right		 = 0;
 			dist_left		 = 0;
@@ -177,14 +177,15 @@ public class CharaBase : MonoBehaviour {
     {
 		rigid = GetComponent<Rigidbody>();
 		velocity = Vector3.zero;
-		for (int i = 0; i < 8; i++) {
+		is_ground = false;
+		for (int i = 0; i < WORK_NUM; i++) {
 			iwork[i] = 0;
 		}
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < WORK_NUM; i++) {
 			fwork[i] = 0;
 		}
 		wall_ray.Clear();
-
+		hole_ray.Clear();
 	}
 
 
@@ -339,8 +340,6 @@ public class CharaBase : MonoBehaviour {
 		return false;
 	}
 
-
-
 	//----向き変更
 	public void WallRayRotate() {
 		if (wall_ray.hit_right_flg) {
@@ -350,6 +349,7 @@ public class CharaBase : MonoBehaviour {
 			transform.Rotate(0.0f, wall_ray.spd, 0.0f);
 		}
 	}
+
 
 
 	//--穴判定による向き変更
@@ -547,6 +547,8 @@ public class CharaBase : MonoBehaviour {
 		//キャラクターを移動させる処理
 		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
 	}
+
+
 
 	protected bool WaitTimeOnce(int wait_time)
     {
