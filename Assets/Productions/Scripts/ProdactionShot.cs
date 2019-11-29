@@ -49,49 +49,49 @@ public class ProdactionShot : MonoBehaviour
         if (shot_hit_fg)
         {
             gameObject.SetActive(true);
-            prodaction();
+            Prodaction();
         }
     }
 
-    void prodaction()
+    void Prodaction()
     {
         switch (prodaction_state)
         {
             case FIRST_PRODACTION:
-                prodaction_first();
+                ProdactionFirst();
                 break;
             case SECOND_PRODACTION:
                 // 当たってから親のステートが1(小さくする)になるまで処理が呼ばれる
-                if (state_check()) prodaction_second();
+                if (StateCheck()) ProdactionSecond();
                 break;
         }
     }
 
-    void prodaction_first()
+    void ProdactionFirst()
     {
-        scale_chenge(scale_spd * scale_multi);
-        if (scale_limit_max())
+        ScaleChenge(scale_spd * scale_multi);
+        if (ScaleLimitMax())
         {
             prodaction_state = SECOND_PRODACTION;
         }
     }
 
-    void prodaction_second()
+    void ProdactionSecond()
     {
         switch (state)
         {
             case SCALE_UP:
-                scale_chenge(scale_spd);
-                if (scale_limit_max()) state = SCALE_DOWN;
+                ScaleChenge(scale_spd);
+                if (ScaleLimitMax()) state = SCALE_DOWN;
                 break;
             case SCALE_DOWN:
-                scale_chenge(-scale_spd);
-                if (scale_limit_min()) state = SCALE_UP;
+                ScaleChenge(-scale_spd);
+                if (ScaleLimitMin()) state = SCALE_UP;
                 break;
         }
     }
 
-    void scale_chenge(float spd)
+    void ScaleChenge(float spd)
     {
         transform.localScale = new Vector3(
             transform.localScale.x + spd * Time.deltaTime,
@@ -100,7 +100,7 @@ public class ProdactionShot : MonoBehaviour
     }
 
     // 大きさの制限
-    bool scale_limit_max()
+    bool ScaleLimitMax()
     {
         if (transform.localScale.x - enemy.transform.localScale.x > SCALE_MAX)
         {
@@ -109,7 +109,7 @@ public class ProdactionShot : MonoBehaviour
         return false;
     }
 
-    bool scale_limit_min()
+    bool ScaleLimitMin()
     {
         if (transform.localScale.x - enemy.transform.localScale.x < SCALE_MIN)
         {
@@ -119,7 +119,7 @@ public class ProdactionShot : MonoBehaviour
     }
 
     // ステートが1じゃ無いときにtrue
-    bool state_check()
+    bool StateCheck()
     {
         int parent_state = parent.GetComponent<EnemyProdaction>().State;
         if (parent_state == PARENT) return false;
@@ -143,7 +143,7 @@ public class ProdactionShot : MonoBehaviour
             #region ここに追加
 
             //GUILayout.TextArea("state\n" + state);
-            //GUILayout.TextArea("state_check()\n" + state_check());
+            //GUILayout.TextArea("StateCheck()\n" + StateCheck());
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);

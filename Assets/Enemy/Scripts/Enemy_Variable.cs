@@ -78,7 +78,7 @@ public sealed partial class Enemy : CharaBase
 
 	//段差ジャンプ -------------------------------------
 	[System.Serializable]
-	public class JumpRay : BoxCast_Base {
+	public class JumpRay : BoxCastBase {
 		//public float length;            //4.0f
 		//public float uplimit_height;    //1.7f
 		//public float downlimit_height;  //1.9f

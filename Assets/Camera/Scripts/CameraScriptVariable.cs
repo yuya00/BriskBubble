@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pixeye.Unity;
 
-public sealed partial class Camera_Script : MonoBehaviour
+public sealed partial class CameraScript : MonoBehaviour
 {
 
 	//[Header("カメラGUIの表示")]

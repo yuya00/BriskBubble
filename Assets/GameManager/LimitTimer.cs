@@ -6,15 +6,16 @@ using UnityEngine.UI;
 public sealed class LimitTimer : MonoBehaviour
 {
     private GameObject game_manager;
+
     public Text time_text;
 
-    public int min;     // 分
-
+    public  int min;    // 分
     public float sec;   // 秒
+
+    private int state;
 
     private bool timer_stop;
 
-    private int state;
     private const int START = 0;
     private const int GAME = 1;
 
@@ -31,18 +32,18 @@ public sealed class LimitTimer : MonoBehaviour
         switch(state)
         {
             case START:
-                if (game_manager.GetComponent<Scene>().Start_fg()) state = GAME;
+                if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
                 break;
             case GAME:
                 // 制限時間計算
-                limit_time();
+                LimitTime();
                 // 文字設定
-                set_text();
+                SetText();
                 break;
         }
     }
 
-    void limit_time()
+    void LimitTime()
     {
         // 一秒づつ減らす
         if (!timer_stop) sec -= Time.deltaTime;
@@ -63,12 +64,12 @@ public sealed class LimitTimer : MonoBehaviour
     }
 
     // 文字設定
-    void set_text()
+    void SetText()
     {
         time_text.text = min + "分" + (int)sec + "秒";
     }
 
-    public bool Timer_stop
+    public bool TimerStop
     {
         get { return timer_stop; }
     }

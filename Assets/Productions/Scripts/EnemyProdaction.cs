@@ -36,7 +36,7 @@ public class EnemyProdaction : MonoBehaviour
         {
             scale_chenge_on = true;
             // 位置修正
-            pos_check();
+            PosCheck();
         }
 
         // スケール変更
@@ -44,30 +44,30 @@ public class EnemyProdaction : MonoBehaviour
         {
             // 子の演出用ショットを出現
             prodaction_shot.SetActive(true);
-            scale();
+            Scale();
         }
 
         
     }
 
     // スケール変更まとめ
-    void scale()
+    void Scale()
     {
         switch (state)
         {
             case 0:
-                scale_chenge(big_spd);
-                state_chenge(timer_max);// 待機時間
+                ScaleChenge(big_spd);
+                StateChenge(timer_max);// 待機時間
                 break;
             case 1:
-                scale_chenge(-small_spd);
-                destroy();              // 削除処理
+                ScaleChenge(-small_spd);
+                Destroy();              // 削除処理
                 break;
         }
     }
 
     // 時間経ったらステート変更
-    void state_chenge(float timer_max)
+    void StateChenge(float timer_max)
     {
         timer += Time.deltaTime;
         if (timer > timer_max)
@@ -78,7 +78,7 @@ public class EnemyProdaction : MonoBehaviour
     }
 
     // 大きさを変える
-    void scale_chenge(float spd)
+    void ScaleChenge(float spd)
     {
         transform.localScale = new Vector3(
             transform.localScale.x + spd * Time.deltaTime,
@@ -87,14 +87,14 @@ public class EnemyProdaction : MonoBehaviour
     }
 
     // 位置修正
-    void pos_check()
+    void PosCheck()
     {
         transform.position = obj.transform.position;
         obj.transform.position = transform.position;
     }
 
     // 削除処理
-    void destroy()
+    void Destroy()
     {
         if (transform.localScale.x < NULL)
         {

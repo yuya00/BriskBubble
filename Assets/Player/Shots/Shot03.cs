@@ -8,7 +8,7 @@ public sealed class Shot03 : ShotBase
     public override void Start()
     {
         base.Start();
-        spd += player.GetComponent<Player>().Run_spd * PLR_SPD;
+        speed += player.GetComponent<Player>().RunSpeed * PLR_SPD;
     }
 
     // Update is called once per frame
@@ -23,10 +23,10 @@ public sealed class Shot03 : ShotBase
     void Move()
     {
         // 移動
-        rigid.velocity = forward * spd;
+        rigid.velocity = forward * speed;
 
         // 速度を落とす
-        if (spd_down_check(spd_down_timer_max)) down(down_spd, down_pos);
+        if (SpeedDownCheck(spd_down_timer_max)) Down(down_spd, down_pos);
     }
 
 }
