@@ -25,34 +25,31 @@ public class CharaBase : MonoBehaviour {
 	protected			 Rigidbody			 rigid;
 	protected			 Vector3			 velocity;			//速さ(rigd.velocityでも良いかも)
 	[Tooltip("走りの速さ")]
-	public float		 run_spd			 = 15.0f;			//走りの速さ
+	public float		 run_speed			 = 15.0f;			//走りの速さ
 	[Tooltip("歩きの速さ")]
-    public float		 walk_spd			 = 3.0f;			//歩きの速さ
+    public float		 walk_speed			 = 3.0f;			//歩きの速さ
 	[Tooltip("ジャンプ力")]
     public float		 jump_power			 = 15.0f;			//ジャンプ力
-	[Tooltip("慣性(停止)")]
-	public float		 stop_fric			 = 0.3f;			//慣性(停止)
+	protected float		 stop_fric			 = 0.3f;			//慣性(停止)
 	protected float		 jump_fric			 = 0;				//慣性(ジャンプ)
 	protected float		 jump_fric_power	 = 0.7f;			//慣性(ジャンプ)
 	protected bool		 is_ground			 = false;           //地面接地判定
     protected Transform	 chara_ray;								//レイを飛ばす位置(地面判別に使用)
-	[Tooltip("レイの距離")]
-	public float		 chara_ray_length	 = 2f;              //レイの距離
+	protected float		 chara_ray_length	 = 0.4f;            //レイの距離　2.0f,0.4f
     [Tooltip("重力の倍率")]
 	public float		 gravity_power		 = 5;				//重力の倍率
-	protected int[]		 iwork				 = new int[8];		//汎用
-	protected float[]	 fwork				 = new float[8];    //汎用
+	protected int[]		 iwork				 = new int[8];
+	protected float[]	 fwork				 = new float[8];
 	[Tooltip("落下速度の速さ上限")]
 	public float		 fallspd_limit		 = 30.0f;
 	[Foldout("BaseParameter" ,false)]
-	protected int        wait_timer;         //汎用待機タイマー
-
-
+	protected int        wait_timer			 = 0;         //待機タイマー
+    protected const float HALF = 0.5f;  // 半分計算用
 
 
 
 	// Ray基底 ------------------------------------------
-	public class Ray_Base {
+	public class RayBase {
 		public bool gizmo_on;
 
 		[Header("判定の実行")]
@@ -63,7 +60,7 @@ public class CharaBase : MonoBehaviour {
 	}
 
 	// BoxCast基底 ------------------------------------------
-	public class BoxCast_Base : Ray_Base {
+	public class BoxCastBase : RayBase {
 		[System.NonSerialized]
 		public float box_total;
 
@@ -80,11 +77,12 @@ public class CharaBase : MonoBehaviour {
 		public float down_limit;
 
 		//Boxcastの計算
-		public void BoxCast_Cal(Transform self_trans) {
-			box_total = down_limit + up_limit;
-			box_size = new Vector3(0, box_total / 2, length / 2);
-			box_pos = self_trans.position;
-			box_pos = box_pos - (self_trans.up * down_limit) + (self_trans.transform.up * box_total / 2);
+		public void BoxCastCal(Transform self_trans)
+        {
+			box_total   = down_limit + up_limit;
+			box_size    = new Vector3(0, box_total * HALF, length * HALF);
+			box_pos     = self_trans.position;
+			box_pos     = box_pos - (self_trans.up * down_limit) + (self_trans.transform.up * box_total * HALF);
 		}
 
 	}
@@ -94,13 +92,13 @@ public class CharaBase : MonoBehaviour {
 	[System.NonSerialized]
 	protected int angle_mag = 3; //角度調整
 	[System.Serializable]
-	public class WallRay : BoxCast_Base {
+	public class WallRay : BoxCastBase {
 		//public float length;		//20.0f
-		//public float up_limit;	//
-		//public float down_limit;	//
+		//public float up_limit;	//1.9f	2.7f
+		//public float down_limit;	//3.0f	2.5f
 
 		[SerializeField, Header("Rayの角度")]
-		public float angle;     //00.0f 未使用
+		public float angle;     //0.0f 未使用
 
 		[System.NonSerialized] //壁との距離保存用
 		public float dist_right, dist_left;
@@ -118,7 +116,7 @@ public class CharaBase : MonoBehaviour {
 		public bool both_flg;
 
 		[SerializeField, Header("向き変更の速さ")]
-		public float spd;       //2.0f
+		public float spd;       //1.5f
 
 		//初期化
 		public void Clear() {
@@ -126,17 +124,20 @@ public class CharaBase : MonoBehaviour {
 			dist_left		 = 0;
 			hit_right_flg	 = false;
 			hit_left_flg	 = false;
+			cavein_right_flg = false;
+			cavein_left_flg	 = false;
+			both_count		 = 0;
 			both_flg		 = false;
 		}
 
 	}
 	[Header("壁判定Ray")]
-	public WallRay wallray;
+	public WallRay wall_ray;
 
 
 	//穴判定Ray ---------------------------------------------
 	[System.Serializable]
-	public class HoleRay : Ray_Base {
+	public class HoleRay : RayBase {
 		//public float length;    //100.0f
 
 		[SerializeField, Header("Rayの始点")]
@@ -158,7 +159,7 @@ public class CharaBase : MonoBehaviour {
 		//public bool both_flg;
 
 		[SerializeField, Header("向き変更の速さ")]
-		public float spd;       //15.0f
+		public float speed;       //15.0f
 
 		public void Clear() {
 			hit_right_flg = false;
@@ -167,20 +168,26 @@ public class CharaBase : MonoBehaviour {
 
 	}
 	[Header("穴判定Ray")]
-	public HoleRay holeray;
+	public HoleRay hole_ray;
 
 
 
 
-    // Start is called before the first frame update
     public virtual void Start()
     {
 		rigid = GetComponent<Rigidbody>();
 		velocity = Vector3.zero;
+		for (int i = 0; i < 8; i++) {
+			iwork[i] = 0;
+		}
+		for (int i = 0; i < 8; i++) {
+			fwork[i] = 0;
+		}
+		wall_ray.Clear();
+
 	}
 
 
-	//Update is called once per frame
 	void Update()
     {
 
@@ -189,52 +196,52 @@ public class CharaBase : MonoBehaviour {
 
 
 	//--壁判定による向き変更
-	public virtual void WallRay_Rotate_Judge() {
-		if (!wallray.judge_on) {
+	public virtual void WallRayRotate_Judge() {
+		if (!wall_ray.judge_on) {
 			return;
 		}
 		//----壁判定Ray当たり判定
-		WallRay_Judge();
+		WallRayJudge();
 
 		//----向き変更
-		WallRay_Rotate();
+		WallRayRotate();
 	}
 
 	//----壁判定Ray当たり判定
-	public void WallRay_Judge() {
+	public void WallRayJudge() {
 		//RaycastHit hit;
-		wallray.BoxCast_Cal(transform);
+		wall_ray.BoxCastCal(transform);
 
 		#region BoxCast
 		/*
 		//右のレイ
-		if (Physics.BoxCast(wallray.box_pos, wallray.box_size,
+		if (Physics.BoxCast(wall_ray.box_pos, wall_ray.box_size,
 				(transform.forward * angle_mag + transform.right).normalized, out hit,
-				transform.rotation, wallray.length / 2)) 
+				transform.rotation, wall_ray.length / 2)) 
 			{
 			if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_right = hit.distance;  //壁との距離保存
-				wallray.hit_right_flg = true;       //壁との当たり判定
+				wall_ray.dist_right = hit.distance;  //壁との距離保存
+				wall_ray.hit_right_flg = true;       //壁との当たり判定
 			}
 		}
 		else {
-			wallray.dist_right = 0;
-			wallray.hit_right_flg = false;
+			wall_ray.dist_right = 0;
+			wall_ray.hit_right_flg = false;
 		}
 
 		//左のレイ
-		if (Physics.BoxCast(wallray.box_pos, wallray.box_size,
+		if (Physics.BoxCast(wall_ray.box_pos, wall_ray.box_size,
 			(transform.forward * angle_mag + (-transform.right)).normalized, out hit,
-			transform.rotation, wallray.length / 2)) 
+			transform.rotation, wall_ray.length / 2)) 
 			{
 			if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_left = hit.distance;  //壁との距離保存
-				wallray.hit_left_flg = true;       //壁との当たり判定
+				wall_ray.dist_left = hit.distance;  //壁との距離保存
+				wall_ray.hit_left_flg = true;       //壁との当たり判定
 			}
 		}
 		else {
-			wallray.dist_left = 0;
-			wallray.hit_left_flg = false;
+			wall_ray.dist_left = 0;
+			wall_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
@@ -242,33 +249,33 @@ public class CharaBase : MonoBehaviour {
 		#region RayCast_Three
 		//*
 		//右のレイ(上,下,真ん中)
-		if (WallRay_Right(wallray.up_limit, 1, 1)) {
-			wallray.hit_right_flg = true;
+		if (WallRayRight(wall_ray.up_limit, 1, 1)) {
+			wall_ray.hit_right_flg = true;
 		}
-		else if (WallRay_Right(wallray.down_limit, -1, 1)) {
-			wallray.hit_right_flg = true;
+		else if (WallRayRight(wall_ray.down_limit, -1, 1)) {
+			wall_ray.hit_right_flg = true;
 		}
-		else if (WallRay_Right(0, 0, 1)) {
-			wallray.hit_right_flg = true;
+		else if (WallRayRight(0, 0, 1)) {
+			wall_ray.hit_right_flg = true;
 		}
 		else {
-			wallray.dist_right = 0;
-			wallray.hit_right_flg = false;
+			wall_ray.dist_right = 0;
+			wall_ray.hit_right_flg = false;
 		}
 
 		//左のレイ(上,下,真ん中)
-		if (WallRay_Left(wallray.up_limit, 1, -1)) {
-			wallray.hit_left_flg = true;
+		if (WallRayLeft(wall_ray.up_limit, 1, -1)) {
+			wall_ray.hit_left_flg = true;
 		}
-		else if (WallRay_Left(wallray.down_limit, -1, -1)) {
-			wallray.hit_left_flg = true;
+		else if (WallRayLeft(wall_ray.down_limit, -1, -1)) {
+			wall_ray.hit_left_flg = true;
 		}
-		else if (WallRay_Left(0, 0, -1)) {
-			wallray.hit_left_flg = true;
+		else if (WallRayLeft(0, 0, -1)) {
+			wall_ray.hit_left_flg = true;
 		}
 		else {
-			wallray.dist_left = 0;
-			wallray.hit_left_flg = false;
+			wall_ray.dist_left = 0;
+			wall_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
@@ -277,41 +284,41 @@ public class CharaBase : MonoBehaviour {
 		/*
 		//右のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + transform.right).normalized, out hit, wallray.length)) {
+			(transform.forward * angle_mag + transform.right).normalized, out hit, wall_ray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_right = hit.distance;  //壁との距離保存
-				wallray.hit_right_flg = true;       //壁との当たり判定
+				wall_ray.dist_right = hit.distance;  //壁との距離保存
+				wall_ray.hit_right_flg = true;       //壁との当たり判定
 			}
 		}
 		else {
-			wallray.dist_right = 0;
-			wallray.hit_right_flg = false;
+			wall_ray.dist_right = 0;
+			wall_ray.hit_right_flg = false;
 		}
 
 		//左のレイ
 		if (Physics.Raycast(transform.position,
-			(transform.forward * angle_mag + (-transform.right)).normalized, out hit, wallray.length)) {
+			(transform.forward * angle_mag + (-transform.right)).normalized, out hit, wall_ray.length)) {
 			if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_left = hit.distance;   //壁との距離保存
-				wallray.hit_left_flg = true;        //壁との当たり判定
+				wall_ray.dist_left = hit.distance;   //壁との距離保存
+				wall_ray.hit_left_flg = true;        //壁との当たり判定
 			}
 		}
 		else {
-			wallray.dist_left = 0;
-			wallray.hit_left_flg = false;
+			wall_ray.dist_left = 0;
+			wall_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
 	}
 
 	//------右レイ
-	bool WallRay_Right(float limit, int limit_one, int right_one) {
+	bool WallRayRight(float limit, int limit_one, int right_one) {
 		RaycastHit hit;
 
-		if (Physics.Raycast(wallray.box_pos + (transform.up * limit * limit_one),
-			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wallray.length)) {
+		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
+			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
 			//if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_right = hit.distance;  //壁との距離保存
+				wall_ray.dist_right = hit.distance;  //壁との距離保存
 				return true;
 			//}
 		}
@@ -319,13 +326,13 @@ public class CharaBase : MonoBehaviour {
 	}
 
 	//------左レイ
-	bool WallRay_Left(float limit, int limit_one, int right_one) {
+	bool WallRayLeft(float limit, int limit_one, int right_one) {
 		RaycastHit hit;
 
-		if (Physics.Raycast(wallray.box_pos + (transform.up * limit * limit_one),
-			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wallray.length)) {
+		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
+			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
 			//if (hit.collider.gameObject.tag == "Wall") {
-				wallray.dist_left = hit.distance;  //壁との距離保存
+				wall_ray.dist_left = hit.distance;  //壁との距離保存
 				return true;
 			//}
 		}
@@ -335,30 +342,30 @@ public class CharaBase : MonoBehaviour {
 
 
 	//----向き変更
-	public void WallRay_Rotate() {
-		if (wallray.hit_right_flg) {
-			transform.Rotate(0.0f, -wallray.spd, 0.0f);
+	public void WallRayRotate() {
+		if (wall_ray.hit_right_flg) {
+			transform.Rotate(0.0f, -wall_ray.spd, 0.0f);
 		}
-		else if (wallray.hit_left_flg) {
-			transform.Rotate(0.0f, wallray.spd, 0.0f);
+		else if (wall_ray.hit_left_flg) {
+			transform.Rotate(0.0f, wall_ray.spd, 0.0f);
 		}
 	}
 
 
 	//--穴判定による向き変更
-	public void HoleRay_Rotate_Judge() {
-		if (!holeray.judge_on) {
+	public void HoleRayRotateJudge() {
+		if (!hole_ray.judge_on) {
 			return;
 		}
 		//----穴判定Ray当たり判定
-		HoleRay_Judge();
+		HoleRayJudge();
 
 		//----向き変更
-		HoleRay_Rotate();
+		HoleRayRotate();
 	}
 
 	//----穴判定Ray当たり判定
-	public void HoleRay_Judge() {
+	public void HoleRayJudge() {
 		RaycastHit hit;
 
 		//何にも当たっていなかったら
@@ -366,33 +373,33 @@ public class CharaBase : MonoBehaviour {
 		//*
 		//右のレイ
 		float var = 1;
-		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right * var),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right * var),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength + var)),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength - var)),
-			-transform.up, out hit, holeray.length)) ) {
-			holeray.hit_right_flg = true;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength + var)),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength - var)),
+			-transform.up, out hit, hole_ray.length)) ) {
+			hole_ray.hit_right_flg = true;
 		}
 		else {
-			holeray.hit_right_flg = false;
+			hole_ray.hit_right_flg = false;
 		}
 
 		//左のレイ
-		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right * var),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right * var),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength + var)),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength - var)),
-			-transform.up, out hit, holeray.length))) {
-			holeray.hit_left_flg = true;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength + var)),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength - var)),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_left_flg = true;
 		}
 		else {
-			holeray.hit_left_flg = false;
+			hole_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
@@ -401,25 +408,25 @@ public class CharaBase : MonoBehaviour {
 		/*
 		//右のレイ
 		float var = 1;
-		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) + (transform.right*var),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength)) - (transform.right* var),
-			-transform.up, out hit, holeray.length))) {
-			holeray.hit_right_flg = true;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right*var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) - (transform.right* var),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_right_flg = true;
 		}
 		else {
-			holeray.hit_right_flg = false;
+			hole_ray.hit_right_flg = false;
 		}
 
 		//左のレイ
-		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) + (transform.right* var),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength)) - (transform.right* var),
-			-transform.up, out hit, holeray.length))) {
-			holeray.hit_left_flg = true;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right* var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right* var),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_left_flg = true;
 		}
 		else {
-			holeray.hit_left_flg = false;
+			hole_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
@@ -427,25 +434,25 @@ public class CharaBase : MonoBehaviour {
 		#region 2RayCast 縦
 		/*
 		//右のレイ
-		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength + 1),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (holeray.startLength - 1),
-			-transform.up, out hit, holeray.length))) {
-			holeray.hit_right_flg = true;
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength + 1),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength - 1),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_right_flg = true;
 		}
 		else {
-			holeray.hit_right_flg = false;
+			hole_ray.hit_right_flg = false;
 		}
 
 		//左のレイ
-		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength + 1),
-			-transform.up, out hit, holeray.length)) &&
-			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (holeray.startLength - 1),
-			-transform.up, out hit, holeray.length))) {
-			holeray.hit_left_flg = true;
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength + 1),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength - 1),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_left_flg = true;
 		}
 		else {
-			holeray.hit_left_flg = false;
+			hole_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
@@ -453,21 +460,21 @@ public class CharaBase : MonoBehaviour {
 		#region RayCast
 		/*
 		//右のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length,
-			-transform.up, out hit, holeray.length)) {
-			holeray.hit_right_flg = true;
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wall_ray.length,
+			-transform.up, out hit, hole_ray.length)) {
+			hole_ray.hit_right_flg = true;
 		}
 		else {
-			holeray.hit_right_flg = false;
+			hole_ray.hit_right_flg = false;
 		}
 
 		//左のレイ
-		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length,
-			-transform.up, out hit, holeray.length)) {
-			holeray.hit_left_flg = true;
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length,
+			-transform.up, out hit, hole_ray.length)) {
+			hole_ray.hit_left_flg = true;
 		}
 		else {
-			holeray.hit_left_flg = false;
+			hole_ray.hit_left_flg = false;
 		}
 		// */
 		#endregion
@@ -475,12 +482,12 @@ public class CharaBase : MonoBehaviour {
 	}
 
 	//----向き変更
-	public void HoleRay_Rotate() {
-		if (holeray.hit_right_flg) {
-			transform.Rotate(0.0f, -holeray.spd, 0.0f);
+	public void HoleRayRotate() {
+		if (hole_ray.hit_right_flg) {
+			transform.Rotate(0.0f, -hole_ray.speed, 0.0f);
 		}
-		else if (holeray.hit_left_flg) {
-			transform.Rotate(0.0f, holeray.spd, 0.0f);
+		else if (hole_ray.hit_left_flg) {
+			transform.Rotate(0.0f, hole_ray.speed, 0.0f);
 		}
 	}
 
@@ -525,9 +532,9 @@ public class CharaBase : MonoBehaviour {
 	}
 
 
-	public virtual void Debug_Log(){
+	public virtual void DebugLog(){
 		/*
-        Debug.DrawRay(chara_ray.position, Vector3.down * chara_ray_length, Color.red);
+        Debug.DrawRay(chara_ray.position, Vector3.Down * chara_ray_length, Color.red);
         Debug.Log("ground:" + is_ground);
         Debug.Log("vel:"+velocity);
         Debug.Log("vel:"+velocity);
@@ -541,16 +548,14 @@ public class CharaBase : MonoBehaviour {
 		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
 	}
 
-
-
-
-
-
-	protected bool WaitTime_Once(int wait_time) {
-		if (wait_timer >= wait_time) {
+	protected bool WaitTimeOnce(int wait_time)
+    {
+		if (wait_timer >= wait_time)
+        {
 			return true;
 		}
-		else {
+		else
+        {
 			wait_timer++;
 			return false;
 		}

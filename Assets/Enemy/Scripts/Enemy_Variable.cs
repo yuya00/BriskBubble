@@ -4,35 +4,20 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
-	private bool				jump_flg;
-	private int					timer;				//汎用
-	//private int					wait_timer;         //汎用待機タイマー
-	private int					wait_timer_swing;	//汎用待機タイマー(首振り用)
-	private bool				player_touch_flg;   //プレイヤーとの当たり判定
-	private bool				shot_touch_flg;   //プレイヤーとの当たり判定
-	private Vector3				delection_vec;		//プレイヤーと逆方向のベクトル
-	private EnemyNear			enemynear;
-	private Vector2				dist;				//プレイヤーと逆方向のベクトル
-	private Vector2				dist_normal_vec;    //プレイヤーと逆方向のベクトル
-	private float               curve_spd = 0.1f;   //曲がりながら走る
+	private int					wait_timer_swing;
+	private bool				player_touch_flg;
+	private bool				shot_touch_flg;
+	private Vector3				dist_to_player;
+	private float				curve_spd;
+	private EnemyNear			enemy_near;
+	private EnemySoundDetect	enemy_sounddetect;
+	private GameObject			player_obj;
 
-
-	private EnemySoundDetect	enemy_sound_detect;
 	private struct OnceRondom {
-		public int	 num;
-		public bool	 isfinish;
+		public int   num;
+		public bool  isfinish;
 	}
-	OnceRondom					once_random;
-	private bool				clear_flg;          //行動初期化判定
-	private GameObject player_obj;      // プレイヤーのオブジェクト取得
-
-	//Transform wall_ray;
-	//Quaternion wall_ray;
-	//GameObject wall_ray;
-
-	private Vector3 old_angle;
-	private Vector3 new_angle;
-	private Vector3 dist_angle;
+	OnceRondom once_random;
 
 
 	//待機 ---------------------------------------------
@@ -41,94 +26,87 @@ public sealed partial class Enemy : CharaBase
 		[SerializeField, Header("首振り前待機")]
 		public int wait_time;			//240
 		[SerializeField, Header("首振り前待機ランダム幅")]
-		public int wait_random;			//1
+		public int wait_random;			//0
 		[SerializeField, Header("首振り時間")]
 		public int swing_time;			//70
 		[SerializeField, Header("首振り時間ランダム幅")]
-		public int swing_random;		//1
+		public int swing_random;		//0
 		[SerializeField, Header("首振り速さ")]
 		public int swing_spd;			//30
 		[SerializeField, Header("首振り間の間隔")]
 		public int swing_space_time;	//15
 	}
 	[Header("待機行動")]
-	public WaitAct waitact;
+	public WaitAct wait_act;
 
 
 	//警戒 ---------------------------------------------
-	private int swing3_spd_add	 = 20;	//首振り3回目の追加値
-	private int swing3_time_add	 = 230;	//首振り3回目の追加値
 	[System.Serializable]
 	public struct WarningAct {
 		[SerializeField, Header("首振り速さ")]
-		public int swing_spd;           //60
+		public int swing_spd;           //100
 		[SerializeField, Header("首振り時間")]
-		public int swing_time;          //80
+		public int swing_time;          //10
 		[SerializeField, Header("首振り間の間隔")]
 		public int swing_space_time;    //15
 	}
 	[Header("警戒行動")]
-	public WarningAct warningact;
-
+	public WarningAct warning_act;
 
 
 	//逃走 ---------------------------------------------
-	private bool lookback_flg = false;	//振り向き判定
 	[System.Serializable]
 	public struct AwayAct {
-		//逃走時,音探知範囲の1.5倍
 		[SerializeField, Header("音探知範囲*mag分離れたら止まる")]
-		public float mag;				//1.5f
+		public float mag;               //2.0f
 
 		//[SerializeField, Header("逃走時のランダム±角度")]
 		//public float angle;				//30
+
+		[System.NonSerialized]
+		public bool lookback_flg;  //振り向き判定
 
 		[SerializeField, Header("振り向く間隔")]
 		public int lookback_interval;	//120
 
 		[SerializeField, Header("振り向いている時間")]
-		public int lookback_time;		//60
+		public int lookback_time;		//30
 	}
 	[Header("逃走行動")]
-	public AwayAct awayact;
+	public AwayAct away_act;
 
 
-	//段差ジャンプ ----------------------------------------
+	//段差ジャンプ -------------------------------------
 	[System.Serializable]
-	public class JumpRay : BoxCast_Base {
-		//public float length;            //4.0f
-		//public float uplimit_height;    //1.7f
-		//public float downlimit_height;  //1.9f
+	public class JumpRay : BoxCastBase {
+		//public float length;            //4.3f
+		//public float uplimit_height;    //2.0f 2.7f
+		//public float downlimit_height;  //3.9f 3.0f
 
 		[System.NonSerialized]			//壁との当たり判定
 		public bool flg;
 
 		[SerializeField, Range(0.0f, 40.0f), Header("ジャンプ力")]
-		public float power;				//16.0f
+		public float power;				//22.0f
 
 		[SerializeField,Header("事前判定の長さ")]
-		public float advance_length;    //22.0f
+		public float advance_length;    //23.0f
 
 		[System.NonSerialized]			//壁との事前当たり判定
 		public bool advance_flg;
 	}
 	[Header("ジャンプRay")]
-	public JumpRay jumpray;
-
-
-
-
-
+	public JumpRay jump_ray;
 
 
 
 
 	//敵モデルの種類
-	enum Enum_model {
+	enum EnumModel {
 		STILL,  //幼体
 		GROWN   //成体
 	}
-	Enum_model enum_model;
+	EnumModel enum_model;
 
 
 	//状態の種類
@@ -143,7 +121,6 @@ public sealed partial class Enemy : CharaBase
 	}
 	Enum_State enum_state;
 	Enum_State old_state;
-
 
 
 	//状態内の行動種類
@@ -161,7 +138,6 @@ public sealed partial class Enemy : CharaBase
 	Enum_Act old_act;
 
 
-
 	//首振りの行動種類
 	enum Enum_SwingAct {
 		SWING,	//首振り
@@ -169,23 +145,6 @@ public sealed partial class Enemy : CharaBase
 	}
 	Enum_SwingAct enum_swingact;
 
-
-
-	////音探知範囲
-	//[System.Serializable]
-	//public struct SoundArea {
-	//	[Range(0, 50)]
-	//	public float radius;    //音探知範囲の半径(25.0f)
-	//}
-	//[Header("音探知範囲")]
-	//public SoundArea sound_area;
-
-
-	//public float getRadius {
-	//	get {
-	//		return sound_area.radius;
-	//	}
-	//}
 
 
 

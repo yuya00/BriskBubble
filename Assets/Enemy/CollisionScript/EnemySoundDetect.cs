@@ -24,14 +24,14 @@ public class EnemySoundDetect : MonoBehaviour {
 
 	// 当たり判定 -------------------------------------------------------
 	private void OnTriggerStay(Collider other) {
-		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
+		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().ApperFg) {
 			hit_flg = true;
 			hit_pos = other.gameObject.transform.position;
 		}
 
 	}
 	private void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().Apper_fg) {
+		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().ApperFg) {
 			hit_flg = true;
 			hit_pos = other.gameObject.transform.position;
 		}

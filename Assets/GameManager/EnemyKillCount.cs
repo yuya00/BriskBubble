@@ -13,18 +13,18 @@ public sealed class EnemyKillCount : MonoBehaviour
 
     void Start()
     {
-        enm_count_init();
+        EnemyCountInit();
         enemy_num_text.text = "残り : " + enm_num_max + "体";
     }
 
     void Update()
     {
-        enemy_kill_count();
+        EnemyCount();
         enemy_num_text.text = "残り : " + enm_num_max + "体";
     }
 
     // Start is called before the first frame update
-    void enm_count_init()
+    void EnemyCountInit()
     {
         enemy_prodaction = GameObject.FindGameObjectsWithTag("ProdactionEnemy");
         enm_num_max = enemy_prodaction.Length;
@@ -32,7 +32,7 @@ public sealed class EnemyKillCount : MonoBehaviour
     }
 
     // 敵を倒した数をカウント
-    void enemy_kill_count()
+    void EnemyCount()
     {
         for (int i = 0; i < enm_num_max; ++i)
         {
@@ -46,7 +46,7 @@ public sealed class EnemyKillCount : MonoBehaviour
         }
     }
 
-    public int Enm_num_max
+    public int EnemyNumMax
     {
         get { return enm_num_max; }
     }

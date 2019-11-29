@@ -5,60 +5,79 @@ using UnityEngine.UI;
 
 public sealed partial class Player : CharaBase
 {
+    // 初期値設定
     public override void Start()
     {
         base.Start();
-        // 初期値設定
-        game_manager = GameObject.FindGameObjectWithTag("GameManager");
-        state = START;
+
+        // コンポーネント取得
+        game_manager    = GameObject.FindGameObjectWithTag("GameManager");
 		sphere_collider = GetComponent<SphereCollider>();
-		//state = GAME;
-        init_spd = run_spd;
-        init_fric = stop_fric;
-        init_back_spd = back_spd;
-        chara_ray = transform.Find("CharaRay");
-        animator = GetComponent<Animator>();
-        COUNT = 23 / ANIME_SPD;
-        respawn_pos = transform.position;
-        shot_jump_fg = false;
+        animator        = GetComponent<Animator>();
+        chara_ray       = transform.Find("CharaRay");
+
+        // プレイヤーのパラメーター設定
+        state           = START;
+        init_speed      = run_speed;
+        init_fric       = stop_fric;
+        init_back_speed = back_speed;
+        COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
+        respawn_pos     = transform.position;   
+        shot_jump_fg    = false;
     }
 
     void Update()
     {
         switch (state)
         {
-            case START:
-                base.Move();
-                // ジャンプアニメーション
-                anime_jump();
-                if (game_manager.GetComponent<Scene>().Start_fg())
-                    state = GAME;
-                break;
-            case GAME:
-                // アニメ初期化
-                init_anime();
-                // 移動
-                Move();
-                // ショット
-                Shot();
+            // 待機
+            case START: Wait();     break;
 
-                // クリアしたら
-                if (game_manager.GetComponent<Scene>().Clear_fg()) state = CLEAR;
-                break;
-            case CLEAR:
+            // プレイヤー更新
+            case GAME:  Game();     break;
 
-                break;
+            // クリア後
+            case CLEAR: GameClear(); break;
         }
 
-        Debug_Log();
+        DebugLog();
 		//先行入力まとめ
-		LeadKey_All();
+		LeadKeyAll();
 
-		Debug_Log();
-        raydebug();
+		DebugLog();
+        RayDebug();
     }
 
-    void raydebug()
+    // Update内で待機
+    void Wait()
+    {
+        base.Move();
+        // ジャンプアニメーション
+        AnimeJump();
+        if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
+    }
+
+    // ゲームシーンでプレイヤーの動きまとめ
+    void Game()
+    {
+        // アニメ初期化
+        InitAnime();
+        // 移動
+        Move();
+        // ショット
+        Shot();
+
+        // クリアしたら
+        if (game_manager.GetComponent<Scene>().ClearFg()) state = CLEAR;
+    }
+
+    // アニメーションをとめる
+    void GameClear()
+    {
+
+    }
+
+    void RayDebug()
     {
         //*********************************************************************//
         Debug.DrawLine(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, Color.red);
@@ -66,15 +85,15 @@ public sealed partial class Player : CharaBase
         // きっちり足元判定
         for (int i = 0; i < 9; ++i)
         {
-            //Debug.DrawRay(chara_ray.position + ofset_layer_pos[i], Vector3.down * (chara_ray_length * 0.5f), Color.green);
+            //Debug.DrawRay(chara_ray.position + ofset_layer_pos[i], Vector3.Down * (chara_ray_length * 0.5f), Color.green);
         }
         //*********************************************************************//
     }
 
-    public override void Debug_Log()
+    public override void DebugLog()
     {
         /*
-		base.Debug_Log();
+		base.DebugLog();
 
 		//*/
     }
@@ -85,12 +104,12 @@ public sealed partial class Player : CharaBase
         switch (state)
         {
             case START:
-                if (game_manager.GetComponent<Scene>().Start_fg()) state = GAME;
+                if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
                 break;
             case GAME:
                 base.FixedUpdate();
                 // 移動
-                lstick_move();
+                LstickMove();
                 break;
             case CLEAR:
 
@@ -100,7 +119,7 @@ public sealed partial class Player : CharaBase
 
 
     //GUI表示 -----------------------------------------------------
-    private Vector2 leftScrollPos = Vector2.zero;   //uGUIスクロールビュー用
+    private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
 	private float scroll_height = 330;
 	void OnGUI()
     {
@@ -114,7 +133,7 @@ public sealed partial class Player : CharaBase
 			else scroll_height = 330;
 
 			GUILayout.BeginVertical("box", GUILayout.Width(190));
-            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+            left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
             GUILayout.Box("Player");
 			float spdx, spdy, spdz;
             #region ここに追加
@@ -140,8 +159,8 @@ public sealed partial class Player : CharaBase
 
 				//壁掴み判定
 				GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
-				GUILayout.TextArea("壁掴み準備判定\n " + wallGrabRay.prepare_flg.ToString());
-				GUILayout.TextArea("壁掴み判定\n " + wallGrabRay.flg.ToString());
+				GUILayout.TextArea("壁掴み準備判定\n " + wall_grab_ray.prepare_flg.ToString());
+				GUILayout.TextArea("壁掴み判定\n " + wall_grab_ray.flg.ToString());
 
 				////壁掴んだ瞬間
 				//GUILayout.TextArea("壁前方向との内積\n" + wall_forward_angle.ToString());
@@ -151,13 +170,13 @@ public sealed partial class Player : CharaBase
 				//GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
 
 				//壁判定
-				GUILayout.TextArea("壁判定左右\n" + wallray.hit_left_flg + "  " + wallray.hit_right_flg);
-				GUILayout.TextArea("壁判定両方左右\n" + wallray.cavein_left_flg + "  " + wallray.cavein_right_flg);
-				GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
-				GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
+				GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
+				GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
+				GUILayout.TextArea("壁判定左めり込み距離\n" + wall_ray.dist_left);
+				GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
 
 				//穴判定
-				GUILayout.TextArea("穴判定左右\n" + holeray.hit_left_flg + "  " + holeray.hit_right_flg);
+				GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
 
 			}
 			#endregion
@@ -167,7 +186,7 @@ public sealed partial class Player : CharaBase
 
 				//GUILayout.TextArea("先行入力キー\n" + lead_key);
 				//GUILayout.TextArea("先行入力押されたキー");
-				//for (int i = 0; i < leadkey_num; i++) {
+				//for (int i = 0; i < lead_key_num; i++) {
 				//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
 				//	GUILayout.TextArea("" + lead_inputs[i].frame);
 				//}
@@ -194,34 +213,34 @@ public sealed partial class Player : CharaBase
 
 
 		#region 壁判定Ray
-		if (wallray.gizmo_on)
+		if (wall_ray.gizmo_on)
         {
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wallray.length);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wall_ray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length);
         }
 		#endregion
 
 
 		#region 穴判定Ray
-		if (holeray.gizmo_on)
+		if (hole_ray.gizmo_on)
         {
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wallray.length, -transform.up * holeray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wallray.length, -transform.up * holeray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
         }
 		#endregion
 
 
 		#region 壁掴み判定Ray
-		if (wallGrabRay.gizmo_on)
+		if (wall_grab_ray.gizmo_on)
         {
             Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.2f);
-            Gizmos.DrawRay(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward * wallGrabRay.length);
+            Gizmos.DrawRay(transform.position + new Vector3(0, wall_grab_ray.height, 0), transform.forward * wall_grab_ray.length);
 
             //--横移動制限Ray
-            Gizmos.DrawRay(transform.position + transform.right * wallGrabRay.side_length, transform.forward * wallGrabRay.length);
-            Gizmos.DrawRay(transform.position + transform.right * -wallGrabRay.side_length, transform.forward * wallGrabRay.length);
+            Gizmos.DrawRay(transform.position + transform.right * wall_grab_ray.side_length, transform.forward * wall_grab_ray.length);
+            Gizmos.DrawRay(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward * wall_grab_ray.length);
         }
 		#endregion
 	}
@@ -232,7 +251,7 @@ public sealed partial class Player : CharaBase
         base.Move();
 
         // 速度設定
-        run_spd = init_spd;
+        run_speed = init_speed;
         stop_fric = init_fric;
 
         //ジャンプ時の移動慣性
@@ -244,39 +263,39 @@ public sealed partial class Player : CharaBase
         else jump_fric = jump_fric_power;
 
         // バブル状態のとき
-        if (shot_state > 1) bubble_spd(2.0f, 0.1f);
+        if (shot_state > 1) BubbleSpeed(2.0f, 0.1f);
 
         // ショット3を撃った後プレイヤーをとめる
-        if (back_player) back_move();
+        if (back_player) BackMove();
 
         //　着地してるときにジャンプ
-        if (jump_on()) jump(jump_power);
+        if (JumpOn()) Jump(jump_power);
 
         // ショットに乗った時にジャンプをjump_power_up倍
-        if (down_hit_shot()) jump(jump_power * jump_power_up);
+        if (DownHitShot()) Jump(jump_power * jump_power_up);
 
         // ジャンプアニメーション
-        anime_jump();
+        AnimeJump();
 
         // リスポーン
-        fall_max();
+        RespawnFall();
 
         // 頭方向に何か当たったか
-        head_hit();
+        HeadHit();
 
         ////--壁判定による向き変更
-        //WallRay_Rotate_Judge();
+        //WallRayRotate_Judge();
 
         ////--穴判定による向き変更
-        //HoleRay_Rotate_Judge();
+        //HoleRayRotateJudge();
 
         //--壁掴み判定Rayによる掴み
-        WallGrabRay_Grab_Judge();
+        WallGrabRayGrabJudge();
 
     }
 
     // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
-    void lstick_move()
+    void LstickMove()
     {
         Vector3 move = new Vector3(0, 0, 0);
 
@@ -312,10 +331,10 @@ public sealed partial class Player : CharaBase
         move += front * axis_y;
 
         //　方向キーが多少押されていたらその方向向く
-        if (axis_x != 0f || axis_y != 0f) look_at(move);
+        if (axis_x != 0f || axis_y != 0f) LookAt(move);
 
         #region 状態分け
-        switch (stick_state(axis_x, axis_y))
+        switch (StickState(axis_x, axis_y))
         {
             case WAIT:
                 //停止時慣性(徐々に遅くなる)              
@@ -326,15 +345,15 @@ public sealed partial class Player : CharaBase
                 break;
             case WALK:
                 // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * walk_spd;
-                velocity.z = move.normalized.z * walk_spd;
+                velocity.x = move.normalized.x * walk_speed;
+                velocity.z = move.normalized.z * walk_speed;
                 animator.SetBool("Walk", true);
                 animator.SetBool("Run", false);
                 break;
             case RUN:
                 // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * run_spd;
-                velocity.z = move.normalized.z * run_spd;
+                velocity.x = move.normalized.x * run_speed;
+                velocity.z = move.normalized.z * run_speed;
                 animator.SetBool("Run", true);
                 animator.SetBool("Walk", false);
                 break;
@@ -344,18 +363,18 @@ public sealed partial class Player : CharaBase
     }
 
     // その方向を向く
-    void look_at(Vector3 vec)
+    void LookAt(Vector3 vec)
     {
         Vector3 target_pos = transform.position + vec.normalized;
-        Vector3 target = Vector3.Lerp(transform.position + transform.forward, target_pos, rot_spd * Time.deltaTime);
-        if (!wallGrabRay.flg)
+        Vector3 target = Vector3.Lerp(transform.position + transform.forward, target_pos, rot_speed * Time.deltaTime);
+        if (!wall_grab_ray.flg)
         {
             transform.LookAt(target);
         }
     }
 
     // スティックの倒し具合設定
-    int stick_state(float x, float y)
+    int StickState(float x, float y)
     {
         // 入力チェック
         if (x != 0f || y != 0f)
@@ -369,15 +388,15 @@ public sealed partial class Player : CharaBase
     }
 
     // バブル状態のときの速さ
-    void bubble_spd(float multiply, float fric)
+    void BubbleSpeed(float multiply, float fric)
     {
         // 移動速度,慣性を上げる
-        run_spd = init_spd * multiply;
+        run_speed = init_speed * multiply;
         stop_fric = fric;
     }
 
     // ジャンプの挙動
-    void jump(float jump_power)
+    void Jump(float jump_power)
     {
         rigid.useGravity = false;
         //is_ground = false;
@@ -387,18 +406,18 @@ public sealed partial class Player : CharaBase
     }
 
     // ジャンプモーション用
-    void anime_jump()
+    void AnimeJump()
     {
         // 着地してるとき
         if (is_ground)
         {
             animator.SetBool("Fall", false);
             // 着地したときに1回だけ着地をtrueにする
-            jump_end_anim();
+            JumpEndAnime();
         }
 
         // 落ちてる
-        //if (fall())
+        //if (Falling())
         if (!is_ground)
         {
             jump_anim_count = 0;
@@ -409,7 +428,7 @@ public sealed partial class Player : CharaBase
     }
 
     // 着地したときに1回だけ着地をtrueにする
-    void jump_end_anim()
+    void JumpEndAnime()
     {
         jump_anim_count++;
         // 地面ついたときにカウント(Fallと同時にfalseにしたらJumpEndまで来ないから少し間隔をあける)
@@ -426,38 +445,38 @@ public sealed partial class Player : CharaBase
     }
 
     // アニメ速度初期化
-    void init_anime()
+    void InitAnime()
     {
         // 標準速度初期化
         animator.speed = INIT_ANIME_SPD;
     }
 
     // リスポーン処理
-    void fall_max()
+    void RespawnFall()
     {
         // 最大限落ちた
-        if(fall_check(fall_y,fall_y_max))
+        if(FallCheck(fall_y,fall_y_max))
         {
             transform.position = respawn_pos;
         }
     }
 
     // 飛んでる判定
-    bool jump_now()
+    bool Jumping()
     {
         if (velocity.y > 0) return true;
         return false;
     }
 
     // ジャンプする判定
-    bool jump_on()
+    bool JumpOn()
     {
         // モーションが終わってるときにジャンプできる
         if (is_ground)
         {
             if (!animator.GetBool("JumpEnd"))
             {
-                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == Leadkey_Kind.JUMP) ))
+                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP) ))
                 {
                     //jump_fg = true;
                     //jump_fg = false;
@@ -482,7 +501,7 @@ public sealed partial class Player : CharaBase
     }
 
     // 落下中判定
-    bool fall()
+    bool Falling()
     {
         // ショットに乗ったときの判定を初期化
         shot_jump_fg = false;
@@ -492,21 +511,21 @@ public sealed partial class Player : CharaBase
     }
 
     // 最大限落ちた
-    bool fall_check(float fall_y,float fall_y_max)
+    bool FallCheck(float fall_y,float fall_y_max)
     {
         if (fall_y + transform.position.y < fall_y_max) return true;
         return false;
     }
 
     // 頭に何か当たった
-    void head_hit()
+    void HeadHit()
     {
         //Debug.DrawRay(transform.position, transform.up.normalized * 3, Color.green);
         // ジャンプ中
-        if (jump_now())
+        if (Jumping())
         {
             // 頭当たった
-            if(head_hit_judge())
+            if(HeadHitJudge())
             {
                 velocity.y = 0;
             }
@@ -514,7 +533,7 @@ public sealed partial class Player : CharaBase
     }
 
 	// 頭当たったか
-	bool head_hit_judge() {
+	bool HeadHitJudge() {
 		// 頭からレイ飛ばし
 		RaycastHit hit;
 		if (Physics.Raycast(transform.position,transform.up, out hit, 1.5f)) {
@@ -527,55 +546,55 @@ public sealed partial class Player : CharaBase
 	}
 
 	//--壁掴み判定Rayによる掴み
-	void WallGrabRay_Grab_Judge()
+	void WallGrabRayGrabJudge()
     {
-		if (!wallGrabRay.judge_on) {
+		if (!wall_grab_ray.judge_on) {
 			return;
 		}
 
         //----当たり判定
-        WallGrabRay_Judge();
+        WallGrabRayJudge();
 
         //----掴む
-        WallGrabRay_Grab();
+        WallGrabRayGrab();
     }
 
 	//----当たり判定
-	void WallGrabRay_Judge() {
+	void WallGrabRayJudge() {
 		RaycastHit hit;
 
 		//------子球Colliderの判定切り替え
-		Child_Sphere_IsTrigger();
+		ChildSphereIsTrigger();
 
 		//空中にいる、自身が壁に当たっている、レイが当たっていない
-		if (!is_ground && wall_touch_flg && !wallGrabRay.ray_flg) {
-			wallGrabRay.prepare_flg = true;
+		if (!is_ground && wall_touch_flg && !wall_grab_ray.ray_flg) {
+			wall_grab_ray.prepare_flg = true;
 		}
 		else {
-			wallGrabRay.prepare_flg = false;
+			wall_grab_ray.prepare_flg = false;
 		}
 
 		//レイ判定
-		if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, wallGrabRay.length) &&
+		if (Physics.Raycast(transform.position + new Vector3(0, wall_grab_ray.height, 0), transform.forward, out hit, wall_grab_ray.length) &&
 			hit.collider.gameObject.tag == "Wall") {
-			wallGrabRay.ray_flg = true;
+			wall_grab_ray.ray_flg = true;
 		}
 		else {
-			wallGrabRay.ray_flg = false;
+			wall_grab_ray.ray_flg = false;
 		}
 
 
 		//上記二つが完了してたら掴む
-		if (!wallGrabRay.flg && wallGrabRay.prepare_flg && wallGrabRay.ray_flg) {
-			wallGrabRay.flg = true;
+		if (!wall_grab_ray.flg && wall_grab_ray.prepare_flg && wall_grab_ray.ray_flg) {
+			wall_grab_ray.flg = true;
 			//------掴んだ時の向き調整
-			Angle_Adjust();
+			AngleAdjust();
 		}
 
 	}
 
 	//------子球Colliderの判定切り替え
-	void Child_Sphere_IsTrigger() {
+	void ChildSphereIsTrigger() {
 		if (!is_ground) {
 			sphere_collider.isTrigger = true;
 		}
@@ -586,11 +605,11 @@ public sealed partial class Player : CharaBase
 	}
 
 	//------掴んだ時の向き調整
-	void Angle_Adjust()
+	void AngleAdjust()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position + new Vector3(0, wallGrabRay.height, 0), transform.forward, out hit, wallGrabRay.length))
+        if (Physics.Raycast(transform.position + new Vector3(0, wall_grab_ray.height, 0), transform.forward, out hit, wall_grab_ray.length))
         {
             //Vector2に保存
             wall_forward = new Vector2(hit.transform.forward.x, hit.transform.forward.z);
@@ -600,20 +619,20 @@ public sealed partial class Player : CharaBase
             player_forward = new Vector2(transform.forward.x, transform.forward.z);
 
             //--------壁との角度
-            Dot_With_Wall();
+            DotWithWall();
 
             //--------1番小さい角度算出
             float[] angle = new float[4] { wall_forward_angle, wall_back_angle, wall_right_angle, wall_left_angle };
-            float smallest_angle = smallest(angle, 4);
+            float smallest_angle = Smallest(angle, 4);
 
             //左右のレイのめり込み具合
             float right_dist = NOTEXIST_BIG_VALUE;
             float left_dist = NOTEXIST_BIG_VALUE;
-            if (Physics.Raycast(transform.position + transform.right * wallGrabRay.side_length, transform.forward, out hit, wallGrabRay.length))
+            if (Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
             {
                 right_dist = hit.distance;
             }
-            if (Physics.Raycast(transform.position + transform.right * -wallGrabRay.side_length, transform.forward, out hit, wallGrabRay.length))
+            if (Physics.Raycast(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
             {
                 left_dist = hit.distance;
             }
@@ -629,7 +648,7 @@ public sealed partial class Player : CharaBase
     }
 
     //--------壁との角度
-    void Dot_With_Wall()
+    void DotWithWall()
     {
         //壁の4方向との内積
         wall_forward_angle = Vector2.Dot(player_forward, wall_forward);
@@ -645,7 +664,7 @@ public sealed partial class Player : CharaBase
     }
 
     //--------1番小さい値算出(他でも使うなら場所移動)
-    float smallest(float[] aaa, int max_num)
+    float Smallest(float[] aaa, int max_num)
     {
         float smallest = NOTEXIST_BIG_VALUE;
 
@@ -660,40 +679,40 @@ public sealed partial class Player : CharaBase
     }
 
     //----掴む
-    void WallGrabRay_Grab()
+    void WallGrabRayGrab()
     {
         RaycastHit hit;
 
-        if (wallGrabRay.flg)
+        if (wall_grab_ray.flg)
         {
             velocity.x = 0; //横移動したかったらここだけコメント
             velocity.y = 0;
             velocity.z = 0;
 
             //横移動制限
-            if (!Physics.Raycast(transform.position + transform.right * wallGrabRay.side_length, transform.forward, out hit, wallGrabRay.length))
+            if (!Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
             {
                 velocity.x = 0;
-                wallGrabRay.flg = false;
+                wall_grab_ray.flg = false;
             }
-            if (!Physics.Raycast(transform.position + transform.right * -wallGrabRay.side_length, transform.forward, out hit, wallGrabRay.length))
+            if (!Physics.Raycast(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
             {
                 velocity.x = 0;
-                wallGrabRay.flg = false;
+                wall_grab_ray.flg = false;
             }
 
-            if (WaitTime_Once(wallGrabRay.delaytime))
+            if (WaitTimeOnce(wall_grab_ray.delay_time))
             {
                 //上入力で登る
                 if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     transform.position += new Vector3(0, 4.5f, 1.0f);
-                    wallGrabRay.flg = false;
+                    wall_grab_ray.flg = false;
                 }
                 //下入力で降りる
                 else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow))
                 {
-                    wallGrabRay.flg = false;
+                    wall_grab_ray.flg = false;
                 }
             }
 
@@ -706,25 +725,25 @@ public sealed partial class Player : CharaBase
 
 
 	//先行入力まとめ
-	void LeadKey_All() {
+	void LeadKeyAll() {
 		if (!lead_input_on) {
 			return;
 		}
-		Key_Serve();		//--先行キー保存
-		KeyFrame_Sub();		//--先行キーframe減算処理
-		LeadKey_Choice();	//--frameを元にキー選択
+		KeyServe();		//--先行キー保存
+		KeyFrameSub();		//--先行キーframe減算処理
+		LeadKeyChoice();	//--frameを元にキー選択
 	}
 
 	//--先行キー保存
-	void Key_Serve() {
-		Leadkey_Kind leadkey_kind;
+	void KeyServe() {
+		LeadkeyKind leadkey_kind;
 
 		//入力から一時保存
 		if (Input.GetButtonDown("Jump")) {
-			leadkey_kind = Leadkey_Kind.JUMP;
+			leadkey_kind = LeadkeyKind.JUMP;
 		}
 		//else if (Input.GetButtonDown("Jump")) {
-		//	leadkey_kind = Leadkey_Kind.JUMP;
+		//	leadkey_kind = LeadkeyKind.JUMP;
 		//}
 		else {
 			leadkey_kind = 0;
@@ -735,7 +754,7 @@ public sealed partial class Player : CharaBase
 			return;
 		}
 		//配列に保存
-		for (int i = 0; i < leadkey_num; ++i) {
+		for (int i = 0; i < lead_key_num; ++i) {
 			//既に値があればスキップ
 			if (lead_inputs[i].pushed_key != 0) {
 				continue;
@@ -746,8 +765,8 @@ public sealed partial class Player : CharaBase
 	}
 
 	//--先行キーframe減算処理
-	void KeyFrame_Sub() {
-		for (int i = 0; i < leadkey_num; i++) {
+	void KeyFrameSub() {
+		for (int i = 0; i < lead_key_num; i++) {
 			//値があれば減算
 			if (lead_inputs[i].pushed_key != 0) {
 				lead_inputs[i].frame--;
@@ -755,17 +774,17 @@ public sealed partial class Player : CharaBase
 			//一定フレーム経ったら消去
 			if (lead_inputs[i].frame <= 0) {
 				lead_inputs[i].pushed_key = 0;
-				lead_inputs[i].frame = keyserve_time;
+				lead_inputs[i].frame = key_serve_time;
 			}
 		}
 	}
 
 	//--frameを元にキー選択
-	void LeadKey_Choice() {
+	void LeadKeyChoice() {
 		int frame_max = 0;
 		lead_key = 0;
 
-		for (int i = 0; i < leadkey_num; i++) {
+		for (int i = 0; i < lead_key_num; i++) {
 			//値が無ければスキップ
 			if (lead_inputs[i].pushed_key == 0) {
 				continue;
@@ -816,17 +835,17 @@ public sealed partial class Player : CharaBase
     }
 
     //get ------------------------------------------------------------
-    public float Run_spd
+    public float RunSpeed
     {
-        get { return run_spd; }
+        get { return run_speed; }
     }
 
-    public Vector3 Transform_position
+    public Vector3 TransformPosition
     {
         get { return transform.position; }
     }
 
-    public int Coin_count
+    public int CoinCount
     {
         get { return coin_count; }
     }

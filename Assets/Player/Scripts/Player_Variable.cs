@@ -6,6 +6,13 @@ using Pixeye.Unity;
 public sealed partial class Player : CharaBase
 {
 	[Foldout("PlayerParameter", true)]
+    public float slope = 0.3f;          // スティックの傾き具合設定用
+    public float fall_y_max = -100.0f;  // リスポーン用
+
+    public GameObject cam;              // カメラオブジェ
+    public float rot_speed = 10.0f;     // カメラの回転速度
+
+    [Foldout("PlayerParameter", false)]
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
 
@@ -16,12 +23,10 @@ public sealed partial class Player : CharaBase
 
     private bool shot_jump_fg;
 
-    private float init_spd;               // 初期速度
+    private float init_speed;               // 初期速度
     private float init_fric;              // 初期慣性STOP
 
-    public float slope = 0.3f;           // スティックの傾き具合設定用
     private float fall_y;
-    public float fall_y_max = -100.0f;
 
     private Vector3 respawn_pos;
 
@@ -51,11 +56,7 @@ public sealed partial class Player : CharaBase
     private const int RUN = 2;
 
 
-    //--- カメラ用↓ ---//
-    public GameObject cam;
-    public float rot_spd = 10.0f;
 
-	[Foldout("PlayerParameter", false)]
 
     // プレイヤーの足元用データ
     private Vector3[] ofset_layer_pos =
@@ -78,7 +79,7 @@ public sealed partial class Player : CharaBase
     public GameObject[] shot_object;        // ショットのobj
     public float shot_interval_time_max;    // ショットを撃つまでの間隔
     public float stop_time_max;             // どれだけ動けないか
-    public float back_spd = 0.5f;           // 後ろ方向に進む速度
+    public float back_speed = 0.5f;           // 後ろ方向に進む速度
     public float jump_power_up;             // ショットに乗ったときにジャンプ力を何倍にするか
     [Foldout("ShotParameter", false)]
 
@@ -88,12 +89,13 @@ public sealed partial class Player : CharaBase
     private float shot_interval_time;       // ショットの間隔
     private bool back_player;               // ショット3を撃った後にプレイヤーを後ろに飛ばす
     private float stop_time;                // 動けない時間
-    private float init_back_spd;            // 初期速度保存用
+    private float init_back_speed;            // 初期速度保存用
 
 
     //壁掴み判定Ray ---------------------------------------------
     [System.Serializable]
-	public class WallGrabRay : Ray_Base {
+	public class WallGrabRay : RayBase
+    {
 
 		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
 		public float height;		//1.3f
@@ -111,10 +113,10 @@ public sealed partial class Player : CharaBase
 		public float side_length;	//1.2f;
 
 		[Header("入力待ち")]
-		public int delaytime;	//10
+		public int delay_time;	//10
 	}
 	[Header("壁掴み判定Ray")]
-	public WallGrabRay wallGrabRay;
+	public WallGrabRay wall_grab_ray;
 
 
 	#region 壁掴み向き調整
@@ -138,20 +140,21 @@ public sealed partial class Player : CharaBase
 	#region 先行入力
 	[Header("先行入力の実行")]
 	public  bool		 lead_input_on;			//先行入力オンオフ
-	private const int	 leadkey_num	= 3;	//保存するキー数
-	private const int	 keyserve_time	= 8;	//保存時間
-	private Leadkey_Kind lead_key		= 0;	//保存されたキー
+	private const int	 lead_key_num	= 3;	//保存するキー数
+	private const int	 key_serve_time	= 8;	//保存時間
+	private LeadkeyKind lead_key		= 0;	//保存されたキー
 
-	enum Leadkey_Kind{
+	enum LeadkeyKind{
 		NONE,
 		JUMP,
 	}
 
-	struct LeadInputs {
-		public Leadkey_Kind pushed_key;	//押されたキー
+	struct LeadInputs
+    {
+		public LeadkeyKind pushed_key;	//押されたキー
 		public int frame;				//キー保存時間
 	};
-	LeadInputs[] lead_inputs = new LeadInputs[leadkey_num];
+	LeadInputs[] lead_inputs = new LeadInputs[lead_key_num];
 	#endregion
 
 

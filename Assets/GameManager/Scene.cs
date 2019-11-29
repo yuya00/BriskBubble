@@ -6,17 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class Scene : MonoBehaviour
 {
-    /*
-     * クリア演出
-     * カメラに情報送って、プレイヤーの前に固定して、
-     * 画面にクリア文字を描画
-     */
     public Fade fade;
 
     public string scene_name;
 
     private bool fade_fg = false;
-    private bool fadeout_fg = false;
+    private bool fade_out_fg = false;
     private bool clear_fg = false;
 
     public float fade_in_time = 0.5f;
@@ -44,7 +39,7 @@ public class Scene : MonoBehaviour
     void Start()
     {
         fade_fg = false;
-        fadeout_fg = true;
+        fade_out_fg = true;
         clear_fg = false;
         //GameObject.FindGameObjectsWithTag("Enemy");
         cam = GameObject.FindGameObjectWithTag("Camera");
@@ -67,10 +62,10 @@ public class Scene : MonoBehaviour
     void FixedUpdate()
     {
         // 最初にフェードアウトする
-        scene_init_fadeout();
+        SceneInitFadeOut();
 
         // シーンごとに移行条件を設定
-        scene_select();
+        SceneSelect();
 
         // シーン切り替え
         if (fade_fg)
@@ -79,35 +74,33 @@ public class Scene : MonoBehaviour
         }
     }
 
-
-
     // シーンはじまったときにfadeoutする
-    void scene_init_fadeout()
+    void SceneInitFadeOut()
     {
         // Initializeでtrueを設定して、1フレーム計算
-        if (fadeout_fg)
+        if (fade_out_fg)
         {
             fade.FadeOut(fade_out_time);
-            fadeout_fg = false;
+            fade_out_fg = false;
         }
     }
 
     // クリア演出後にfadeoutする
-    void scene_last_fadein()
+    void SceneLastFadeIn()
     {
         fade_fg = true;
         fade.FadeIn(fade_in_time);
     }
 
     // シーンごとに移行条件を設定
-    void scene_select()
+    void SceneSelect()
     {
         // タイトル
         if (SceneManager.GetActiveScene().name == "title")
         {
             if (Input.GetButtonDown("Start"))
             {
-                scene_last_fadein();
+                SceneLastFadeIn();
             }
         }
 
@@ -115,12 +108,12 @@ public class Scene : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "yusuke_scene" || SceneManager.GetActiveScene().name == "stage_1")
         {
             // スタート文字
-            set_text();
+            SetText();
 
             // 敵全滅させたらシーン移行
-            if (GetComponent<EnemyKillCount>().Enm_num_max <= 0)
+            if (GetComponent<EnemyKillCount>().EnemyNumMax <= 0)
             {
-                //scene_last_fadein();
+                //SceneLastFadeIn();
                 // クリア演出にはいる
                 clear_fg = true;
                 buf_no = CLEAR;
@@ -130,15 +123,15 @@ public class Scene : MonoBehaviour
         }
 
         // カメラのクリア演出が終わったらfadein
-        if (cam.GetComponent<Camera_Script>().Clear_end())
+        if (cam.GetComponent<CameraScript>().ClearEnd())
         {
             // 初期化
             clear_fg = false;
-            scene_last_fadein();
+            SceneLastFadeIn();
         }
 
         // 時間切れ
-        if(GetComponent<LimitTimer>().Timer_stop)
+        if(GetComponent<LimitTimer>().TimerStop)
         {
             // クリア演出にはいる
             clear_fg = true;
@@ -154,19 +147,19 @@ public class Scene : MonoBehaviour
         interval_time += Time.deltaTime;
         if (interval_time > interval_time_max)
         {
-            scene_change(scene_name);
+            SceneChange(scene_name);
             fade_fg = false;
         }
     }
 
     //シーン切替
-    void scene_change(string scene_name)
+    void SceneChange(string scene_name)
     {
         SceneManager.LoadScene(scene_name);
     }
 
     // 文字切り替え
-    void set_text()
+    void SetText()
     {
         // START!!がなくなるまで加算
         if (start_buf_no < 5)
@@ -191,25 +184,25 @@ public class Scene : MonoBehaviour
 
         if (start_buf_no > 4)
         {
-            text_alpha();
+            TextAlpha();
         }
     }
 
     // 文字を消す
-    void text_alpha()
+    void TextAlpha()
     {
         alpha -= Time.deltaTime;
         start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, alpha);
         if (alpha <= 0) start_text.gameObject.SetActive(false);
     }
 
-    public bool Start_fg()
+    public bool StartFg()
     {
         return start_fg;
     }
 
     // get関数
-    public bool Clear_fg()
+    public bool ClearFg()
     {
         return clear_fg;
     }
