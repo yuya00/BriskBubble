@@ -20,6 +20,25 @@ public sealed partial class Enemy : CharaBase
 	OnceRondom once_random;
 
 
+	//状態エフェクト -----------------------------------
+	[System.Serializable]
+	public struct ConditionEffect {
+		public  GameObject warning;
+		public  GameObject find;
+		public  GameObject away;
+		public  GameObject attack;
+		public  GameObject faint;
+		[System.NonSerialized]
+		public  GameObject obj_attach;
+
+		[System.NonSerialized]
+		public GameObject obj_entitya;
+	}
+	[Header("状態エフェクト")]
+	public ConditionEffect condition_effect;
+
+
+
 	//待機 ---------------------------------------------
 	[System.Serializable]
 	public struct WaitAct {
@@ -116,6 +135,7 @@ public sealed partial class Enemy : CharaBase
 		FIND,     //発見
 		AWAY,     //逃走
 		ATTACK,   //攻撃
+		FAINT,    //気絶
 		WRAP,     //捕獲
 		END       //消去
 	}

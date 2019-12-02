@@ -4,18 +4,143 @@
 
 やること　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
+変更箇所
+敵　CapsuleCollider
+-1.4
+2.2
+5.7
+
+状態表示（吹き出し）
+警戒　瞬間　！
+発見　瞬間　！！
+逃走　常時　汗
+気絶　常時　混乱
 
 
-set get 名前変更
+
+コミットする前の整理
+下レイの位置を着地判定位置として変数に保存
 
 
+
+整理時,確認すること
+charaRayコメント消去
+charaRay子消去
+
+
+charaBase
+
+	protected CapsuleCollider   capsule_collider;
+	protected Vector3       ground_ray_pos		 = Vector3.zero;
+	protected float         ground_ray_length	 = 0.4f;
+
+
+	    public virtual void Start()
+
+			capsule_collider = GetComponent<CapsuleCollider>();
+		//足元から0.1f上の位置
+		ground_ray_pos = transform.position + 
+			(transform.up * capsule_collider.center.y) - 
+			(transform.up * (capsule_collider.height / 2)) + 
+			(transform.up * 0.1f);
+
+
+
+	public virtual void Move() {
+		/***********************/
+		// 試しに
+		// ショットのレイヤーは8番
+		// shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
+		LayerMask shot_layer = ~(1 << 8);
+		/***********************/
+		//下レイが当たっていたら着地(CapsuleCollider参照)
+		if (Physics.Raycast(ground_ray_pos, -transform.up, ground_ray_length, shot_layer)) {
+			rigid.useGravity = true;
+			is_ground = true;
+			velocity.y = 0;
+		}
+		else {
+			is_ground = false;
+			//落下速度の上限
+			if (velocity.y >= -fallspd_limit) {
+				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
+				//if (this.name == "Player") {
+				//	Debug.Log(Physics.gravity.y);
+				//	Debug.Log(gravity_power);
+				//}
+			}
+			else {
+				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
+			}
+		}
+		
+		//if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
+		//	rigid.useGravity = true;
+		//	is_ground = true;
+		//	velocity.y = 0;
+		//}
+		//else {
+		//  is_ground = false;
+		//	if (velocity.y >= -fallspd_limit) { //落下速度の上限
+		//		velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
+		//	}
+		//	else {
+		//		velocity.y += Physics.gravity.y * gravity_power/10 * Time.deltaTime;
+		//	}
+		//}
+
+	}
+
+
+
+
+	Enemy
+
+	//chara_ray = transform.Find("CharaRay");
+
+
+
+	Player
+
+	    void RayDebug()
+    {
+        //*********************************************************************//
+        //Debug.DrawLine(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, Color.red);
+
+
+		Player Shot
+
+
+		    // ショットに乗った判定
+    public bool DownHitShot()
+
+
+	            // きっちり足元判定
+            for (int i = 0; i < 9; ++i)
+            {
+				//           //下レイが当たっていたら着地
+				//           if (Physics.Linecast(
+				//ground_ray_pos + ofset_layer_pos[i],
+				//ground_ray_pos + ofset_layer_pos[i] + Vector3.down * (ground_ray_length), layer))
+				//           {
+				//               shot_jump_fg = true;
+				//               return true;
+				//           }
+
+
+
+逃走用モーション追加
+気絶（踏みつけ成功時、プレイヤーへのダメージ判定一時消滅、静止）
+攻撃（ショット）
+
+
+
+逃走パターン追加
+→跳ね回る、攻撃
 
 
 
 敵
-　発見した時、ジャンプが低い
-　壁ジャンプを下げる
-
 　屋上の敵がなぜか落ちる
 　1.原因を見つける
 　2.リスポーンする
@@ -38,7 +163,6 @@ set get 名前変更
 　　左右ともレイが当たった判定が曖昧
 　　何回もカウントされてしまう
 
-　どちらもcharaRay消去
 
 　サルゲッチュの逃げ方参考にする
 
@@ -61,7 +185,7 @@ Gizmo Build　エラー　調べる
 
 コードの色変える
 
-
+3秒待ちたくない
 
 
 

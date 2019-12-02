@@ -36,6 +36,7 @@ public sealed partial class Enemy : CharaBase
         StateChange();  // プレイヤーとの当たり判定でstate変更
         Action();       // stateに応じて個別関数に飛ぶ
 
+		//ショットに当たったら停止
 		if (shot_touch_flg) {
 			run_speed = 0;
 		}
@@ -45,15 +46,78 @@ public sealed partial class Enemy : CharaBase
 			player_obj.GetComponent<Player>().TransformPosition - transform.position,
 			new Vector3(1.0f, 0.0f, 1.0f));
 
+		//状態エフェクト
+		CondtionEffect();
+
+		old_state = enum_state;
+
+
 
 		DebugLog();
     }
 
+	//状態エフェクト
+	void CondtionEffect() {
+		CondtionEffect_Create(Enum_State.WARNING);
+
+		CondtionEffect_Create(Enum_State.FIND);
+
+		CondtionEffect_Create(Enum_State.AWAY);
+
+		CondtionEffect_Create(Enum_State.ATTACK);
+
+		CondtionEffect_Create(Enum_State.FAINT);
+	}
+
+	//--エフェクト生成
+	void CondtionEffect_Create(Enum_State state) {
+		//切り替わった瞬間なら進む
+		if (!((enum_state == state) && (old_state != state))) {
+			return;
+		}
+
+		//何も入っていなかったら進む
+		if (condition_effect.obj_entitya != null) {
+			return;
+		}
+
+		//----各々のエフェクトを代入
+		CondtionEffect_Assign(state);
+
+		//エフェクトが入っていれば進む
+		if (condition_effect.obj_attach == null) {
+			return;
+		}
+
+		//生成,子としてに設定
+		condition_effect.obj_entitya = Instantiate(condition_effect.obj_attach, transform.position + transform.up * 4, transform.rotation);
+		condition_effect.obj_entitya.transform.parent = transform;
+	}
+
+	//----各々のエフェクトを代入
+	void CondtionEffect_Assign(Enum_State state) {
+		switch (state) {
+			case Enum_State.WARNING:
+				condition_effect.obj_attach = condition_effect.warning;
+				break;
+			case Enum_State.FIND:
+				condition_effect.obj_attach = condition_effect.find;
+				break;
+			case Enum_State.AWAY:
+				condition_effect.obj_attach = condition_effect.away;
+				break;
+			case Enum_State.ATTACK:
+				condition_effect.obj_attach = condition_effect.attack;
+				break;
+			case Enum_State.FAINT:
+				condition_effect.obj_attach = condition_effect.faint;
+				break;
+		}
+	}
 
 
-
-    //デバッグログ表示 -------------------------------------------
-    public override void DebugLog()
+	//デバッグログ表示 -------------------------------------------
+	public override void DebugLog()
     {
         /*
 		base.Debug_Log();
@@ -294,7 +358,7 @@ public sealed partial class Enemy : CharaBase
                 End();
                 break;
         }
-        old_state = enum_state;
+        //old_state = enum_state;
     }
 
     //--個別行動関数 ----------------------------------------------
@@ -550,7 +614,8 @@ public sealed partial class Enemy : CharaBase
 				transform.LookAt(transform.position - transform.forward);
 
 				Clear();
-                enum_state = Enum_State.WAIT;
+				velocity = Vector3.zero;
+				enum_state = Enum_State.WAIT;
                 break;
             case Enum_Act.SWING:
                 enum_act = Enum_Act.SWING;
