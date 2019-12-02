@@ -14,7 +14,7 @@ public sealed partial class Player : CharaBase
         game_manager    = GameObject.FindGameObjectWithTag("GameManager");
 		sphere_collider = GetComponent<SphereCollider>();
         animator        = GetComponent<Animator>();
-        chara_ray       = transform.Find("CharaRay");
+        //chara_ray       = transform.Find("CharaRay");
 
         // プレイヤーのパラメーター設定
         state           = START;
@@ -80,7 +80,7 @@ public sealed partial class Player : CharaBase
     void RayDebug()
     {
         //*********************************************************************//
-        Debug.DrawLine(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, Color.red);
+        //Debug.DrawLine(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, Color.red);
 
         // きっちり足元判定
         for (int i = 0; i < 9; ++i)

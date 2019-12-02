@@ -199,6 +199,12 @@ MonoBehaviour:
     startLength: 11
     angle: 0
     speed: 15
+  condition_effect:
+    warning: {fileID: 0}
+    find: {fileID: 0}
+    away: {fileID: 0}
+    attack: {fileID: 0}
+    faint: {fileID: 0}
   wait_act:
     wait_time: 240
     wait_random: 0
@@ -231,11 +237,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 2587862109830307865}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 2.2
-  m_Height: 8.1
+  m_Height: 5.7
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -1.4, z: 0}
 --- !u!65 &2821904174435107917
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -245,7 +251,7 @@ BoxCollider:
   m_GameObject: {fileID: 2587862109830307865}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3.44, y: 5.7, z: 3.37}
   m_Center: {x: 0, y: -1.4, z: 0}

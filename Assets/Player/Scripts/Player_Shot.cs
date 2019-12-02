@@ -176,16 +176,24 @@ public sealed partial class Player : CharaBase
             // きっちり足元判定
             for (int i = 0; i < 9; ++i)
             {
-                //下レイが当たっていたら着地
-                if (Physics.Linecast(
-                    chara_ray.position + ofset_layer_pos[i],
-                    chara_ray.position + ofset_layer_pos[i] + Vector3.down * (chara_ray_length), layer))
-                {
-                    shot_jump_fg = true;
-                    return true;
-                }
-            }
-        }
+				////下レイが当たっていたら着地
+				//if (Physics.Linecast(
+				//    chara_ray.position + ofset_layer_pos[i],
+				//    chara_ray.position + ofset_layer_pos[i] + Vector3.down * (chara_ray_length), layer))
+				//{
+				//    shot_jump_fg = true;
+				//    return true;
+				//}
+				//下レイが当たっていたら着地
+				if (Physics.Linecast(
+					ground_ray_pos + ofset_layer_pos[i],
+					ground_ray_pos + ofset_layer_pos[i] + Vector3.down * (ground_ray_length), layer)) {
+					shot_jump_fg = true;
+					return true;
+				}
+
+			}
+		}
         return false;
     }
 

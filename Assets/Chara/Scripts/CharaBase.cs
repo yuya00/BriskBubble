@@ -34,9 +34,13 @@ public class CharaBase : MonoBehaviour {
 	protected float			jump_fric			 = 0;				//慣性(ジャンプ)
 	protected float			jump_fric_power		 = 0.7f;			//慣性(ジャンプ)
 	protected bool			is_ground			 = false;           //地面接地判定
-    protected Transform		chara_ray;								//レイを飛ばす位置(地面判別に使用)
-	protected float			chara_ray_length	 = 0.4f;
-    [Tooltip("重力の倍率")]
+ //   protected Transform		chara_ray;								//レイを飛ばす位置(地面判別に使用)
+	//protected float			chara_ray_length	 = 0.4f;
+	protected CapsuleCollider   capsule_collider;
+	protected Vector3       ground_ray_pos       = Vector3.zero;
+	protected float			ground_ray_upadjust  = 0.1f;
+	protected float         ground_ray_length    = 0.3f;
+	[Tooltip("重力の倍率")]
 	public float			gravity_power		 = 5;               //重力の倍率
 	protected const int		WORK_NUM			 = 8;
 	protected int[]			iwork				 = new int[WORK_NUM];
@@ -178,6 +182,7 @@ public class CharaBase : MonoBehaviour {
 		rigid = GetComponent<Rigidbody>();
 		velocity = Vector3.zero;
 		is_ground = false;
+		capsule_collider = GetComponent<CapsuleCollider>();
 		for (int i = 0; i < WORK_NUM; i++) {
 			iwork[i] = 0;
 		}
@@ -502,21 +507,43 @@ public class CharaBase : MonoBehaviour {
         // shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
         LayerMask shot_layer = ~(1 << 8);
 		/***********************/
+		//足元から少し上の位置
+		ground_ray_pos = transform.position +
+			(transform.up * capsule_collider.center.y) -
+			(transform.up * (capsule_collider.height / 2)) +
+			(transform.up * ground_ray_upadjust);
+
 		//下レイが当たっていたら着地
-		if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
+		if (Physics.Raycast(ground_ray_pos, -transform.up, ground_ray_length, shot_layer)) {
 			rigid.useGravity = true;
 			is_ground = true;
 			velocity.y = 0;
 		}
 		else {
-            is_ground = false;
-			if (velocity.y >= -fallspd_limit) { //落下速度の上限
+			is_ground = false;
+			//落下速度の上限
+			if (velocity.y >= -fallspd_limit) {
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
 			}
 			else {
-				velocity.y += Physics.gravity.y * gravity_power/10 * Time.deltaTime;
+				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
-        }
+		}
+
+		//if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
+		//	rigid.useGravity = true;
+		//	is_ground = true;
+		//	velocity.y = 0;
+		//}
+		//else {
+		//	is_ground = false;
+		//	if (velocity.y >= -fallspd_limit) { //落下速度の上限
+		//		velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
+		//	}
+		//	else {
+		//		velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
+		//	}
+		//}
 
 		/*
 		//地面に接している時は初期化

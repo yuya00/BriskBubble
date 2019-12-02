@@ -25,9 +25,8 @@ public sealed partial class Enemy : CharaBase
 		}
         enum_state = Enum_State.WAIT;
         old_state = enum_state;
+		//chara_ray = transform.Find("CharaRay");
 
-
-		chara_ray = transform.Find("CharaRay");
 	}
 
 	void Update()
