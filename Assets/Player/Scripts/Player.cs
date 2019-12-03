@@ -24,9 +24,11 @@ public sealed partial class Player : CharaBase
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
-    }
+		velocity = Vector3.zero;
 
-    void Update()
+	}
+
+	void Update()
     {
         switch (state)
         {
@@ -469,6 +471,7 @@ public sealed partial class Player : CharaBase
         if(FallCheck(fall_y,fall_y_max))
         {
             transform.position = respawn_pos;
+			velocity = Vector3.zero;
         }
     }
 
