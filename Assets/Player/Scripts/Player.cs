@@ -10,6 +10,7 @@ public sealed partial class Player : CharaBase
     {
         base.Start();
 
+
         // コンポーネント取得
         game_manager    = GameObject.FindGameObjectWithTag("GameManager");
 		sphere_collider = GetComponent<SphereCollider>();
