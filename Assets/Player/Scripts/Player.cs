@@ -268,6 +268,9 @@ public sealed partial class Player : CharaBase
         // ショット3を撃った後プレイヤーをとめる
         if (back_player) BackMove();
 
+        // ジャンプまとめ
+        JumpMove();
+
         // リスポーン
         RespawnFall();
 
