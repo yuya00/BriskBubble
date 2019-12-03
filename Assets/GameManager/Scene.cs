@@ -36,6 +36,8 @@ public class Scene : MonoBehaviour
     private float alpha = 1;
     private bool start_fg;
 
+    public bool debug_fg;
+
     void Start()
     {
         fade_fg = false;
@@ -56,7 +58,8 @@ public class Scene : MonoBehaviour
 
     void Update()
     {
-        
+        // debug
+        if (debug_fg) start_fg = true;
     }
 
     void FixedUpdate()
