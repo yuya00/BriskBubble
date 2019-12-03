@@ -435,6 +435,7 @@ public sealed partial class Enemy : CharaBase
 					enum_act = next_state;
 				}
 				break;
+
 		}
 	}
 
