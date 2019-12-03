@@ -55,7 +55,10 @@ public sealed partial class Player : CharaBase
     private const int WALK = 1;
     private const int RUN = 2;
 
+    [Foldout("Effect", true)]
+    public GameObject effect_jump;
 
+    [Foldout("Effect", false)]
 
 
     // プレイヤーの足元用データ

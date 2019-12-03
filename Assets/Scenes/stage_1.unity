@@ -777,6 +777,12 @@ PrefabInstance:
       propertyPath: run_speed
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: condition_effect.find
+      value: 
+      objectReference: {fileID: 1458771595821501554, guid: 22eb9fe6ecd450242bb5eab1b37359c2,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c83d4d80d1887e6438857407936a7b30, type: 3}
 --- !u!1001 &596501235
@@ -1245,6 +1251,12 @@ PrefabInstance:
       propertyPath: run_speed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: condition_effect.find
+      value: 
+      objectReference: {fileID: 1458771595821501554, guid: 22eb9fe6ecd450242bb5eab1b37359c2,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c83d4d80d1887e6438857407936a7b30, type: 3}
 --- !u!1 &781043105 stripped
@@ -3335,6 +3347,7 @@ MonoBehaviour:
   interval_time_max: 1
   end_text: {fileID: 176609342}
   start_text: {fileID: 645829192}
+  debug_fg: 0
   gui_on: 0
 --- !u!114 &2025036708
 MonoBehaviour:

@@ -268,15 +268,6 @@ public sealed partial class Player : CharaBase
         // ショット3を撃った後プレイヤーをとめる
         if (back_player) BackMove();
 
-        //　着地してるときにジャンプ
-        if (JumpOn()) Jump(jump_power);
-
-        // ショットに乗った時にジャンプをjump_power_up倍
-        if (DownHitShot()) Jump(jump_power * jump_power_up);
-
-        // ジャンプアニメーション
-        AnimeJump();
-
         // リスポーン
         RespawnFall();
 
@@ -394,6 +385,23 @@ public sealed partial class Player : CharaBase
         run_speed = init_speed * multiply;
         stop_fric = fric;
     }
+
+    // ジャンプまとめ
+    void JumpMove()
+    {
+        //　着地してるときにジャンプ そのときにエフェクト出す
+        if (JumpOn())
+        {
+            Jump(jump_power);
+        }
+
+        // ショットに乗った時にジャンプをjump_power_up倍
+        if (DownHitShot()) Jump(jump_power * jump_power_up);
+
+        // ジャンプアニメーション
+        AnimeJump();
+    }
+
 
     // ジャンプの挙動
     void Jump(float jump_power)
