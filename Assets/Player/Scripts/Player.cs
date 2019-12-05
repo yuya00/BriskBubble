@@ -142,6 +142,7 @@ public sealed partial class Player : CharaBase
             left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
             GUILayout.Box("Player");
 			float spdx, spdy, spdz;
+
             #region ここに追加
             #region 全値
             if (gui.all_view) {

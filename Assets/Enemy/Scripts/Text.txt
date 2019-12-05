@@ -21,6 +21,15 @@
  プルリクエスト
 
 
+ EffectManager
+ gui_on付ける
+ Playerになってる
+
+
+
+
+
+
 攻撃（ショット）
 
 
