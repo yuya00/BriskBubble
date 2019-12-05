@@ -129,22 +129,24 @@ public sealed partial class Player : CharaBase
 	private float scroll_height = 330;
 	void OnGUI()
     {
-        if (gui.on)
-        {
-			//スクロール高さを変更
-			//(出来ればmaximize on playがonならに変更したい)
-			if (gui.all_view) {
-				scroll_height = 700;
-			}
-			else scroll_height = 330;
+		if (!gui.on) {
+			return;
+		}
 
-			GUILayout.BeginVertical("box", GUILayout.Width(190));
-            left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
-            GUILayout.Box("Player");
-			float spdx, spdy, spdz;
+		//スクロール高さを変更
+		//(出来ればmaximize on playがonならに変更したい)
+		if (gui.all_view) {
+			scroll_height = 700;
+		}
+		else scroll_height = 330;
 
-            #region ここに追加
-            #region 全値
+		GUILayout.BeginVertical("box", GUILayout.Width(190));
+           left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+           GUILayout.Box("Player");
+		float spdx, spdy, spdz;
+
+           #region ここに追加
+           #region 全値
             if (gui.all_view) {
 				//座標
 				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -193,7 +195,7 @@ public sealed partial class Player : CharaBase
 
 			}
 			#endregion
-			#region 開発用
+		#region 開発用
 			else if (gui.debug_view) {
                 GUILayout.TextArea("effect\n" + effect.effect_jump);
 
@@ -211,12 +213,11 @@ public sealed partial class Player : CharaBase
 				GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 			}
 			#endregion
-			#endregion
+		#endregion
 
 
-			GUILayout.EndScrollView();
-            GUILayout.EndVertical();
-        }
+		GUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 
     //ギズモ表示 --------------------------------------------------
@@ -739,23 +740,23 @@ public sealed partial class Player : CharaBase
 
         if (Physics.Raycast(transform.position + new Vector3(0, wall_grab_ray.height, 0), transform.forward, out hit, wall_grab_ray.length))
         {
-            //Vector2に保存
-            wall_forward = new Vector2(hit.transform.forward.x, hit.transform.forward.z);
-            wall_back = new Vector2(hit.transform.forward.x, -hit.transform.forward.z);
-            wall_right = new Vector2(hit.transform.right.x, hit.transform.right.z);
-            wall_left = new Vector2(-hit.transform.right.x, hit.transform.right.z);
-            player_forward = new Vector2(transform.forward.x, transform.forward.z);
+			//Vector2に保存
+			wall_grab_adjust.forward		 = new Vector2(hit.transform.forward.x, hit.transform.forward.z);
+			wall_grab_adjust.back			 = new Vector2(hit.transform.forward.x, -hit.transform.forward.z);
+			wall_grab_adjust.right			 = new Vector2(hit.transform.right.x, hit.transform.right.z);
+			wall_grab_adjust.left			 = new Vector2(-hit.transform.right.x, hit.transform.right.z);
+			wall_grab_adjust.player_forward	 = new Vector2(transform.forward.x, transform.forward.z);
 
             //--------壁との角度
             DotWithWall();
 
             //--------1番小さい角度算出
-            float[] angle = new float[4] { wall_forward_angle, wall_back_angle, wall_right_angle, wall_left_angle };
-            float smallest_angle = Smallest(angle, 4);
+            float[] angle = new float[4] { wall_grab_adjust.angle_forward, wall_grab_adjust.angle_back, wall_grab_adjust.angle_right, wall_grab_adjust.angle_left };
+            float	smallest_angle = Smallest(angle, 4);
 
             //左右のレイのめり込み具合
-            float right_dist = NOTEXIST_BIG_VALUE;
-            float left_dist = NOTEXIST_BIG_VALUE;
+            float right_dist	 = WallGrabAdjust.BIG_VALUE;
+            float left_dist		 = WallGrabAdjust.BIG_VALUE;
             if (Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
             {
                 right_dist = hit.distance;
@@ -778,23 +779,23 @@ public sealed partial class Player : CharaBase
     //--------壁との角度
     void DotWithWall()
     {
-        //壁の4方向との内積
-        wall_forward_angle = Vector2.Dot(player_forward, wall_forward);
-        wall_back_angle = Vector2.Dot(player_forward, wall_back);
-        wall_right_angle = Vector2.Dot(player_forward, wall_right);
-        wall_left_angle = Vector2.Dot(player_forward, wall_left);
+		//壁の4方向との内積
+		wall_grab_adjust.angle_forward	 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.forward);
+		wall_grab_adjust.angle_back		 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.back);
+		wall_grab_adjust.angle_right	 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.right);
+		wall_grab_adjust.angle_left		 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.left);
 
         //角度に変換
-        wall_forward_angle = (wall_forward_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
-        wall_back_angle = (wall_back_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
-        wall_right_angle = (wall_right_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
-        wall_left_angle = (wall_left_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
+        wall_grab_adjust.angle_forward	 = (wall_grab_adjust.angle_forward	 * 100.0f - 100.0f) * -1.0f * 0.9f;
+		wall_grab_adjust.angle_back		 = (wall_grab_adjust.angle_back		 * 100.0f - 100.0f) * -1.0f * 0.9f;
+		wall_grab_adjust.angle_right	 = (wall_grab_adjust.angle_right	 * 100.0f - 100.0f) * -1.0f * 0.9f;
+		wall_grab_adjust.angle_left		 = (wall_grab_adjust.angle_left		 * 100.0f - 100.0f) * -1.0f * 0.9f;
     }
 
     //--------1番小さい値算出(他でも使うなら場所移動)
     float Smallest(float[] aaa, int max_num)
     {
-        float smallest = NOTEXIST_BIG_VALUE;
+        float smallest = WallGrabAdjust.BIG_VALUE;
 
         for (int i = 0; i < max_num; i++)
         {
@@ -854,10 +855,10 @@ public sealed partial class Player : CharaBase
 
 	//先行入力まとめ
 	void LeadKeyAll() {
-		if (!lead_input_on) {
+		if (!lead_input.on) {
 			return;
 		}
-		KeyServe();		//--先行キー保存
+		KeyServe();			//--先行キー保存
 		KeyFrameSub();		//--先行キーframe減算処理
 		LeadKeyChoice();	//--frameを元にキー選択
 	}
@@ -882,7 +883,7 @@ public sealed partial class Player : CharaBase
 			return;
 		}
 		//配列に保存
-		for (int i = 0; i < lead_key_num; ++i) {
+		for (int i = 0; i < LeadInput.NUM; ++i) {
 			//既に値があればスキップ
 			if (lead_inputs[i].pushed_key != 0) {
 				continue;
@@ -894,7 +895,7 @@ public sealed partial class Player : CharaBase
 
 	//--先行キーframe減算処理
 	void KeyFrameSub() {
-		for (int i = 0; i < lead_key_num; i++) {
+		for (int i = 0; i < LeadInput.NUM; i++) {
 			//値があれば減算
 			if (lead_inputs[i].pushed_key != 0) {
 				lead_inputs[i].frame--;
@@ -902,7 +903,7 @@ public sealed partial class Player : CharaBase
 			//一定フレーム経ったら消去
 			if (lead_inputs[i].frame <= 0) {
 				lead_inputs[i].pushed_key = 0;
-				lead_inputs[i].frame = key_serve_time;
+				lead_inputs[i].frame = LeadInput.KEY_SERVE_TIME;
 			}
 		}
 	}
@@ -912,7 +913,7 @@ public sealed partial class Player : CharaBase
 		int frame_max = 0;
 		lead_key = 0;
 
-		for (int i = 0; i < lead_key_num; i++) {
+		for (int i = 0; i < LeadInput.NUM; i++) {
 			//値が無ければスキップ
 			if (lead_inputs[i].pushed_key == 0) {
 				continue;
@@ -920,7 +921,7 @@ public sealed partial class Player : CharaBase
 			//直近で入力されたものを代入
 			if (frame_max < lead_inputs[i].frame) {
 				frame_max = lead_inputs[i].frame;
-				lead_key = lead_inputs[i].pushed_key;
+				lead_key  = lead_inputs[i].pushed_key;
 			}
 		}
 	}

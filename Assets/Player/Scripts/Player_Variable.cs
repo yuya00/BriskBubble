@@ -122,20 +122,11 @@ public sealed partial class Player : CharaBase
     private float init_back_speed;            // 初期速度保存用
 
 
-	//気絶
-	enum Enum_Faint {
-		CLEAR,      //初期化
-		WAIT,       //待機
-		WAIT2,      //待機
-		END         //終了
-	}
-	Enum_Faint enum_faint;
 
 
 	//壁掴み判定Ray ---------------------------------------------
 	[System.Serializable]
-	public class WallGrabRay : RayBase
-    {
+	public class WallGrabRay : RayBase{
 
 		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
 		public float height;		//1.3f
@@ -158,27 +149,27 @@ public sealed partial class Player : CharaBase
 	[Header("壁掴み判定Ray")]
 	public WallGrabRay wall_grab_ray;
 
+	//壁掴み向き調整 --------------------------------------
+	private struct WallGrabAdjust {
+		public Vector2 forward;
+		public Vector2 back;
+		public Vector2 right;
+		public Vector2 left;
+		public Vector2 player_forward;
 
-	#region 壁掴み向き調整
-	private Vector2 wall_forward;
-	private Vector2 wall_back;
-	private Vector2 wall_right;
-	private Vector2 wall_left;
-	private Vector2 player_forward;
+		public float angle_forward;
+		public float angle_back;
+		public float angle_right;
+		public float angle_left;
 
-	private float wall_forward_angle;
-	private float wall_back_angle;
-	private float wall_right_angle;
-	private float wall_left_angle;
-	#endregion
-
-	//存在しない大きな値
-	private int NOTEXIST_BIG_VALUE = 999;
+		//存在しない大きな値
+		public const int BIG_VALUE = 999;
+	}
+	private WallGrabAdjust wall_grab_adjust;
 
 
 
-
-	//踏みつけ判定 --------------------------------------
+	//踏みつけ判定 ----------------------------------------------
 	[System.Serializable]
 	public class TreadOn_BoxCast : BoxCastBase {
 		//flgはジャンプ中、着地するまでtrue
@@ -201,36 +192,47 @@ public sealed partial class Player : CharaBase
 	[Header("踏みつけ判定")]
 	public TreadOn_BoxCast tread_on;
 
-
-	//気絶時のノックバック --------------------------------------
-	public struct KnockBack {
+	//気絶時のノックバック ----------------------------
+	private struct KnockBack {
 		public const float SPD_MAG       = 4;
 		public const float JUMP_POWER    = 20;
 		public const int   TIME          = 30;
 		public const int   FAINT_TIME    = 80 - TIME;  //硬直時間(-ノックバック)
 	}
 
-
-	#region 先行入力
-	[Header("先行入力の実行")]
-	public  bool		 lead_input_on;			//先行入力オンオフ
-	private const int	 lead_key_num	= 3;	//保存するキー数
-	private const int	 key_serve_time	= 8;	//保存時間
-	private LeadkeyKind lead_key		= 0;	//保存されたキー
-
-	enum LeadkeyKind{
-		NONE,
-		JUMP,
+	enum Enum_Faint {
+		CLEAR,      //初期化
+		WAIT,       //待機
+		WAIT2,      //待機
+		END         //終了
 	}
+	Enum_Faint enum_faint;
 
-	struct LeadInputs
+
+
+	//先行入力 --------------------------------------------------
+	[System.Serializable]
+	public struct LeadInput {
+		public bool			on;						//先行入力オンオフ
+		public const int	NUM = 3;				//保存するキー数
+		public const int    KEY_SERVE_TIME = 8;		//保存時間
+	}
+	[Header("先行入力")]
+	public LeadInput lead_input;
+
+	//先行入力保存 ----------------------------------------
+	private struct LeadInputServe
     {
 		public LeadkeyKind pushed_key;	//押されたキー
 		public int frame;				//キー保存時間
 	};
-	LeadInputs[] lead_inputs = new LeadInputs[lead_key_num];
-	#endregion
+	private LeadInputServe[] lead_inputs = new LeadInputServe[LeadInput.NUM];
 
+	enum LeadkeyKind {
+		NONE,
+		JUMP,
+	}
+	private LeadkeyKind lead_key;   //保存されたキー
 
 
 

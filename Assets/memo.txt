@@ -147,6 +147,44 @@ BoxCastは最初に触れているオブジェクトとは
 変数はスネーク記法
 
 
+構造体の作り方 --------------------------------------
+
+・inspectorに表示する場合
+
+必ずどちらもpublic
+
+定数は表示されない
+
+
+[System.Serializable]
+public class TreadOn_BoxCast : BoxCastBase {
+	public const int JUMP_POWER		 = 30;
+}
+[Header("踏みつけ判定")]
+public TreadOn_BoxCast tread_on;
+
+
+
+
+・コード内で完結する場合
+
+基本的にどちらもprivate
+
+定数は構造体名で取得
+WallGrabAdjust.BIG_VALUE
+
+
+private struct WallGrabAdjust {
+	public Vector2 forward;
+
+	//存在しない大きな値
+	public const int BIG_VALUE = 999;
+}
+private WallGrabAdjust wall_grab_adjust;
+
+
+
+
 便利機能 --------------------------------------------------------------
 
 関数を全て閉じる(ifなどは閉じない)

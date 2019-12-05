@@ -152,21 +152,23 @@ public sealed partial class Enemy : CharaBase
 	private float scroll_height = 330;
 	void OnGUI()
     {
-        if (gui.on)
-        {
-			//スクロール高さを変更
-			//(出来ればmaximize on playがonならに変更したい)
-			if (gui.all_view) {
-				scroll_height = 700;
-			}
-			else scroll_height = 330;
+		if (!gui.on) {
+			return;
+		}
 
-			GUILayout.BeginVertical("box", GUILayout.Width(190));
-			gui_scroll_pos = GUILayout.BeginScrollView(gui_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
-			GUILayout.Box("Enemy");
-			float spdx,spdy,spdz;
+		//スクロール高さを変更
+		//(出来ればmaximize on playがonならに変更したい)
+		if (gui.all_view) {
+			scroll_height = 700;
+		}
+		else scroll_height = 330;
 
-			#region ここに追加
+		GUILayout.BeginVertical("box", GUILayout.Width(190));
+		gui_scroll_pos = GUILayout.BeginScrollView(gui_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+		GUILayout.Box("Enemy");
+		float spdx,spdy,spdz;
+
+		#region ここに追加
 			#region 全値
 			if (gui.all_view) {
 				//座標
@@ -243,10 +245,8 @@ public sealed partial class Enemy : CharaBase
 			#endregion
 			#endregion
 
-
-			GUILayout.EndScrollView();
-            GUILayout.EndVertical();
-        }
+		GUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 
     //Gizmo表示 --------------------------------------------------
