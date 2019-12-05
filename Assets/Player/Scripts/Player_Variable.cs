@@ -55,11 +55,37 @@ public sealed partial class Player : CharaBase
     private const int WALK = 1;
     private const int RUN = 2;
 
-    [Foldout("Effect", true)]
-    public GameObject effect_jump;
+    //[Foldout("PlayerEffect", true)]
+    //public GameObject effect_jump;
+    ////public GameObject effect_run;
+    ////public GameObject effect_shot;
+    ////public int EFFECT_NUM = 10;
 
-    [Foldout("Effect", false)]
+    //[Foldout("PlayerEffect", false)]
+    //private float effect_down_pos = -1.0f;
+    //private int effect_no = 0;
+    //enum EFFECT
+    //{
+    //    JUMP = 0,
+    //    RUN_GROUND,
+    //    RUN_WATER,
+    //    SHOT,
+    //}
+    private EffectManager effect;
 
+    // キャラ指定
+    private EffectManager.TYPE PLAYER = EffectManager.TYPE.PLAYER;
+
+    // エフェクトの種類指定
+    private EffectManager.EFFECT JUMP = EffectManager.EFFECT.JUMP;
+    private EffectManager.EFFECT EFC_RUN = EffectManager.EFFECT.RUN;
+    private EffectManager.EFFECT SHOT = EffectManager.EFFECT.SHOT;
+
+    public int EFFECT_NUM = 10;         // エフェクトを出す数
+
+    // 位置変数
+    private float jump_down_pos = -1.0f;
+    private float shot_down_pos = 2.0f;
 
     // プレイヤーの足元用データ
     private Vector3[] ofset_layer_pos =

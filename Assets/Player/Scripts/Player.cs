@@ -14,6 +14,7 @@ public sealed partial class Player : CharaBase
         game_manager    = GameObject.FindGameObjectWithTag("GameManager");
 		sphere_collider = GetComponent<SphereCollider>();
         animator        = GetComponent<Animator>();
+        effect          = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
         //chara_ray       = transform.Find("CharaRay");
 
         // プレイヤーのパラメーター設定
@@ -26,7 +27,9 @@ public sealed partial class Player : CharaBase
         shot_jump_fg    = false;
 		velocity = Vector3.zero;
 
-	}
+        // エフェクト関連
+        //effect.effect_no = 0;
+    }
 
 	void Update()
     {
@@ -184,7 +187,7 @@ public sealed partial class Player : CharaBase
 			#endregion
 			#region 開発用
 			else if (gui.debug_view) {
-                GUILayout.TextArea("state\n" + state);
+                GUILayout.TextArea("effect\n" + effect.effect_jump);
 
 				//GUILayout.TextArea("先行入力キー\n" + lead_key);
 				//GUILayout.TextArea("先行入力押されたキー");
@@ -398,6 +401,9 @@ public sealed partial class Player : CharaBase
         if (JumpOn())
         {
             Jump(jump_power);
+
+            // TYPE : キャラ、STATE : ジャンプ、POS : 位置
+            effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, EFFECT_NUM);
         }
 
         // ショットに乗った時にジャンプをjump_power_up倍
@@ -406,7 +412,6 @@ public sealed partial class Player : CharaBase
         // ジャンプアニメーション
         AnimeJump();
     }
-
 
     // ジャンプの挙動
     void Jump(float jump_power)
@@ -812,8 +817,9 @@ public sealed partial class Player : CharaBase
 	}
 
 
-	//当たり判定 -----------------------------------------------
-	private void OnCollisionEnter(Collision other)
+
+    //当たり判定 -----------------------------------------------
+    private void OnCollisionEnter(Collision other)
     {
         //壁との当たり判定
         if (other.gameObject.tag == "Wall")
