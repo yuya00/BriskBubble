@@ -34,7 +34,7 @@ public class CharaBase : MonoBehaviour {
 	protected float			jump_fric			 = 0;				//慣性(ジャンプ)
 	protected float			jump_fric_power		 = 0.7f;			//慣性(ジャンプ)
 	protected bool			is_ground			 = false;           //地面接地判定
- //   protected Transform		chara_ray;								//レイを飛ばす位置(地面判別に使用)
+	//protected Transform		chara_ray;							//レイを飛ばす位置(地面判別に使用)
 	//protected float			chara_ray_length	 = 0.4f;
 	protected CapsuleCollider   capsule_collider;
 	protected Vector3       ground_ray_pos       = Vector3.zero;
@@ -47,25 +47,40 @@ public class CharaBase : MonoBehaviour {
 	protected float[]		fwork				 = new float[WORK_NUM];
 	[Tooltip("落下速度の速さ上限")]
 	public float			fallspd_limit		 = 30.0f;
+	[Tooltip("気絶時間")]
+	protected bool          is_faint			 = false;			//気絶判定
 	[Foldout("BaseParameter" ,false)]
 	protected int			wait_timer			 = 0;				//待機タイマー
-    protected const float	HALF				 = 0.5f;			// 半分計算用
+    protected const float	HALF				 = 0.5f;            // 半分計算用
 
 
 
-	// Ray基底 ------------------------------------------
-	public class RayBase {
+	// Gizmo基底 -------------------------------------------
+	public class GizmoBase {
 		public bool gizmo_on;
 
 		[Header("判定の実行")]
 		public bool judge_on;
+	}
 
+	// Ray基底 ---------------------------------------------
+	public class RayBase : GizmoBase {
 		[SerializeField, Header("Rayの長さ")]
 		public float length;
 	}
 
 	// BoxCast基底 ------------------------------------------
-	public class BoxCastBase : RayBase {
+	[System.Serializable]
+	public class BoxCastBase : GizmoBase {
+		[System.NonSerialized]	//判定
+		public bool flg;
+
+		[System.NonSerialized]	//BoxCastの大きさ
+		public Vector3 size;
+	}
+
+	// BoxCast調整基底 --------------------------------------
+	public class BoxCastAdjustBase : RayBase {
 		[System.NonSerialized]
 		public float box_total;
 
@@ -97,7 +112,7 @@ public class CharaBase : MonoBehaviour {
 	[System.NonSerialized]
 	protected int angle_mag = 3; //角度調整
 	[System.Serializable]
-	public class WallRay : BoxCastBase {
+	public class WallRay : BoxCastAdjustBase {
 		//public float length;		//20.0f
 		//public float up_limit;	//1.9f	2.7f
 		//public float down_limit;	//3.0f	2.5f
@@ -177,7 +192,8 @@ public class CharaBase : MonoBehaviour {
 
 
 
-    public virtual void Start()
+
+	public virtual void Start()
     {
 		rigid = GetComponent<Rigidbody>();
 		velocity = Vector3.zero;
@@ -514,11 +530,17 @@ public class CharaBase : MonoBehaviour {
 			(transform.up * ground_ray_upadjust);
 
 		//下レイが当たっていたら着地
-		if (Physics.Raycast(ground_ray_pos, -transform.up, ground_ray_length, shot_layer)) {
+		RaycastHit hit;
+		if (Physics.Raycast(ground_ray_pos, -transform.up, out hit, ground_ray_length, shot_layer)) {
+			if (hit.collider.tag != "Wall") {
+				return;
+			}
 			rigid.useGravity = true;
 			is_ground = true;
 			velocity.y = 0;
-			//Debug.Log("is_gorund");
+			//if (this.gameObject.name == "Player") {
+			//	Debug.Log("プレイヤー着地");
+			//}
 		}
 		else {
 			is_ground = false;
@@ -531,6 +553,7 @@ public class CharaBase : MonoBehaviour {
 			}
 		}
 
+		/*
 		//if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
 		//	rigid.useGravity = true;
 		//	is_ground = true;
@@ -558,6 +581,7 @@ public class CharaBase : MonoBehaviour {
 		}
 		// */
 	}
+
 
 
 	public virtual void DebugLog(){
@@ -590,5 +614,6 @@ public class CharaBase : MonoBehaviour {
 			return false;
 		}
 	}
+
 
 }

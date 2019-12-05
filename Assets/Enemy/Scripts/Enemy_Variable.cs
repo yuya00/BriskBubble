@@ -97,7 +97,7 @@ public sealed partial class Enemy : CharaBase
 
 	//段差ジャンプ -------------------------------------
 	[System.Serializable]
-	public class JumpRay : BoxCastBase {
+	public class JumpRay : BoxCastAdjustBase {
 		//public float length;            //4.3f
 		//public float uplimit_height;    //2.0f 2.7f
 		//public float downlimit_height;  //3.9f 3.0f
@@ -151,8 +151,9 @@ public sealed partial class Enemy : CharaBase
 		SWING2,		//首振り2
 		SWING3,		//首振り3
 		RUN,		//走る
-		JUMP,		//ジャンプ
-		END			//終了
+		JUMP,       //ジャンプ
+		FAINT,      //気絶
+		END         //終了
 	}
 	Enum_Act enum_act;
 	Enum_Act old_act;

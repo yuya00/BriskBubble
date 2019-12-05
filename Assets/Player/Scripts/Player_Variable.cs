@@ -37,7 +37,8 @@ public sealed partial class Player : CharaBase
 
     private int coin_count;     // コイン入手数
 
-    private GameObject game_manager;
+
+	private GameObject game_manager;
 	private SphereCollider sphere_collider = null;
 
 	// あにめ
@@ -95,8 +96,18 @@ public sealed partial class Player : CharaBase
     private float init_back_speed;            // 初期速度保存用
 
 
-    //壁掴み判定Ray ---------------------------------------------
-    [System.Serializable]
+	//気絶
+	enum Enum_Faint {
+		CLEAR,      //初期化
+		WAIT,       //待機
+		WAIT2,      //待機
+		END         //終了
+	}
+	Enum_Faint enum_faint;
+
+
+	//壁掴み判定Ray ---------------------------------------------
+	[System.Serializable]
 	public class WallGrabRay : RayBase
     {
 
@@ -140,6 +151,40 @@ public sealed partial class Player : CharaBase
 
 
 
+
+	//踏みつけ判定 --------------------------------------
+	[System.Serializable]
+	public class TreadOn_BoxCast : BoxCastBase {
+		//flgはジャンプ中、着地するまでtrue
+
+		//半径に掛ける,XZ軸の倍率
+		public const float RADIUS_MAG_XZ = 3.0f;
+
+		//Y軸の長さ
+		public const float LENGTH_Y		 = 0.3f;
+
+		//BoxCastを飛ばす最大の長さ
+		public const float MAX_DISTANCE	 = 0.2f;
+
+
+		public const int FOWARD_POWER	 = 10;
+
+		public const int JUMP_POWER		 = 30;
+
+	}
+	[Header("踏みつけ判定")]
+	public TreadOn_BoxCast tread_on;
+
+
+	//気絶時のノックバック --------------------------------------
+	public struct KnockBack {
+		public const float SPD_MAG       = 4;
+		public const float JUMP_POWER    = 10;
+		public const int   TIME          = 30;
+		public const int   FAINT_TIME    = 80 - TIME;  //硬直時間(-ノックバック)
+	}
+
+
 	#region 先行入力
 	[Header("先行入力の実行")]
 	public  bool		 lead_input_on;			//先行入力オンオフ
@@ -159,6 +204,9 @@ public sealed partial class Player : CharaBase
 	};
 	LeadInputs[] lead_inputs = new LeadInputs[lead_key_num];
 	#endregion
+
+
+
 
 
 }

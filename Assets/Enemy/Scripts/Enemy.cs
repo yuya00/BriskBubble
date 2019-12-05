@@ -8,14 +8,20 @@ public sealed partial class Enemy : CharaBase
     {
         base.Start();
         Clear();
-		player_touch_flg = false;
-		shot_touch_flg = false;
-		dist_to_player = Vector3.zero;
-		curve_spd = 0;
-		enemy_near = GetComponentInChildren<EnemyNear>();
-		enemy_sounddetect = GetComponentInChildren<EnemySoundDetect>();
-		player_obj = GameObject.Find("Player");
-		jump_ray.flg = false;
+
+		//コンポーネント取得
+		enemy_near			 = GetComponentInChildren<EnemyNear>();
+		enemy_sounddetect	 = GetComponentInChildren<EnemySoundDetect>();
+		capsule_collider	 = GetComponent<CapsuleCollider>();
+		player_obj			 = GameObject.Find("Player");
+		//chara_ray = transform.Find("CharaRay");
+
+		//敵のパラメーター設定
+		player_touch_flg	 = false;
+		shot_touch_flg		 = false;
+		dist_to_player		 = Vector3.zero;
+		curve_spd			 = 0;
+		jump_ray.flg		 = false;
 		jump_ray.advance_flg = false;
 		if (this.gameObject.name == "Enemy1") {
 			enum_model = EnumModel.STILL;
@@ -23,9 +29,8 @@ public sealed partial class Enemy : CharaBase
 		else if (this.gameObject.name == "Enemy2") {
 			enum_model = EnumModel.GROWN;
 		}
-        enum_state = Enum_State.WAIT;
-        old_state = enum_state;
-		//chara_ray = transform.Find("CharaRay");
+        enum_state			 = Enum_State.WAIT;
+        old_state			 = enum_state;
 
 	}
 
@@ -206,6 +211,9 @@ public sealed partial class Enemy : CharaBase
 				//ショットに当たった判定
 				GUILayout.TextArea("ショットに当たった判定\n" + shot_touch_flg);
 
+				//気絶判定
+				GUILayout.TextArea("気絶判定\n" + is_faint);
+
 			}
 			#endregion
 			#region 開発用
@@ -227,6 +235,9 @@ public sealed partial class Enemy : CharaBase
 
 				//ジャンプ事前判定
 				GUILayout.TextArea("ジャンプ事前判定\n" + jump_ray.advance_flg);
+
+				//気絶判定
+				GUILayout.TextArea("気絶判定\n" + is_faint);
 
 			}
 			#endregion
@@ -319,7 +330,8 @@ public sealed partial class Enemy : CharaBase
 			Gizmos.DrawRay(transform.position - transform.up * jump_ray.down_limit + transform.forward * jump_ray.length, transform.up * jump_ray.box_total);  //縦前
 			Gizmos.DrawRay(transform.position - transform.up * jump_ray.down_limit + transform.forward * jump_ray.advance_length, transform.up * jump_ray.box_total);  //縦奥
 		}
-#endregion
+		#endregion
+
 	}
 
 
@@ -347,12 +359,12 @@ public sealed partial class Enemy : CharaBase
             case Enum_State.AWAY:    //逃げる ---------------
                 Away();
                 break;
-            case Enum_State.ATTACK:  //攻撃 ---------------
+			case Enum_State.FAINT:   //踏まれる(気絶) ---------------
+				TreadBy();
+				break;
+			case Enum_State.ATTACK:  //攻撃 ---------------
                 Attack();
                 break;
-			case Enum_State.FAINT:   //気絶 ---------------
-				Faint();
-				break;
 			case Enum_State.WRAP:    //捕獲 ---------------
                 Wrap();
                 break;
@@ -604,8 +616,8 @@ public sealed partial class Enemy : CharaBase
 				//--振り向きspd変更
 				Lookback_SpdChange();
 
-                //二人の距離が(音探知範囲*away_act.mag)より離れたら
-                if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * away_act.mag) && (velocity.y == 0))
+				//二人の距離が(音探知範囲*away_act.mag)より離れたら
+				if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * away_act.mag) && (velocity.y == 0))
                 {
                     enum_act = Enum_Act.END;
                 }
@@ -915,31 +927,39 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//攻撃
-	void Attack()
-    {
-        velocity = transform.forward * (run_speed);
-    }
+	//踏まれる判定(気絶)
+	void TreadBy() {
+		//踏まれた際にプレイヤー側で変更
+		//IsFaint = true;
+		switch (enum_act) {
+			case Enum_Act.CLEAR:
+				Debug.Log(this.name + " がプレイヤーに踏まれた");
+				enum_act = Enum_Act.FAINT;
+				break;
+			case Enum_Act.FAINT: //気絶
+				//移動停止
+				velocity.x = 0;
+				velocity.z = 0;
 
-	//気絶
-	void Faint() {
-		//プレイヤーに踏まれたかを判定
-		//プレイヤーに踏まれたかをgetで判定
-		//if () {
-
-		//}
-		//RaycastHit hit;
-		//if (Physics.BoxCast(transform.position, Vector3.one * 1, transform.up, out hit, transform.rotation)) {
-		//	if (hit.collider.tag == "Player") {
-		//		Debug.Log("Hit");
-		//	}
-		//}
-
-		//踏まれたら
-		//プレイヤーへのダメージ判定一時消滅
-		//移動停止
-
+				//時間経ったら
+				if (WaitTime(120)) {
+					enum_act = Enum_Act.END;
+				}
+				break;
+			case Enum_Act.END:
+				Clear();
+				is_faint = false;
+				enum_state = Enum_State.WAIT;
+				break;
+		}
 	}
+
+
+	//攻撃
+	void Attack() {
+		velocity = transform.forward * (run_speed);
+	}
+
 
 	//捕獲
 	void Wrap()
@@ -1009,13 +1029,19 @@ public sealed partial class Enemy : CharaBase
             }
         }
 
-    }
+		//プレイヤーに踏まれたら
+		if (is_faint && (enum_state != Enum_State.FAINT)) {
+			enum_state = Enum_State.FAINT;   //気絶stateに移行
+		}
+
+
+	}
 
 
 
 
-    //当たり判定 ---------------------------------------------------
-    private void OnCollisionEnter(Collision other)
+	//当たり判定 ---------------------------------------------------
+	private void OnCollisionEnter(Collision other)
     {
         //何かに当たったとき
         if (other.gameObject.tag == "Player")
@@ -1068,8 +1094,8 @@ public sealed partial class Enemy : CharaBase
     //set ------------------------------------------------------------
     public void Shot_touch_flg_false() { shot_touch_flg = false; }
 
-    //get ------------------------------------------------------------
-    public bool Shot_touch_flg
+	//get ------------------------------------------------------------
+	public bool Shot_touch_flg
     {
         get { return shot_touch_flg; }
     }
@@ -1079,11 +1105,14 @@ public sealed partial class Enemy : CharaBase
     // set { shot_touch_flg = false; }
     //}
 
-
     public Vector3 Transform_position
     {
         get { return transform.position; }
     }
 
+	public bool IsFaint {
+		get { return is_faint; }
+		set { is_faint = value; }
+	}
 
 }
