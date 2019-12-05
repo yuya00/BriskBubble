@@ -12,12 +12,15 @@ public sealed partial class Enemy : CharaBase
 	private EnemyNear			enemy_near;
 	private EnemySoundDetect	enemy_sounddetect;
 	private GameObject			player_obj;
+	private const float			CURVE_SPD = 0.05f;  //少し曲がりながら走る
+	private const int           FAINT_TIME = 120;	//気絶時間
 
+	//首振りランダム値設定(待機行動)
 	private struct OnceRondom {
 		public int   num;
 		public bool  isfinish;
 	}
-	OnceRondom once_random;
+	private OnceRondom once_random;
 
 
 	//状態エフェクト -----------------------------------

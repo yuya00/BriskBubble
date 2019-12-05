@@ -236,8 +236,8 @@ public sealed partial class Player : CharaBase
 		if (wall_ray.gizmo_on)
         {
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wall_ray.length);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length);
         }
 		#endregion
 
@@ -246,8 +246,8 @@ public sealed partial class Player : CharaBase
 		if (hole_ray.gizmo_on)
         {
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
         }
 		#endregion
 

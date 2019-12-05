@@ -109,13 +109,13 @@ public class CharaBase : MonoBehaviour {
 
 
 	//壁判定Ray ---------------------------------------------
-	[System.NonSerialized]
-	protected int angle_mag = 3; //角度調整
 	[System.Serializable]
 	public class WallRay : BoxCastAdjustBase {
 		//public float length;		//20.0f
 		//public float up_limit;	//1.9f	2.7f
 		//public float down_limit;	//3.0f	2.5f
+
+		public const int ANGLE_MAG = 3; //角度調整
 
 		[SerializeField, Header("Rayの角度")]
 		public float angle;     //0.0f 未使用
@@ -338,7 +338,7 @@ public class CharaBase : MonoBehaviour {
 		RaycastHit hit;
 
 		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
-			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
+			(transform.forward * WallRay.ANGLE_MAG + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
 			//if (hit.collider.gameObject.tag == "Wall") {
 				wall_ray.dist_right = hit.distance;  //壁との距離保存
 				return true;
@@ -352,7 +352,7 @@ public class CharaBase : MonoBehaviour {
 		RaycastHit hit;
 
 		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
-			(transform.forward * angle_mag + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
+			(transform.forward * WallRay.ANGLE_MAG + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
 			//if (hit.collider.gameObject.tag == "Wall") {
 				wall_ray.dist_left = hit.distance;  //壁との距離保存
 				return true;
@@ -394,13 +394,13 @@ public class CharaBase : MonoBehaviour {
 		//*
 		//右のレイ
 		float var = 1;
-		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
+		if ((!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
 			-transform.up, out hit, hole_ray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
 			-transform.up, out hit, hole_ray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength + var)),
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength + var)),
 			-transform.up, out hit, hole_ray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength - var)),
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength - var)),
 			-transform.up, out hit, hole_ray.length)) ) {
 			hole_ray.hit_right_flg = true;
 		}
@@ -409,13 +409,13 @@ public class CharaBase : MonoBehaviour {
 		}
 
 		//左のレイ
-		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
+		if ((!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
 			-transform.up, out hit, hole_ray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
 			-transform.up, out hit, hole_ray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength + var)),
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength + var)),
 			-transform.up, out hit, hole_ray.length)) &&
-			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength - var)),
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength - var)),
 			-transform.up, out hit, hole_ray.length))) {
 			hole_ray.hit_left_flg = true;
 		}
