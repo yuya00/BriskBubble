@@ -13,6 +13,7 @@ TagManager:
   - Coin
   - Camera
   - GameManager
+  - EffectManager
   layers:
   - Default
   - TransparentFX

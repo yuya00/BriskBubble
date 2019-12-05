@@ -11,14 +11,15 @@ public sealed partial class Player : CharaBase
         base.Start();
 
         // コンポーネント取得
-        game_manager    = GameObject.FindGameObjectWithTag("GameManager");
+        game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
         animator		 = GetComponent<Animator>();
 		capsule_collider = GetComponent<CapsuleCollider>();
 		sphere_collider	 = GetComponent<SphereCollider>();
+		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
 		//chara_ray       = transform.Find("CharaRay");
 
 		// プレイヤーのパラメーター設定
-		state           = START;
+		state = START;
         init_speed      = run_speed;
         init_fric       = stop_fric;
         init_back_speed = back_speed;
@@ -28,6 +29,8 @@ public sealed partial class Player : CharaBase
 		velocity	    = Vector3.zero;
 		tread_on.size   = new Vector3(capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
 			capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
+		// エフェクト関連
+		//effect.effect_no = 0;
 	}
 
 	void Update()
@@ -191,7 +194,7 @@ public sealed partial class Player : CharaBase
 			#endregion
 			#region 開発用
 			else if (gui.debug_view) {
-                GUILayout.TextArea("state\n" + state);
+                GUILayout.TextArea("effect\n" + effect.effect_jump);
 
 				//GUILayout.TextArea("先行入力キー\n" + lead_key);
 				//GUILayout.TextArea("先行入力押されたキー");
@@ -439,6 +442,9 @@ public sealed partial class Player : CharaBase
         if (JumpOn())
         {
             Jump(jump_power);
+
+            // TYPE : キャラ、STATE : ジャンプ、POS : 位置
+            effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, EFFECT_NUM);
         }
 
         // ショットに乗った時にジャンプをjump_power_up倍
@@ -447,7 +453,6 @@ public sealed partial class Player : CharaBase
         // ジャンプアニメーション
         AnimeJump();
     }
-
 
     // ジャンプの挙動
     void Jump(float jump_power)
@@ -920,8 +925,9 @@ public sealed partial class Player : CharaBase
 	}
 
 
-	//当たり判定 -----------------------------------------------
-	private void OnCollisionEnter(Collision other)
+
+    //当たり判定 -----------------------------------------------
+    private void OnCollisionEnter(Collision other)
     {
         //壁との当たり判定
         if (other.gameObject.tag == "Wall")
