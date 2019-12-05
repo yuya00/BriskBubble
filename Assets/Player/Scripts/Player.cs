@@ -629,7 +629,7 @@ public sealed partial class Player : CharaBase
 			hit.collider.GetComponent<Enemy>().IsFaint = true;
 			velocity			 = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
 			Jump(TreadOn_BoxCast.JUMP_POWER);
-			Debug.Log("敵を踏んだ");
+			//Debug.Log("敵を踏んだ");
 		}
 
 		//着地するまでが踏みつけ

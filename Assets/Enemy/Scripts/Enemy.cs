@@ -933,7 +933,7 @@ public sealed partial class Enemy : CharaBase
 		//IsFaint = true;
 		switch (enum_act) {
 			case Enum_Act.CLEAR:
-				Debug.Log(this.name + " がプレイヤーに踏まれた");
+				//Debug.Log(this.name + " がプレイヤーに踏まれた");
 				enum_act = Enum_Act.FAINT;
 				break;
 			case Enum_Act.FAINT: //気絶
