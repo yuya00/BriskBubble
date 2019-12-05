@@ -39,7 +39,7 @@ public class CharaBase : MonoBehaviour {
 	protected CapsuleCollider   capsule_collider;
 	protected Vector3       ground_ray_pos       = Vector3.zero;
 	protected float			ground_ray_upadjust  = 0.1f;
-	protected float         ground_ray_length    = 0.3f;
+	protected float         ground_ray_length    = 0.5f;
 	[Tooltip("重力の倍率")]
 	public float			gravity_power		 = 5;               //重力の倍率
 	protected const int		WORK_NUM			 = 8;
@@ -518,6 +518,7 @@ public class CharaBase : MonoBehaviour {
 			rigid.useGravity = true;
 			is_ground = true;
 			velocity.y = 0;
+			//Debug.Log("is_gorund");
 		}
 		else {
 			is_ground = false;

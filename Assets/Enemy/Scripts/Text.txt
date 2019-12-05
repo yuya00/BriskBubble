@@ -6,46 +6,29 @@
 
 
 
+
 気絶
  踏みつけ成功時
  プレイヤーへのダメージ判定一時消滅,静止
  プレイヤー側でする？
 
 
- プレイヤー高くジャンプすると落下時に着地何回も
+ プレイヤー側でする場合
+ 下レイで判定
+ 　敵に当たっていたら少しジャンプ
+ 敵側に判定をsetで送る
+ 　当たり判定一時消滅
+ 　velocity 0
 
 
-     public override void Start()
-	         enum_state = Enum_State.FAINT;
-
-
-
-		//stateに応じて個別関数に飛ぶ ---------------------------------
-	void Action()
-				case Enum_State.FAINT:   //気絶 ---------------
-				Faint();
-				break;
-
-
-
-		//気絶
-	void Faint() {
-		//プレイヤーに踏まれたかを判定
-		//上方向Ray * 1 * 9
-		//上方向BoxCast
-		RaycastHit hit;
-		if (Physics.BoxCast(transform.position, Vector3.one * 1, transform.up, out hit, transform.rotation)) {
-			if (hit.collider.tag == "Player") {
-				Debug.Log("Hit");
-			}
-		}
-
-		//踏まれたら
-		//プレイヤーへのダメージ判定一時消滅
-		//移動停止
-
-
-	}
+ 敵側でする場合
+ 上レイで判定
+ 　プレイヤーに当たっていたら
+ 　当たり判定一時消滅
+ 　velocity 0
+ プレイヤーに判定をsetで送る
+ 　少しジャンプ
+ 
 
 
 
@@ -176,3 +159,6 @@ yuya
 　隙間に突進するとColider同士の当たり判定より先に
 　charaRayが隙間に入ってしまう
 　オブジェクトが完全に重なってても落ちる
+
+・プレイヤー高くジャンプすると落下時に着地何回も
+　落下が速く、着地判定が追いついていない?

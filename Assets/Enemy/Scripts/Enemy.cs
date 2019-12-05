@@ -347,10 +347,13 @@ public sealed partial class Enemy : CharaBase
             case Enum_State.AWAY:    //逃げる ---------------
                 Away();
                 break;
-            case Enum_State.ATTACK:    //逃げる ---------------
+            case Enum_State.ATTACK:  //攻撃 ---------------
                 Attack();
                 break;
-            case Enum_State.WRAP:    //捕獲 ---------------
+			case Enum_State.FAINT:   //気絶 ---------------
+				Faint();
+				break;
+			case Enum_State.WRAP:    //捕獲 ---------------
                 Wrap();
                 break;
             case Enum_State.END:     //消去 ---------------
@@ -918,9 +921,28 @@ public sealed partial class Enemy : CharaBase
         velocity = transform.forward * (run_speed);
     }
 
+	//気絶
+	void Faint() {
+		//プレイヤーに踏まれたかを判定
+		//プレイヤーに踏まれたかをgetで判定
+		//if () {
 
-    //捕獲
-    void Wrap()
+		//}
+		//RaycastHit hit;
+		//if (Physics.BoxCast(transform.position, Vector3.one * 1, transform.up, out hit, transform.rotation)) {
+		//	if (hit.collider.tag == "Player") {
+		//		Debug.Log("Hit");
+		//	}
+		//}
+
+		//踏まれたら
+		//プレイヤーへのダメージ判定一時消滅
+		//移動停止
+
+	}
+
+	//捕獲
+	void Wrap()
     {
 
     }
