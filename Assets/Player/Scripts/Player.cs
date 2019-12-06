@@ -13,7 +13,6 @@ public sealed partial class Player : CharaBase
         // コンポーネント取得
         game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
         animator		 = GetComponent<Animator>();
-		capsule_collider = GetComponent<CapsuleCollider>();
 		sphere_collider	 = GetComponent<SphereCollider>();
 		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
 		//chara_ray       = transform.Find("CharaRay");
@@ -27,8 +26,8 @@ public sealed partial class Player : CharaBase
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
 		velocity	    = Vector3.zero;
-		tread_on.size   = new Vector3(capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
-			capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
+		tread_on.size   = new Vector3(ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
+			ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
 		// エフェクト関連
 		//effect.effect_no = 0;
 	}
@@ -145,8 +144,8 @@ public sealed partial class Player : CharaBase
            GUILayout.Box("Player");
 		float spdx, spdy, spdz;
 
-           #region ここに追加
-           #region 全値
+        #region ここに追加   
+		#region 全値
             if (gui.all_view) {
 				//座標
 				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -164,7 +163,7 @@ public sealed partial class Player : CharaBase
 				GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
 				//着地判定
-				GUILayout.TextArea("着地判定\n" + is_ground);
+				GUILayout.TextArea("着地判定\n " + is_ground);
 
 				//壁掴み判定
 				GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
@@ -185,34 +184,53 @@ public sealed partial class Player : CharaBase
 				GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
 
 				//穴判定
-				GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
+				GUILayout.TextArea("穴判定左右\n " + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
 
 				//踏みつけジャンプ判定(着地まで)
-				GUILayout.TextArea("踏みつけジャンプ\n" + tread_on.flg);
+				GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
 
 				//汎用タイマー
-				GUILayout.TextArea("汎用タイマー\n" + wait_timer);
+				GUILayout.TextArea("汎用タイマー\n " + wait_timer);
 
 			}
 			#endregion
 		#region 開発用
-			else if (gui.debug_view) {
-                GUILayout.TextArea("effect\n" + effect.effect_jump);
+		else if (gui.debug_view) {
+			//GUILayout.TextArea("effect\n" + effect.effect_jump);
 
-				//GUILayout.TextArea("先行入力キー\n" + lead_key);
-				//GUILayout.TextArea("先行入力押されたキー");
-				//for (int i = 0; i < lead_key_num; i++) {
-				//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
-				//	GUILayout.TextArea("" + lead_inputs[i].frame);
-				//}
+			//GUILayout.TextArea("先行入力キー\n" + lead_key);
+			//GUILayout.TextArea("先行入力押されたキー");
+			//for (int i = 0; i < lead_key_num; i++) {
+			//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
+			//	GUILayout.TextArea("" + lead_inputs[i].frame);
+			//}
 
-				//踏みつけジャンプ判定(着地まで)
-				GUILayout.TextArea("踏みつけジャンプ\n" + tread_on.flg);
+			//座標
+			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+			float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+			float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
 
-				//汎用タイマー
-				GUILayout.TextArea("汎用タイマー\n" + wait_timer);
-			}
-			#endregion
+			//速さ
+			spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+			spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+			spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+
+			//着地判定
+			GUILayout.TextArea("着地判定\n " + is_ground);
+
+			//踏みつけジャンプ判定(着地まで)
+			GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
+
+			////汎用タイマー
+			//GUILayout.TextArea("汎用タイマー\n" + wait_timer);
+
+			////ジャンプアニメカウント
+			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+
+		}
+		#endregion
 		#endregion
 
 
@@ -228,6 +246,14 @@ public sealed partial class Player : CharaBase
 		if (!gui.on) {
 			gui.all_view = false;
 			gui.debug_view = false;
+		}
+		#endregion
+
+
+		#region 着地判定
+		if (ground_cast.capsule_collider) {
+			Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.6f);
+			Gizmos.DrawWireSphere(ground_cast.pos - (transform.up * ground_cast.length), GroundCast.RADIUS);
 		}
 		#endregion
 
@@ -266,14 +292,12 @@ public sealed partial class Player : CharaBase
 
 
 		#region 踏みつけ判定
-		if (tread_on.gizmo_on) {
+		if (tread_on.gizmo_on && ground_cast.capsule_collider) {
 			Gizmos.color = Color.red - new Color(0, 0, 0, 0.6f);
-			if (capsule_collider) {
-				Gizmos.DrawWireCube(transform.position + 
-									(transform.up * capsule_collider.center.y) - 
-									(transform.up * (capsule_collider.height / 2)), tread_on.size);
-				//Gizmos.DrawRay(ground_ray_pos, -transform.up * ground_ray_length);
-			}
+			Gizmos.DrawWireCube(transform.position + 
+								(transform.up * ground_cast.capsule_collider.center.y) - 
+								(transform.up * (ground_cast.capsule_collider.height / 2)), tread_on.size);
+			//Gizmos.DrawRay(ground_ray_pos, -transform.up * ground_ray_length);
 		}
 		#endregion
 
@@ -618,8 +642,8 @@ public sealed partial class Player : CharaBase
 		RaycastHit hit;
 		//踏みつけ判定
 		if (Physics.BoxCast(transform.position + 
-			(transform.up * capsule_collider.center.y) - 
-			(transform.up * (capsule_collider.height / 2)), 
+			(transform.up * ground_cast.capsule_collider.center.y) - 
+			(transform.up * (ground_cast.capsule_collider.height / 2)), 
 			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE)
 			//Physics.BoxCast(ground_ray_pos, tread_on.size, -transform.up, out hit, transform.rotation, 0.1f)
 			&& hit.collider.tag == "Enemy"

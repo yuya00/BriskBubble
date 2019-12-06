@@ -1840,12 +1840,17 @@ PrefabInstance:
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: gui.on
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: gui.debug_view
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: gui.all_view
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2047487351, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
       propertyPath: m_Enabled
@@ -3143,6 +3148,56 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e135e19e0c2556a4fb3d489f97fedba6, type: 3}
+--- !u!1 &1777339432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1777339434}
+  - component: {fileID: 1777339433}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: EffectManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1777339433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777339432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8eab9e41382dce4b9016cbe39951964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effect_jump: {fileID: 1024459011614124062, guid: 9312659474f14b0429d5064cd4be38c9,
+    type: 3}
+  effect_run: {fileID: 1024459011614124062, guid: 9312659474f14b0429d5064cd4be38c9,
+    type: 3}
+  effect_shot: {fileID: 286456998030942924, guid: 79f8870002632084187ca467926e4e32,
+    type: 3}
+  gui_on: 0
+--- !u!4 &1777339434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777339432}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1846447197 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 441c86b3b5988e248a119ec20ec737a2,

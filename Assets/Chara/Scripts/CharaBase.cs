@@ -36,9 +36,9 @@ public class CharaBase : MonoBehaviour {
 	protected bool			is_ground			 = false;           //地面接地判定
 	//protected Transform		chara_ray;							//レイを飛ばす位置(地面判別に使用)
 	//protected float			chara_ray_length	 = 0.4f;
-	protected CapsuleCollider   capsule_collider;
+	//protected CapsuleCollider   capsule_collider;
 	protected Vector3       ground_ray_pos       = Vector3.zero;
-	protected float			ground_ray_upadjust  = 0.1f;
+	protected float         ground_ray_upadjust  = 0.1f;
 	protected float         ground_ray_length    = 0.5f;
 	[Tooltip("重力の倍率")]
 	public float			gravity_power		 = 5;               //重力の倍率
@@ -190,6 +190,16 @@ public class CharaBase : MonoBehaviour {
 	public HoleRay hole_ray;
 
 
+	//着地判定 ---------------------------------------------
+	public struct GroundCast {
+		public CapsuleCollider  capsule_collider;
+		public Vector3          pos;
+		public float            length;
+		public const float      RADIUS   = 0.5f;    //半径
+		public const float      UPADJUST = 0.2f;    //長さ調整
+	}
+	public GroundCast ground_cast;
+
 
 
 
@@ -198,7 +208,8 @@ public class CharaBase : MonoBehaviour {
 		rigid = GetComponent<Rigidbody>();
 		velocity = Vector3.zero;
 		is_ground = false;
-		capsule_collider = GetComponent<CapsuleCollider>();
+		ground_cast.capsule_collider = GetComponent<CapsuleCollider>();
+		ground_cast.length = (ground_cast.capsule_collider.height / 2) - GroundCast.UPADJUST;
 		for (int i = 0; i < WORK_NUM; i++) {
 			iwork[i] = 0;
 		}
@@ -514,6 +525,7 @@ public class CharaBase : MonoBehaviour {
 
 
 
+
 	//着地時にfalse
 	public virtual void Move()
     {
@@ -523,12 +535,47 @@ public class CharaBase : MonoBehaviour {
         // shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
         LayerMask shot_layer = ~(1 << 8);
 		/***********************/
+
+		#region SphereCast
+		//足元から少し上の位置
+		ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y);
+
+		RaycastHit hit;
+		if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, shot_layer)) {
+			if (hit.collider.tag != "Wall") {
+				return;
+			}
+			rigid.useGravity = true;
+			is_ground		 = true;
+			velocity.y		 = 0;
+			//if (this.gameObject.name == "Player") {
+			//	Debug.Log("プレイヤー着地");
+			//}
+		}
+		else {
+			is_ground = false;
+			//落下速度の上限
+			if (velocity.y >= -fallspd_limit) {
+				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
+			}
+			else {
+				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
+			}
+			//if (this.gameObject.name == "Player") {
+			//	Debug.Log("プレイヤージャンプ中");
+			//}
+		}
+		#endregion
+
+
+		#region Ray
 		//足元から少し上の位置
 		ground_ray_pos = transform.position +
-			(transform.up * capsule_collider.center.y) -
-			(transform.up * (capsule_collider.height / 2)) +
+			(transform.up * ground_cast.capsule_collider.center.y) -
+			(transform.up * (ground_cast.capsule_collider.height / 2)) +
 			(transform.up * ground_ray_upadjust);
 
+		/*
 		//下レイが当たっていたら着地
 		RaycastHit hit;
 		if (Physics.Raycast(ground_ray_pos, -transform.up, out hit, ground_ray_length, shot_layer)) {
@@ -552,7 +599,10 @@ public class CharaBase : MonoBehaviour {
 				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
 		}
+		// */
+		#endregion
 
+		#region Line
 		/*
 		//if (Physics.Linecast(chara_ray.position, chara_ray.position + Vector3.down * chara_ray_length, shot_layer)) {
 		//	rigid.useGravity = true;
@@ -568,18 +618,9 @@ public class CharaBase : MonoBehaviour {
 		//		velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 		//	}
 		//}
-
-		/*
-		//地面に接している時は初期化
-		if (is_ground) {
-			rigid.useGravity = true;
-			//velocity.y = 0;
-		}
-		else {
-			//地面に接していない時は重力
-			velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
-		}
 		// */
+		#endregion
+
 	}
 
 

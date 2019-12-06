@@ -12,7 +12,6 @@ public sealed partial class Enemy : CharaBase
 		//コンポーネント取得
 		enemy_near			 = GetComponentInChildren<EnemyNear>();
 		enemy_sounddetect	 = GetComponentInChildren<EnemySoundDetect>();
-		capsule_collider	 = GetComponent<CapsuleCollider>();
 		player_obj			 = GameObject.Find("Player");
 		//chara_ray = transform.Find("CharaRay");
 
@@ -251,6 +250,14 @@ public sealed partial class Enemy : CharaBase
 		if (!gui.on) {
 			gui.all_view = false;
 			gui.debug_view = false;
+		}
+		#endregion
+
+
+		#region 着地判定
+		if (ground_cast.capsule_collider) {
+			Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.6f);
+			Gizmos.DrawWireSphere(ground_cast.pos - (transform.up * ground_cast.length), GroundCast.RADIUS);
 		}
 		#endregion
 
