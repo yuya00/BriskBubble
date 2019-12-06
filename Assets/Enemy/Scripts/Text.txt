@@ -11,15 +11,15 @@
 
  プルリクエスト
 
-  Debug.Logを活用する
+ Debug.Logを活用する
 
 
 
- エフェクトマネージャーと同じ要領でアニメも
+
 
  EffectManager
- gui_on付ける
- Playerになってる
+ 　gui_on付ける
+ 　Playerになってる
 
 
 
@@ -81,6 +81,7 @@ Gizmo Build　エラー　調べる
 
 コードの色変える
 
+エフェクトマネージャーと同じ要領でアニメも
 
 
 

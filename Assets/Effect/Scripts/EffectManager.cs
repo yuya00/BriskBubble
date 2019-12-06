@@ -111,16 +111,21 @@ public class EffectManager : MonoBehaviour
     }
 
 
+	public bool gui_on;
     // GUI---------------------------------------------------------------
     private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
     private float scroll_height = 330;
     void OnGUI()
     {
+		if (!gui_on) {
+			return;
+		}
+
         //スクロール高さを変更
         //(出来ればmaximize on playがonならに変更したい)
         GUILayout.BeginVertical("box", GUILayout.Width(190));
         left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
-        GUILayout.Box("Player");
+        GUILayout.Box("Effect");
 
         //着地判定
         //GUILayout.TextArea("debug_obj\n" + debug_obj);
