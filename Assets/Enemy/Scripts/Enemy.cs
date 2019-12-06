@@ -1112,4 +1112,7 @@ public sealed partial class Enemy : CharaBase
 		set { is_faint = value; }
 	}
 
+	public bool IsWrap {
+		get { return enum_state == Enum_State.WRAP; }
+	}
 }

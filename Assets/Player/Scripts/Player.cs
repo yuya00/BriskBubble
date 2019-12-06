@@ -626,9 +626,9 @@ public sealed partial class Player : CharaBase
 		RaycastHit hit;
 		if (Physics.Raycast(transform.position,transform.up, out hit, 1.5f)) {
 			if (hit.collider.tag == "Wall") {
+				//Debug.Log("頭に壁が当たった");
 				return true;
 			}
-			Debug.Log("頭に壁が当たった");
 		}
 		return false;
 	}
@@ -665,12 +665,12 @@ public sealed partial class Player : CharaBase
 		}
 	}
 
-	//敵に接触(気絶)
+	//気絶(ノックバック)
 	void Faint() {
 		if (!is_faint || tread_on.flg) {
 			return;
 		}
-		Debug.Log("敵に接触");
+		//Debug.Log("敵に接触");
 
 		switch (enum_faint) {
 			case Enum_Faint.CLEAR:	//ノックバック
@@ -950,7 +950,8 @@ public sealed partial class Player : CharaBase
 
 		//敵との当たり判定
 		if (other.gameObject.tag == "Enemy") {
-			if (!is_faint || !tread_on.flg) {
+			//踏みつけジャンプ中ではなく、敵が捕獲以外なら気絶
+			if (!is_faint && !tread_on.flg && !other.gameObject.GetComponent<Enemy>().IsWrap) {
 				is_faint = true;
 			}
 		}
