@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 6363856407093239075}
   - component: {fileID: 6363856407093239077}
   - component: {fileID: 6363856407093239074}
-  - component: {fileID: 2047487351}
   - component: {fileID: 2047487355}
   - component: {fileID: 2047487350}
   - component: {fileID: 2047487349}
@@ -81,14 +80,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui:
-    on: 0
-    all_view: 0
+    on: 1
+    all_view: 1
     debug_view: 0
   run_speed: 15
   walk_speed: 3
   jump_power: 25
   gravity_power: 7
   fallspd_limit: 30
+  ground_cast:
+    gizmo_on: 0
+    judge_on: 1
   wall_ray:
     gizmo_on: 0
     judge_on: 0
@@ -123,15 +125,15 @@ MonoBehaviour:
   wall_grab_ray:
     gizmo_on: 0
     judge_on: 0
-    length: 0
-    height: 0
-    side_length: 0
-    delay_time: 0
+    length: 1.1
+    height: 1.3
+    side_length: 1.2
+    delay_time: 10
   tread_on:
     gizmo_on: 0
-    judge_on: 0
+    judge_on: 1
   lead_input:
-    on: 0
+    on: 1
 --- !u!54 &6363856407093239074
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,19 +150,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!135 &2047487351
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6363856407093239078}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6
-  m_Center: {x: 0, y: -1.1, z: 0.7}
 --- !u!136 &2047487355
 CapsuleCollider:
   m_ObjectHideFlags: 0

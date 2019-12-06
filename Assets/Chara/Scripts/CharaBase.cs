@@ -108,6 +108,23 @@ public class CharaBase : MonoBehaviour {
 	}
 
 
+	//着地判定 ---------------------------------------------
+	[System.Serializable]
+	public class GroundCast : GizmoBase {
+		[System.NonSerialized]
+		public CapsuleCollider  capsule_collider;
+		[System.NonSerialized]
+		public Vector3          pos;
+		[System.NonSerialized]
+		public float            length;
+
+		public const float      RADIUS   = 0.5f;    //半径
+		public const float      UPADJUST = 0.2f;    //長さ調整
+	}
+	[Header("着地判定SphereCast")]
+	public GroundCast ground_cast;
+
+
 	//壁判定Ray ---------------------------------------------
 	[System.Serializable]
 	public class WallRay : BoxCastAdjustBase {
@@ -190,15 +207,6 @@ public class CharaBase : MonoBehaviour {
 	public HoleRay hole_ray;
 
 
-	//着地判定 ---------------------------------------------
-	public struct GroundCast {
-		public CapsuleCollider  capsule_collider;
-		public Vector3          pos;
-		public float            length;
-		public const float      RADIUS   = 0.5f;    //半径
-		public const float      UPADJUST = 0.2f;    //長さ調整
-	}
-	public GroundCast ground_cast;
 
 
 

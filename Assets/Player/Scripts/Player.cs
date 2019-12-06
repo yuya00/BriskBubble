@@ -13,7 +13,6 @@ public sealed partial class Player : CharaBase
         // コンポーネント取得
         game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
         animator		 = GetComponent<Animator>();
-		sphere_collider	 = GetComponent<SphereCollider>();
 		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
 		//chara_ray       = transform.Find("CharaRay");
 
@@ -223,8 +222,11 @@ public sealed partial class Player : CharaBase
 			//踏みつけジャンプ判定(着地まで)
 			GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
 
-			////汎用タイマー
-			//GUILayout.TextArea("汎用タイマー\n" + wait_timer);
+			//気絶
+			GUILayout.TextArea("気絶\n " + is_faint);
+
+			//汎用タイマー
+			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
 			////ジャンプアニメカウント
 			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
@@ -251,7 +253,7 @@ public sealed partial class Player : CharaBase
 
 
 		#region 着地判定
-		if (ground_cast.capsule_collider) {
+		if (ground_cast.gizmo_on && ground_cast.capsule_collider) {
 			Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.6f);
 			Gizmos.DrawWireSphere(ground_cast.pos - (transform.up * ground_cast.length), GroundCast.RADIUS);
 		}
@@ -668,7 +670,7 @@ public sealed partial class Player : CharaBase
 		if (!is_faint || tread_on.flg) {
 			return;
 		}
-		//Debug.Log("敵に接触");
+		Debug.Log("敵に接触");
 
 		switch (enum_faint) {
 			case Enum_Faint.CLEAR:	//ノックバック
@@ -677,8 +679,8 @@ public sealed partial class Player : CharaBase
 				Jump(KnockBack.JUMP_POWER);
 				enum_faint = Enum_Faint.WAIT;
 				break;
-			case Enum_Faint.WAIT:	//ノックバック時間
-				if (WaitTimeOnce(KnockBack.TIME)) {
+			case Enum_Faint.WAIT:   //ノックバック時間
+				if (WaitTimeOnce(30)) {
 					wait_timer = 0;
 					velocity = Vector3.zero;
 					enum_faint = Enum_Faint.WAIT2;
@@ -716,9 +718,6 @@ public sealed partial class Player : CharaBase
 	void WallGrabRayJudge() {
 		RaycastHit hit;
 
-		//------子球Colliderの判定切り替え
-		ChildSphereIsTrigger();
-
 		//空中にいる、自身が壁に当たっている、レイが当たっていない
 		if (!is_ground && wall_touch_flg && !wall_grab_ray.ray_flg) {
 			wall_grab_ray.prepare_flg = true;
@@ -742,17 +741,6 @@ public sealed partial class Player : CharaBase
 			wall_grab_ray.flg = true;
 			//------掴んだ時の向き調整
 			AngleAdjust();
-		}
-
-	}
-
-	//------子球Colliderの判定切り替え
-	void ChildSphereIsTrigger() {
-		if (!is_ground) {
-			sphere_collider.isTrigger = true;
-		}
-		else {
-			sphere_collider.isTrigger = false;
 		}
 
 	}
@@ -869,10 +857,6 @@ public sealed partial class Player : CharaBase
                 }
             }
 
-        }
-        else
-        {
-            wait_timer = 0;
         }
     }
 
