@@ -23,10 +23,7 @@ public sealed partial class Player : CharaBase
 
             // ショットのチャージが終わる前に発射したら、飛べるやつを配置
             if (Input.GetButton("Shot_L"))
-            {
-                // ショットのチャージ
-                ShotCharge();
-
+            {             
                 // ショットをチャージしてるときにショットの選択
                 if (Input.GetButton("Shot_R")) shot_state = 1;
             }
@@ -34,6 +31,12 @@ public sealed partial class Player : CharaBase
             {
                 charge_time = 0;
                 shot_state = 0;
+            }
+
+            //ショットのチャージ
+            if (Input.GetButton("Shot_R"))
+            {
+                ShotCharge();
             }
 
             // 最終ショット発射
@@ -88,10 +91,12 @@ public sealed partial class Player : CharaBase
     void ShotCharge()
     {
         // ショットのチャージ
-        charge_time += Time.deltaTime;
+        shot_charge_vol += shot_charge_speed;
+        if (shot_charge_vol > max_charge_vol) shot_charge_vol = max_charge_vol;
 
-        // ショットをstateで管理
-        if (charge_time > 2) shot_state = 2;
+        //チャージ中はプレイヤーを減速
+        velocity.x *= charge_slow_down;
+        velocity.z *= charge_slow_down;
     }
 
     // ショットの設定リセット
@@ -104,6 +109,9 @@ public sealed partial class Player : CharaBase
         // ショット間隔の時間リセット
         shot_interval_time = 0;
 
+        //ショットのチャージリセット
+        shot_charge_vol = 0;
+
         //animator.speed = init_anim_spd;
         //animator.SetBool("Shot", false);
     }
@@ -113,12 +121,24 @@ public sealed partial class Player : CharaBase
     void ShotSelect(GameObject obj)
     {
         // ショットのオブジェクトを設定
+
+
         GameObject shot = Instantiate(shot_object[shot_state], transform.position + (transform.forward * SHOT_POSITION), Quaternion.identity);
 
         switch (shot_state)
         {
             case 0:
-                // 1段階目
+                // 1段階目(チャージショット)
+
+                //shotの大きさによって位置を補正
+                shot.transform.position += (transform.forward * ((SHOT_POSITION/2) * (shot_charge_vol / shot.transform.localScale.x)));//前方向
+
+                //shotの大きさを加算
+                shot.transform.localScale = new Vector3(shot.transform.localScale.x + shot_charge_vol,
+                                                        shot.transform.localScale.x + shot_charge_vol,
+                                                        shot.transform.localScale.x + shot_charge_vol
+                                                        );
+
                 shot.GetComponent<Shot01>().SetCharacterObject(gameObject);
                 break;
             case 1:
