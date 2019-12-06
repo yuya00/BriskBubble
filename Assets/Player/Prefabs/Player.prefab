@@ -84,48 +84,54 @@ MonoBehaviour:
     on: 0
     all_view: 0
     debug_view: 0
-  run_spd: 15
-  walk_spd: 3
+  run_speed: 15
+  walk_speed: 3
   jump_power: 25
-  stop_fric: 0.3
-  chara_ray_length: 0.4
   gravity_power: 7
   fallspd_limit: 30
-  wallray:
+  wall_ray:
     gizmo_on: 0
     judge_on: 0
-    length: 20
+    length: 0
     up_limit: 0
     down_limit: 0
     angle: 0
-    spd: 1.5
-  holeray:
+    spd: 0
+  hole_ray:
     gizmo_on: 0
     judge_on: 0
-    length: 100
+    length: 0
     startLength: 0
     angle: 0
-    spd: 10
+    speed: 0
   slope: 0.3
   fall_y_max: -100
   cam: {fileID: 0}
-  rot_spd: 10
+  rot_speed: 10
+  EFFECT_NUM: 10
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}
   - {fileID: 8580679673519122975, guid: 814522e3fb027ea4a870ebbc1ae939a5, type: 3}
   - {fileID: 1774832109019730856, guid: e87f8023e1f890a498f381891b408b5f, type: 3}
   shot_interval_time_max: 1
   stop_time_max: 1
-  back_spd: 20
+  back_speed: 0.5
   jump_power_up: 1.5
-  wallGrabRay:
-    gizmo_on: 1
-    judge_on: 1
-    length: 1.69
-    height: 0.6
-    side_length: 0.8
-    delaytime: 10
-  lead_input_on: 1
+  max_charge_vol: 6
+  shot_charge_speed: 0.02
+  charge_slow_down: 0.8
+  wall_grab_ray:
+    gizmo_on: 0
+    judge_on: 0
+    length: 0
+    height: 0
+    side_length: 0
+    delay_time: 0
+  tread_on:
+    gizmo_on: 0
+    judge_on: 0
+  lead_input:
+    on: 0
 --- !u!54 &6363856407093239074
 Rigidbody:
   m_ObjectHideFlags: 0
