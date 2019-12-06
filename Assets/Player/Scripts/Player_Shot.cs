@@ -44,6 +44,7 @@ public sealed partial class Player : CharaBase
             {
                 // ショットをstateの値で選択
                 ShotSelect(shot_object[shot_state]);
+                effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos,EFFECT_NUM);
             }
         }
 

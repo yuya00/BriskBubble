@@ -8,14 +8,20 @@ public sealed partial class Enemy : CharaBase
     {
         base.Start();
         Clear();
-		player_touch_flg = false;
-		shot_touch_flg = false;
-		dist_to_player = Vector3.zero;
-		curve_spd = 0;
-		enemy_near = GetComponentInChildren<EnemyNear>();
-		enemy_sounddetect = GetComponentInChildren<EnemySoundDetect>();
-		player_obj = GameObject.Find("Player");
-		jump_ray.flg = false;
+
+		//コンポーネント取得
+		enemy_near			 = GetComponentInChildren<EnemyNear>();
+		enemy_sounddetect	 = GetComponentInChildren<EnemySoundDetect>();
+		capsule_collider	 = GetComponent<CapsuleCollider>();
+		player_obj			 = GameObject.Find("Player");
+		//chara_ray = transform.Find("CharaRay");
+
+		//敵のパラメーター設定
+		player_touch_flg	 = false;
+		shot_touch_flg		 = false;
+		dist_to_player		 = Vector3.zero;
+		curve_spd			 = 0;
+		jump_ray.flg		 = false;
 		jump_ray.advance_flg = false;
 		if (this.gameObject.name == "Enemy1") {
 			enum_model = EnumModel.STILL;
@@ -23,37 +29,30 @@ public sealed partial class Enemy : CharaBase
 		else if (this.gameObject.name == "Enemy2") {
 			enum_model = EnumModel.GROWN;
 		}
-        enum_state = Enum_State.WAIT;
-        old_state = enum_state;
-		//chara_ray = transform.Find("CharaRay");
+        enum_state			 = Enum_State.WAIT;
+        old_state			 = enum_state;
 
 	}
 
 	void Update()
     {
         base.Move();
-        StateChange();  // プレイヤーとの当たり判定でstate変更
-        Action();       // stateに応じて個別関数に飛ぶ
 
-		//ショットに当たったら停止
-		if (shot_touch_flg) {
-			run_speed = 0;
-		}
-
-		//プレイヤーとの距離
-		dist_to_player = Vector3.Scale(
-			player_obj.GetComponent<Player>().TransformPosition - transform.position,
-			new Vector3(1.0f, 0.0f, 1.0f));
-
-		//状態エフェクト
-		CondtionEffect();
-
+		StateChange();      //プレイヤーとの当たり判定でstate変更
+		DistPlayer();		//プレイヤーとの距離
+		Action();           //stateに応じて個別関数に飛ぶ
+		CondtionEffect();   //状態エフェクト
 		old_state = enum_state;
-
-
 
 		DebugLog();
     }
+
+	//プレイヤーとの距離
+	void DistPlayer() {
+		dist_to_player = Vector3.Scale(
+			player_obj.GetComponent<Player>().TransformPosition - transform.position,
+			new Vector3(1.0f, 0.0f, 1.0f));
+	}
 
 	//状態エフェクト
 	void CondtionEffect() {
@@ -147,21 +146,23 @@ public sealed partial class Enemy : CharaBase
 	private float scroll_height = 330;
 	void OnGUI()
     {
-        if (gui.on)
-        {
-			//スクロール高さを変更
-			//(出来ればmaximize on playがonならに変更したい)
-			if (gui.all_view) {
-				scroll_height = 700;
-			}
-			else scroll_height = 330;
+		if (!gui.on) {
+			return;
+		}
 
-			GUILayout.BeginVertical("box", GUILayout.Width(190));
-			gui_scroll_pos = GUILayout.BeginScrollView(gui_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
-			GUILayout.Box("Enemy");
-			float spdx,spdy,spdz;
+		//スクロール高さを変更
+		//(出来ればmaximize on playがonならに変更したい)
+		if (gui.all_view) {
+			scroll_height = 700;
+		}
+		else scroll_height = 330;
 
-			#region ここに追加
+		GUILayout.BeginVertical("box", GUILayout.Width(190));
+		gui_scroll_pos = GUILayout.BeginScrollView(gui_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+		GUILayout.Box("Enemy");
+		float spdx,spdy,spdz;
+
+		#region ここに追加
 			#region 全値
 			if (gui.all_view) {
 				//座標
@@ -206,6 +207,9 @@ public sealed partial class Enemy : CharaBase
 				//ショットに当たった判定
 				GUILayout.TextArea("ショットに当たった判定\n" + shot_touch_flg);
 
+				//気絶判定
+				GUILayout.TextArea("気絶判定\n" + is_faint);
+
 			}
 			#endregion
 			#region 開発用
@@ -228,14 +232,15 @@ public sealed partial class Enemy : CharaBase
 				//ジャンプ事前判定
 				GUILayout.TextArea("ジャンプ事前判定\n" + jump_ray.advance_flg);
 
+				//気絶判定
+				GUILayout.TextArea("気絶判定\n" + is_faint);
+
 			}
 			#endregion
 			#endregion
 
-
-			GUILayout.EndScrollView();
-            GUILayout.EndVertical();
-        }
+		GUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 
     //Gizmo表示 --------------------------------------------------
@@ -269,20 +274,20 @@ public sealed partial class Enemy : CharaBase
 
 			//右ray
 			Gizmos.DrawRay(transform.position + transform.up * wall_ray.up_limit,
-				(transform.forward * angle_mag + (transform.right)).normalized * wall_ray.length);	//上
+				(transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * wall_ray.length);	//上
 			Gizmos.DrawRay(transform.position - transform.up * wall_ray.down_limit,
-				(transform.forward * angle_mag + (transform.right)).normalized * wall_ray.length);   //下
+				(transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * wall_ray.length);   //下
 			Gizmos.DrawRay(transform.position - transform.up * wall_ray.down_limit +
-				(transform.forward * angle_mag + (transform.right)).normalized * wall_ray.length,
+				(transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * wall_ray.length,
 				transform.up * wall_ray.box_total);   //奥
 
 			//左ray
 			Gizmos.DrawRay(transform.position + transform.up * wall_ray.up_limit, 
-				(transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length);	//上
+				(transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length);	//上
 			Gizmos.DrawRay(transform.position - transform.up * wall_ray.down_limit,
-				(transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length);  //下
+				(transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length);  //下
 			Gizmos.DrawRay(transform.position - transform.up * wall_ray.down_limit +
-				(transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length,
+				(transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length,
 				transform.up * wall_ray.box_total);   //奥
 		}
 #endregion
@@ -300,8 +305,8 @@ public sealed partial class Enemy : CharaBase
 			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right * 1), -transform.up * hole_ray.length);
 			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right * 1), -transform.up * hole_ray.length);
 
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * hole_ray.startLength, -transform.up * hole_ray.length);
-			Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * hole_ray.startLength, -transform.up * hole_ray.length);
+			Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * hole_ray.startLength, -transform.up * hole_ray.length);
+			Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * hole_ray.startLength, -transform.up * hole_ray.length);
 		}
 #endregion
 		
@@ -319,10 +324,55 @@ public sealed partial class Enemy : CharaBase
 			Gizmos.DrawRay(transform.position - transform.up * jump_ray.down_limit + transform.forward * jump_ray.length, transform.up * jump_ray.box_total);  //縦前
 			Gizmos.DrawRay(transform.position - transform.up * jump_ray.down_limit + transform.forward * jump_ray.advance_length, transform.up * jump_ray.box_total);  //縦奥
 		}
-#endregion
+		#endregion
+
 	}
 
 
+
+
+	//state変更 --------------------------------------------------
+	void StateChange() {
+		//近くにプレイヤーがいたら(待機の時)
+		if (enemy_near.HitFlg) {
+			if (enum_state == Enum_State.WAIT) {
+				enum_state = Enum_State.WARNING;   //警戒stateに移行
+			}
+		}
+		//音範囲内で音があったら
+		if (enemy_sounddetect.HitFlg) {
+			if (enum_state == Enum_State.WAIT) {
+				enum_state = Enum_State.WARNING;   //警戒stateに移行
+			}
+		}
+		//プレイヤーに触れたら(待機か,警戒,逃走のRUNの時)
+		if (player_touch_flg) {
+			if (enum_state == Enum_State.WAIT ||
+				enum_state == Enum_State.WARNING ||
+				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
+				enum_state = Enum_State.FIND;   //発見stateに移行
+			}
+		}
+		//視界にプレイヤーが入ったら(待機か,警戒,逃走のRUNの時)
+		if (finder_flg) {
+			if (enum_state == Enum_State.WAIT ||
+				enum_state == Enum_State.WARNING ||
+				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
+				enum_state = Enum_State.FIND;   //発見stateに移行
+			}
+		}
+
+		//プレイヤーに踏まれたら
+		if (is_faint && (enum_state != Enum_State.FAINT)) {
+			enum_state = Enum_State.FAINT;   //気絶stateに移行
+		}
+
+		//ショットに当たったら
+		if (shot_touch_flg) {
+			enum_state = Enum_State.WRAP;   //捕獲stateに移行
+		}
+
+	}
 
 	//stateに応じて個別関数に飛ぶ ---------------------------------
 	void Action()
@@ -347,12 +397,12 @@ public sealed partial class Enemy : CharaBase
             case Enum_State.AWAY:    //逃げる ---------------
                 Away();
                 break;
-            case Enum_State.ATTACK:  //攻撃 ---------------
+			case Enum_State.FAINT:   //踏まれる(気絶) ---------------
+				TreadBy();
+				break;
+			case Enum_State.ATTACK:  //攻撃 ---------------
                 Attack();
                 break;
-			case Enum_State.FAINT:   //気絶 ---------------
-				Faint();
-				break;
 			case Enum_State.WRAP:    //捕獲 ---------------
                 Wrap();
                 break;
@@ -360,7 +410,6 @@ public sealed partial class Enemy : CharaBase
                 End();
                 break;
         }
-        //old_state = enum_state;
     }
 
     //--個別行動関数 ----------------------------------------------
@@ -604,8 +653,8 @@ public sealed partial class Enemy : CharaBase
 				//--振り向きspd変更
 				Lookback_SpdChange();
 
-                //二人の距離が(音探知範囲*away_act.mag)より離れたら
-                if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * away_act.mag) && (velocity.y == 0))
+				//二人の距離が(音探知範囲*away_act.mag)より離れたら
+				if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * away_act.mag) && (velocity.y == 0))
                 {
                     enum_act = Enum_Act.END;
                 }
@@ -629,10 +678,10 @@ public sealed partial class Enemy : CharaBase
 	//--カーブする向き
 	void CurveDir() {
 		if (Random.Range(0, 1) == 0) {
-			curve_spd = 0.05f;
+			curve_spd = CURVE_SPD;
 		}
 		else {
-			curve_spd = -0.05f;
+			curve_spd = -CURVE_SPD;
 		}
 
 	}
@@ -915,107 +964,74 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//攻撃
-	void Attack()
-    {
-        velocity = transform.forward * (run_speed);
-    }
+	//踏まれる判定(気絶)
+	void TreadBy() {
+		//踏まれた際にプレイヤー側で変更
+		//IsFaint = true;
+		switch (enum_act) {
+			case Enum_Act.CLEAR:
+				//Debug.Log(this.name + " がプレイヤーに踏まれた");
+				enum_act = Enum_Act.FAINT;
+				break;
+			case Enum_Act.FAINT: //気絶
+				//移動停止
+				velocity.x = 0;
+				velocity.z = 0;
 
-	//気絶
-	void Faint() {
-		//プレイヤーに踏まれたかを判定
-		//プレイヤーに踏まれたかをgetで判定
-		//if () {
-
-		//}
-		//RaycastHit hit;
-		//if (Physics.BoxCast(transform.position, Vector3.one * 1, transform.up, out hit, transform.rotation)) {
-		//	if (hit.collider.tag == "Player") {
-		//		Debug.Log("Hit");
-		//	}
-		//}
-
-		//踏まれたら
-		//プレイヤーへのダメージ判定一時消滅
-		//移動停止
-
+				//時間経ったら
+				if (WaitTime(FAINT_TIME)) {
+					enum_act = Enum_Act.END;
+				}
+				break;
+			case Enum_Act.END:
+				Clear();
+				is_faint = false;
+				enum_state = Enum_State.WAIT;
+				break;
+		}
 	}
+
+
+	//攻撃
+	void Attack() {
+		velocity = transform.forward * (run_speed);
+	}
+
 
 	//捕獲
 	void Wrap()
     {
+		run_speed = 0;
+	}
 
-    }
 
-
-    //消去
-    void End()
+	//消去
+	void End()
     {
 
-    }
+	}
 
 
-    //ジャンプ
-    void Jump(float power)
+	//ジャンプ
+	void Jump(float power)
     {
-        velocity.y = power;
-		jump_ray.flg = false;
+        velocity.y			 = power;
+		jump_ray.flg		 = false;
 		jump_ray.advance_flg = false;
-		rigid.useGravity = false;
-        is_ground = false;
-        player_touch_flg = false;
+		rigid.useGravity	 = false;
+        is_ground			 = false;
+        player_touch_flg	 = false;
     }
 
 
 	#endregion
 
-    //プレイヤーとの当たり判定でstate変更 ---------------------------
-    void StateChange()
-    {
-        //近くにプレイヤーがいたら(待機の時)
-        if (enemy_near.HitFlg)
-        {
-            if (enum_state == Enum_State.WAIT)
-            {
-                enum_state = Enum_State.WARNING;   //警戒stateに移行
-            }
-        }
-        //音範囲内で音があったら
-        if (enemy_sounddetect.HitFlg)
-        {
-            if (enum_state == Enum_State.WAIT)
-            {
-                enum_state = Enum_State.WARNING;   //警戒stateに移行
-            }
-        }
-        //プレイヤーに触れたら(待機か,警戒,逃走のRUNの時)
-        if (player_touch_flg)
-        {
-            if (enum_state == Enum_State.WAIT ||
-                enum_state == Enum_State.WARNING ||
-                (enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN))
-            {
-                enum_state = Enum_State.FIND;   //発見stateに移行
-            }
-        }
-        //視界にプレイヤーが入ったら(待機か,警戒,逃走のRUNの時)
-        if (finder_flg)
-        {
-            if (enum_state == Enum_State.WAIT ||
-                enum_state == Enum_State.WARNING ||
-                (enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN))
-            {
-                enum_state = Enum_State.FIND;   //発見stateに移行
-            }
-        }
-
-    }
 
 
 
 
-    //当たり判定 ---------------------------------------------------
-    private void OnCollisionEnter(Collision other)
+	//当たり判定 ---------------------------------------------------
+	private void OnCollisionEnter(Collision other)
     {
         //何かに当たったとき
         if (other.gameObject.tag == "Player")
@@ -1068,8 +1084,8 @@ public sealed partial class Enemy : CharaBase
     //set ------------------------------------------------------------
     public void Shot_touch_flg_false() { shot_touch_flg = false; }
 
-    //get ------------------------------------------------------------
-    public bool Shot_touch_flg
+	//get ------------------------------------------------------------
+	public bool Shot_touch_flg
     {
         get { return shot_touch_flg; }
     }
@@ -1079,11 +1095,14 @@ public sealed partial class Enemy : CharaBase
     // set { shot_touch_flg = false; }
     //}
 
-
     public Vector3 Transform_position
     {
         get { return transform.position; }
     }
 
+	public bool IsFaint {
+		get { return is_faint; }
+		set { is_faint = value; }
+	}
 
 }
