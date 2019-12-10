@@ -41,6 +41,7 @@ public sealed partial class Enemy : CharaBase
 		DistPlayer();		//プレイヤーとの距離
 		Action();           //stateに応じて個別関数に飛ぶ
 		CondtionEffect();   //状態エフェクト
+		Damage();           //ショットからのダメージ
 		old_state = enum_state;
 
 		DebugLog();
@@ -109,6 +110,20 @@ public sealed partial class Enemy : CharaBase
 			case Enum_State.FAINT:
 				condition_effect.obj_attach = condition_effect.faint;
 				break;
+		}
+	}
+
+	//ショットからのダメージ
+	void Damage() {
+		if (!shot_touch_flg) {
+			return;
+		}
+		shot_to_defense -= shot_scale_power;
+		shot_scale_power = 0;
+
+		//まだ耐えていたらダメージアニメ
+		if (shot_to_defense >= 0) {
+			
 		}
 	}
 
@@ -1062,23 +1077,15 @@ public sealed partial class Enemy : CharaBase
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-
-	}
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Area")
-        {
-            return;
-        }
-
         if (other.gameObject.tag == "Shot")
         {
             if (!shot_touch_flg)
             {
                 shot_touch_flg = true;
+				//ショットの大きさ(強さ)を保存
+				shot_scale_power = other.gameObject.GetComponent<Shot01>().transform.localScale.x;
             }
         }
     }
@@ -1088,21 +1095,18 @@ public sealed partial class Enemy : CharaBase
 
 	}
 
-    //set ------------------------------------------------------------
-    public void Shot_touch_flg_false() { shot_touch_flg = false; }
 
-	//get ------------------------------------------------------------
-	public bool Shot_touch_flg
-    {
-        get { return shot_touch_flg; }
-    }
+	//get,set ------------------------------------------------
+	public bool ShotTouchFlg {
+		get { return shot_touch_flg; }
+		set { shot_touch_flg = value; }
+	}
 
-    //public bool Shot_touch_flg_false
-    //{
-    // set { shot_touch_flg = false; }
-    //}
+	public float ShotToDefense {
+		get { return shot_to_defense; }
+	}
 
-    public Vector3 Transform_position
+	public Vector3 TransformPosition
     {
         get { return transform.position; }
     }

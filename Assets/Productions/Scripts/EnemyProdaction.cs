@@ -31,13 +31,20 @@ public class EnemyProdaction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ショットが敵に当たった時に実行
-        if (obj.GetComponent<Enemy>().Shot_touch_flg)
-        {
-            scale_chenge_on = true;
-            // 位置修正
-            PosCheck();
-        }
+		//敵の耐久度がなくなった時に実行
+		if (obj.GetComponent<Enemy>().ShotToDefense <= 0) {
+			scale_chenge_on = true;
+			// 位置修正
+			PosCheck();
+		}
+
+		//// ショットが敵に当たった時に実行
+		//if (obj.GetComponent<Enemy>().ShotTouchFlg)
+  //      {
+  //          scale_chenge_on = true;
+  //          // 位置修正
+  //          PosCheck();
+  //      }
 
         // スケール変更
         if (scale_chenge_on)

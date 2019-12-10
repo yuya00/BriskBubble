@@ -44,7 +44,7 @@ public class ProdactionShot : MonoBehaviour
         // 親の位置に移動
         transform.position = enemy.transform.position;
 
-        if (enemy.GetComponent<Enemy>().Shot_touch_flg) shot_hit_fg = true;
+        if (enemy.GetComponent<Enemy>().ShotTouchFlg) shot_hit_fg = true;
 
         if (shot_hit_fg)
         {

@@ -232,13 +232,13 @@ public sealed partial class CameraScript : MonoBehaviour
             if (obj[i])
             {
                 // 敵の当たり判定がtrueになった敵の位置を取得
-                if (obj[i].GetComponent<Enemy>().Shot_touch_flg)
+                if (obj[i].GetComponent<Enemy>().ShotTouchFlg)
                 {
                     // 当たった敵の番号を保存
                     enm_id = i;
 
                     // 位置を保存
-                    enm_pos = obj[i].GetComponent<Enemy>().Transform_position;
+                    enm_pos = obj[i].GetComponent<Enemy>().TransformPosition;
 
                     // 演出させる
                     enemy_hit_flg = true;
@@ -286,8 +286,8 @@ public sealed partial class CameraScript : MonoBehaviour
                     // 遠ざかったらカメラステート変更（approach_stateを初期化するのはNONEで）
                     if (vec.magnitude < zoom_out_spd * Time.deltaTime)
                     {
-                        // 近づいた敵の判定を初期化する
-                        if (obj[enm_id]) obj[enm_id].GetComponent<Enemy>().Shot_touch_flg_false();
+						// 近づいた敵の判定を初期化する
+						if (obj[enm_id]) obj[enm_id].GetComponent<Enemy>().ShotTouchFlg = false;
 
                         // 演出用の判定を初期化
                         enemy_hit_flg = false;

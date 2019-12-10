@@ -132,7 +132,7 @@ public sealed partial class Player : CharaBase
 	//壁掴み判定Ray ---------------------------------------------
 	[System.Serializable]
 	public class WallGrabRay : RayBase{
-		//length 1.1f
+		//length 2.0f
 
 		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
 		public float height;		//1.3f

@@ -824,41 +824,38 @@ public sealed partial class Player : CharaBase
     {
         RaycastHit hit;
 
-        if (wall_grab_ray.flg)
-        {
-            velocity.x = 0; //横移動したかったらここだけコメント
-            velocity.y = 0;
-            velocity.z = 0;
+		if (!wall_grab_ray.flg) {
+			return;
+		}
 
-            //横移動制限
-            if (!Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
-            {
-                velocity.x = 0;
-                wall_grab_ray.flg = false;
-            }
-            if (!Physics.Raycast(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
-            {
-                velocity.x = 0;
-                wall_grab_ray.flg = false;
-            }
+		velocity.x = 0; //横移動したかったらここだけコメント
+		velocity.y = 0;
+		velocity.z = 0;
+		rigid.useGravity = false;
 
-            if (WaitTimeOnce(wall_grab_ray.delay_time))
-            {
-                //上入力で登る
-                if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    transform.position += new Vector3(0, 4.5f, 1.0f);
-                    wall_grab_ray.flg = false;
-                }
-                //下入力で降りる
-                else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    wall_grab_ray.flg = false;
-                }
-            }
+		//横移動制限
+		if (!Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length)) {
+			velocity.x = 0;
+			wall_grab_ray.flg = false;
+		}
+		if (!Physics.Raycast(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length)) {
+			velocity.x = 0;
+			wall_grab_ray.flg = false;
+		}
 
-        }
-    }
+		if (WaitTimeOnce(wall_grab_ray.delay_time)) {
+			//上入力で登る
+			if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+				transform.position += new Vector3(0, 4.5f, 1.0f);
+				wall_grab_ray.flg = false;
+			}
+			//下入力で降りる
+			else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
+				wall_grab_ray.flg = false;
+			}
+		}
+
+	}
 
 
 	//先行入力まとめ

@@ -12,8 +12,9 @@ public sealed partial class Enemy : CharaBase
 	private EnemyNear			enemy_near;
 	private EnemySoundDetect	enemy_sounddetect;
 	private GameObject			player_obj;
-	private const float			CURVE_SPD = 0.05f;  //少し曲がりながら走る
-	private const int           FAINT_TIME = 120;	//気絶時間
+	private const float			CURVE_SPD	 = 0.05f;	//少し曲がりながら走る
+	private const int           FAINT_TIME	 = 120;     //気絶時間
+
 
 	//首振りランダム値設定(待機行動)
 	private struct OnceRondom {
@@ -119,6 +120,13 @@ public sealed partial class Enemy : CharaBase
 	}
 	[Header("ジャンプRay")]
 	public JumpRay jump_ray;
+
+
+	[Header("ショットへの耐久度"),SerializeField]
+	private float shot_to_defense = 3;
+	//当たったショットの強さ保存
+	private float shot_scale_power;
+
 
 
 
