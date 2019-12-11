@@ -91,8 +91,12 @@ public sealed partial class Player : CharaBase
     // ショットのチャージ
     void ShotCharge()
     {
+
+        //１秒間のチャージ速度を計算
+        shot_charge_speed = max_charge_vol / shot_charge_time;
+        
         // ショットのチャージ
-        shot_charge_vol += shot_charge_speed;
+        shot_charge_vol += shot_charge_speed * Time.deltaTime;
         if (shot_charge_vol > max_charge_vol) shot_charge_vol = max_charge_vol;
 
         //チャージ中はプレイヤーを減速
