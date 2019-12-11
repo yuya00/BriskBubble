@@ -118,8 +118,14 @@ public sealed partial class Enemy : CharaBase
 		if (!shot_touch_flg) {
 			return;
 		}
+		//ショットの大きさ分耐久度軽減
 		shot_to_defense -= shot_scale_power;
 		shot_scale_power = 0;
+
+		//気絶時にショットに当たったら
+		if (shot_touch_flg && enum_state == Enum_State.FAINT) {
+			shot_to_defense = 0;
+		}
 
 		//まだ耐えていたらダメージアニメ
 		if (shot_to_defense >= 0) {
@@ -355,43 +361,43 @@ public sealed partial class Enemy : CharaBase
 
 	//state変更 --------------------------------------------------
 	void StateChange() {
-		//近くにプレイヤーがいたら(待機の時)
+		//近くにプレイヤーがいたら(待機の時)、警戒stateに移行
 		if (enemy_near.HitFlg) {
 			if (enum_state == Enum_State.WAIT) {
-				enum_state = Enum_State.WARNING;   //警戒stateに移行
+				enum_state = Enum_State.WARNING;
 			}
 		}
-		//音範囲内で音があったら
+		//音範囲内で音があったら、警戒stateに移行
 		if (enemy_sounddetect.HitFlg) {
 			if (enum_state == Enum_State.WAIT) {
-				enum_state = Enum_State.WARNING;   //警戒stateに移行
+				enum_state = Enum_State.WARNING;
 			}
 		}
-		//プレイヤーに触れたら(待機か,警戒,逃走のRUNの時)
+		//プレイヤーに触れたら(待機か,警戒,逃走のRUNの時)、発見stateに移行
 		if (player_touch_flg) {
 			if (enum_state == Enum_State.WAIT ||
 				enum_state == Enum_State.WARNING ||
 				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
-				enum_state = Enum_State.FIND;   //発見stateに移行
+				enum_state = Enum_State.FIND;
 			}
 		}
-		//視界にプレイヤーが入ったら(待機か,警戒,逃走のRUNの時)
+		//視界にプレイヤーが入ったら(待機か,警戒,逃走のRUNの時)、発見stateに移行
 		if (finder_flg) {
 			if (enum_state == Enum_State.WAIT ||
 				enum_state == Enum_State.WARNING ||
 				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
-				enum_state = Enum_State.FIND;   //発見stateに移行
+				enum_state = Enum_State.FIND;
 			}
 		}
 
-		//プレイヤーに踏まれたら
+		//プレイヤーに踏まれたら、気絶stateに移行
 		if (is_faint && (enum_state != Enum_State.FAINT)) {
-			enum_state = Enum_State.FAINT;   //気絶stateに移行
+			enum_state = Enum_State.FAINT;
 		}
 
-		//ショットに当たったら
-		if (shot_touch_flg) {
-			enum_state = Enum_State.WRAP;   //捕獲stateに移行
+		//耐久度が0になったら、捕獲stateに移行
+		if (shot_to_defense <= 0) {
+			enum_state = Enum_State.WRAP;
 		}
 
 	}
@@ -1085,7 +1091,7 @@ public sealed partial class Enemy : CharaBase
             {
                 shot_touch_flg = true;
 				//ショットの大きさ(強さ)を保存
-				shot_scale_power = other.gameObject.GetComponent<Shot01>().transform.localScale.x;
+				shot_scale_power = (int)other.gameObject.GetComponent<Shot01>().transform.localScale.x;
             }
         }
     }
