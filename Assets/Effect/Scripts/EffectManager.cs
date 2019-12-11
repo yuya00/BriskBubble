@@ -123,7 +123,11 @@ public sealed partial class EffectManager : MonoBehaviour
     // 実際にエフェクトを出す処理----------------------------------------
     void EffectSet(GameObject effect, Vector3 pos, int num)
     {
-        for (int i = 0; i < num; ++i) Instantiate(effect, pos, effect.transform.rotation);
+        for (int i = 0; i < num; ++i)
+        {
+            if (!effect) return;
+            Instantiate(effect, pos, effect.transform.rotation);
+        }
     }
 
 
