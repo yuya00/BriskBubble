@@ -11,26 +11,25 @@ public sealed partial class Player : CharaBase
         base.Start();
 
         // コンポーネント取得
-        game_manager    = GameObject.FindGameObjectWithTag("GameManager");
-		sphere_collider = GetComponent<SphereCollider>();
-        animator        = GetComponent<Animator>();
-        effect          = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
-        //chara_ray       = transform.Find("CharaRay");
+        game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
+        animator		 = GetComponent<Animator>();
+		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
+		//chara_ray       = transform.Find("CharaRay");
 
-        // プレイヤーのパラメーター設定
-        state           = START;
+		// プレイヤーのパラメーター設定
+		state = START;
         init_speed      = run_speed;
         init_fric       = stop_fric;
         init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
-		velocity = Vector3.zero;
-        foot = 0;
-
-        // エフェクト関連
-        //effect.effect_no = 0;
-    }
+		velocity	    = Vector3.zero;
+		tread_on.size   = new Vector3(ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
+			ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
+		// エフェクト関連
+		//effect.effect_no = 0;
+	}
 
 	void Update()
     {
@@ -46,7 +45,6 @@ public sealed partial class Player : CharaBase
             case CLEAR: GameClear(); break;
         }
 
-        DebugLog();
 		//先行入力まとめ
 		LeadKeyAll();
 
@@ -129,21 +127,24 @@ public sealed partial class Player : CharaBase
 	private float scroll_height = 330;
 	void OnGUI()
     {
-        if (gui.on)
-        {
-			//スクロール高さを変更
-			//(出来ればmaximize on playがonならに変更したい)
-			if (gui.all_view) {
-				scroll_height = 700;
-			}
-			else scroll_height = 330;
+		if (!gui.on) {
+			return;
+		}
 
-			GUILayout.BeginVertical("box", GUILayout.Width(190));
-            left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
-            GUILayout.Box("Player");
-			float spdx, spdy, spdz;
-            #region ここに追加
-            #region 全値
+		//スクロール高さを変更
+		//(出来ればmaximize on playがonならに変更したい)
+		if (gui.all_view) {
+			scroll_height = 700;
+		}
+		else scroll_height = 330;
+
+		GUILayout.BeginVertical("box", GUILayout.Width(190));
+           left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+           GUILayout.Box("Player");
+		float spdx, spdy, spdz;
+
+        #region ここに追加   
+		#region 全値
             if (gui.all_view) {
 				//座標
 				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -161,7 +162,7 @@ public sealed partial class Player : CharaBase
 				GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
 				//着地判定
-				GUILayout.TextArea("着地判定\n" + is_ground);
+				GUILayout.TextArea("着地判定\n " + is_ground);
 
 				//壁掴み判定
 				GUILayout.TextArea("壁との当たり判定\n " + wall_touch_flg.ToString());
@@ -182,28 +183,61 @@ public sealed partial class Player : CharaBase
 				GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
 
 				//穴判定
-				GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
+				GUILayout.TextArea("穴判定左右\n " + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
+
+				//踏みつけジャンプ判定(着地まで)
+				GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
+
+				//汎用タイマー
+				GUILayout.TextArea("汎用タイマー\n " + wait_timer);
 
 			}
 			#endregion
-			#region 開発用
-			else if (gui.debug_view) {
-                GUILayout.TextArea("effect\n" + effect.effect_jump);
+		#region 開発用
+		else if (gui.debug_view) {
+			//GUILayout.TextArea("effect\n" + effect.effect_jump);
 
-				//GUILayout.TextArea("先行入力キー\n" + lead_key);
-				//GUILayout.TextArea("先行入力押されたキー");
-				//for (int i = 0; i < lead_key_num; i++) {
-				//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
-				//	GUILayout.TextArea("" + lead_inputs[i].frame);
-				//}
-			}
-			#endregion
-			#endregion
+			//GUILayout.TextArea("先行入力キー\n" + lead_key);
+			//GUILayout.TextArea("先行入力押されたキー");
+			//for (int i = 0; i < lead_key_num; i++) {
+			//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
+			//	GUILayout.TextArea("" + lead_inputs[i].frame);
+			//}
+
+			//座標
+			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+			float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+			float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+
+			//速さ
+			spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+			spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+			spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+
+			//着地判定
+			GUILayout.TextArea("着地判定\n " + is_ground);
+
+			//踏みつけジャンプ判定(着地まで)
+			GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
+
+			//気絶
+			GUILayout.TextArea("気絶\n " + is_faint);
+
+			//汎用タイマー
+			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
+
+			////ジャンプアニメカウント
+			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+
+		}
+		#endregion
+		#endregion
 
 
-            GUILayout.EndScrollView();
-            GUILayout.EndVertical();
-        }
+		GUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 
     //ギズモ表示 --------------------------------------------------
@@ -218,12 +252,20 @@ public sealed partial class Player : CharaBase
 		#endregion
 
 
+		#region 着地判定
+		if (ground_cast.gizmo_on && ground_cast.capsule_collider) {
+			Gizmos.color = Color.magenta - new Color(0, 0, 0, 0.6f);
+			Gizmos.DrawWireSphere(ground_cast.pos - (transform.up * ground_cast.length), GroundCast.RADIUS);
+		}
+		#endregion
+
+
 		#region 壁判定Ray
 		if (wall_ray.gizmo_on)
         {
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + transform.right).normalized * wall_ray.length);
-            Gizmos.DrawRay(transform.position, (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length);
+            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length);
         }
 		#endregion
 
@@ -232,8 +274,8 @@ public sealed partial class Player : CharaBase
 		if (hole_ray.gizmo_on)
         {
             Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
+            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
         }
 		#endregion
 
@@ -249,6 +291,18 @@ public sealed partial class Player : CharaBase
             Gizmos.DrawRay(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward * wall_grab_ray.length);
         }
 		#endregion
+
+
+		#region 踏みつけ判定
+		if (tread_on.gizmo_on && ground_cast.capsule_collider) {
+			Gizmos.color = Color.red - new Color(0, 0, 0, 0.6f);
+			Gizmos.DrawWireCube(transform.position + 
+								(transform.up * ground_cast.capsule_collider.center.y) - 
+								(transform.up * (ground_cast.capsule_collider.height / 2)), tread_on.size);
+			//Gizmos.DrawRay(ground_ray_pos, -transform.up * ground_ray_length);
+		}
+		#endregion
+
 	}
 
 	// 移動 -------------------------------------------------------
@@ -283,20 +337,34 @@ public sealed partial class Player : CharaBase
         // 頭方向に何か当たったか
         HeadHit();
 
-        ////--壁判定による向き変更
-        //WallRayRotate_Judge();
+		//敵踏みつけ
+		TreadOn();
 
-        ////--穴判定による向き変更
-        //HoleRayRotateJudge();
+		//敵に接触(気絶)
+		Faint();
 
-        //--壁掴み判定Rayによる掴み
-        WallGrabRayGrabJudge();
+
+		////--壁判定による向き変更
+		//WallRayRotate_Judge();
+
+		////--穴判定による向き変更
+		//HoleRayRotateJudge();
+
+		//--壁掴み判定Rayによる掴み
+		WallGrabRayGrabJudge();
 
     }
 
     // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
     void LstickMove()
     {
+		if (is_faint || tread_on.flg) {
+			//→ここに気絶アニメの処理
+			animator.SetBool("Walk", false);
+			animator.SetBool("Run", false);
+			return;
+		}
+
         Vector3 move = new Vector3(0, 0, 0);
 
         // スピード
@@ -493,7 +561,7 @@ public sealed partial class Player : CharaBase
     bool JumpOn()
     {
         // モーションが終わってるときにジャンプできる
-        if (is_ground)
+        if (is_ground && !is_faint)
         {
             if (!animator.GetBool("JumpEnd"))
             {
@@ -558,13 +626,80 @@ public sealed partial class Player : CharaBase
 		// 頭からレイ飛ばし
 		RaycastHit hit;
 		if (Physics.Raycast(transform.position,transform.up, out hit, 1.5f)) {
-			if (hit.collider.tag == "Area") {
-				return false;
+			if (hit.collider.tag == "Wall") {
+				//Debug.Log("頭に壁が当たった");
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
+
+
+
+	//踏みつけ(踏んだらジャンプ)
+	void TreadOn() {
+		if (!tread_on.judge_on && is_faint) {
+			return;
+		}
+
+		RaycastHit hit;
+		//踏みつけ判定
+		if (Physics.BoxCast(transform.position + 
+			(transform.up * ground_cast.capsule_collider.center.y) - 
+			(transform.up * (ground_cast.capsule_collider.height / 2)), 
+			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE)
+			//Physics.BoxCast(ground_ray_pos, tread_on.size, -transform.up, out hit, transform.rotation, 0.1f)
+			&& hit.collider.tag == "Enemy"
+			&& !hit.collider.GetComponent<Enemy>().IsFaint
+			&& !tread_on.flg) 
+			{
+			tread_on.flg		 = true;
+			hit.collider.GetComponent<Enemy>().IsFaint = true;
+			velocity			 = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			Jump(TreadOn_BoxCast.JUMP_POWER);
+			//Debug.Log("敵を踏んだ");
+		}
+
+		//着地するまでが踏みつけ
+		if (is_ground) {
+			tread_on.flg = false;
+		}
+	}
+
+	//気絶(ノックバック)
+	void Faint() {
+		if (!is_faint || tread_on.flg) {
+			return;
+		}
+		//Debug.Log("敵に接触");
+
+		switch (enum_faint) {
+			case Enum_Faint.CLEAR:	//ノックバック
+				velocity = Vector3.zero;
+				velocity = -transform.forward * KnockBack.SPD_MAG;
+				Jump(KnockBack.JUMP_POWER);
+				enum_faint = Enum_Faint.WAIT;
+				break;
+			case Enum_Faint.WAIT:   //ノックバック時間
+				if (WaitTimeOnce(30)) {
+					wait_timer = 0;
+					velocity = Vector3.zero;
+					enum_faint = Enum_Faint.WAIT2;
+				}
+				break;
+			case Enum_Faint.WAIT2:	//硬直時間
+				if (WaitTimeOnce(KnockBack.FAINT_TIME)) {
+					is_faint = false;
+					wait_timer = 0;
+					enum_faint = Enum_Faint.CLEAR;
+				}
+				break;
+
+		}
+
+	}
+
+
 
 	//--壁掴み判定Rayによる掴み
 	void WallGrabRayGrabJudge()
@@ -583,9 +718,6 @@ public sealed partial class Player : CharaBase
 	//----当たり判定
 	void WallGrabRayJudge() {
 		RaycastHit hit;
-
-		//------子球Colliderの判定切り替え
-		ChildSphereIsTrigger();
 
 		//空中にいる、自身が壁に当たっている、レイが当たっていない
 		if (!is_ground && wall_touch_flg && !wall_grab_ray.ray_flg) {
@@ -614,17 +746,6 @@ public sealed partial class Player : CharaBase
 
 	}
 
-	//------子球Colliderの判定切り替え
-	void ChildSphereIsTrigger() {
-		if (!is_ground) {
-			sphere_collider.isTrigger = true;
-		}
-		else {
-			sphere_collider.isTrigger = false;
-		}
-
-	}
-
 	//------掴んだ時の向き調整
 	void AngleAdjust()
     {
@@ -632,23 +753,23 @@ public sealed partial class Player : CharaBase
 
         if (Physics.Raycast(transform.position + new Vector3(0, wall_grab_ray.height, 0), transform.forward, out hit, wall_grab_ray.length))
         {
-            //Vector2に保存
-            wall_forward = new Vector2(hit.transform.forward.x, hit.transform.forward.z);
-            wall_back = new Vector2(hit.transform.forward.x, -hit.transform.forward.z);
-            wall_right = new Vector2(hit.transform.right.x, hit.transform.right.z);
-            wall_left = new Vector2(-hit.transform.right.x, hit.transform.right.z);
-            player_forward = new Vector2(transform.forward.x, transform.forward.z);
+			//Vector2に保存
+			wall_grab_adjust.forward		 = new Vector2(hit.transform.forward.x, hit.transform.forward.z);
+			wall_grab_adjust.back			 = new Vector2(hit.transform.forward.x, -hit.transform.forward.z);
+			wall_grab_adjust.right			 = new Vector2(hit.transform.right.x, hit.transform.right.z);
+			wall_grab_adjust.left			 = new Vector2(-hit.transform.right.x, hit.transform.right.z);
+			wall_grab_adjust.player_forward	 = new Vector2(transform.forward.x, transform.forward.z);
 
             //--------壁との角度
             DotWithWall();
 
             //--------1番小さい角度算出
-            float[] angle = new float[4] { wall_forward_angle, wall_back_angle, wall_right_angle, wall_left_angle };
-            float smallest_angle = Smallest(angle, 4);
+            float[] angle = new float[4] { wall_grab_adjust.angle_forward, wall_grab_adjust.angle_back, wall_grab_adjust.angle_right, wall_grab_adjust.angle_left };
+            float	smallest_angle = Smallest(angle, 4);
 
             //左右のレイのめり込み具合
-            float right_dist = NOTEXIST_BIG_VALUE;
-            float left_dist = NOTEXIST_BIG_VALUE;
+            float right_dist	 = WallGrabAdjust.BIG_VALUE;
+            float left_dist		 = WallGrabAdjust.BIG_VALUE;
             if (Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
             {
                 right_dist = hit.distance;
@@ -671,23 +792,23 @@ public sealed partial class Player : CharaBase
     //--------壁との角度
     void DotWithWall()
     {
-        //壁の4方向との内積
-        wall_forward_angle = Vector2.Dot(player_forward, wall_forward);
-        wall_back_angle = Vector2.Dot(player_forward, wall_back);
-        wall_right_angle = Vector2.Dot(player_forward, wall_right);
-        wall_left_angle = Vector2.Dot(player_forward, wall_left);
+		//壁の4方向との内積
+		wall_grab_adjust.angle_forward	 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.forward);
+		wall_grab_adjust.angle_back		 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.back);
+		wall_grab_adjust.angle_right	 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.right);
+		wall_grab_adjust.angle_left		 = Vector2.Dot(wall_grab_adjust.player_forward, wall_grab_adjust.left);
 
         //角度に変換
-        wall_forward_angle = (wall_forward_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
-        wall_back_angle = (wall_back_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
-        wall_right_angle = (wall_right_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
-        wall_left_angle = (wall_left_angle * 100.0f - 100.0f) * -1.0f * 0.9f;
+        wall_grab_adjust.angle_forward	 = (wall_grab_adjust.angle_forward	 * 100.0f - 100.0f) * -1.0f * 0.9f;
+		wall_grab_adjust.angle_back		 = (wall_grab_adjust.angle_back		 * 100.0f - 100.0f) * -1.0f * 0.9f;
+		wall_grab_adjust.angle_right	 = (wall_grab_adjust.angle_right	 * 100.0f - 100.0f) * -1.0f * 0.9f;
+		wall_grab_adjust.angle_left		 = (wall_grab_adjust.angle_left		 * 100.0f - 100.0f) * -1.0f * 0.9f;
     }
 
     //--------1番小さい値算出(他でも使うなら場所移動)
     float Smallest(float[] aaa, int max_num)
     {
-        float smallest = NOTEXIST_BIG_VALUE;
+        float smallest = WallGrabAdjust.BIG_VALUE;
 
         for (int i = 0; i < max_num; i++)
         {
@@ -704,53 +825,46 @@ public sealed partial class Player : CharaBase
     {
         RaycastHit hit;
 
-        if (wall_grab_ray.flg)
-        {
-            velocity.x = 0; //横移動したかったらここだけコメント
-            velocity.y = 0;
-            velocity.z = 0;
+		if (!wall_grab_ray.flg) {
+			return;
+		}
 
-            //横移動制限
-            if (!Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
-            {
-                velocity.x = 0;
-                wall_grab_ray.flg = false;
-            }
-            if (!Physics.Raycast(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length))
-            {
-                velocity.x = 0;
-                wall_grab_ray.flg = false;
-            }
+		velocity.x = 0; //横移動したかったらここだけコメント
+		velocity.y = 0;
+		velocity.z = 0;
+		rigid.useGravity = false;
 
-            if (WaitTimeOnce(wall_grab_ray.delay_time))
-            {
-                //上入力で登る
-                if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    transform.position += new Vector3(0, 4.5f, 1.0f);
-                    wall_grab_ray.flg = false;
-                }
-                //下入力で降りる
-                else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    wall_grab_ray.flg = false;
-                }
-            }
+		//横移動制限
+		if (!Physics.Raycast(transform.position + transform.right * wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length)) {
+			velocity.x = 0;
+			wall_grab_ray.flg = false;
+		}
+		if (!Physics.Raycast(transform.position + transform.right * -wall_grab_ray.side_length, transform.forward, out hit, wall_grab_ray.length)) {
+			velocity.x = 0;
+			wall_grab_ray.flg = false;
+		}
 
-        }
-        else
-        {
-            wait_timer = 0;
-        }
-    }
+		if (WaitTimeOnce(wall_grab_ray.delay_time)) {
+			//上入力で登る
+			if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+				transform.position += new Vector3(0, 4.5f, 1.0f);
+				wall_grab_ray.flg = false;
+			}
+			//下入力で降りる
+			else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
+				wall_grab_ray.flg = false;
+			}
+		}
+
+	}
 
 
 	//先行入力まとめ
 	void LeadKeyAll() {
-		if (!lead_input_on) {
+		if (!lead_input.on) {
 			return;
 		}
-		KeyServe();		//--先行キー保存
+		KeyServe();			//--先行キー保存
 		KeyFrameSub();		//--先行キーframe減算処理
 		LeadKeyChoice();	//--frameを元にキー選択
 	}
@@ -775,7 +889,7 @@ public sealed partial class Player : CharaBase
 			return;
 		}
 		//配列に保存
-		for (int i = 0; i < lead_key_num; ++i) {
+		for (int i = 0; i < LeadInput.NUM; ++i) {
 			//既に値があればスキップ
 			if (lead_inputs[i].pushed_key != 0) {
 				continue;
@@ -787,7 +901,7 @@ public sealed partial class Player : CharaBase
 
 	//--先行キーframe減算処理
 	void KeyFrameSub() {
-		for (int i = 0; i < lead_key_num; i++) {
+		for (int i = 0; i < LeadInput.NUM; i++) {
 			//値があれば減算
 			if (lead_inputs[i].pushed_key != 0) {
 				lead_inputs[i].frame--;
@@ -795,7 +909,7 @@ public sealed partial class Player : CharaBase
 			//一定フレーム経ったら消去
 			if (lead_inputs[i].frame <= 0) {
 				lead_inputs[i].pushed_key = 0;
-				lead_inputs[i].frame = key_serve_time;
+				lead_inputs[i].frame = LeadInput.KEY_SERVE_TIME;
 			}
 		}
 	}
@@ -805,7 +919,7 @@ public sealed partial class Player : CharaBase
 		int frame_max = 0;
 		lead_key = 0;
 
-		for (int i = 0; i < lead_key_num; i++) {
+		for (int i = 0; i < LeadInput.NUM; i++) {
 			//値が無ければスキップ
 			if (lead_inputs[i].pushed_key == 0) {
 				continue;
@@ -813,7 +927,7 @@ public sealed partial class Player : CharaBase
 			//直近で入力されたものを代入
 			if (frame_max < lead_inputs[i].frame) {
 				frame_max = lead_inputs[i].frame;
-				lead_key = lead_inputs[i].pushed_key;
+				lead_key  = lead_inputs[i].pushed_key;
 			}
 		}
 	}
@@ -826,17 +940,26 @@ public sealed partial class Player : CharaBase
         //壁との当たり判定
         if (other.gameObject.tag == "Wall")
         {
-            if (wall_touch_flg == false)
+            if (!wall_touch_flg)
             {
                 wall_touch_flg = true;
             }
         }
 
-    }
+		//敵との当たり判定
+		if (other.gameObject.tag == "Enemy") {
+			//踏みつけジャンプ中ではなく、敵が捕獲以外なら気絶
+			if (!is_faint && !tread_on.flg && !other.gameObject.GetComponent<Enemy>().IsWrap) {
+				is_faint = true;
+			}
+		}
 
-    private void OnCollisionExit(Collision other)
+	}
+
+	private void OnCollisionExit(Collision other)
     {
-        if (other.gameObject.tag == "Wall")
+		//壁との当たり判定
+		if (other.gameObject.tag == "Wall")
         {
             if (wall_touch_flg == true)
             {
@@ -861,8 +984,7 @@ public sealed partial class Player : CharaBase
         }
     }
 
-
-    private void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Coin")
         {

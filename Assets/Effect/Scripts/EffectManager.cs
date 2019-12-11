@@ -140,11 +140,16 @@ public sealed partial class EffectManager : MonoBehaviour
         return false;
     }
 
+	public bool gui_on;
     // GUI---------------------------------------------------------------
     private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
     private float scroll_height = 330;
     void OnGUI()
     {
+		if (!gui_on) {
+			return;
+		}
+
         //スクロール高さを変更
         //(出来ればmaximize on playがonならに変更したい)
         GUILayout.BeginVertical("box", GUILayout.Width(190));

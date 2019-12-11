@@ -12,12 +12,16 @@ public sealed partial class Enemy : CharaBase
 	private EnemyNear			enemy_near;
 	private EnemySoundDetect	enemy_sounddetect;
 	private GameObject			player_obj;
+	private const float			CURVE_SPD	 = 0.05f;	//少し曲がりながら走る
+	private const int           FAINT_TIME	 = 180;     //気絶時間
 
+
+	//首振りランダム値設定(待機行動)
 	private struct OnceRondom {
 		public int   num;
 		public bool  isfinish;
 	}
-	OnceRondom once_random;
+	private OnceRondom once_random;
 
 
 	//状態エフェクト -----------------------------------
@@ -97,7 +101,7 @@ public sealed partial class Enemy : CharaBase
 
 	//段差ジャンプ -------------------------------------
 	[System.Serializable]
-	public class JumpRay : BoxCastBase {
+	public class JumpRay : BoxCastAdjustBase {
 		//public float length;            //4.3f
 		//public float uplimit_height;    //2.0f 2.7f
 		//public float downlimit_height;  //3.9f 3.0f
@@ -116,6 +120,13 @@ public sealed partial class Enemy : CharaBase
 	}
 	[Header("ジャンプRay")]
 	public JumpRay jump_ray;
+
+
+	[Header("ショットへの耐久度"),SerializeField]
+	private int shot_to_defense = 3;
+	//当たったショットの強さ保存
+	private int shot_scale_power;
+
 
 
 
@@ -151,8 +162,9 @@ public sealed partial class Enemy : CharaBase
 		SWING2,		//首振り2
 		SWING3,		//首振り3
 		RUN,		//走る
-		JUMP,		//ジャンプ
-		END			//終了
+		JUMP,       //ジャンプ
+		FAINT,      //気絶
+		END         //終了
 	}
 	Enum_Act enum_act;
 	Enum_Act old_act;
