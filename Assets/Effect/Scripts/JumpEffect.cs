@@ -11,7 +11,7 @@ public class JumpEffect : MonoBehaviour
 
     public float spd = 3.0f;
     public float slow_spd;
-    private float scale_min = 0.1f; 		// エフェクトの下限
+    //private float scale_min = 0.1f; 		// エフェクトの下限
 
     // 大きさの範囲
     public float init_scale_max = 1.0f;
@@ -34,7 +34,7 @@ public class JumpEffect : MonoBehaviour
     {
         // モデルの色
         //init_col = gameObject.GetComponent<MeshRenderer>().material.color;
-        init_col = new Color(1, 1, 1, 1);
+        gameObject.GetComponent<MeshRenderer>().material.color = init_col = new Color(1, 1, 1, 1);
 
         //player = GameObject.FindGameObjectWithTag("Player");
 
@@ -101,24 +101,6 @@ public class JumpEffect : MonoBehaviour
         }
     }
 
-    //private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
-    //private float scroll_height = 330;
-    //void OnGUI()
-    //{
-    //    GUILayout.BeginVertical("box", GUILayout.Width(250));
-    //    left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(250), GUILayout.Height(scroll_height));
-    //    //GUILayout.Box("Player");
-
-    //    GUILayout.TextArea("init_col : \n" + init_col);
-    //    GUILayout.TextArea("color : \n" + gameObject.GetComponent<MeshRenderer>().sharedMaterial.color);
-    //    //GUILayout.TextArea("init_col : \n" + init_col);
-    //    //GUILayout.TextArea("init_col : \n" + init_col);
-    //    //GUILayout.TextArea("init_col : \n" + init_col);
-    //    //GUILayout.TextArea("init_col : \n" + init_col);
-
-    //    GUILayout.EndScrollView();
-    //    GUILayout.EndVertical();
-    //}
 }
 
 

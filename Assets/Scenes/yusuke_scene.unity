@@ -567,7 +567,7 @@ PrefabInstance:
         type: 3}
       propertyPath: effect
       value: 
-      objectReference: {fileID: 286456998030942924, guid: 79f8870002632084187ca467926e4e32,
+      objectReference: {fileID: 1024459011614124062, guid: 10610b5158d33794c918d3d5fe0ef49e,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92876ee8850b07e40936e4e359928055, type: 3}
@@ -601,7 +601,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240672493}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -9.87, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 41300321}
@@ -791,7 +791,7 @@ GameObject:
   - component: {fileID: 441743510}
   m_Layer: 0
   m_Name: Floor1
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -883,7 +883,7 @@ GameObject:
   - component: {fileID: 451342843}
   m_Layer: 0
   m_Name: Floor05
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1282,7 +1282,7 @@ GameObject:
   - component: {fileID: 518917963}
   m_Layer: 0
   m_Name: Floors
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1597,7 +1597,7 @@ GameObject:
   - component: {fileID: 605339066}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1984,7 +1984,7 @@ PrefabInstance:
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.95
+      value: -5.5
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -2061,7 +2061,12 @@ PrefabInstance:
     - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: gui.debug_view
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: EFFECT_NUM
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6414721375438047800, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -2093,7 +2098,7 @@ GameObject:
   - component: {fileID: 1005851705}
   m_Layer: 0
   m_Name: Floor07
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2191,7 +2196,7 @@ GameObject:
   - component: {fileID: 1083547189}
   m_Layer: 0
   m_Name: Floor4
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2357,7 +2362,7 @@ GameObject:
   - component: {fileID: 1121542190}
   m_Layer: 0
   m_Name: Floor6
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2449,7 +2454,7 @@ GameObject:
   - component: {fileID: 1139651927}
   m_Layer: 0
   m_Name: Floor010
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2832,7 +2837,7 @@ GameObject:
   - component: {fileID: 1324189607}
   m_Layer: 0
   m_Name: Floor09
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3033,7 +3038,7 @@ GameObject:
   - component: {fileID: 1418641474}
   m_Layer: 0
   m_Name: Floor04
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3125,7 +3130,7 @@ GameObject:
   - component: {fileID: 1428411955}
   m_Layer: 0
   m_Name: Floor8
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3234,10 +3239,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effect_jump: {fileID: 1024459011614124062, guid: 9312659474f14b0429d5064cd4be38c9,
     type: 3}
-  effect_run: {fileID: 1024459011614124062, guid: 9312659474f14b0429d5064cd4be38c9,
+  effect_run_ground: {fileID: 1024459011614124062, guid: 10610b5158d33794c918d3d5fe0ef49e,
+    type: 3}
+  effect_run_water: {fileID: 1024459011614124062, guid: 4c311c509d15bf8499be9b0d80186d09,
     type: 3}
   effect_shot: {fileID: 286456998030942924, guid: 79f8870002632084187ca467926e4e32,
     type: 3}
+  effect_trajectory: {fileID: 5237719064611241031, guid: 4f7e8a89d7a0f8f40b0d0afc9368b7c8,
+    type: 3}
+  jump_player: 10
+  run_ground_player: 10
+  run_water_player: 17
+  shot_player: 10
+  jump_enemy: 10
+  run_ground_enemy: 10
+  run_water_enemy: 10
+  apper_shot: 8
+  trajectory_shot: 3
+  destroy_shot: 10
+  run_ground_timer_player: 0.2
+  run_water_timer_player: 0.1
+  run_ground_timer_enemy: 0.2
+  run_water_timer_enemy: 0.2
+  trajectory_timer_shot: 0.2
 --- !u!4 &1436680497
 Transform:
   m_ObjectHideFlags: 0
@@ -3266,7 +3290,7 @@ GameObject:
   - component: {fileID: 1517239246}
   m_Layer: 0
   m_Name: Floor7
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3358,7 +3382,7 @@ GameObject:
   - component: {fileID: 1529156507}
   m_Layer: 0
   m_Name: Floor2
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3450,7 +3474,7 @@ GameObject:
   - component: {fileID: 1549008012}
   m_Layer: 0
   m_Name: Floor3
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3463,8 +3487,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549008010}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -22, y: 3, z: 13.6}
-  m_LocalScale: {x: 10, y: 3.5, z: 10}
+  m_LocalPosition: {x: -31.869999, y: 3, z: 13.6}
+  m_LocalScale: {x: 25, y: 3.5, z: 25}
   m_Children: []
   m_Father: {fileID: 518917963}
   m_RootOrder: 2
@@ -3648,7 +3672,7 @@ GameObject:
   - component: {fileID: 1604579944}
   m_Layer: 0
   m_Name: Floor02
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3829,7 +3853,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606191276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9, y: 9, z: -19.1}
+  m_LocalPosition: {x: -5.5, y: 9, z: -12.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3849,7 +3873,7 @@ GameObject:
   - component: {fileID: 1608580137}
   m_Layer: 0
   m_Name: Floor06
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4021,7 +4045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1709835362
 Transform:
   m_ObjectHideFlags: 0
@@ -4051,7 +4075,7 @@ GameObject:
   - component: {fileID: 1710457744}
   m_Layer: 0
   m_Name: Floor08
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4143,7 +4167,7 @@ GameObject:
   - component: {fileID: 1752130831}
   m_Layer: 0
   m_Name: Floor01
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4411,7 +4435,7 @@ GameObject:
   - component: {fileID: 1842995949}
   m_Layer: 0
   m_Name: Floor5
-  m_TagString: Wall
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4594,7 +4618,7 @@ GameObject:
   - component: {fileID: 2093016635}
   m_Layer: 0
   m_Name: Floor03
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -26,6 +26,7 @@ public sealed partial class Player : CharaBase
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
 		velocity = Vector3.zero;
+        foot = 0;
 
         // エフェクト関連
         //effect.effect_no = 0;
@@ -355,6 +356,7 @@ public sealed partial class Player : CharaBase
                 velocity.z = move.normalized.z * run_speed;
                 animator.SetBool("Run", true);
                 animator.SetBool("Walk", false);
+                effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
                 break;
         }
 
@@ -402,8 +404,8 @@ public sealed partial class Player : CharaBase
         {
             Jump(jump_power);
 
-            // TYPE : キャラ、STATE : ジャンプ、POS : 位置
-            effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, EFFECT_NUM);
+            // TYPE : キャラ、EFFECT : ジャンプ、POS : 位置、 effect.jump_player : 何個出すか
+            effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, effect.jump_player);
         }
 
         // ショットに乗った時にジャンプをjump_power_up倍
@@ -844,6 +846,22 @@ public sealed partial class Player : CharaBase
 
     }
 
+    // 物体に当たってるときに呼ばれる
+    private void OnCollisionStay(Collision other)
+    {
+        // 床
+        if (other.gameObject.tag == "Ground")
+        {
+            foot = (int)FOOT.GROUND;
+        }
+        // 水
+        if (other.gameObject.tag == "Water")
+        {
+            foot = (int)FOOT.WATER;
+        }
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Coin")
@@ -869,5 +887,11 @@ public sealed partial class Player : CharaBase
     {
         get { return coin_count; }
     }
+
+    public int Foot
+    {
+        get { return foot; }
+    }
+
 }
 

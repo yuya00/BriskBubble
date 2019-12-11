@@ -26,6 +26,23 @@ public class ShotBase : MonoBehaviour
     private bool hit_fg;                // 消えてからは当たり判定なくす
 
     protected GameObject player;
+
+    private EffectManager effect;
+    // キャラ指定
+    private EffectManager.TYPE SHOT         = EffectManager.TYPE.SHOT;
+    private EffectManager.EFFECT APPER      = EffectManager.EFFECT.APPER;
+    private EffectManager.EFFECT DESTROY    = EffectManager.EFFECT.DESTROY;
+    private EffectManager.EFFECT TRAJECTORY = EffectManager.EFFECT.TRAJECTORY;
+
+    // エフェクトの種類指定
+    private enum NUM
+    {
+        APPER = 0,
+        DESTROY,
+        TRAJECTORY,
+    }
+
+
     protected float PLR_SPD = 0.2f;
 
 	//----------------------------------------------------------//
@@ -40,6 +57,7 @@ public class ShotBase : MonoBehaviour
         spd_down_timer = 0;
 
         player = GameObject.FindGameObjectWithTag("Player");
+        effect = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
 
         // 物理取得
         rigid = this.GetComponent<Rigidbody>();
@@ -61,6 +79,8 @@ public class ShotBase : MonoBehaviour
 
         col = gameObject.GetComponent<Renderer>().material.color;
         col.a = 0.0f;
+
+        effect.Effect(SHOT, APPER, transform.position, effect.apper_shot);
     }
 
     //----------------------------------------------------------//
@@ -69,6 +89,12 @@ public class ShotBase : MonoBehaviour
     public virtual void Update()
     {
         FgManager();
+    }
+
+    void FixedUpdate()
+    {
+        Effect();
+
     }
 
     void OnGUI()
@@ -120,6 +146,12 @@ public class ShotBase : MonoBehaviour
         }
     }
 
+    // エフェクトを出す
+    void Effect()
+    {
+        if (speed >= 0) effect.Effect(SHOT, TRAJECTORY, transform.position, effect.trajectory_shot);
+    }
+
     //----------------------------------------------------------//
     //                    ショットの演出                        //
     //----------------------------------------------------------//
@@ -154,6 +186,7 @@ public class ShotBase : MonoBehaviour
             if (timer >= destroy_time + 0.2f)
             {
                 Destroy(gameObject);
+                effect.Effect(SHOT, DESTROY, transform.position, effect.destroy_shot);
             }
         }
     }

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotEffect : MonoBehaviour
+public class ShotTrajectoryEffect : MonoBehaviour
 {
     public Color init_col;
     private Vector3 front;
 
-    private GameObject player;
+    //private GameObject player;
 
     public float spd = 3.0f;
     public float slow_spd;
@@ -20,23 +20,24 @@ public class ShotEffect : MonoBehaviour
     // 角度の範囲
     public float init_rot_max = 360;
     public float init_rot_min = 0;
-    public float rand_rot_x = 180;
+    public float rot_ = 0;
+    public float rot_2 = 0;
 
     // 透明になる速さ
     public float alpha_spd = 0.2f;
 
-    // 壊れるまでの待機時間
+    // 壊れるまでの待機時間(ここを変える)
     private float destroy_timer;
     public float destroy_timer_max = 1.0f;
 
-    public Vector3 rot = new Vector3(30, 80, 30);
+    public Vector3 rot = new Vector3(80, 0, 80);
     void Start()
     {
         // モデルの色
         //init_col = gameObject.GetComponent<MeshRenderer>().material.color;
         gameObject.GetComponent<MeshRenderer>().material.color = init_col = new Color(1, 1, 1, 1);
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
 
         // 初期の大きさをランダムにする
         float rand_scale = Random.Range(init_scale_min, init_scale_max);
@@ -44,10 +45,10 @@ public class ShotEffect : MonoBehaviour
 
         // 初期の角度
         float rand_rot = Random.Range(init_rot_min, init_rot_max);
-        transform.Rotate(new Vector3(rand_rot_x, rand_rot, rand_rot));
+        transform.Rotate(new Vector3(rand_rot, Random.Range(rot_, rot_2), rand_rot));
 
         // 角度を保存
-        front = player.transform.forward;
+        front = transform.forward;
     }
     void Update()
     {
@@ -65,13 +66,13 @@ public class ShotEffect : MonoBehaviour
         spd -= slow_spd * Time.deltaTime;
 
         // 回転させて動きを入れる
-        //transform.Rotate(new Vector3(rot.x, rot.y, rot.z) * Time.deltaTime);
-
+        transform.Rotate(new Vector3(rot.x, rot.y, rot.z) * Time.deltaTime);
 
         // 飛ばす
-        transform.position += (-transform.forward.normalized) * (spd * Time.deltaTime);
+        transform.position -= (front + transform.forward.normalized) * (spd * Time.deltaTime);
     }
 
+    // シェーダーを透明っぽくする
     void AlphaChange()
     {
         // 徐々に透明にする
