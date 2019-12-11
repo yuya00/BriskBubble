@@ -323,7 +323,7 @@ public sealed partial class Player : CharaBase
         else jump_fric = jump_fric_power;
 
         // バブル状態のとき
-        if (shot_state > 1) BubbleSpeed(2.0f, 0.1f);
+        //if (shot_state > 1) BubbleSpeed(2.0f, 0.1f);
 
         // ショット3を撃った後プレイヤーをとめる
         if (back_player) BackMove();
