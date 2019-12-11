@@ -973,7 +973,7 @@ public sealed partial class Player : CharaBase
     private void OnCollisionStay(Collision other)
     {
         // 床
-        if (other.gameObject.tag == "Ground")
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
         {
             foot = (int)FOOT.GROUND;
         }
