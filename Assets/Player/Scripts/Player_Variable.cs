@@ -106,6 +106,12 @@ public sealed partial class Player : CharaBase
     public float shot_charge_time;          //チャージが最大になる時間
     [Tooltip("チャージ中のプレイヤーの減速率0～１(0.8なら20%減速)")]
     public float charge_slow_down;
+    public float max_charge_length;　　　　 //やまなりショットの最大距離
+    public float shot_length_charge_time;　 //やまなりショットの距離が最大になる時間
+
+
+
+
     [Foldout("ShotParameter", false)]
 
     private const float SHOT_POSITION = 3.5f;   // ショットを出す正面方向の位置補正
@@ -115,8 +121,10 @@ public sealed partial class Player : CharaBase
     private bool back_player;               // ショット3を撃った後にプレイヤーを後ろに飛ばす
     private float stop_time;                // 動けない時間
     private float init_back_speed;          // 初期速度保存用
-    private float shot_charge_vol;           //ショットの大きさ加算
-    public float shot_charge_speed;          //ショットのチャージスピード
+    private float shot_charge_vol;          //ショットの大きさ加算
+    private float shot_charge_speed;        //ショットのチャージスピード
+    private float shot_charge_length;       //やまりなショットの発射距離
+    private float shot_length_charge_speed; //やまなりショットのチャージスピード
 
 
 

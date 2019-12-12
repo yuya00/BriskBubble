@@ -15,30 +15,41 @@ public sealed partial class Player : CharaBase
         // 次ショットまでの時間加算
         ShotInterval();
 
+        //ショットの種類切り替え
+        if (Input.GetButtonDown("Shot_L"))
+        {
+            shot_state++;
+            if (shot_state >= shot_object.Length) shot_state = 0;
+
+            Riset();
+        }
+
+
         // 撃てるとき
         if (ShotIntervalCheck())
         {
             // ショットの時間を固定
             shot_interval_time = shot_interval_time_max;
 
-            // ショットのチャージが終わる前に発射したら、飛べるやつを配置
-            if (Input.GetButton("Shot_L"))
-            {             
-                // ショットをチャージしてるときにショットの選択
-                if (Input.GetButton("Shot_R")) shot_state = 1;
-            }
-            else
-            {
-                charge_time = 0;
-                shot_state = 0;
-            }
 
-            //ショットのチャージ
-            if (Input.GetButton("Shot_R"))
+            switch(shot_state)
             {
-                ShotCharge();
+                case 0:
+                    //ショットのチャージ(大きさ)
+                    if (Input.GetButton("Shot_R"))
+                    {
+                        ShotCharge();
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    if (Input.GetButton("Shot_R"))
+                    {
+                        ShotChargeLength();
+                    }
+                    break;
             }
-
             // 最終ショット発射
             if (Input.GetButtonUp("Shot_R"))
             {
@@ -104,18 +115,33 @@ public sealed partial class Player : CharaBase
         velocity.z *= charge_slow_down;
     }
 
+    //ショットの発射距離加算
+    void ShotChargeLength()
+    {
+
+        //１秒間のチャージ速度を計算
+        shot_length_charge_speed = max_charge_length / shot_length_charge_time;
+
+        // ショットの距離加算
+        shot_charge_length += shot_length_charge_speed * Time.deltaTime;
+        if (shot_charge_length > max_charge_length) shot_charge_length = max_charge_length;
+    }
+
     // ショットの設定リセット
     void Riset()
     {
         // ショット、チャージリセット
         charge_time = 0;
-        shot_state = 0;
 
         // ショット間隔の時間リセット
         shot_interval_time = 0;
 
         //ショットのチャージリセット
         shot_charge_vol = 0;
+
+        //ショットの発射距離リセット
+        shot_charge_length = 0;
+
 
         //animator.speed = init_anim_spd;
         //animator.SetBool("Shot", false);
@@ -152,9 +178,12 @@ public sealed partial class Player : CharaBase
                 break;
             case 2:
                 // 3段階目
+
+                shot.GetComponent<Shot03>().target_pos = transform.position + transform.forward * shot_charge_length;
+
                 shot.GetComponent<Shot03>().SetCharacterObject(gameObject);
-                back_speed = init_back_speed;   // 初期化
-                back_player = true;
+                //back_speed = init_back_speed;   // 初期化
+                //back_player = true;
                 break;
         }
         // ショットが出たら値リセット

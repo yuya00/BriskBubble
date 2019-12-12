@@ -9,7 +9,6 @@ public sealed class Shot01 : ShotBase
     public override void Start()
     {
         base.Start();
-        speed += player.GetComponent<Player>().RunSpeed * PLR_SPD;
     }
 
     // Update is called once per frame
@@ -19,6 +18,8 @@ public sealed class Shot01 : ShotBase
         base.Update();
         base.Destroy();
 		//Debug.Log(transform.position);
+
+
     }
 
     // 移動

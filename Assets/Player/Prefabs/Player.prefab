@@ -121,7 +121,8 @@ MonoBehaviour:
   max_charge_vol: 6
   shot_charge_time: 3
   charge_slow_down: 0.8
-  shot_charge_speed: 0.02
+  max_charge_length: 200
+  shot_length_charge_time: 5
   wall_grab_ray:
     gizmo_on: 0
     judge_on: 0

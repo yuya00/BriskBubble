@@ -191,7 +191,7 @@ public sealed partial class Player : CharaBase
 				//汎用タイマー
 				GUILayout.TextArea("汎用タイマー\n " + wait_timer);
 
-			}
+        }
 			#endregion
 		#region 開発用
 		else if (gui.debug_view) {
@@ -228,10 +228,12 @@ public sealed partial class Player : CharaBase
 			//汎用タイマー
 			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
-			////ジャンプアニメカウント
-			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+            GUILayout.TextArea("発射する弾の種類\n " + shot_state);
 
-		}
+            ////ジャンプアニメカウント
+            //GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+
+        }
 		#endregion
 		#endregion
 

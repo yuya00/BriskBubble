@@ -10,15 +10,16 @@ public sealed class Shot03 : ShotBase
         base.Start();
         speed += player.GetComponent<Player>().RunSpeed * PLR_SPD;
 
-        //着地地点の座標
-        Vector3 target_pos = rigid.position + (forward * 60);
+
 
         ////射出角度
-        float angle = 60.0f;
+        float angle = 50.0f;
 
         Vector3 velocity = CalVelocity(rigid.position, target_pos, angle);
 
         rigid.AddForce(velocity, ForceMode.Impulse);
+
+        //player.GetComponent<Player>().RunSpeed
     }
 
     // Update is called once per frame
