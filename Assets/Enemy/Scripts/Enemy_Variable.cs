@@ -8,11 +8,9 @@ public sealed partial class Enemy : CharaBase
 	private bool				player_touch_flg;
 	private bool				shot_touch_flg;
 	private Vector3				dist_to_player;
-	private float				curve_spd;
 	private EnemyNear			enemy_near;
 	private EnemySoundDetect	enemy_sounddetect;
 	private GameObject			player_obj;
-	private const float			CURVE_SPD	 = 0.05f;	//少し曲がりながら走る
 	private const int           FAINT_TIME	 = 180;     //気絶時間
 
 
@@ -80,7 +78,7 @@ public sealed partial class Enemy : CharaBase
 	//逃走 ---------------------------------------------
 	[System.Serializable]
 	public struct AwayAct {
-		[SerializeField, Header("音探知範囲*mag分離れたら止まる")]
+		[Header("音探知範囲*mag分離れたら止まる")]
 		public float mag;               //2.0f
 
 		//[SerializeField, Header("逃走時のランダム±角度")]
@@ -89,14 +87,56 @@ public sealed partial class Enemy : CharaBase
 		[System.NonSerialized]
 		public bool lookback_flg;  //振り向き判定
 
-		[SerializeField, Header("振り向く間隔")]
+		[Header("振り向く間隔")]
 		public int lookback_interval;	//120
 
-		[SerializeField, Header("振り向いている時間")]
-		public int lookback_time;		//30
+		[Header("振り向いている時間")]
+		public int lookback_time;       //30
+
+		//逃走種類
+		[System.Serializable]
+		public struct Kind {
+
+			//インスペクター用
+			public bool normal;
+			public bool curve;
+			public bool jump;
+
+			//前の状態保存
+			[System.NonSerialized]
+			public bool normal_front;
+
+			[System.NonSerialized]
+			public bool curve_front;
+
+			[System.NonSerialized]
+			public bool jump_front;
+
+		}
+		[Header("逃走種類")]
+		public Kind kind;
 	}
 	[Header("逃走行動")]
 	public AwayAct away_act;
+
+	//逃走(カーブ) --------------------------------------
+	//ジャンプも入れるかも
+	public struct AwayActCurve {
+
+		public float        one;
+
+		public float		timer;
+
+		public const int    NORMAL_TIMER = 120;
+
+		public const float  NORMAL_SPD	 = 0.02f;
+
+		public const int    CURVE_TIMER	 = 120;
+
+		public const float	CURVE_SPD	 = 0.6f;
+
+	}
+	public AwayActCurve away_act_curve;
 
 
 	//段差ジャンプ -------------------------------------
@@ -176,6 +216,14 @@ public sealed partial class Enemy : CharaBase
 		WAIT	//待機
 	}
 	Enum_SwingAct enum_swingact;
+
+	//逃走ベースの種類
+	enum Enum_AwayKind {
+		NORMAL,
+		CURVE,
+		JUMP
+	}
+	Enum_AwayKind enum_awaykind;
 
 
 

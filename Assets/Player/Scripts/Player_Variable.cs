@@ -120,6 +120,8 @@ public sealed partial class Player : CharaBase
 
 
 
+	private bool wallgrabuFlg;
+
 	//壁掴み判定Ray ---------------------------------------------
 	[System.Serializable]
 	public class WallGrabRay : RayBase{
