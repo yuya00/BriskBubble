@@ -1597,7 +1597,7 @@ GameObject:
   - component: {fileID: 605339066}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Ground
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2068,6 +2068,31 @@ PrefabInstance:
       propertyPath: EFFECT_NUM
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: gui.all_view
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: wall_ray.length
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: wall_ray.up_limit
+      value: 2.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: wall_ray.down_limit
+      value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239077, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: ground_cast.gizmo_on
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6414721375438047800, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_UpdateMode
@@ -2080,7 +2105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2047487355, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
       propertyPath: m_Height
-      value: 4.5
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
@@ -3238,9 +3263,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui_on: 0
-  effect_jump: {fileID: 0}
-  effect_run_ground: {fileID: 0}
-  effect_run_water: {fileID: 0}
+  effect_jump: {fileID: 1024459011614124062, guid: 9312659474f14b0429d5064cd4be38c9,
+    type: 3}
+  effect_run_ground: {fileID: 1024459011614124062, guid: 10610b5158d33794c918d3d5fe0ef49e,
+    type: 3}
+  effect_run_water: {fileID: 1024459011614124062, guid: 4c311c509d15bf8499be9b0d80186d09,
+    type: 3}
   effect_shot: {fileID: 286456998030942924, guid: 79f8870002632084187ca467926e4e32,
     type: 3}
   effect_trajectory: {fileID: 5237719064611241031, guid: 4f7e8a89d7a0f8f40b0d0afc9368b7c8,

@@ -110,7 +110,6 @@ MonoBehaviour:
   fall_y_max: -100
   cam: {fileID: 0}
   rot_speed: 10
-  EFFECT_NUM: 10
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}
   - {fileID: 8580679673519122975, guid: 814522e3fb027ea4a870ebbc1ae939a5, type: 3}
@@ -120,8 +119,10 @@ MonoBehaviour:
   back_speed: 0.5
   jump_power_up: 1.5
   max_charge_vol: 6
-  shot_charge_speed: 0.02
+  shot_charge_time: 3
   charge_slow_down: 0.8
+  max_charge_length: 200
+  shot_length_charge_time: 5
   wall_grab_ray:
     gizmo_on: 0
     judge_on: 0

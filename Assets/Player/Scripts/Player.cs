@@ -195,7 +195,7 @@ public sealed partial class Player : CharaBase
 				//汎用タイマー
 				GUILayout.TextArea("汎用タイマー\n " + wait_timer);
 
-			}
+        }
 			#endregion
 		#region 開発用
 		else if (gui.debug_view) {
@@ -232,10 +232,12 @@ public sealed partial class Player : CharaBase
 			//汎用タイマー
 			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
-			////ジャンプアニメカウント
-			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+            GUILayout.TextArea("発射する弾の種類\n " + shot_state);
 
-		}
+            ////ジャンプアニメカウント
+            //GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+
+        }
 		#endregion
 		#endregion
 
@@ -328,7 +330,7 @@ public sealed partial class Player : CharaBase
         else jump_fric = jump_fric_power;
 
         // バブル状態のとき
-        if (shot_state > 1) BubbleSpeed(2.0f, 0.1f);
+        //if (shot_state > 1) BubbleSpeed(2.0f, 0.1f);
 
         // ショット3を撃った後プレイヤーをとめる
         if (back_player) BackMove();
@@ -986,7 +988,7 @@ public sealed partial class Player : CharaBase
     private void OnCollisionStay(Collision other)
     {
         // 床
-        if (other.gameObject.tag == "Ground")
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
         {
             foot = (int)FOOT.GROUND;
         }

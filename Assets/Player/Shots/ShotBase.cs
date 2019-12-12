@@ -25,6 +25,8 @@ public class ShotBase : MonoBehaviour
     private Color col;                  // 色取得
     private bool hit_fg;                // 消えてからは当たり判定なくす
 
+    public Vector3 target_pos;　　　　　　//やまなりショットの着地位置
+
     protected GameObject player;
 
     private EffectManager effect;
