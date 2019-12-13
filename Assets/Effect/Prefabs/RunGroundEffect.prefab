@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1024459011614124056}
   - component: {fileID: 1024459011614124063}
   m_Layer: 0
-  m_Name: RunEffect
+  m_Name: RunGroundEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,16 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   init_col: {r: 0, g: 0, b: 0, a: 0}
-  spd: 4
-  slow_spd: 10
-  init_scale_max: 0.5
-  init_scale_min: 0.2
-  init_rot_max: 90
-  init_rot_min: -270
-  rot_x: 0
-  alpha_spd: 3
-  destroy_timer_max: 0.5
-  rot: {x: 0, y: 0, z: 0}
+  spd: 3
+  alpha_spd: 2
+  scale_max: 0.6
+  scale_min: 0.1
+  rot_max:
+  - 0
+  - 180
+  - 0
+  rot_min:
+  - 0
+  - 360
+  - 0
+  destroy_timer_max: 1
 --- !u!33 &1024459011614124057
 MeshFilter:
   m_ObjectHideFlags: 0
