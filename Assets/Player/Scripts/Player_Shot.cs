@@ -5,76 +5,104 @@ using Pixeye.Unity;
 
 public sealed partial class Player : CharaBase
 {
-
-    // ショット-------------------------------------------------//
-    void Shot()
-    {
-        // アニメーション
-        ShotAnime();
-
-        // 次ショットまでの時間加算
-        ShotInterval();
-
-        //ショットの種類切り替え
-        if (Input.GetButtonDown("Shot_L"))
-        {
-            shot_state++;
-            if (shot_state >= shot_object.Length) shot_state = 0;
-
-            Riset();
-        }
+	// ショット-------------------------------------------------//
 
 
+	void Shot() {
+		// アニメーション
+		ShotAnime();
+
+		// 次ショットまでの時間加算
+		ShotInterval();
 
 
+		//今までの操作方法
+		if (!shot_switch) {
 
-        // 撃てるとき
-        if (ShotIntervalCheck())
-        {
-            // ショットの時間を固定
-            shot_interval_time = shot_interval_time_max;
+			//ショットの種類切り替え
+			if (Input.GetButtonDown("Shot_L")) {
+				shot_state++;
+				if (shot_state >= shot_object.Length) {
+					shot_state = 0;
+				}
+				Riset();
+			}
 
-
-            switch(shot_state)
-            {
-                case 0:
-                    //ショットのチャージ(大きさ)
-                    if (Input.GetButton("Shot_R"))
-                    {
-                        ShotCharge();
-                    }
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    if (Input.GetButton("Shot_R"))
-                    {
-                        ShotChargeLength();
-                    }
-                    break;
-            }
-            // 最終ショット発射
-            if (Input.GetButtonUp("Shot_R"))
-            {
-                // ショットをstateの値で選択
-                ShotSelect(shot_object[shot_state]);
-                effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
-            }
-        }
+			// 撃てるとき
+			if (ShotIntervalCheck()) {
+				// ショットの時間を固定
+				shot_interval_time = shot_interval_time_max;
 
 
-        //やまなりショットの軌道予測線を表示
-        if(shot_state==2 && Input.GetButtonDown("Shot_R"))
-        {
-            Physics_Simulate();
-        }
+				switch (shot_state) {
+					case 0:
+						//ショットのチャージ(大きさ)
+						if (Input.GetButton("Shot_R")) {
+							ShotCharge();
+						}
+						break;
+					case 1:
+						break;
+					case 2:
+						if (Input.GetButton("Shot_R")) {
+							ShotChargeLength();
+						}
+						break;
+				}
+				// 最終ショット発射
+				if (Input.GetButtonUp("Shot_R")) {
+					// ショットをstateの値で選択
+					ShotSelect(shot_object[shot_state]);
+					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+				}
+			}
+
+			//やまなりショットの軌道予測線を表示
+			if (shot_state == 2 && Input.GetButtonDown("Shot_R")) {
+				Physics_Simulate();
+			}
+
+		}
+
+		//新しい操作方法(Lでチャージ,Rで発射、L離したら置く)
+		else {
+			if (ShotIntervalCheck()) {
+
+				// ショットの時間を固定
+				shot_interval_time = shot_interval_time_max;
+
+				// L押している間チャージ
+				if (Input.GetButton("Shot_L")) {
+					ShotCharge();
+
+					// R押したら発射
+					if (Input.GetButtonDown("Shot_R")) {
+						shot_state = 0;
+						ShotSelect(shot_object[0]);
+						effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+					}
+				}
+
+				// L離したら置く
+				if (Input.GetButtonUp("Shot_L")) {
+					Riset();
+					ShotChargeLength();
+
+					// ショットをstateの値で選択
+					shot_state = 1;
+					ShotSelect(shot_object[1]);
+					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+				}
+			}
 
 
+		}
 
-    }
+	}
 
-    // ショットのアニメーション
-    void ShotAnime()
+
+	// ショットのアニメーション
+	void ShotAnime()
     {
         // ショットのアニメーションがtrueのとき速度を上げる
         if (animator.GetBool("Shot"))

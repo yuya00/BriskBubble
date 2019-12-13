@@ -97,7 +97,10 @@ public sealed partial class Player : CharaBase
     };
 
     [Foldout("ShotParameter", true)]
-    public GameObject[] shot_object;        // ショットのobj
+	[Tooltip("ショットの操作切り替え")]
+	public bool shot_switch;
+
+	public GameObject[] shot_object;        // ショットのobj
     public float shot_interval_time_max;    // ショットを撃つまでの間隔
     public float stop_time_max;             // どれだけ動けないか
     public float back_speed = 0.5f;         // 後ろ方向に進む速度
