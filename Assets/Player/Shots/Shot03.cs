@@ -10,18 +10,16 @@ public sealed class Shot03 : ShotBase
         base.Start();
         speed += player.GetComponent<Player>().RunSpeed * PLR_SPD;
 
-        //rigid.AddForce(new Vector3(10, 30, 10), ForceMode.Impulse);
 
-        //着地地点の座標
-        //Vector3 target_pos = forward * 20;
 
         ////射出角度
-        //float angle = 45.0f;
+        float angle = 50.0f;
 
-        //Vector3 velocity = CalVelocity(rigid.position,target_pos,angle);
+        Vector3 velocity = CalVelocity(rigid.position, target_pos, angle);
 
-        //rigid.AddForce(velocity, ForceMode.Impulse);
+        rigid.AddForce(velocity, ForceMode.Impulse);
 
+        //player.GetComponent<Player>().RunSpeed
     }
 
     // Update is called once per frame
@@ -30,35 +28,33 @@ public sealed class Shot03 : ShotBase
         Move();
         base.Update();
         base.Destroy();
-        //Debug.Log(transform.position);
     }
 
     void Move()
     {
         // 移動
-        rigid.velocity = forward * speed;
+        //rigid.velocity = forward * speed;
 
         // 速度を落とす
-        if (SpeedDownCheck(spd_down_timer_max)) Down(down_spd, down_pos);
+        //if (SpeedDownCheck(spd_down_timer_max)) Down(down_spd, down_pos);
     }
 
-    //private Vector3 CalVelocity(Vector3 pointA, Vector3 pointB, float angle)
-    //{
-    //    //角度をラジアンに変換
-    //    float rad = angle * Mathf.PI / 180;
+    private Vector3 CalVelocity(Vector3 pointA, Vector3 pointB, float angle)
+     {
+    //角度をラジアンに変換
+        float rad = angle * Mathf.PI / 180;
 
-    //    //水平方向の距離x
-    //    float x = Vector2.Distance(new Vector2(pointA.x, pointA.z), new Vector2(pointB.x, pointB.z));
+    //水平方向の距離x
+        float x = Vector2.Distance(new Vector2(pointA.x, pointA.z), new Vector2(pointB.x, pointB.z));
 
-    //    // 垂直方向の距離y
-    //    float y = pointA.y - pointB.y;
+    // 垂直方向の距離y
+        float y = pointA.y - pointB.y;
 
-    //    // 斜方投射の公式
-    //    float speed = Mathf.Sqrt(-Physics.gravity.y * Mathf.Pow(x, 2) / (2 * Mathf.Pow(Mathf.Cos(rad), 2) * (x * Mathf.Tan(rad) + y)));
+       // 斜方投射の公式
+        float speed = Mathf.Sqrt(-Physics.gravity.y * Mathf.Pow(x, 2) / (2 * Mathf.Pow(Mathf.Cos(rad), 2) * (x * Mathf.Tan(rad) + y)));
 
-    //    return (new Vector3(pointB.x - pointA.x, x * Mathf.Tan(rad), pointB.z - pointA.z).normalized * speed);
+        return (new Vector3(pointB.x - pointA.x, x * Mathf.Tan(rad), pointB.z - pointA.z).normalized * speed);
 
-
-    //}
+    }
 
 }

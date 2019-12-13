@@ -19,7 +19,6 @@ public sealed partial class Enemy : CharaBase
 		player_touch_flg	 = false;
 		shot_touch_flg		 = false;
 		dist_to_player		 = Vector3.zero;
-		curve_spd			 = 0;
 		jump_ray.flg		 = false;
 		jump_ray.advance_flg = false;
 		if (this.gameObject.name == "Enemy1") {
@@ -31,6 +30,16 @@ public sealed partial class Enemy : CharaBase
         enum_state			 = Enum_State.WAIT;
         old_state			 = enum_state;
 
+		//逃走の種類決定
+		if (away_act.kind.normal) {
+			enum_awaykind = Enum_AwayKind.NORMAL;
+		}
+		else if (away_act.kind.curve) {
+			enum_awaykind = Enum_AwayKind.CURVE;
+		}
+		else if (away_act.kind.jump) {
+			enum_awaykind = Enum_AwayKind.JUMP;
+		}
 	}
 
 	void Update()
@@ -45,7 +54,7 @@ public sealed partial class Enemy : CharaBase
 		old_state = enum_state;
 
 		DebugLog();
-    }
+	}
 
 	//プレイヤーとの距離
 	void DistPlayer() {
@@ -122,6 +131,7 @@ public sealed partial class Enemy : CharaBase
 		shot_to_defense -= shot_scale_power;
 		shot_scale_power = 0;
 
+
 		//気絶時にショットに当たったら
 		if (shot_touch_flg && enum_state == Enum_State.FAINT) {
 			shot_to_defense = 0;
@@ -183,7 +193,7 @@ public sealed partial class Enemy : CharaBase
 		float spdx,spdy,spdz;
 
 		#region ここに追加
-			#region 全値
+		#region 全値
 			if (gui.all_view) {
 				//座標
 				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
@@ -232,32 +242,34 @@ public sealed partial class Enemy : CharaBase
 
 			}
 			#endregion
-			#region 開発用
-			else if (gui.debug_view) {
-				//速さ
-				spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-				spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-				spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-				GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+		#region 開発用
+		else if (gui.debug_view) {
+			//速さ
+			spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+			spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+			spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-				//壁判定
-				GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
-				GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
-				GUILayout.TextArea("壁判定左めり込み距離\n" + wall_ray.dist_left);
-				GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
+			//壁判定
+			//GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
+			//GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
+			//GUILayout.TextArea("壁判定左めり込み距離\n" + wall_ray.dist_left);
+			//GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
 
-				//穴判定
-				GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
+			//穴判定
+			GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
 
-				//ジャンプ事前判定
-				GUILayout.TextArea("ジャンプ事前判定\n" + jump_ray.advance_flg);
+			//ジャンプ事前判定
+			GUILayout.TextArea("ジャンプ事前判定\n" + jump_ray.advance_flg);
 
-				//気絶判定
-				GUILayout.TextArea("気絶判定\n" + is_faint);
+			//気絶判定
+			GUILayout.TextArea("気絶判定\n" + is_faint);
 
-			}
-			#endregion
-			#endregion
+			//逃走種類
+			GUILayout.TextArea("逃走種類\n" + enum_awaykind);
+		}
+		#endregion
+		#endregion
 
 		GUILayout.EndScrollView();
         GUILayout.EndVertical();
@@ -266,6 +278,9 @@ public sealed partial class Enemy : CharaBase
     //Gizmo表示 --------------------------------------------------
     void OnDrawGizmos()
     {
+		//逃走行動切り替え(ここに書くのは良くないかも)
+		//AwaySwitch();
+
 		#region ※GUIの判定
 		//※GUIの処理(ランタイム以外でも判定したいのでここに記述)
 		if (!gui.on) {
@@ -454,7 +469,10 @@ public sealed partial class Enemy : CharaBase
 		enum_act		 = Enum_Act.CLEAR;
         enum_swingact	 = Enum_SwingAct.SWING;
 
-        wait_timer = 0;
+		away_act_curve.one	 = 1;
+		away_act_curve.timer = 0;
+
+		wait_timer = 0;
     }
 
 
@@ -657,16 +675,14 @@ public sealed partial class Enemy : CharaBase
 				//前方向の速さ代入
 				velocity = transform.forward * run_speed;
 
-				//--カーブする向き
-				CurveDir();
-
 				goto case Enum_Act.RUN;
 				//break;
             case Enum_Act.RUN:     //走る
                 enum_act = Enum_Act.RUN;
 
-				//少し曲がりながら走る
-				transform.Rotate(0, curve_spd, 0);
+				//--逃走の方法
+				AwayActApproach();
+
 
 				//--ジャンプ判定によるジャンプ
 				JumpRayJump_Judge();
@@ -703,13 +719,97 @@ public sealed partial class Enemy : CharaBase
         }
     }
 
-	//--カーブする向き
-	void CurveDir() {
-		if (Random.Range(0, 1) == 0) {
-			curve_spd = CURVE_SPD;
+	//逃走行動切り替え(エディタ側のOnDrawGizmosで実行)(未実行)
+	void AwaySwitch() {
+		//一つ選択したら他はfalseにする処理
+
+		//前と比べてtrueに変更されていたら切り替え
+		if (!away_act.kind.normal_front && away_act.kind.normal) {
+			//enum_awaykind = Enum_AwayKind.NORMAL;
+			away_act.kind.curve = false;
+			away_act.kind.jump = false;
+		}
+		if (!away_act.kind.curve_front && away_act.kind.curve) {
+			//enum_awaykind = Enum_AwayKind.CURVE;
+			away_act.kind.normal = false;
+			away_act.kind.jump = false;
+		}
+		if (!away_act.kind.jump_front && away_act.kind.jump) {
+			//enum_awaykind = Enum_AwayKind.JUMP;
+			away_act.kind.normal = false;
+			away_act.kind.curve = false;
+		}
+		//Debug.Log("front :" + away_act.kind.normal_front);
+		//Debug.Log("normal:" + away_act.kind.normal);
+		//Debug.Log("enum_awaykind:" + enum_awaykind);
+
+
+		//(全てoffならnormalにする)
+		//if (!away_act.kind.normal && !away_act.kind.curve && !away_act.kind.jump) {
+		//	enum_awaykind = Enum_AwayKind.NORMAL;
+		//	away_act.kind.normal = true;
+		//	away_act.kind.curve = false;
+		//	away_act.kind.jump = false;
+		//}
+
+		//前の状態保存
+		away_act.kind.normal_front	 = away_act.kind.normal;
+		away_act.kind.curve_front	 = away_act.kind.curve;
+		away_act.kind.jump_front	 = away_act.kind.jump;
+	}
+
+	//--逃走の方法
+	void AwayActApproach() {
+		switch (enum_awaykind) {
+			case Enum_AwayKind.NORMAL:
+				//----逃走時の移動
+				Away_Normal();
+				break;
+			case Enum_AwayKind.CURVE:
+				//----逃走時のカーブ移動
+				Away_Curve();
+				break;
+			case Enum_AwayKind.JUMP:
+				//----逃走時のジャンプ移動
+				Away_Jump();
+				break;
+		}
+	}
+
+	//----逃走時の移動
+	void Away_Normal() {
+		AwayActBase(AwayActCurve.NORMAL_TIMER, AwayActCurve.NORMAL_SPD);
+	}
+
+	//----逃走時のカーブ移動
+	void Away_Curve() {
+		AwayActBase(AwayActCurve.CURVE_TIMER, AwayActCurve.CURVE_SPD);
+	}
+
+	//----逃走時のジャンプ移動
+	void Away_Jump() {
+
+	}
+
+	//------逃走時
+	void AwayActBase(int timer, float spd) {
+		//一定時間経つ、もしくは穴判定があれば向き切り替え
+		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg ||
+			(away_act_curve.timer >= timer)) {
+			away_act_curve.one *= -1;
+			away_act_curve.timer = 0;
 		}
 		else {
-			curve_spd = -CURVE_SPD;
+			away_act_curve.timer++;
+		}
+
+		//向き補正
+		spd *= away_act_curve.one;
+
+		//曲がりながら走る(壁、穴判定がない時)
+		if (!wall_ray.hit_right_flg && !wall_ray.hit_left_flg &&
+			!hole_ray.hit_right_flg && !hole_ray.hit_left_flg) {
+			transform.Rotate(0, spd, 0);
 		}
 
 	}
@@ -1083,6 +1183,7 @@ public sealed partial class Enemy : CharaBase
         }
     }
 
+	//要修正
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Shot")
@@ -1091,9 +1192,20 @@ public sealed partial class Enemy : CharaBase
             {
                 shot_touch_flg = true;
 				//ショットの大きさ(強さ)を保存
-				shot_scale_power = (int)other.gameObject.GetComponent<Shot01>().transform.localScale.x;
-            }
-        }
+				if (other.gameObject.name == "Shot01(Clone)") {
+					shot_scale_power = (int)other.gameObject.GetComponent<Shot01>().transform.localScale.x;
+					//Debug.Log((int)other.gameObject.GetComponent<Shot01>().transform.localScale.x);
+					//Debug.Log(other.gameObject.GetComponent<Shot01>().transform.localScale.x);
+				}
+				if (other.gameObject.name == "Shot02(Clone)") {
+					shot_scale_power = (int)other.gameObject.GetComponent<Shot02>().transform.localScale.x;
+				}
+				if (other.gameObject.name == "Shot03(Clone)") {
+					shot_scale_power = (int)other.gameObject.GetComponent<Shot03>().transform.localScale.x;
+				}
+
+			}
+		}
     }
 
     private void OnTriggerExit(Collider other)

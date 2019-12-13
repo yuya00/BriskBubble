@@ -544,12 +544,17 @@ public class CharaBase : MonoBehaviour {
         LayerMask shot_layer = ~(1 << 8);
 		/***********************/
 
+
 		#region SphereCast
 		//足元から少し上の位置
 		ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y);
 
 		RaycastHit hit;
 		if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, shot_layer)) {
+			//if ((this.gameObject.tag == "Player") ) {
+			//	Debug.Log(hit.collider.tag);
+			//}
+
 			if (hit.collider.tag != "Wall") {
 				return;
 			}
@@ -629,6 +634,10 @@ public class CharaBase : MonoBehaviour {
 		// */
 		#endregion
 
+		//if (this.gameObject.tag == "Player") {
+		//	Debug.Log("Base:is_ground:" + is_ground);
+		//}
+
 	}
 
 
@@ -646,6 +655,9 @@ public class CharaBase : MonoBehaviour {
 
     public virtual void FixedUpdate(){
 		//キャラクターを移動させる処理
+		//if (this.gameObject.tag == "Player") {
+		//	Debug.Log(velocity);
+		//}
 		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
 	}
 
