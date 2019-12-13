@@ -78,20 +78,18 @@ public sealed partial class Enemy : CharaBase
 	//逃走 ---------------------------------------------
 	[System.Serializable]
 	public struct AwayAct {
-		[Header("音探知範囲*mag分離れたら止まる")]
-		public float mag;               //2.0f
-
-		//[SerializeField, Header("逃走時のランダム±角度")]
-		//public float angle;				//30
-
-		[System.NonSerialized]
-		public bool lookback_flg;  //振り向き判定
+		//音探知範囲*mag分離れたら止まる
+		public const float MAG = 2.0f;
 
 		[Header("振り向く間隔")]
-		public int lookback_interval;	//120
+		public int lookback_interval;
+		public const int LOOKBACK_INTERVAL = 120;
 
-		[Header("振り向いている時間")]
-		public int lookback_time;       //30
+		//振り向いている時間
+		public const int LOOKBACK_TIME = 30;
+
+		[System.NonSerialized]
+		public int state;
 
 		//逃走種類
 		[System.Serializable]
@@ -133,7 +131,7 @@ public sealed partial class Enemy : CharaBase
 
 		public const int    CURVE_TIMER	 = 120;
 
-		public const float	CURVE_SPD	 = 0.6f;
+		public const float	CURVE_SPD	 = 0.5f;
 
 	}
 	public AwayActCurve away_act_curve;
