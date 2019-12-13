@@ -28,6 +28,21 @@ public sealed class Shot03 : ShotBase
         Move();
         base.Update();
         base.Destroy();
+
+        if (Input.GetButtonDown("Shot_L"))
+        {
+
+            Physics.autoSimulation = false;
+
+            float time = 0;
+            while (time < 1)
+            {
+                Physics.Simulate(Time.fixedDeltaTime);
+                time += Time.fixedDeltaTime;
+            }
+
+            Physics.autoSimulation = true;
+        }
     }
 
     void Move()
