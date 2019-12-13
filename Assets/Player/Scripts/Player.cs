@@ -48,6 +48,7 @@ public sealed partial class Player : CharaBase
 		//先行入力まとめ
 		LeadKeyAll();
 
+
 		DebugLog();
         RayDebug();
     }
@@ -64,15 +65,18 @@ public sealed partial class Player : CharaBase
     // ゲームシーンでプレイヤーの動きまとめ
     void Game()
     {
-        // アニメ初期化
-        InitAnime();
-        // 移動
-        Move();
-        // ショット
-        Shot();
+		// アニメ初期化
+		InitAnime();
 
-        // クリアしたら
-        if (game_manager.GetComponent<Scene>().ClearFg()) state = CLEAR;
+		// 移動
+		Move();
+
+		// ショット
+		Shot();
+
+
+		// クリアしたら
+		if (game_manager.GetComponent<Scene>().ClearFg()) state = CLEAR;
     }
 
     // アニメーションをとめる
@@ -310,10 +314,11 @@ public sealed partial class Player : CharaBase
 	// 移動 -------------------------------------------------------
 	public override void Move()
     {
-        base.Move();
+		base.Move();
+		//Debug.Log("Player:is_ground:" + is_ground);
 
-        // 速度設定
-        run_speed = init_speed;
+		// 速度設定
+		run_speed = init_speed;
         stop_fric = init_fric;
 
         //ジャンプ時の移動慣性
@@ -939,14 +944,22 @@ public sealed partial class Player : CharaBase
     //当たり判定 -----------------------------------------------
     private void OnCollisionEnter(Collision other)
     {
-        //壁との当たり判定
-        if (other.gameObject.tag == "Wall")
+		//水の上なら
+		//if (other.gameObject.tag == "Water") {
+		//	Debug.Log("Water");
+		//}
+
+		//壁との当たり判定
+		if (other.gameObject.tag == "Wall")
         {
             if (!wall_touch_flg)
             {
                 wall_touch_flg = true;
-            }
-        }
+				//Debug.Log("Wall");
+
+			}
+		}
+
 
 		//敵との当たり判定
 		if (other.gameObject.tag == "Enemy") {
@@ -994,10 +1007,16 @@ public sealed partial class Player : CharaBase
             Destroy(other.gameObject);
         }
 
-    }
 
-    //get ------------------------------------------------------------
-    public float RunSpeed
+		////水の上なら
+		//if (other.gameObject.tag == "Water") {
+		//	Debug.Log("Water");
+		//}
+
+	}
+
+	//get ------------------------------------------------------------
+	public float RunSpeed
     {
         get { return run_speed; }
     }

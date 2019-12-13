@@ -25,6 +25,9 @@ public sealed partial class Player : CharaBase
         }
 
 
+
+
+
         // 撃てるとき
         if (ShotIntervalCheck())
         {
@@ -58,6 +61,15 @@ public sealed partial class Player : CharaBase
                 effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
             }
         }
+
+
+        //やまなりショットの軌道予測線を表示
+        if(shot_state==2 && Input.GetButtonDown("Shot_R"))
+        {
+            Physics_Simulate();
+        }
+
+
 
     }
 
@@ -217,6 +229,45 @@ public sealed partial class Player : CharaBase
         if (shot_interval_time >= shot_interval_time_max) return true;
         return false;
     }
+
+    void Physics_Simulate()
+    {
+        //シュミレート用のオブジェクトをプレイヤーの前に持ってくる
+        physics_simulate_object.transform.position = transform.position + (transform.forward * SHOT_POSITION);
+
+        Rigidbody rigid = physics_simulate_object.GetComponent<Rigidbody>();
+
+        ////射出角度
+        float angle = 50.0f;
+
+        Vector3 target_pos = transform.position + transform.forward * shot_charge_length;
+
+        Vector3 velocity = CalVelocity(physics_simulate_object.transform.position, target_pos, angle);
+
+        rigid.AddForce(velocity, ForceMode.Impulse);
+
+        
+    }
+
+    //発射速度のシュミレート
+    Vector3 CalVelocity(Vector3 pointA, Vector3 pointB, float angle)
+    {
+        //角度をラジアンに変換
+        float rad = angle * Mathf.PI / 180;
+
+        //水平方向の距離x
+        float x = Vector2.Distance(new Vector2(pointA.x, pointA.z), new Vector2(pointB.x, pointB.z));
+
+        // 垂直方向の距離y
+        float y = pointA.y - pointB.y;
+
+        // 斜方投射の公式
+        float speed = Mathf.Sqrt(-Physics.gravity.y * Mathf.Pow(x, 2) / (2 * Mathf.Pow(Mathf.Cos(rad), 2) * (x * Mathf.Tan(rad) + y)));
+
+        return (new Vector3(pointB.x - pointA.x, x * Mathf.Tan(rad), pointB.z - pointA.z).normalized * speed);
+    }
+
+
 
     // ショットに乗った判定
     public bool DownHitShot()

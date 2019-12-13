@@ -102,15 +102,18 @@ public sealed partial class Player : CharaBase
     public float stop_time_max;             // どれだけ動けないか
     public float back_speed = 0.5f;         // 後ろ方向に進む速度
     public float jump_power_up;             // ショットに乗ったときにジャンプ力を何倍にするか
+
     public float max_charge_vol;            //ショットのチャージ上限
     public float shot_charge_time;          //チャージが最大になる時間
     [Tooltip("チャージ中のプレイヤーの減速率0～１(0.8なら20%減速)")]
     public float charge_slow_down;
+
+
     public float max_charge_length;　　　　 //やまなりショットの最大距離
     public float shot_length_charge_time;　 //やまなりショットの距離が最大になる時間
 
-
-
+    public GameObject physics_simulate_object;   //やまなりショットの軌道予測用のオブジェクト
+    private Vector3[] physics_simulate_pos = new Vector3[20]; //座標記憶用
 
     [Foldout("ShotParameter", false)]
 
