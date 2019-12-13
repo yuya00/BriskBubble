@@ -464,7 +464,7 @@ public sealed partial class Enemy : CharaBase
 		wait_timer_swing		 = 0;
 		once_random.num			 = 0;
 		once_random.isfinish	 = false;
-		away_act.lookback_flg	 = false;
+		away_act.state = 0;
 
 		enum_act		 = Enum_Act.CLEAR;
         enum_swingact	 = Enum_SwingAct.SWING;
@@ -694,11 +694,12 @@ public sealed partial class Enemy : CharaBase
                 HoleRayRotateJudge();
 
 
-				//--振り向きspd変更
+				//--振り向きによるspd変更
 				Lookback_SpdChange();
 
-				//二人の距離が(音探知範囲*away_act.mag)より離れたら
-				if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * away_act.mag) && (velocity.y == 0))
+
+				//二人の距離が、音探知範囲*AwayAct.MAGより離れたら
+				if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * AwayAct.MAG) && (is_ground))
                 {
                     enum_act = Enum_Act.END;
                 }
@@ -712,9 +713,6 @@ public sealed partial class Enemy : CharaBase
 				Clear();
 				velocity = Vector3.zero;
 				enum_state = Enum_State.WAIT;
-                break;
-            case Enum_Act.SWING:
-                enum_act = Enum_Act.SWING;
                 break;
         }
     }
@@ -910,35 +908,40 @@ public sealed partial class Enemy : CharaBase
 
 	}
 
-	//--振り向きspd変更
+	//--振り向きによるspd変更
 	void Lookback_SpdChange()
     {
-        //120f毎にプレイヤーの方向に向いて60fほど速度が1 / 2になる(平面時のみ)
-		//振り向き
-        if (!away_act.lookback_flg && WaitTime(away_act.lookback_interval))
-        {
-			away_act.lookback_flg = true;
-			if (velocity.y == 0) {
-				velocity.x = transform.forward.x * (run_speed / 2);
-				velocity.z = transform.forward.z * (run_speed / 2);
-			}
-			else {
+		switch (away_act.state) {
+			case 0:
+				//spd(通常)
 				velocity.x = transform.forward.x * run_speed;
 				velocity.z = transform.forward.z * run_speed;
-			}
-		}
-		//正面
-        if (away_act.lookback_flg && WaitTime(away_act.lookback_time))
-        {
-			away_act.lookback_flg = false;
-			velocity.x = transform.forward.x * run_speed;
-			velocity.z = transform.forward.z * run_speed;
+				//120f経ったら
+				if (WaitTime(AwayAct.LOOKBACK_INTERVAL)) {
+					away_act.state = 1;
+				}
+				break;
+			case 1:
+				//spd(振り向き)
+				velocity.x = transform.forward.x * (run_speed / 2);
+				velocity.z = transform.forward.z * (run_speed / 2);
+				//30f経ったら
+				if (WaitTime(AwayAct.LOOKBACK_TIME)) {
+					away_act.state = 0;
+				}
+				break;
 		}
 
-		//穴判定で曲がっている時も遅くなる
+		//例外
+		//穴判定で曲がっている時、spd(振り向き)
 		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg) {
 			velocity.x = transform.forward.x * (run_speed / 2);
 			velocity.z = transform.forward.z * (run_speed / 2);
+		}
+		//ジャンプしてる時、spd(通常)
+		if (!is_ground) {
+			velocity.x = transform.forward.x * run_speed;
+			velocity.z = transform.forward.z * run_speed;
 		}
 
 	}
