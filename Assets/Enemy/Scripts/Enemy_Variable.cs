@@ -4,22 +4,16 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
+	private GameObject          player_obj;
+	private EnemyNear           enemy_near;
+	private EnemySoundDetect    enemy_sounddetect;
+
 	private int					wait_timer_swing;
 	private bool				player_touch_flg;
 	private bool				shot_touch_flg;
 	private Vector3				dist_to_player;
-	private EnemyNear			enemy_near;
-	private EnemySoundDetect	enemy_sounddetect;
-	private GameObject			player_obj;
 	private const int           FAINT_TIME	 = 180;     //気絶時間
 
-
-	//首振りランダム値設定(待機行動)
-	private struct OnceRondom {
-		public int   num;
-		public bool  isfinish;
-	}
-	private OnceRondom once_random;
 
 
 	//状態エフェクト -----------------------------------
@@ -40,36 +34,52 @@ public sealed partial class Enemy : CharaBase
 	public ConditionEffect condition_effect;
 
 
-
 	//待機 ---------------------------------------------
 	[System.Serializable]
 	public struct WaitAct {
-		[SerializeField, Header("首振り前待機")]
+		[Header("首振り前待機")]
 		public int wait_time;			//240
-		[SerializeField, Header("首振り前待機ランダム幅")]
+		[Header("首振り前待機ランダム幅")]
 		public int wait_random;			//0
-		[SerializeField, Header("首振り時間")]
+		[Header("首振り時間")]
 		public int swing_time;			//70
-		[SerializeField, Header("首振り時間ランダム幅")]
+		[Header("首振り時間ランダム幅")]
 		public int swing_random;		//0
-		[SerializeField, Header("首振り速さ")]
+		[Header("首振り速さ")]
 		public int swing_spd;			//30
-		[SerializeField, Header("首振り間の間隔")]
-		public int swing_space_time;	//15
+		[Header("首振り間の間隔")]
+		public int swing_space_time;    //15
+
+		//首振りの行動種類
+		public enum Enum_Swing {
+			SWING,  //首振り
+			WAIT    //待機
+		}
+		[System.NonSerialized]
+		public Enum_Swing enum_swing;
 	}
 	[Header("待機行動")]
 	public WaitAct wait_act;
+
+	//首振りランダム値設定(待機行動) -------------------
+	private struct OnceRondom {
+		public int   num;
+		public bool  isfinish;
+	}
+	private OnceRondom once_random;
 
 
 	//警戒 ---------------------------------------------
 	[System.Serializable]
 	public struct WarningAct {
+		/*
 		[SerializeField, Header("首振り速さ")]
 		public int swing_spd;           //100
 		[SerializeField, Header("首振り時間")]
 		public int swing_time;          //10
 		[SerializeField, Header("首振り間の間隔")]
 		public int swing_space_time;    //15
+		// */
 	}
 	[Header("警戒行動")]
 	public WarningAct warning_act;
@@ -83,15 +93,19 @@ public sealed partial class Enemy : CharaBase
 
 		[Header("振り向く間隔")]
 		public int lookback_interval;
-		public const int LOOKBACK_INTERVAL = 120;
 
-		//振り向いている時間
-		public const int LOOKBACK_TIME = 30;
+		[Header("振り向いている時間")]
+		public int lookback_time;
 
+		//振り向きstate
+		public enum Enum_LookBack {
+			NORMAL,
+			LOOKBACK
+		}
 		[System.NonSerialized]
-		public int state;
+		public Enum_LookBack enum_lookback;
 
-		//逃走種類
+		//逃走種類 -----------------------------
 		[System.Serializable]
 		public struct Kind {
 
@@ -111,46 +125,57 @@ public sealed partial class Enemy : CharaBase
 			public bool jump_front;
 
 		}
-		[Header("逃走種類")]
+		[Header("種類")]
 		public Kind kind;
+
+		//逃走種類に応じた変数(カーブ) ---------
+		[System.Serializable]
+		public struct Curve {
+			//ジャンプも入れるかも
+
+			//符号反転用
+			[System.NonSerialized]
+			public float        one;
+
+			[System.NonSerialized]
+			public float        timer;
+
+			[Header("向き切り替え時間")]	//120
+			public int			normal_interval;
+
+			[Header("曲がる速さ")]			//0.02f
+			public float		normal_spd;
+
+			[Header("向き切り替え時間")]	//120
+			public int			curve_interval;
+
+			[Header("曲がる速さ")]			//0.5f
+			public float		curve_spd;
+
+		}
+		[Header("調整")]
+		public Curve curve;
+
 	}
 	[Header("逃走行動")]
 	public AwayAct away_act;
 
-	//逃走(カーブ) --------------------------------------
-	//ジャンプも入れるかも
-	public struct AwayActCurve {
 
-		public float        one;
-
-		public float		timer;
-
-		public const int    NORMAL_TIMER = 120;
-
-		public const float  NORMAL_SPD	 = 0.02f;
-
-		public const int    CURVE_TIMER	 = 120;
-
-		public const float	CURVE_SPD	 = 0.5f;
-
-	}
-	public AwayActCurve away_act_curve;
-
-
-	//段差ジャンプ -------------------------------------
+		
+	//ジャンプ判定Ray ----------------------------------
 	[System.Serializable]
 	public class JumpRay : BoxCastAdjustBase {
 		//public float length;            //4.3f
-		//public float uplimit_height;    //2.0f 2.7f
-		//public float downlimit_height;  //3.9f 3.0f
+		//public float uplimit_height;    //2.0f
+		//public float downlimit_height;  //3.9f
 
 		[System.NonSerialized]			//壁との当たり判定
 		public bool flg;
 
-		[SerializeField, Range(0.0f, 40.0f), Header("ジャンプ力")]
+		[Header("ジャンプ力")]
 		public float power;				//22.0f
 
-		[SerializeField,Header("事前判定の長さ")]
+		[Header("事前判定の長さ")]
 		public float advance_length;    //23.0f
 
 		[System.NonSerialized]			//壁との事前当たり判定
@@ -208,12 +233,6 @@ public sealed partial class Enemy : CharaBase
 	Enum_Act old_act;
 
 
-	//首振りの行動種類
-	enum Enum_SwingAct {
-		SWING,	//首振り
-		WAIT	//待機
-	}
-	Enum_SwingAct enum_swingact;
 
 	//逃走ベースの種類
 	enum Enum_AwayKind {

@@ -464,15 +464,14 @@ public sealed partial class Enemy : CharaBase
 		wait_timer_swing		 = 0;
 		once_random.num			 = 0;
 		once_random.isfinish	 = false;
-		away_act.state = 0;
 
-		enum_act		 = Enum_Act.CLEAR;
-        enum_swingact	 = Enum_SwingAct.SWING;
+		enum_act				 = Enum_Act.CLEAR;
+		wait_act.enum_swing		 = WaitAct.Enum_Swing.SWING;
 
-		away_act_curve.one	 = 1;
-		away_act_curve.timer = 0;
+		away_act.curve.one		 = 1;
+		away_act.curve.timer	 = 0;
 
-		wait_timer = 0;
+		wait_timer				 = 0;
     }
 
 
@@ -520,16 +519,16 @@ public sealed partial class Enemy : CharaBase
 
 	//--首振り関数(首振る速さ、首振る時間、待機時間、次のstate)
 	void Swing(int spd, int time, int wait_time, Enum_Act next_state) {
-		switch (enum_swingact) {
-			case Enum_SwingAct.SWING:    //首振り
+		switch (wait_act.enum_swing) {
+			case WaitAct.Enum_Swing.SWING:    //首振り
 				transform.Rotate(0, spd * Mathf.Deg2Rad, 0);
 				if (WaitTime_Swing(time)) {
-					enum_swingact = Enum_SwingAct.WAIT;
+					wait_act.enum_swing = WaitAct.Enum_Swing.WAIT;
 				}
 				break;
-			case Enum_SwingAct.WAIT:     //首振りの間
+			case WaitAct.Enum_Swing.WAIT:     //首振りの間
 				if (WaitTime_Swing(wait_time)) {
-					enum_swingact = Enum_SwingAct.SWING;
+					wait_act.enum_swing = WaitAct.Enum_Swing.SWING;
 					enum_act = next_state;
 				}
 				break;
@@ -743,10 +742,10 @@ public sealed partial class Enemy : CharaBase
 
 
 		//(全てoffならnormalにする)
-		//if (!away_act.kind.normal && !away_act.kind.curve && !away_act.kind.jump) {
+		//if (!away_act.kind.normal && !away_act.kind.away_act.curve && !away_act.kind.jump) {
 		//	enum_awaykind = Enum_AwayKind.NORMAL;
 		//	away_act.kind.normal = true;
-		//	away_act.kind.curve = false;
+		//	away_act.kind.away_act.curve = false;
 		//	away_act.kind.jump = false;
 		//}
 
@@ -776,12 +775,12 @@ public sealed partial class Enemy : CharaBase
 
 	//----逃走時の移動
 	void Away_Normal() {
-		AwayActBase(AwayActCurve.NORMAL_TIMER, AwayActCurve.NORMAL_SPD);
+		AwayActBase(away_act.curve.normal_interval, away_act.curve.normal_spd);
 	}
 
 	//----逃走時のカーブ移動
 	void Away_Curve() {
-		AwayActBase(AwayActCurve.CURVE_TIMER, AwayActCurve.CURVE_SPD);
+		AwayActBase(away_act.curve.curve_interval, away_act.curve.curve_spd);
 	}
 
 	//----逃走時のジャンプ移動
@@ -793,16 +792,16 @@ public sealed partial class Enemy : CharaBase
 	void AwayActBase(int timer, float spd) {
 		//一定時間経つ、もしくは穴判定があれば向き切り替え
 		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg ||
-			(away_act_curve.timer >= timer)) {
-			away_act_curve.one *= -1;
-			away_act_curve.timer = 0;
+			(away_act.curve.timer >= timer)) {
+			away_act.curve.one *= -1;
+			away_act.curve.timer = 0;
 		}
 		else {
-			away_act_curve.timer++;
+			away_act.curve.timer++;
 		}
 
 		//向き補正
-		spd *= away_act_curve.one;
+		spd *= away_act.curve.one;
 
 		//曲がりながら走る(壁、穴判定がない時)
 		if (!wall_ray.hit_right_flg && !wall_ray.hit_left_flg &&
@@ -911,23 +910,25 @@ public sealed partial class Enemy : CharaBase
 	//--振り向きによるspd変更
 	void Lookback_SpdChange()
     {
-		switch (away_act.state) {
-			case 0:
+		switch (away_act.enum_lookback) {
+			case AwayAct.Enum_LookBack.NORMAL:
 				//spd(通常)
 				velocity.x = transform.forward.x * run_speed;
 				velocity.z = transform.forward.z * run_speed;
 				//120f経ったら
-				if (WaitTime(AwayAct.LOOKBACK_INTERVAL)) {
-					away_act.state = 1;
+				if (WaitTime(away_act.lookback_interval)) {
+					//away_act.state = 1;
+					away_act.enum_lookback = AwayAct.Enum_LookBack.LOOKBACK;
 				}
 				break;
-			case 1:
+			case AwayAct.Enum_LookBack.LOOKBACK:
 				//spd(振り向き)
 				velocity.x = transform.forward.x * (run_speed / 2);
 				velocity.z = transform.forward.z * (run_speed / 2);
 				//30f経ったら
-				if (WaitTime(AwayAct.LOOKBACK_TIME)) {
-					away_act.state = 0;
+				if (WaitTime(away_act.lookback_time)) {
+					//away_act.state = 0;
+					away_act.enum_lookback = AwayAct.Enum_LookBack.NORMAL;
 				}
 				break;
 		}
