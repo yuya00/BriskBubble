@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774832109019730856}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -40.77999, y: 1.5555559, z: 53.88329}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
@@ -101,6 +101,7 @@ MonoBehaviour:
   timer_fg: 0
   timer_fg_max: 0
   apper_fg: 0
+  target_pos: {x: 0, y: 0, z: 0}
 --- !u!54 &7358626092893561063
 Rigidbody:
   m_ObjectHideFlags: 0

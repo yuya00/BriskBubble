@@ -12,8 +12,8 @@ public sealed partial class Player : CharaBase
 		// アニメーション
 		ShotAnime();
 
-		// 次ショットまでの時間加算
-		ShotInterval();
+        // 次ショットまでの時間加算
+        ShotInterval();
 
 
 		//今までの操作方法
@@ -58,9 +58,10 @@ public sealed partial class Player : CharaBase
 			}
 
 			//やまなりショットの軌道予測線を表示
-			if (shot_state == 2 && Input.GetButtonDown("Shot_R")) {
-				Physics_Simulate();
-			}
+			if (shot_state == 2 && Input.GetButton("Shot_R"))
+            {
+                Physics_Simulate();
+            }
 
 		}
 
@@ -182,6 +183,12 @@ public sealed partial class Player : CharaBase
         //ショットの発射距離リセット
         shot_charge_length = 0;
 
+        //やまなりショットの軌道予測を破棄
+        for (int i = 0; i < 10; i++)
+        {
+           Destroy(physics_simulate_object_clone[i]);
+        }
+
 
         //animator.speed = init_anim_spd;
         //animator.SetBool("Shot", false);
@@ -263,18 +270,51 @@ public sealed partial class Player : CharaBase
         //シュミレート用のオブジェクトをプレイヤーの前に持ってくる
         physics_simulate_object.transform.position = transform.position + (transform.forward * SHOT_POSITION);
 
-        Rigidbody rigid = physics_simulate_object.GetComponent<Rigidbody>();
+        GameObject obj  = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
 
-        ////射出角度
+        Rigidbody rigid = obj.GetComponent<Rigidbody>();
+
+       //シュミレート用のオブジェクトに力を加える
         float angle = 50.0f;
 
-        Vector3 target_pos = transform.position + transform.forward * shot_charge_length;
+        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length+7.0f);
 
-        Vector3 velocity = CalVelocity(physics_simulate_object.transform.position, target_pos, angle);
+        Vector3 velocity = CalVelocity(obj.transform.position, target_pos, angle);
 
         rigid.AddForce(velocity, ForceMode.Impulse);
 
+        //以前の物を削除
+        for (int i = 0; i < 10; i++)
+        {
+            Destroy(physics_simulate_object_clone[i]);
+        }
+
+
+
+
+
+        //物理シュミレート開始
+        for (int i = 0; i < 10; i++)
+        {
+            Physics.autoSimulation = false;
+            Physics.Simulate(0.5f);
+            Physics.autoSimulation = true;
+            physics_simulate_pos[i] = obj.transform.position;
+        }
+        Destroy(obj);
         
+
+        //記録した座標の場所にオブジェクト設置
+            for (int i = 0; i < 10; i++)
+            {
+                physics_simulate_object_clone[i] = Instantiate(physics_simulate_object, physics_simulate_pos[i], Quaternion.identity);
+                Rigidbody rb = physics_simulate_object_clone[i].GetComponent<Rigidbody>();
+                rb.useGravity = false;
+            }
+
+
+        //GameObject obj = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
+
     }
 
     //発射速度のシュミレート

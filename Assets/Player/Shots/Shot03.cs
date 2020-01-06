@@ -19,7 +19,6 @@ public sealed class Shot03 : ShotBase
 
         rigid.AddForce(velocity, ForceMode.Impulse);
 
-        //player.GetComponent<Player>().RunSpeed
     }
 
     // Update is called once per frame
@@ -27,22 +26,8 @@ public sealed class Shot03 : ShotBase
     {
         Move();
         base.Update();
-        base.Destroy();
+        Destroy();
 
-        if (Input.GetButtonDown("Shot_L"))
-        {
-
-            Physics.autoSimulation = false;
-
-            float time = 0;
-            while (time < 1)
-            {
-                Physics.Simulate(Time.fixedDeltaTime);
-                time += Time.fixedDeltaTime;
-            }
-
-            Physics.autoSimulation = true;
-        }
     }
 
     void Move()
@@ -53,6 +38,35 @@ public sealed class Shot03 : ShotBase
         // 速度を落とす
         //if (SpeedDownCheck(spd_down_timer_max)) Down(down_spd, down_pos);
     }
+
+    public override void Destroy()
+    {
+        timer += Time.deltaTime;
+
+        //一定時間経ったら透明にして、その後に時間はかって消す
+        if (timer >= destroy_time+10)
+        {
+            // ショットが消えた判定
+            apper_fg = true;
+
+            // 当たり判定なくす
+            hit_fg = false;
+
+            // 透明にする
+            gameObject.GetComponent<Renderer>().material.color = col;
+
+            // レイヤーで当たり判定なくす
+            //gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
+
+            // +0.2fの時間で消去する
+            if (timer >= destroy_time + 0.2f)
+            {
+                Destroy(gameObject);
+                effect.Effect(SHOT, DESTROY, transform.position, effect.destroy_shot);
+            }
+        }
+    }
+
 
     private Vector3 CalVelocity(Vector3 pointA, Vector3 pointB, float angle)
      {
