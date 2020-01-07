@@ -151,7 +151,11 @@ public class ShotBase : MonoBehaviour
     // エフェクトを出す
     void Effect()
     {
-        if (speed >= 0) effect.Effect(SHOT, TRAJECTORY, transform.position, effect.trajectory_shot);
+        if (speed >= 0)
+        {
+            if (!effect) return;
+            effect.Effect(SHOT, TRAJECTORY, transform.position, effect.trajectory_shot);
+        }
     }
 
     //----------------------------------------------------------//

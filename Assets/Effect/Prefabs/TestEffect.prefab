@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5841802759269174196}
   - component: {fileID: 5841802759269174199}
-  m_Layer: 0
-  m_Name: TestSmorkEffect
+  m_Layer: 11
+  m_Name: TestEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c17929cb83435f47b50a73779f6ce85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smork: {fileID: 1024459011614124062, guid: 9312659474f14b0429d5064cd4be38c9, type: 3}
+  effect: {fileID: 0}
   app_timer_max: 1
   EFFECT_NUM: 10

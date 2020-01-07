@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1024459011614124057}
   - component: {fileID: 1024459011614124056}
   - component: {fileID: 1024459011614124063}
-  m_Layer: 0
-  m_Name: smork
+  m_Layer: 11
+  m_Name: JumpEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

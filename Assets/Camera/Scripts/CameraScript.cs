@@ -30,7 +30,9 @@ public sealed partial class CameraScript : MonoBehaviour
         enm_id = 0;
         clear_end = false;
         scene = GameObject.FindGameObjectWithTag("GameManager");
-
+        post = GameObject.FindGameObjectWithTag("PostProcess");
+        // ブラーはずす
+        SetBlur(false);
         // 敵を検索
         obj = GameObject.FindGameObjectsWithTag("Enemy");
         // 敵の数を初めに保存しておかないとLengthをそのまま使ったら
@@ -42,6 +44,7 @@ public sealed partial class CameraScript : MonoBehaviour
     void Update()
     {
         CameraEnemyApproach();
+        //debug();
     }
 
     // 処理が終わってから呼び出される---------------------
@@ -271,6 +274,9 @@ public sealed partial class CameraScript : MonoBehaviour
                 // 近づける(Lerpなしで)
                 transform.position += vec.normalized * (zoom_in_spd * Time.deltaTime);
 
+                // ブラーつける
+                SetBlur(true);
+
                 // 近づいたら次のステート
                 if (vec.magnitude < len) approach_state++;
                 break;
@@ -292,12 +298,27 @@ public sealed partial class CameraScript : MonoBehaviour
                         // 演出用の判定を初期化
                         enemy_hit_flg = false;
 
+                        // ブラーはずす
+                        SetBlur(false);
+
                         // カメラ状態をプレイヤー追従に
                         camera_state = NONE;
                     }
                 }
                 break;
         }
+    }
+
+    // ブラーをonにしたり、offにしたり
+    void SetBlur(bool on)
+    {
+        post.SetActive(on);
+    }
+
+    void debug()
+    {
+        if (Input.GetButtonDown("Shot_L")) post.SetActive(true);
+        if (Input.GetButtonDown("Shot_R")) post.SetActive(false);
     }
 
     // 1回演出が終わったら初期化する

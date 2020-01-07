@@ -9,6 +9,7 @@ public sealed partial class EffectManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        enemy = GameObject.FindGameObjectsWithTag("ProdactionEnemy");
 
         // 待機時間の初期化
         for (int i = 0; i < (int)TYPE.SHOT; ++i)
@@ -95,6 +96,42 @@ public sealed partial class EffectManager : MonoBehaviour
     // エネミーのエフェクト----------------------------------------------
     void Enemy(EFFECT state, Vector3 pos, int num)
     {
+        switch (state)
+        {
+            case EFFECT.EXPLOSION:
+                EffectSet(effect_explosion, pos, num);
+                break;
+            case EFFECT.FOCUSING:
+                // 集束位置
+                focus_pos = pos;
+
+                // 爆発の欠片位置設定
+                DebrisSet(pos, num);
+
+                break;
+        }
+    }
+
+    // 爆発の欠片位置設定
+    void DebrisSet(Vector3 pos, int num)
+    {
+        /*
+         最初の位置をRGEみたいに角度で出す
+         その角度の延長線上にオブジェクト配置する
+         */
+        for (int n = 0; n < FOCUS_NUM; ++n)
+        {
+            pos.x = pos.x + (Random.Range(-FOCUS_NUM, FOCUS_NUM));
+            pos.y = pos.y + (Random.Range(-FOCUS_NUM, FOCUS_NUM));
+            pos.z = pos.z + (Random.Range(-FOCUS_NUM, FOCUS_NUM));
+
+            EffectSet(effect_focusing, pos, num);
+        }
+    }
+
+    public Vector3 Focus_pos
+    {
+        get { return focus_pos; }
     }
 
 
@@ -144,15 +181,16 @@ public sealed partial class EffectManager : MonoBehaviour
         return false;
     }
 
-	public bool gui_on;
+    public bool gui_on;
     // GUI---------------------------------------------------------------
     private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
     private float scroll_height = 330;
     void OnGUI()
     {
-		if (!gui_on) {
-			return;
-		}
+        if (!gui_on)
+        {
+            return;
+        }
 
         //スクロール高さを変更
         //(出来ればmaximize on playがonならに変更したい)
@@ -161,7 +199,7 @@ public sealed partial class EffectManager : MonoBehaviour
         GUILayout.Box("Effect");
 
         //着地判定
-        GUILayout.TextArea("debug_state\n" + debug_state);
+        GUILayout.TextArea("focus_pos\n" + focus_pos);
         //GUILayout.TextArea("debug_type\n" + debug_type);
         //GUILayout.TextArea("debug_state\n" + debug_state);
         //GUILayout.TextArea("debug_pos\n" + debug_pos);

@@ -32,6 +32,9 @@ public sealed partial class EffectManager : MonoBehaviour
         APPER,
         DESTROY,
         TRAJECTORY, // 軌跡
+
+        EXPLOSION,  // 敵破壊演出（爆発）
+        FOCUSING,   // 敵破壊演出（集束）
     }
 
     // RUNで地上情報に合わせてエフェクトを分ける
@@ -49,11 +52,17 @@ public sealed partial class EffectManager : MonoBehaviour
     public GameObject effect_run_water;     // run時のエフェクト  
     public GameObject effect_shot;          // shot時のエフェクト
     public GameObject effect_trajectory;    // 軌跡エフェクト
+    public GameObject effect_explosion;    // 敵破壊エフェクト1
+    public GameObject effect_focusing;    // 敵破壊エフェクト2
     [Foldout("EffectObject", false)]
 
     private GameObject player;          // 情報を貰う用
-                                        //private GameObject enemy;
-                                        //private GameObject shot;
+    private GameObject[] enemy;
+    //private GameObject shot;
+    //private const int END_PRODACTION = 2;
+    private const int FOCUS_NUM = 8;
+
+    private Vector3 focus_pos;
 
     #endregion
 
@@ -72,6 +81,9 @@ public sealed partial class EffectManager : MonoBehaviour
     public int apper_shot           = 10;
     public int trajectory_shot      = 3;
     public int destroy_shot         = 8;
+
+    public int explosion_effect     = 1;
+    public int focusing_effect      = 8;
 
     [Foldout("エフェクトの数まとめ", false)]
 

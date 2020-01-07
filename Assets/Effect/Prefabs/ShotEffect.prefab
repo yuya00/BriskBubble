@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 286456998030942913}
   - component: {fileID: 286456998030942926}
   - component: {fileID: 286456998030942927}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShotEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

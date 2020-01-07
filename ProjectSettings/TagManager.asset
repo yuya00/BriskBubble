@@ -16,6 +16,7 @@ TagManager:
   - EffectManager
   - Ground
   - Water
+  - PostProcess
   layers:
   - Default
   - TransparentFX
@@ -27,8 +28,8 @@ TagManager:
   - 
   - Shot
   - ShotDestroy
-  - 
-  - 
+  - PostProcessing
+  - Effect
   - 
   - 
   - 

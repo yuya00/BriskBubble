@@ -65,6 +65,7 @@ public sealed partial class CameraScript : MonoBehaviour
     [Foldout("CameraProduction", false)]
     private GameObject[] obj;               // 敵のオブジェクト取得
     private GameObject scene;               // クリアフラグ取得
+    private GameObject post;                // postprocess取得
 
     private Vector3 save_pos;               // 演出前の位置を保存
     private Vector3 enm_pos;                // 敵の位置取得
