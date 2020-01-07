@@ -110,6 +110,7 @@ MonoBehaviour:
   fall_y_max: -100
   cam: {fileID: 0}
   rot_speed: 10
+  shot_switch: 0
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}
   - {fileID: 8580679673519122975, guid: 814522e3fb027ea4a870ebbc1ae939a5, type: 3}
@@ -121,8 +122,10 @@ MonoBehaviour:
   max_charge_vol: 6
   shot_charge_time: 3
   charge_slow_down: 0.8
-  max_charge_length: 200
+  max_charge_length: 100
   shot_length_charge_time: 5
+  physics_simulate_object: {fileID: 8586759329647222699, guid: 2ea527608f0a87d4e87174cdb1f0c65e,
+    type: 3}
   wall_grab_ray:
     gizmo_on: 0
     judge_on: 0

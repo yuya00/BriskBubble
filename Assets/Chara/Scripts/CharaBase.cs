@@ -65,7 +65,7 @@ public class CharaBase : MonoBehaviour {
 
 	// Ray基底 ---------------------------------------------
 	public class RayBase : GizmoBase {
-		[SerializeField, Header("Rayの長さ")]
+		[Header("Rayの長さ")]
 		public float length;
 	}
 
@@ -90,10 +90,10 @@ public class CharaBase : MonoBehaviour {
 		[System.NonSerialized]
 		public Vector3 box_size;
 
-		[SerializeField, Range(0.0f, 8.0f), Header("Rayの高さ(上限)")]
+		[Header("Rayの高さ(上限)")]
 		public float up_limit;
 
-		[SerializeField, Range(0.0f, 8.0f), Header("Rayの高さ(下限)")]
+		[Header("Rayの高さ(下限)")]
 		public float down_limit;
 
 		//Boxcastの計算
@@ -134,25 +134,25 @@ public class CharaBase : MonoBehaviour {
 
 		public const int ANGLE_MAG = 3; //角度調整
 
-		[SerializeField, Header("Rayの角度")]
-		public float angle;     //0.0f 未使用
+		[Header("Rayの角度")]	//0.0f 未使用
+		public float angle;
 
-		[System.NonSerialized] //壁との距離保存用
+		[System.NonSerialized]	//壁との距離保存用
 		public float dist_right, dist_left;
 
-		[System.NonSerialized] //壁との当たり判定
+		[System.NonSerialized]	//壁との当たり判定
 		public bool hit_right_flg, hit_left_flg;
 
-		[System.NonSerialized] //めり込み判定
+		[System.NonSerialized]	//めり込み判定
 		public bool cavein_right_flg, cavein_left_flg;
 
-		[System.NonSerialized] //両方のRayが当たった回数
+		[System.NonSerialized]	//両方のRayが当たった回数
 		public int both_count;
 
-		[System.NonSerialized] //両方のRayが当たった回数判定
+		[System.NonSerialized]	//両方のRayが当たった回数判定
 		public bool both_flg;
 
-		[SerializeField, Header("向き変更の速さ")]
+		[Header("向き変更の速さ")]
 		public float spd;       //1.5f
 
 		public void Clear() {
@@ -176,16 +176,16 @@ public class CharaBase : MonoBehaviour {
 	public class HoleRay : RayBase {
 		//public float length;    //100.0f
 
-		[SerializeField, Header("Rayの始点")]
-		public float startLength;	//11.0f
+		[Header("Rayの始点")]		//11.0f
+		public float startLength;
 
-		[SerializeField, Header("Rayの角度")]
-		public float angle;     //00.0f 未使用
+		[Header("Rayの角度")]		//00.0f 未使用
+		public float angle;
 
 		//[System.NonSerialized] //穴との距離保存用
 		//public float dist_right, dist_left;
 
-		[System.NonSerialized] //穴との当たり判定
+		[System.NonSerialized]		//穴との当たり判定
 		public bool hit_right_flg, hit_left_flg;
 
 		//[System.NonSerialized] //両方のRayが当たった回数
@@ -194,8 +194,8 @@ public class CharaBase : MonoBehaviour {
 		//[System.NonSerialized] //両方のRayが当たった回数判定
 		//public bool both_flg;
 
-		[SerializeField, Header("向き変更の速さ")]
-		public float speed;       //15.0f
+		[Header("向き変更の速さ")]	//15.0f
+		public float speed;
 
 		public void Clear() {
 			hit_right_flg = false;

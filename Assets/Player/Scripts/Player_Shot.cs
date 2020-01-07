@@ -5,64 +5,105 @@ using Pixeye.Unity;
 
 public sealed partial class Player : CharaBase
 {
+	// ショット-------------------------------------------------//
 
-    // ショット-------------------------------------------------//
-    void Shot()
-    {
-        // アニメーション
-        ShotAnime();
+
+	void Shot() {
+		// アニメーション
+		ShotAnime();
 
         // 次ショットまでの時間加算
         ShotInterval();
 
-        //ショットの種類切り替え
-        if (Input.GetButtonDown("Shot_L"))
-        {
-            shot_state++;
-            if (shot_state >= shot_object.Length) shot_state = 0;
 
-            Riset();
-        }
+		//今までの操作方法
+		if (!shot_switch) {
+
+			//ショットの種類切り替え
+			if (Input.GetButtonDown("Shot_L")) {
+				shot_state++;
+				if (shot_state >= shot_object.Length) {
+					shot_state = 0;
+				}
+				Riset();
+			}
+
+			// 撃てるとき
+			if (ShotIntervalCheck()) {
+				// ショットの時間を固定
+				shot_interval_time = shot_interval_time_max;
 
 
-        // 撃てるとき
-        if (ShotIntervalCheck())
-        {
-            // ショットの時間を固定
-            shot_interval_time = shot_interval_time_max;
+				switch (shot_state) {
+					case 0:
+						//ショットのチャージ(大きさ)
+						if (Input.GetButton("Shot_R")) {
+							ShotCharge();
+						}
+						break;
+					case 1:
+						break;
+					case 2:
+						if (Input.GetButton("Shot_R")) {
+							ShotChargeLength();
+						}
+						break;
+				}
+				// 最終ショット発射
+				if (Input.GetButtonUp("Shot_R")) {
+					// ショットをstateの値で選択
+					ShotSelect(shot_object[shot_state]);
+					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+				}
+			}
 
-
-            switch(shot_state)
+			//やまなりショットの軌道予測線を表示
+			if (shot_state == 2 && Input.GetButton("Shot_R"))
             {
-                case 0:
-                    //ショットのチャージ(大きさ)
-                    if (Input.GetButton("Shot_R"))
-                    {
-                        ShotCharge();
-                    }
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    if (Input.GetButton("Shot_R"))
-                    {
-                        ShotChargeLength();
-                    }
-                    break;
+                Physics_Simulate();
             }
-            // 最終ショット発射
-            if (Input.GetButtonUp("Shot_R"))
-            {
-                // ショットをstateの値で選択
-                ShotSelect(shot_object[shot_state]);
-                effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
-            }
-        }
 
-    }
+		}
 
-    // ショットのアニメーション
-    void ShotAnime()
+		//新しい操作方法(Lでチャージ,Rで発射、L離したら置く)
+		else {
+			if (ShotIntervalCheck()) {
+
+				// ショットの時間を固定
+				shot_interval_time = shot_interval_time_max;
+
+				// L押している間チャージ
+				if (Input.GetButton("Shot_L")) {
+					ShotCharge();
+
+					// R押したら発射
+					if (Input.GetButtonDown("Shot_R")) {
+						shot_state = 0;
+						ShotSelect(shot_object[0]);
+						effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+					}
+				}
+
+				// L離したら置く
+				if (Input.GetButtonUp("Shot_L")) {
+					Riset();
+					ShotChargeLength();
+
+					// ショットをstateの値で選択
+					shot_state = 1;
+					ShotSelect(shot_object[1]);
+					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+				}
+			}
+
+
+		}
+
+	}
+
+
+	// ショットのアニメーション
+	void ShotAnime()
     {
         // ショットのアニメーションがtrueのとき速度を上げる
         if (animator.GetBool("Shot"))
@@ -142,6 +183,12 @@ public sealed partial class Player : CharaBase
         //ショットの発射距離リセット
         shot_charge_length = 0;
 
+        //やまなりショットの軌道予測を破棄
+        for (int i = 0; i < 10; i++)
+        {
+           Destroy(physics_simulate_object_clone[i]);
+        }
+
 
         //animator.speed = init_anim_spd;
         //animator.SetBool("Shot", false);
@@ -217,6 +264,78 @@ public sealed partial class Player : CharaBase
         if (shot_interval_time >= shot_interval_time_max) return true;
         return false;
     }
+
+    void Physics_Simulate()
+    {
+        //シュミレート用のオブジェクトをプレイヤーの前に持ってくる
+        physics_simulate_object.transform.position = transform.position + (transform.forward * SHOT_POSITION);
+
+        GameObject obj  = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
+
+        Rigidbody rigid = obj.GetComponent<Rigidbody>();
+
+       //シュミレート用のオブジェクトに力を加える
+        float angle = 50.0f;
+
+        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length+7.0f);
+
+        Vector3 velocity = CalVelocity(obj.transform.position, target_pos, angle);
+
+        rigid.AddForce(velocity, ForceMode.Impulse);
+
+        //以前の物を削除
+        for (int i = 0; i < 10; i++)
+        {
+            Destroy(physics_simulate_object_clone[i]);
+        }
+
+
+
+
+
+        //物理シュミレート開始
+        for (int i = 0; i < 10; i++)
+        {
+            Physics.autoSimulation = false;
+            Physics.Simulate(0.5f);
+            Physics.autoSimulation = true;
+            physics_simulate_pos[i] = obj.transform.position;
+        }
+        Destroy(obj);
+        
+
+        //記録した座標の場所にオブジェクト設置
+            for (int i = 0; i < 10; i++)
+            {
+                physics_simulate_object_clone[i] = Instantiate(physics_simulate_object, physics_simulate_pos[i], Quaternion.identity);
+                Rigidbody rb = physics_simulate_object_clone[i].GetComponent<Rigidbody>();
+                rb.useGravity = false;
+            }
+
+
+        //GameObject obj = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
+
+    }
+
+    //発射速度のシュミレート
+    Vector3 CalVelocity(Vector3 pointA, Vector3 pointB, float angle)
+    {
+        //角度をラジアンに変換
+        float rad = angle * Mathf.PI / 180;
+
+        //水平方向の距離x
+        float x = Vector2.Distance(new Vector2(pointA.x, pointA.z), new Vector2(pointB.x, pointB.z));
+
+        // 垂直方向の距離y
+        float y = pointA.y - pointB.y;
+
+        // 斜方投射の公式
+        float speed = Mathf.Sqrt(-Physics.gravity.y * Mathf.Pow(x, 2) / (2 * Mathf.Pow(Mathf.Cos(rad), 2) * (x * Mathf.Tan(rad) + y)));
+
+        return (new Vector3(pointB.x - pointA.x, x * Mathf.Tan(rad), pointB.z - pointA.z).normalized * speed);
+    }
+
+
 
     // ショットに乗った判定
     public bool DownHitShot()
