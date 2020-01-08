@@ -31,6 +31,7 @@ public class Scene : MonoBehaviour
     public Text start_text;
     private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
     private int start_buf_no = 0;
+    private int send_buf_no = 4;
     private float start_timer = 0;
     private float start_timer_max = 1.0f;
     private float alpha = 1;
@@ -52,6 +53,7 @@ public class Scene : MonoBehaviour
         start_text.gameObject.SetActive(true);
         // この番号を配列の番目にして文字を切り替え
         start_buf_no = 0;
+        send_buf_no = 4;
         start_text.text = start_buf[start_buf_no];
         alpha = 1;
     }
@@ -175,6 +177,9 @@ public class Scene : MonoBehaviour
         if (start_timer > start_timer_max)
         {
             start_buf_no++;
+
+            // スタートタイマーに送る用
+            if(send_buf_no > 0) send_buf_no--;
             start_timer = 0;
         }
 
@@ -208,6 +213,12 @@ public class Scene : MonoBehaviour
     public bool ClearFg()
     {
         return clear_fg;
+    }
+
+    // スタート文字
+    public int Send_buf_no
+    {
+        get { return send_buf_no; }
     }
 
     public bool gui_on;
