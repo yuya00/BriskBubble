@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public sealed partial class Player : CharaBase
@@ -27,12 +28,19 @@ public sealed partial class Player : CharaBase
 		velocity	    = Vector3.zero;
 		tread_on.size   = new Vector3(ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
 			ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
-		// エフェクト関連
-		//effect.effect_no = 0;
-	}
+        // エフェクト関連
+        //effect.effect_no = 0;
 
-	void Update()
+        //やまなりショット用の物理シーンを作成
+        scene = SceneManager.CreateScene("physicsScene", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+
+    }
+
+    void Update()
     {
+
+
+
         switch (state)
         {
             // 待機

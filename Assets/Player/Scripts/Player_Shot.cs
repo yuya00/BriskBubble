@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Pixeye.Unity;
 
 public sealed partial class Player : CharaBase
@@ -11,13 +12,12 @@ public sealed partial class Player : CharaBase
 	void Shot() {
 		// アニメーション
 		ShotAnime();
-
+        
         // 次ショットまでの時間加算
         ShotInterval();
 
-
-		//今までの操作方法
-		if (!shot_switch) {
+        //今までの操作方法
+        if (!shot_switch) {
 
 			//ショットの種類切り替え
 			if (Input.GetButtonDown("Shot_L")) {
@@ -267,14 +267,24 @@ public sealed partial class Player : CharaBase
 
     void Physics_Simulate()
     {
+
+
         //シュミレート用のオブジェクトをプレイヤーの前に持ってくる
         physics_simulate_object.transform.position = transform.position + (transform.forward * SHOT_POSITION);
 
-        GameObject obj  = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
+        //シュミレート用のクローンを作成
+        GameObject obj = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
 
         Rigidbody rigid = obj.GetComponent<Rigidbody>();
 
-       //シュミレート用のオブジェクトに力を加える
+        //物理シーンを取得
+        physics_simulate_scene = scene.GetPhysicsScene();
+
+        //シュミレート用のオブジェクトのシーン移動
+        SceneManager.MoveGameObjectToScene(obj, scene);
+
+
+        //シュミレート用のオブジェクトに力を加える
         float angle = 50.0f;
 
         Vector3 target_pos = transform.position + transform.forward * (shot_charge_length+7.0f);
@@ -296,10 +306,11 @@ public sealed partial class Player : CharaBase
         //物理シュミレート開始
         for (int i = 0; i < 10; i++)
         {
-            Physics.autoSimulation = false;
-            Physics.Simulate(0.5f);
-            Physics.autoSimulation = true;
+
+            physics_simulate_scene.Simulate(0.5f);
+
             physics_simulate_pos[i] = obj.transform.position;
+
         }
         Destroy(obj);
         
