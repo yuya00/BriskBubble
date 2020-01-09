@@ -47,16 +47,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   init_col: {r: 0, g: 0, b: 0, a: 0}
-  spd: 3
-  slow_spd: 0
-  init_scale_max: 0.6
+  spd: 5
+  slow_spd: 30
+  init_scale_max: 0.4
   init_scale_min: 0.2
-  init_rot_max: 180
+  init_rot_max: 360
   init_rot_min: 0
-  rot_x: 0
-  alpha_spd: 0.2
+  rot_x: 50
+  alpha_spd: 2
   destroy_timer_max: 1
-  rot: {x: 30, y: 80, z: 30}
+  rot: {x: 30, y: 30, z: 30}
 --- !u!33 &1024459011614124057
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -6,8 +6,9 @@ public class RunWaterEffect : MonoBehaviour
 {
     public Color init_col;
     private Vector3 front;
+    private Vector3 pos;
 
-    //private GameObject player;
+    private int state;
 
     public float spd = 3.0f;
     public float slow_spd;
@@ -29,13 +30,13 @@ public class RunWaterEffect : MonoBehaviour
     private float destroy_timer;
     public float destroy_timer_max = 1.0f;
 
-    public Vector3 rot = new Vector3(30, 80, 30);
     void Start()
     {
         // モデルの色
         gameObject.GetComponent<MeshRenderer>().material.color = init_col = new Color(1, 1, 1, 1);
 
         //player = GameObject.FindGameObjectWithTag("Player");
+        pos = transform.position;
 
         // 初期の大きさをランダムにする
         float rand_scale = Random.Range(init_scale_min, init_scale_max);
@@ -61,14 +62,40 @@ public class RunWaterEffect : MonoBehaviour
 
     void Move()
     {
-        spd -= slow_spd * Time.deltaTime;
+        switch (state)
+        {
+            case 0:
+                Up();
+                if (!SpeedCheck()) state++;
+                break;
+            case 1:
+                Down();
+                break;
+        }
 
-        // 回転させて動きを入れる
-        transform.Rotate(new Vector3(rot.x, rot.y, rot.z) * Time.deltaTime);
+    }
+
+    // 上にあげる
+    void Up()
+    {
+        spd -= slow_spd * Time.deltaTime;
 
         // 飛ばす
         transform.position -= (front + transform.forward.normalized) * (spd * Time.deltaTime);
     }
+
+    // 下に落とす
+    void Down()
+    {
+        spd -= (slow_spd * 0.5f) * Time.deltaTime;
+        pos.y = pos.y - 2;
+
+        // 落とす方向
+        Vector3 v1 = (pos - transform.position).normalized;
+
+        transform.position -= v1 * (spd * Time.deltaTime);
+    }
+
 
     void AlphaChange()
     {
@@ -97,4 +124,12 @@ public class RunWaterEffect : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // 速度チェック
+    bool SpeedCheck()
+    {
+        if (spd > 0) return true;
+        return false;
+    }
+
 }
