@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pixeye.Unity;
 
-public sealed partial class EffectManager : MonoBehaviour
+public partial class EffectManager : MonoBehaviour
 {
 
     void Start()
@@ -57,6 +57,9 @@ public sealed partial class EffectManager : MonoBehaviour
                 break;
             case EFFECT.SHOT:
                 EffectSet(effect_shot, pos, num);
+                break;
+            case EFFECT.COIN:
+                EffectSet(effect_coin_get, pos, num);
                 break;
         }
     }

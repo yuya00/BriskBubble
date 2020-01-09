@@ -66,6 +66,7 @@ public sealed partial class Player : CharaBase
     private EffectManager.EFFECT JUMP = EffectManager.EFFECT.JUMP;
     private EffectManager.EFFECT EFC_RUN = EffectManager.EFFECT.RUN;
     private EffectManager.EFFECT SHOT = EffectManager.EFFECT.SHOT;
+    private EffectManager.EFFECT COIN = EffectManager.EFFECT.COIN;
 
     // 位置変数
     private float jump_down_pos = -1.0f;
