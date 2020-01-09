@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Pixeye.Unity;
 
 public sealed partial class Player : CharaBase
@@ -119,6 +120,8 @@ public sealed partial class Player : CharaBase
     public GameObject physics_simulate_object;   //やまなりショットの軌道予測用のオブジェクト
     private Vector3[] physics_simulate_pos = new Vector3[10]; //やまなりショットの座標記憶用
     private GameObject[] physics_simulate_object_clone = new GameObject[10];//やまなりショットの軌道表示用
+    public PhysicsScene physics_simulate_scene; 　　　//やまなりショット用の物理シーン
+    public UnityEngine.SceneManagement.Scene scene;　 //やまなりショット用の物理シーン
 
     [Foldout("ShotParameter", false)]
 
