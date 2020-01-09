@@ -74,7 +74,8 @@ public sealed partial class Player : CharaBase
     // 足元情報
     enum FOOT
     {
-        GROUND = 0,
+        NONE = 0,
+        GROUND,
         WATER,
     }
     private int foot = 0;

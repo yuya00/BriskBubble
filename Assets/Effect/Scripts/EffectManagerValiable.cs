@@ -40,7 +40,8 @@ public sealed partial class EffectManager : MonoBehaviour
     // RUNで地上情報に合わせてエフェクトを分ける
     public enum RUN
     {
-        GROUND = 0,
+        NONE = 0,
+        GROUND,
         WATER,
     }
     #endregion
@@ -55,6 +56,7 @@ public sealed partial class EffectManager : MonoBehaviour
     public GameObject effect_explosion;    // 敵破壊エフェクト1
     public GameObject effect_focusing;    // 敵破壊エフェクト2
     [Foldout("EffectObject", false)]
+    #endregion
 
     private GameObject player;          // 情報を貰う用
     private GameObject[] enemy;
@@ -62,9 +64,18 @@ public sealed partial class EffectManager : MonoBehaviour
     //private const int END_PRODACTION = 2;
     private const int FOCUS_NUM = 8;
 
+    // focus変数
     private Vector3 focus_pos;
+    private int data_no_x = 0;
+    private int data_no_z = 0;
+    private const int data_focus_x = 2;
+    private const int data_focus_z = 2;
+    private const int max_focus_data = 5;
+    private float[] x = { data_focus_x, -data_focus_x, data_focus_x, -data_focus_x, data_focus_x, -data_focus_x };
+    private float[] z = { -data_focus_z, -data_focus_z, -data_focus_z, data_focus_z, data_focus_z, data_focus_z };
 
-    #endregion
+    // プレイヤーの足元情報
+    private int foot;
 
     #region /* エフェクトの数まとめ */
     [Foldout("エフェクトの数まとめ", true)]

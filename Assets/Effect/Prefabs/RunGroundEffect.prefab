@@ -46,20 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45362e26f5396ea4bbf1b36500bc9f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  init_col: {r: 0, g: 0, b: 0, a: 0}
-  spd: 3
-  alpha_spd: 2
-  scale_max: 0.6
+  scale_spd: -0.03
   scale_min: 0.1
-  rot_max:
-  - 0
-  - 180
-  - 0
-  rot_min:
-  - 0
-  - 360
-  - 0
-  destroy_timer_max: 1
+  init_scale_max: 0.4
+  init_scale_min: 0.08
+  timer_max: 50
+  timer_scale_up_max: 3
 --- !u!33 &1024459011614124057
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -85,7 +77,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9a24021892e90bd4cbaf59abc59893a1, type: 2}
+  - {fileID: 2100000, guid: b3d8e4a769801834faab8af702f0724e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -21,7 +21,7 @@ public class Focus : MonoBehaviour
     void Start()
     {
         state = 0;
-        init_spd = spd * 0.1f;
+        init_spd = spd * 0.05f;
         timer = 0;
 
         // 位置情報取得
@@ -66,7 +66,6 @@ public class Focus : MonoBehaviour
     // 集束
     void Focusing(Vector3 pos, float spd)
     {
-        //transform.position = Vector3.Lerp(transform.position, pos, -spd * Time.deltaTime);
         Vector3 v1 = (pos - transform.position).normalized;
         transform.position = transform.position + v1 * (spd * Time.deltaTime);
     }

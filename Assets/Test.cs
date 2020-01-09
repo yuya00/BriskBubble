@@ -23,8 +23,8 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(2))
-        effect.Effect(ENEMY, FOCUSING, transform.position, 1);
+        if (Input.GetMouseButtonDown(0))
+            effect.Effect(ENEMY, FOCUSING, transform.position, effect.focusing_effect);
     }
 
     //GUI表示 -----------------------------------------------------

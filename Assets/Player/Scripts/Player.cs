@@ -982,6 +982,13 @@ public sealed partial class Player : CharaBase
             }
         }
 
+        // 何にも当たってなかったら
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Water")
+        {
+            foot = (int)FOOT.NONE;
+        }
+
+
     }
 
     // 物体に当たってるときに呼ばれる
@@ -1024,6 +1031,11 @@ public sealed partial class Player : CharaBase
     public Vector3 TransformPosition
     {
         get { return transform.position; }
+    }
+
+    public Vector3 Front
+    {
+        get { return transform.forward.normalized; }
     }
 
     public int CoinCount
