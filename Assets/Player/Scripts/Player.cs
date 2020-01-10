@@ -1056,5 +1056,10 @@ public sealed partial class Player : CharaBase
         get { return foot; }
     }
 
+    public int FaintData
+    {
+        get { return (int)enum_faint; }
+    }
+
 }
 
