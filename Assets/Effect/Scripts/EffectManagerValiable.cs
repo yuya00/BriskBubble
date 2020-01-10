@@ -11,7 +11,7 @@ using Pixeye.Unity;
     #endregion
  */
 
-public sealed partial class EffectManager : MonoBehaviour
+public partial class EffectManager : MonoBehaviour
 {
     #region /* enum宣言 */
     // エフェクトを出すobjの種類
@@ -28,6 +28,7 @@ public sealed partial class EffectManager : MonoBehaviour
         JUMP = 0,
         RUN,
         SHOT,
+        COIN,
 
         APPER,
         DESTROY,
@@ -52,6 +53,7 @@ public sealed partial class EffectManager : MonoBehaviour
     public GameObject effect_run_ground;    // run時のエフェクト  
     public GameObject effect_run_water;     // run時のエフェクト  
     public GameObject effect_shot;          // shot時のエフェクト
+    public GameObject effect_coin_get;      // coinとった時のエフェクト
     public GameObject effect_trajectory;    // 軌跡エフェクト
     public GameObject effect_explosion;    // 敵破壊エフェクト1
     public GameObject effect_focusing;    // 敵破壊エフェクト2
@@ -77,6 +79,7 @@ public sealed partial class EffectManager : MonoBehaviour
     // プレイヤーの足元情報
     private int foot;
 
+
     #region /* エフェクトの数まとめ */
     [Foldout("エフェクトの数まとめ", true)]
 
@@ -84,6 +87,7 @@ public sealed partial class EffectManager : MonoBehaviour
     public int run_ground_player    = 5;
     public int run_water_player     = 7;
     public int shot_player          = 5;
+    public int coin_get_player      = 10;
 
     public int jump_enemy           = 10;
     public int run_ground_enemy     = 5;
@@ -118,5 +122,6 @@ public sealed partial class EffectManager : MonoBehaviour
     #endregion
 
     EFFECT debug_state;
+
 
 }

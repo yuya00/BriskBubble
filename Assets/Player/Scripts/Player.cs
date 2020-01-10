@@ -1019,9 +1019,9 @@ public sealed partial class Player : CharaBase
         if (other.gameObject.tag == "Coin")
         {
             coin_count++;
+            effect.Effect(PLAYER, COIN, transform.position, effect.coin_get_player);
             Destroy(other.gameObject);
         }
-
 
 		////水の上なら
 		//if (other.gameObject.tag == "Water") {
@@ -1054,6 +1054,11 @@ public sealed partial class Player : CharaBase
     public int Foot
     {
         get { return foot; }
+    }
+
+    public int FaintData
+    {
+        get { return (int)enum_faint; }
     }
 
 }

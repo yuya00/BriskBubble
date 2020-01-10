@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pixeye.Unity;
 
-public sealed partial class EffectManager : MonoBehaviour
+public partial class EffectManager : MonoBehaviour
 {
 
     void Start()
@@ -58,6 +58,9 @@ public sealed partial class EffectManager : MonoBehaviour
             case EFFECT.SHOT:
                 EffectSet(effect_shot, pos, num);
                 break;
+            case EFFECT.COIN:
+                EffectSet(effect_coin_get, pos, num);
+                break;
         }
     }
 
@@ -65,6 +68,7 @@ public sealed partial class EffectManager : MonoBehaviour
     void PlayerRun(RUN state, Vector3 pos)
     {
         int num = 0;
+        float rand = 0.5f;
         switch (state)
         {
             case RUN.NONE:
@@ -82,7 +86,11 @@ public sealed partial class EffectManager : MonoBehaviour
                 // 何フレーム置きに出現するか
                 if (WaitCheck(TYPE.PLAYER, run_water_timer_player))
                 {
-                    EffectSet(effect_run_water, pos, num);
+                    for (int i = 0; i < num; ++i)
+                    {
+                        pos = new Vector3(pos.x + Random.Range(-rand, rand), pos.y, pos.z + Random.Range(-rand, rand));
+                        EffectSet(effect_run_water, new Vector3(pos.x, pos.y + 0.2f, pos.z), 1);
+                    }
                 }
                 break;
         }

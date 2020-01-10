@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunWaterEffect : MonoBehaviour
+public class CoinGetEffect : MonoBehaviour
 {
-    public Color init_col;
     private Vector3 front;
     private Vector3 pos;
 
@@ -17,25 +16,21 @@ public class RunWaterEffect : MonoBehaviour
     // 大きさの範囲
     public float init_scale_max = 0.6f;
     public float init_scale_min = 0.2f;
+    public float scale_spd = 0.3f;
 
     // 角度の範囲
     public float init_rot_max = 180;
     public float init_rot_min = 0;
     public float rot_x = 0;
 
-    // 透明になる速さ
-    public float alpha_spd = 0.2f;
-
-    // 壊れるまでの待機時間
-    private float destroy_timer;
+    public float alpha_spd = 0.2f;  // 透明になる速さ
+    private float destroy_timer;    // 壊れるまでの待機時間
     public float destroy_timer_max = 1.0f;
+
+    public Vector3 rotation;
 
     void Start()
     {
-        // モデルの色
-        gameObject.GetComponent<MeshRenderer>().material.color = init_col = new Color(1, 1, 1, 1);
-
-        //player = GameObject.FindGameObjectWithTag("Player");
         pos = transform.position;
 
         // 初期の大きさをランダムにする
@@ -48,10 +43,11 @@ public class RunWaterEffect : MonoBehaviour
 
         // 角度を保存
         front = transform.forward;
+        state = 0;
     }
+
     void Update()
     {
-        AlphaChange();
         Destroy();
     }
 
@@ -69,6 +65,8 @@ public class RunWaterEffect : MonoBehaviour
                 if (!SpeedCheck()) state++;
                 break;
             case 1:
+                Scale();
+                Rotate();
                 Down();
                 break;
         }
@@ -87,7 +85,7 @@ public class RunWaterEffect : MonoBehaviour
     // 下に落とす
     void Down()
     {
-        spd -= (slow_spd * 0.5f) * Time.deltaTime;
+        spd += (slow_spd * 0.5f) * Time.deltaTime;
         pos.y = pos.y - 2;
 
         // 落とす方向
@@ -96,15 +94,17 @@ public class RunWaterEffect : MonoBehaviour
         transform.position -= v1 * (spd * Time.deltaTime);
     }
 
-
-    void AlphaChange()
+    void Rotate()
     {
-        // 徐々に透明にする
-        init_col.r -= alpha_spd * Time.deltaTime;
-        init_col.g -= alpha_spd * Time.deltaTime;
-        init_col.b -= alpha_spd * Time.deltaTime;
+        transform.Rotate(rotation * Time.deltaTime);
+    }
 
-        gameObject.GetComponent<MeshRenderer>().sharedMaterial.color = init_col;
+    void Scale()
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x + scale_spd * Time.deltaTime,
+            transform.localScale.y + scale_spd * Time.deltaTime,
+            transform.localScale.z + scale_spd * Time.deltaTime);
     }
 
     // 壊れる条件
@@ -118,8 +118,8 @@ public class RunWaterEffect : MonoBehaviour
             destroy_timer = 0;
         }
 
-        // (シェーダーが)透明になったら消す
-        if (init_col.r < 0)
+        // 小さくなったら消す
+        if (transform.localScale.x < 0)
         {
             Destroy(gameObject);
         }
@@ -128,8 +128,7 @@ public class RunWaterEffect : MonoBehaviour
     // 速度チェック
     bool SpeedCheck()
     {
-        if (spd > 0) return true;
+        if (spd > 2) return true;
         return false;
     }
-
 }

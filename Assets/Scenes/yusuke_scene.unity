@@ -572,7 +572,7 @@ PrefabInstance:
         type: 3}
       propertyPath: effect
       value: 
-      objectReference: {fileID: 1024459011614124062, guid: 10610b5158d33794c918d3d5fe0ef49e,
+      objectReference: {fileID: 1029069878067954932, guid: 399156e2a41f2e34bbb9a5e551921800,
         type: 3}
     - target: {fileID: 5841802759269174199, guid: 92876ee8850b07e40936e4e359928055,
         type: 3}
@@ -4083,6 +4083,8 @@ MonoBehaviour:
     type: 3}
   effect_shot: {fileID: 286456998030942924, guid: 79f8870002632084187ca467926e4e32,
     type: 3}
+  effect_coin_get: {fileID: 1029069878067954932, guid: 399156e2a41f2e34bbb9a5e551921800,
+    type: 3}
   effect_trajectory: {fileID: 5237719064611241031, guid: 4f7e8a89d7a0f8f40b0d0afc9368b7c8,
     type: 3}
   effect_explosion: {fileID: 2872860341603439731, guid: 4f6d597255423034990c04f031a9f4e0,
@@ -4091,8 +4093,9 @@ MonoBehaviour:
     type: 3}
   jump_player: 10
   run_ground_player: 5
-  run_water_player: 17
+  run_water_player: 10
   shot_player: 10
+  coin_get_player: 15
   jump_enemy: 10
   run_ground_enemy: 10
   run_water_enemy: 10
@@ -4338,7 +4341,7 @@ Transform:
   m_GameObject: {fileID: 1549008010}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -31.869999, y: 3, z: 13.6}
-  m_LocalScale: {x: 25, y: 3.5, z: 25}
+  m_LocalScale: {x: 25, y: 3.5, z: 100}
   m_Children: []
   m_Father: {fileID: 518917963}
   m_RootOrder: 2
@@ -5068,7 +5071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1709835362
 Transform:
   m_ObjectHideFlags: 0
