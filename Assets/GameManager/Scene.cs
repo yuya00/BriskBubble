@@ -69,6 +69,9 @@ public class Scene : MonoBehaviour
         // 最初にフェードアウトする
         SceneInitFadeOut();
 
+        // カメラから送られてきた情報でフェード
+        CameraFade();
+
         // シーンごとに移行条件を設定
         SceneSelect();
 
@@ -79,7 +82,7 @@ public class Scene : MonoBehaviour
         }
     }
 
-    // シーンはじまったときにfadeoutする
+    // シーンはじまったときにfadeoutする(Startでやったらがたつき起きる)
     void SceneInitFadeOut()
     {
         // Initializeでtrueを設定して、1フレーム計算
@@ -95,6 +98,25 @@ public class Scene : MonoBehaviour
     {
         fade_fg = true;
         fade.FadeIn(fade_in_time);
+    }
+
+    // カメラ情報をもとにフェード
+    void CameraFade()
+    {
+        // 情報取得
+        float fadein = cam.GetComponent<CameraScript>().camera_fadein_time;
+        float fadeout = cam.GetComponent<CameraScript>().camera_fadeout_time;
+
+        // カメラ情報をもとにフェード
+        if (cam.GetComponent<CameraScript>().Scene_camera_state == 2)
+        {
+            fade.FadeIn(fadein);
+        }
+        if (cam.GetComponent<CameraScript>().Scene_camera_state == 0)
+        {
+            fade.FadeOut(fadeout);
+        }
+
     }
 
     // シーンごとに移行条件を設定
