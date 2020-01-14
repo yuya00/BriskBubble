@@ -184,6 +184,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (18)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -268,6 +273,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip (32)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 3f429d037ce67aa4cb16794396af9c76,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3f429d037ce67aa4cb16794396af9c76,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -346,6 +356,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (50)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -431,6 +446,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (190)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -514,6 +534,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -651,6 +676,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (188)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -735,6 +765,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (113)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -818,6 +853,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (192)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -928,6 +968,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (164)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -1271,6 +1316,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (73)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1354,6 +1404,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (107)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -1439,6 +1494,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (57)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1523,6 +1583,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (71)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1606,6 +1671,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -1795,6 +1865,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (66)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1878,6 +1953,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (134)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -1963,6 +2043,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (4)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2047,6 +2132,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (200)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2130,6 +2220,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (169)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -2241,6 +2336,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (205)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2324,6 +2424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (155)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -2434,6 +2539,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (130)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -2597,6 +2707,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (59)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2681,6 +2796,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (46)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2764,6 +2884,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (93)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -2953,6 +3078,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip (9)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 3f429d037ce67aa4cb16794396af9c76,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3f429d037ce67aa4cb16794396af9c76,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3031,6 +3161,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -3116,6 +3251,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (91)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3199,6 +3339,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (225)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -3284,6 +3429,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (133)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3367,6 +3517,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (81)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -3556,6 +3711,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (51)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3691,6 +3851,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (76)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -3828,6 +3993,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (179)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3911,6 +4081,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (153)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -4074,6 +4249,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (16)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4157,6 +4337,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (172)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -4294,6 +4479,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (38)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4377,6 +4567,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (56)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -4462,6 +4657,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (97)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4545,6 +4745,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (131)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -4656,6 +4861,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (58)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4765,6 +4975,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (185)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -4876,6 +5091,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (10)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4959,6 +5179,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (145)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -5096,6 +5321,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (227)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5179,6 +5409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (184)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -5316,6 +5551,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (139)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5452,6 +5692,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (118)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5535,6 +5780,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (168)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -5672,6 +5922,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (204)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5755,6 +6010,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (191)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -5865,6 +6125,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (67)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -6002,6 +6267,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (216)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6112,6 +6382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (42)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6195,6 +6470,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (85)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -6332,6 +6612,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (39)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6441,6 +6726,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (86)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -6577,6 +6867,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -6792,6 +7087,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (31)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6902,6 +7202,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (175)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6985,6 +7290,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -7095,6 +7405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (157)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -7232,6 +7547,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (96)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7342,6 +7662,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (105)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7425,6 +7750,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -7535,6 +7865,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (138)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -7750,6 +8085,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (99)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7912,6 +8252,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (6)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8021,6 +8366,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (36)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -8158,6 +8508,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (79)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8241,6 +8596,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (77)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -8326,6 +8686,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8410,6 +8775,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (64)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8493,6 +8863,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (143)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -8603,6 +8978,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (213)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -8765,6 +9145,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (126)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -8967,6 +9352,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (30)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9077,6 +9467,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (173)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9160,6 +9555,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (110)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -9271,6 +9671,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (120)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9354,6 +9759,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (194)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -9464,6 +9874,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -9601,6 +10016,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (92)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9684,6 +10104,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (176)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -9794,6 +10219,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (212)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -10009,6 +10439,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (83)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10145,6 +10580,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (112)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10229,6 +10669,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (55)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10312,6 +10757,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (72)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -10422,6 +10872,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (44)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -10559,6 +11014,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (180)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10643,6 +11103,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (152)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10726,6 +11191,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (95)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -10897,6 +11367,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (78)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11007,6 +11482,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (140)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11090,6 +11570,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (149)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -11175,6 +11660,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (123)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11258,6 +11748,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -11343,6 +11838,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (70)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11426,6 +11926,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (181)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -11563,6 +12068,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (203)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11646,6 +12156,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (52)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -11756,6 +12271,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (48)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -11893,6 +12413,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (148)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12015,6 +12540,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (122)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12098,6 +12628,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (35)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -12264,6 +12799,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (19)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12347,6 +12887,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (100)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -12432,6 +12977,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (206)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12515,6 +13065,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (163)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -12625,6 +13180,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (224)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -12775,6 +13335,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (199)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -12995,6 +13560,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (102)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13183,6 +13753,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (103)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13266,6 +13841,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -13376,6 +13956,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (211)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -13539,6 +14124,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (104)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13675,6 +14265,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (60)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13759,6 +14354,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (7)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13842,6 +14442,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (124)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -13953,6 +14558,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (109)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14063,6 +14673,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (178)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14158,6 +14773,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (162)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -14268,6 +14888,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (94)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -14474,6 +15099,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (147)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14610,6 +15240,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (144)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14693,6 +15328,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (137)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -14778,6 +15418,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (90)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14861,6 +15506,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (174)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -14972,6 +15622,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (17)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15081,6 +15736,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (115)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -15192,6 +15852,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (54)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15301,6 +15966,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (87)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -15464,6 +16134,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (98)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15547,6 +16222,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 3f429d037ce67aa4cb16794396af9c76,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3f429d037ce67aa4cb16794396af9c76,
         type: 3}
@@ -15652,6 +16332,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (167)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -15867,6 +16552,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (101)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15976,6 +16666,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (75)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -16112,6 +16807,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (117)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -16327,6 +17027,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (43)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16436,6 +17141,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (189)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -16598,6 +17308,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (29)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -16809,6 +17524,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (53)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16918,6 +17638,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (49)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -17064,21 +17789,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407056401089, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407232865577, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407232865577, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239075, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
@@ -17250,6 +17960,36 @@ PrefabInstance:
       propertyPath: gui_on
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1075969294217420851, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4003604252743411522, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414721375438047800, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a8555c0cff30527479e32562cef9141f, type: 2}
+    - target: {fileID: 6363856407056401089, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407232865577, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407232865577, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6363856407093239076, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_Size.x
@@ -17279,21 +18019,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4003604252743411522, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6414721375438047800, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: a8555c0cff30527479e32562cef9141f, type: 2}
-    - target: {fileID: 1075969294217420851, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
@@ -17334,6 +18059,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (132)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -17445,6 +18175,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (187)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17555,6 +18290,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (177)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17639,6 +18379,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (45)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17722,6 +18467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (201)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -17833,6 +18583,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (222)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17942,6 +18697,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (214)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -18053,6 +18813,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (127)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18136,6 +18901,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (208)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -18273,6 +19043,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (61)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18356,6 +19131,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (159)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -18441,6 +19221,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (84)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18524,6 +19309,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (68)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -18635,6 +19425,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (202)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18718,6 +19513,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (63)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -18803,6 +19603,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (128)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18886,6 +19691,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (129)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -18997,6 +19807,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (154)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19081,6 +19896,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (219)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19164,6 +19984,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -19275,6 +20100,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (9)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19358,6 +20188,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (193)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -19469,6 +20304,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (62)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19552,6 +20392,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (183)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -19637,6 +20482,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (106)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19720,6 +20570,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (197)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -19831,6 +20686,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (170)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19914,6 +20774,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 3f429d037ce67aa4cb16794396af9c76,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3f429d037ce67aa4cb16794396af9c76,
         type: 3}
@@ -20019,6 +20884,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (150)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -20260,6 +21130,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (3)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20343,6 +21218,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (119)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -20441,6 +21321,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (111)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -20552,6 +21437,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (34)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20661,6 +21551,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (108)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -20772,6 +21667,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (125)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20855,6 +21755,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (142)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -20940,6 +21845,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (217)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21023,6 +21933,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (89)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -21133,6 +22048,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (88)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -21362,6 +22282,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (182)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21472,6 +22397,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (141)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21556,6 +22486,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (218)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21639,6 +22574,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -21750,6 +22690,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (2)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21833,6 +22778,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -21944,6 +22894,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (74)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22027,6 +22982,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (40)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -22190,6 +23150,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (41)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22326,6 +23291,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (146)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22435,6 +23405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -22546,6 +23521,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (207)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22656,6 +23636,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (209)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22739,6 +23724,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -22850,6 +23840,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (8)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22933,6 +23928,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (220)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -23069,6 +24069,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (47)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -23250,6 +24255,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (37)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23333,6 +24343,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (165)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -23444,6 +24459,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (156)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23554,6 +24574,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (166)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23638,6 +24663,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (160)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23721,6 +24751,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (186)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -23831,6 +24866,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (198)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -23986,6 +25026,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (151)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24070,6 +25115,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (171)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24153,6 +25203,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (121)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -24290,6 +25345,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (25)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24400,6 +25460,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (226)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24483,6 +25548,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (158)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -24770,6 +25840,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (21)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24906,6 +25981,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (20)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25016,6 +26096,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (80)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25100,6 +26185,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (221)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25183,6 +26273,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (69)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -25523,6 +26618,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (210)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25658,6 +26758,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (161)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -25890,7 +26995,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8431ac708ccfd3c469bfde214e02128d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui_on: 0
+  gui:
+    on: 0
+    all_view: 0
+    debug_view: 0
   player: {fileID: 2047487348}
   UP: -12
   UP_TARGET: 4
@@ -25905,6 +27013,9 @@ MonoBehaviour:
   approach_timer_max: 1
   scene_move_spd: 30
   LOOK_SPD: 15
+  Y_CLEAR_SPD: 4
+  clear_cam_spd: 1
+  clear_wait_timer_max: 10
   enemy_hit_flg: 0
 --- !u!4 &2066760147
 Transform:
@@ -25931,6 +27042,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (65)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -26173,6 +27289,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (196)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -26257,6 +27378,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (11)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -26340,6 +27466,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (223)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -26477,6 +27608,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (135)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -26587,6 +27723,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (136)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -26670,6 +27811,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (82)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -26833,6 +27979,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (116)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -26943,6 +28094,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: maptip_sand (114)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27026,6 +28182,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (195)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
@@ -27136,6 +28297,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: maptip_sand (215)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 54af2d06eafd4854a91a9344765be815,
         type: 3}
