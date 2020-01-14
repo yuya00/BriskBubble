@@ -99,16 +99,16 @@ public partial class EffectManager : MonoBehaviour
     void GroundEffect(Vector3 pos, int num)
     {
         Vector3 front = player.GetComponent<Player>().Front;
-        float rand = 0.5f;
+        float rand_x = 0.3f, rand_z = 0.5f;
 
         // いっきにnum個のeffectを出す
         for (int i = 0; i < num; ++i)
         {
             // 生成する物体、生成場所、回転軸の設定
             pos = new Vector3(
-                    pos.x + Random.Range(-rand, rand),
+                    pos.x + Random.Range(-rand_x, rand_x),
                     pos.y,
-                    pos.z + Random.Range(-rand, rand));
+                    pos.z + Random.Range(-rand_z, rand_z));
             EffectSet(effect_run_ground, pos, 1);
         }
     }

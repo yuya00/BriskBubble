@@ -4910,9 +4910,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui:
-    on: 1
+    on: 0
     all_view: 0
-    debug_view: 1
+    debug_view: 0
   player: {fileID: 491933055}
   UP: -2
   UP_TARGET: 2
@@ -4932,7 +4932,7 @@ MonoBehaviour:
   enemy_hit_flg: 0
   camera_fadein_time: 0.3
   camera_fadeout_time: 1
-  select_scene_camera: 1
+  camera_state: 0
   scene_move_spd: 5
   fade_timer_max: 0.5
   target:
