@@ -7,20 +7,16 @@ public class EnemySoundDetect : MonoBehaviour {
 	private bool hit_flg;
 	private Vector3 hit_pos;
 
+	private bool found_shot_flg;
+	private Vector3 found_hit_pos;
+
 	public bool gizmo_on;
 	[SerializeField]
 	private Color gizmo_color;
 
 	private void Awake() {
 		m_sphereCollider = GetComponent<SphereCollider>();
-		hit_flg = false;
 	}
-
-	//FixedUpdateはonTriggerの前に実行される
-	private void FixedUpdate() {
-		hit_flg = false;
-	}
-
 
 	// 当たり判定 -------------------------------------------------------
 	private void OnTriggerStay(Collider other) {
@@ -28,12 +24,17 @@ public class EnemySoundDetect : MonoBehaviour {
 			hit_flg = true;
 			hit_pos = other.gameObject.transform.position;
 		}
-
+		if (other.gameObject.tag == "Shot") {
+			found_hit_pos = other.gameObject.transform.position;
+		}
 	}
 	private void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().ApperFg) {
 			hit_flg = true;
 			hit_pos = other.gameObject.transform.position;
+		}
+		if (other.gameObject.tag == "Shot") {
+			found_shot_flg = true;
 		}
 	}
 
@@ -49,11 +50,21 @@ public class EnemySoundDetect : MonoBehaviour {
 	//当たり判定を返す
 	public bool HitFlg {
 		get { return hit_flg; }
+		set { hit_flg = value; }
+	}
+	//座標を返す
+	public Vector3 Hitpos {
+		get { return hit_pos; }
 	}
 
 	//当たり判定を返す
-	public Vector3 Hitpos {
-		get { return hit_pos; }
+	public bool FoundShotFlg {
+		get { return found_shot_flg; }
+		set { found_shot_flg = value; }
+	}
+	//座標を返す
+	public Vector3 FoundHitPos {
+		get { return found_hit_pos; }
 	}
 
 	//ギズモ用の色を返す
