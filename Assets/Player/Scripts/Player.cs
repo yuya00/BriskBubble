@@ -969,6 +969,12 @@ public sealed partial class Player : CharaBase
 			}
 		}
 
+		//ショットに接触(気絶)
+		if (other.gameObject.name == "CounterShot(Clone)") {
+			is_faint = true;
+		}
+
+
 	}
 
 	private void OnCollisionExit(Collision other)

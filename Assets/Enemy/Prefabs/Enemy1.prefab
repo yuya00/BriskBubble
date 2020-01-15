@@ -179,11 +179,14 @@ MonoBehaviour:
     on: 0
     all_view: 0
     debug_view: 0
-  run_speed: 15
+  run_speed: 8
   walk_speed: 3
   jump_power: 10
   gravity_power: 5
   fallspd_limit: 30
+  ground_cast:
+    gizmo_on: 0
+    judge_on: 1
   wall_ray:
     gizmo_on: 1
     judge_on: 1
@@ -201,25 +204,41 @@ MonoBehaviour:
     speed: 15
   condition_effect:
     warning: {fileID: 0}
-    find: {fileID: 0}
+    find: {fileID: 1458771595821501554, guid: 22eb9fe6ecd450242bb5eab1b37359c2, type: 3}
     away: {fileID: 0}
     attack: {fileID: 0}
     faint: {fileID: 0}
   wait_act:
-    wait_time: 240
+    wait_time: 200
     wait_random: 0
-    swing_time: 70
+    swing_time: 50
     swing_random: 0
-    swing_spd: 30
-    swing_space_time: 15
-  warning_act:
-    swing_spd: 100
-    swing_time: 10
+    swing_spd: 80
     swing_space_time: 15
   away_act:
-    mag: 2
     lookback_interval: 120
     lookback_time: 30
+    kind:
+      normal: 1
+      curve: 0
+      jump: 0
+      zigzag: 0
+      armar: 0
+      shot: 0
+      spin: 0
+    normal:
+      interval: 120
+      spd: 0.04
+    curve:
+      interval: 120
+      spd: 0.5
+    jump:
+      power: 28
+      time: 80
+  breakshot_act:
+    obj: {fileID: 8822260934768747016, guid: 6ba1408e7d3f632409716977905dc156, type: 3}
+    front_time: 10
+    back_time: 30
   jump_ray:
     gizmo_on: 1
     judge_on: 1
@@ -228,6 +247,7 @@ MonoBehaviour:
     down_limit: 3.9
     power: 22
     advance_length: 23
+  shot_to_defense: 3
 --- !u!136 &2821904174435107906
 CapsuleCollider:
   m_ObjectHideFlags: 0
