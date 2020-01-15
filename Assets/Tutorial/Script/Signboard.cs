@@ -40,6 +40,10 @@ public class Signboard : MonoBehaviour
           if (Input.GetButtonDown("Read")) signboard_image.enabled = !signboard_image.enabled;
           read_button.SetReadButton(this.transform.position);
         }
+        else
+        {
+            signboard_image.enabled = false;
+        }
     }
 
     

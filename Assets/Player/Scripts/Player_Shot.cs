@@ -63,7 +63,14 @@ public sealed partial class Player : CharaBase
                 Physics_Simulate();
             }
 
-		}
+            //軌道予測線削除
+            if(!Input.GetButton("Shot_R"))
+            for (int i = 0; i < 10; i++)
+            {
+                Destroy(physics_simulate_object_clone[i]);
+            }
+
+        }
 
 		//新しい操作方法(Lでチャージ,Rで発射、L離したら置く)
 		else {
@@ -181,7 +188,7 @@ public sealed partial class Player : CharaBase
         shot_charge_vol = 0;
 
         //ショットの発射距離リセット
-        shot_charge_length = 0;
+        shot_charge_length = CHARGE_LENGTH_OFFSET;
 
         //やまなりショットの軌道予測を破棄
         for (int i = 0; i < 10; i++)
@@ -322,9 +329,6 @@ public sealed partial class Player : CharaBase
                 Rigidbody rb = physics_simulate_object_clone[i].GetComponent<Rigidbody>();
                 rb.useGravity = false;
             }
-
-
-        //GameObject obj = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
 
     }
 

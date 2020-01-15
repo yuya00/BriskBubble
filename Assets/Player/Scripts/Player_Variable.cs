@@ -135,7 +135,8 @@ public sealed partial class Player : CharaBase
     private float init_back_speed;          // 初期速度保存用
     private float shot_charge_vol;          //ショットの大きさ加算
     private float shot_charge_speed;        //ショットのチャージスピード
-    private float shot_charge_length;       //やまりなショットの発射距離
+    private const float CHARGE_LENGTH_OFFSET = 3.0f;
+    private float shot_charge_length = CHARGE_LENGTH_OFFSET;       //やまりなショットの発射距離
     private float shot_length_charge_speed; //やまなりショットのチャージスピード
 
 
