@@ -20,6 +20,7 @@ public partial class EffectManager : MonoBehaviour
         PLAYER = 0,
         ENEMY,
         SHOT,
+        UI,
     }
 
     // エフェクトを出す上でのSTATE
@@ -36,6 +37,8 @@ public partial class EffectManager : MonoBehaviour
 
         EXPLOSION,  // 敵破壊演出（爆発）
         FOCUSING,   // 敵破壊演出（集束）
+
+        UI_FLASH,   // UI点滅
     }
 
     // RUNで地上情報に合わせてエフェクトを分ける
@@ -57,6 +60,7 @@ public partial class EffectManager : MonoBehaviour
     public GameObject effect_trajectory;    // 軌跡エフェクト
     public GameObject effect_explosion;    // 敵破壊エフェクト1
     public GameObject effect_focusing;    // 敵破壊エフェクト2
+    public GameObject effect_ui;        // uiの演出エフェクト
     [Foldout("EffectObject", false)]
     #endregion
 
@@ -100,6 +104,7 @@ public partial class EffectManager : MonoBehaviour
     public int explosion_effect     = 1;
     public int focusing_effect      = 8;
 
+    public int ui_flash_effect      = 5;
     [Foldout("エフェクトの数まとめ", false)]
 
     #endregion
