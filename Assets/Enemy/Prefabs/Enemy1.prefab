@@ -202,6 +202,12 @@ MonoBehaviour:
     startLength: 11
     angle: 0
     speed: 15
+  cliffjump_ray:
+    gizmo_on: 0
+    judge_on: 1
+    length: 12
+    startLength: 1.5
+    power: 12
   condition_effect:
     warning: {fileID: 0}
     find: {fileID: 1458771595821501554, guid: 22eb9fe6ecd450242bb5eab1b37359c2, type: 3}
