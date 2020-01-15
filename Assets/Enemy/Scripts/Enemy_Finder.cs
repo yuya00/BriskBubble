@@ -8,8 +8,9 @@ public partial class Enemy : CharaBase
 	private Renderer		 m_renderer	 = null;
 	private List<GameObject> m_targets	 = new List<GameObject>();
 	[System.NonSerialized]
-	public bool finder_flg;
-
+	public bool found_player_flg;
+	[System.NonSerialized]
+	public bool found_shot_flg;
 
 	private void Awake() {
 		m_renderer			 = GetComponentInChildren<Renderer>();
@@ -20,17 +21,17 @@ public partial class Enemy : CharaBase
 	}
 
 	private void OnFound(GameObject i_foundObject) {
-		if (i_foundObject.tag != "Player") {
-			return;
+		if (i_foundObject.tag == "Player" &&
+			enum_state != Enum_State.FIND) {
+			found_player_flg = true;
 		}
 		m_targets.Add(i_foundObject);
-		finder_flg = true;
 	}
 
 	private void OnLost(GameObject i_lostObject) {
 		m_targets.Remove(i_lostObject);
 		if (m_targets.Count == 0) {
-			finder_flg = false;
+			found_player_flg = false;
 		}
 	}
 

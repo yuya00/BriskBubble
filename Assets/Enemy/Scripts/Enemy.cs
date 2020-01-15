@@ -16,7 +16,7 @@ public sealed partial class Enemy : CharaBase
 		//chara_ray = transform.Find("CharaRay");
 
 		//敵のパラメーター設定
-		player_touch_flg	 = false;
+		player_touch_flg = false;
 		shot_touch_flg		 = false;
 		dist_to_player		 = Vector3.zero;
 		jump_ray.flg		 = false;
@@ -30,6 +30,9 @@ public sealed partial class Enemy : CharaBase
         enum_state			 = Enum_State.WAIT;
         old_state			 = enum_state;
 
+		away_act.jump.flg = true;
+
+		//敵別の行動
 		//逃走の種類決定
 		if (away_act.kind.normal) {
 			enum_awaykind = Enum_AwayKind.NORMAL;
@@ -40,6 +43,22 @@ public sealed partial class Enemy : CharaBase
 		else if (away_act.kind.jump) {
 			enum_awaykind = Enum_AwayKind.JUMP;
 		}
+		else if (away_act.kind.zigzag) {
+			enum_awaykind = Enum_AwayKind.ZIGZAG;
+		}
+		else if (away_act.kind.armar) {
+			enum_awaykind = Enum_AwayKind.ARMAR;
+		}
+		else if (away_act.kind.shot) {
+			enum_awaykind = Enum_AwayKind.SHOT;
+		}
+		else if (away_act.kind.spin) {
+			enum_awaykind = Enum_AwayKind.SPIN;
+		}
+		else {
+			enum_awaykind = Enum_AwayKind.NORMAL;
+		}
+
 	}
 
 	void Update()
@@ -127,6 +146,15 @@ public sealed partial class Enemy : CharaBase
 		if (!shot_touch_flg) {
 			return;
 		}
+		//※40fほどshotに触れている時間がある
+
+		//攻撃受けた時、一度だけダメージ0
+		if ((enum_awaykind == Enum_AwayKind.ARMAR) && (shot_scale_power > 0)) {
+			shot_scale_power = 0;
+			enum_awaykind = Enum_AwayKind.NORMAL;
+			return;
+		}
+
 		//ショットの大きさ分耐久度軽減
 		shot_to_defense -= shot_scale_power;
 		shot_scale_power = 0;
@@ -194,54 +222,68 @@ public sealed partial class Enemy : CharaBase
 
 		#region ここに追加
 		#region 全値
-			if (gui.all_view) {
-				//座標
-				float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-				float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-				float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
-				GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+		if (gui.all_view) {
+			//座標
+			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+			float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+			float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
 
-				//速さ
-				spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-				spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-				spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-				GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+			//速さ
+			spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+			spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+			spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-				//汎用待機タイマー
-				GUILayout.TextArea("汎用待機タイマー\n wait_timer：" + (wait_timer / 10).ToString());
+			//汎用タイマー配列
+			GUILayout.TextArea("汎用タイマー\n"
+				+ wait_timer_box[0] / 10 + "   "
+				+ wait_timer_box[1] / 10 + "   "
+				+ wait_timer_box[2] / 10 + "   "
+				+ wait_timer_box[3] / 10 + "   "
+				+ wait_timer_box[4] / 10);
 
-				//状態(待機や警戒など)
-				GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
+			//状態(待機や警戒など)
+			GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
 
-				//状態内の行動(首振りやジャンプなど)
-				GUILayout.TextArea("行動\n act：" + enum_act.ToString());
+			//状態内の行動(首振りやジャンプなど)
+			GUILayout.TextArea("行動\n act：" + enum_act.ToString());
 
-				//回転
-				GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
+			//回転
+			GUILayout.TextArea("回転\n " + transform.localEulerAngles.ToString());
 
-				//着地判定
-				GUILayout.TextArea("着地判定\n" + is_ground);
+			//着地判定
+			GUILayout.TextArea("着地判定\n" + is_ground);
 
-				//壁判定
-				GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
-				GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
-				//GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
-				//GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
+			//壁判定
+			GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
+			GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
+			//GUILayout.TextArea("壁判定左めり込み距離\n" + wallray.dist_left);
+			//GUILayout.TextArea("壁判定右めり込み距離\n" + wallray.dist_right);
 
-				//穴判定
-				GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
+			//穴判定
+			GUILayout.TextArea("穴判定左右\n" + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
 
-				//ジャンプ事前判定
-				GUILayout.TextArea("ジャンプ事前判定\n" + jump_ray.advance_flg);
+			//ジャンプ事前判定
+			GUILayout.TextArea("ジャンプ事前判定\n" + jump_ray.advance_flg);
 
-				//ショットに当たった判定
-				GUILayout.TextArea("ショットに当たった判定\n" + shot_touch_flg);
+			//ショットに当たった判定
+			GUILayout.TextArea("ショットに当たった判定\n" + shot_touch_flg);
 
-				//気絶判定
-				GUILayout.TextArea("気絶判定\n" + is_faint);
+			//気絶判定
+			GUILayout.TextArea("気絶判定\n" + is_faint);
 
-			}
-			#endregion
+			//HP
+			GUILayout.TextArea("HP\n" + shot_to_defense);
+
+			//視界にプレイヤーが入った判定
+			GUILayout.TextArea("視界にP\n" + found_player_flg);
+
+			//プレイヤーに接触した判定
+			GUILayout.TextArea("Pと接触\n" + player_touch_flg);
+
+		}
+		#endregion
 		#region 開発用
 		else if (gui.debug_view) {
 			//速さ
@@ -267,6 +309,25 @@ public sealed partial class Enemy : CharaBase
 
 			//逃走種類
 			GUILayout.TextArea("逃走種類\n" + enum_awaykind);
+
+			//HP
+			GUILayout.TextArea("HP\n" + shot_to_defense);
+
+			//汎用タイマー配列
+			GUILayout.TextArea("汎用タイマー\n"
+				+ wait_timer_box[0]/10 + "   " 
+				+ wait_timer_box[1]/10 + "   "
+				+ wait_timer_box[2]/10 + "   "
+				+ wait_timer_box[3]/10 + "   "
+				+ wait_timer_box[4]/10);
+
+			//視界にプレイヤーが入った判定
+			GUILayout.TextArea("視界にP\n" + found_player_flg);
+
+			//プレイヤーに接触した判定
+			GUILayout.TextArea("Pと接触\n" + player_touch_flg);
+
+
 		}
 		#endregion
 		#endregion
@@ -388,19 +449,13 @@ public sealed partial class Enemy : CharaBase
 				enum_state = Enum_State.WARNING;
 			}
 		}
-		//プレイヤーに触れたら(待機か,警戒,逃走のRUNの時)、発見stateに移行
-		if (player_touch_flg) {
-			if (enum_state == Enum_State.WAIT ||
-				enum_state == Enum_State.WARNING ||
-				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
-				enum_state = Enum_State.FIND;
-			}
-		}
-		//視界にプレイヤーが入ったら(待機か,警戒,逃走のRUNの時)、発見stateに移行
-		if (finder_flg) {
-			if (enum_state == Enum_State.WAIT ||
-				enum_state == Enum_State.WARNING ||
-				(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
+		//(待機か,警戒,逃走のRUNの時)、
+		//プレイヤーに触れたら、視界にプレイヤーが入ったら
+		//発見stateに移行
+		if (enum_state == Enum_State.WAIT ||
+			enum_state == Enum_State.WARNING ||
+			(enum_state == Enum_State.AWAY && enum_act == Enum_Act.RUN)) {
+			if (player_touch_flg || found_player_flg) {
 				enum_state = Enum_State.FIND;
 			}
 		}
@@ -437,10 +492,13 @@ public sealed partial class Enemy : CharaBase
             case Enum_State.FIND:    //発見 ---------------
                 Find();
                 break;
-            case Enum_State.AWAY:    //逃げる ---------------
+			case Enum_State.AWAY:    //逃走 ---------------
                 Away();
                 break;
-			case Enum_State.FAINT:   //踏まれる(気絶) ---------------
+			case Enum_State.BREAK:   //ショット破壊 ---------------
+				BreakShot();
+				break;
+			case Enum_State.FAINT:   //踏まれる(気絶) -------------
 				TreadBy();
 				break;
 			case Enum_State.ATTACK:  //攻撃 ---------------
@@ -461,7 +519,6 @@ public sealed partial class Enemy : CharaBase
     //初期化
     void Clear()
     {
-		wait_timer_swing		 = 0;
 		once_random.num			 = 0;
 		once_random.isfinish	 = false;
 
@@ -469,14 +526,15 @@ public sealed partial class Enemy : CharaBase
 		wait_act.enum_swing		 = WaitAct.Enum_Swing.SWING;
 
 		away_act.curve.one		 = 1;
-		away_act.curve.timer	 = 0;
 
-		wait_timer				 = 0;
-    }
+		for (int i = 0; i < WAIT_BOX_NUM; i++) {
+			wait_timer_box[i] = 0;
+		}
+	}
 
 
-    //待機(定期的に正面から20度程左右に首を振る)
-    void Wait()
+	//待機(定期的に正面から20度程左右に首を振る)
+	void Wait()
     {
 		#region 一周したら,ランダム値設定
         if (old_act != enum_act)
@@ -497,10 +555,9 @@ public sealed partial class Enemy : CharaBase
                 break;
             case Enum_Act.WAIT:     //待機
                 once_random.num = OnceRandom(-wait_act.wait_random, wait_act.wait_random);  //ランダム値設定
-                if (WaitTime(wait_act.wait_time + once_random.num))
-                {
-                    enum_act = Enum_Act.SWING;
-                }
+				if (WaitTimeBox(Enum_Timer.WAIT, wait_act.wait_time + once_random.num)) {
+					enum_act = Enum_Act.SWING;
+				}
                 break;
             case Enum_Act.SWING:    //+首振り半分
                 once_random.num = OnceRandom(-wait_act.swing_random, wait_act.swing_random);
@@ -522,12 +579,12 @@ public sealed partial class Enemy : CharaBase
 		switch (wait_act.enum_swing) {
 			case WaitAct.Enum_Swing.SWING:    //首振り
 				transform.Rotate(0, spd * Mathf.Deg2Rad, 0);
-				if (WaitTime_Swing(time)) {
+				if (WaitTimeBox(Enum_Timer.WAIT_SWING, time)) {
 					wait_act.enum_swing = WaitAct.Enum_Swing.WAIT;
 				}
 				break;
 			case WaitAct.Enum_Swing.WAIT:     //首振りの間
-				if (WaitTime_Swing(wait_time)) {
+				if (WaitTimeBox(Enum_Timer.WAIT_SWING, wait_time)) {
 					wait_act.enum_swing = WaitAct.Enum_Swing.SWING;
 					enum_act = next_state;
 				}
@@ -562,6 +619,7 @@ public sealed partial class Enemy : CharaBase
 		if (enemy_sounddetect.HitFlg) {
 			Vector3 dist = Vector3.Scale(enemy_sounddetect.Hitpos - transform.position,
 							new Vector3(1.0f, 0.0f, 1.0f));
+			enemy_sounddetect.HitFlg = false;
 			transform.LookAt(transform.position + dist); //ショットの方向を向く
 			Clear();
 			enum_state = Enum_State.WAIT;
@@ -615,13 +673,14 @@ public sealed partial class Enemy : CharaBase
 	}
 
 
-	//発見(ジャンプして逃走に移行)
+	//発見(ジャンプして(回転して)逃走に移行)
 	void Find()
     {
         switch (enum_act)
         {
             case Enum_Act.CLEAR:
-				wait_timer = 0;
+				velocity = Vector3.zero;
+				found_player_flg = false;
 				jump_ray.advance_flg = false;
 				enum_act = Enum_Act.JUMP;
                 break;
@@ -629,19 +688,39 @@ public sealed partial class Enemy : CharaBase
                 transform.LookAt(transform.position + dist_to_player); //プレイヤーの方向を向く
                 Jump(jump_power);
                 enum_act = Enum_Act.WAIT;
-                break;
+				break;
             case Enum_Act.WAIT:	//着地まで待機
                 if (is_ground)
                 {
-                    enum_act = Enum_Act.END;
+					if (enum_awaykind == Enum_AwayKind.SPIN) {
+						enum_act = Enum_Act.SPIN;
+					}
+					else {
+						enum_act = Enum_Act.END;
+					}
                 }
                 break;
+			case Enum_Act.SPIN: //回転攻撃(1割:ゆっくり、8割:早い、1割:ゆっくり)
+				//Debug.Log("回転");
+				//Debug.Log(Easing(easing_timer));
+				//transform.Rotate(0, 20*Easing(easing_timer), 0);
+				//easing_timer += 0.1f;
+				transform.Rotate(0, 25, 0);
+				if (WaitTimeBox(Enum_Timer.EACH_ACT, 12)) {
+					enum_act = Enum_Act.END;
+				}
+				break;
             case Enum_Act.END:
                 Clear();
                 enum_state = Enum_State.AWAY; //警戒stateに移行
                 break;
         }
     }
+
+	//--イージング
+	float Easing(float t) {
+		return 1 - (t - 1) * (t - 1) * (-2.70158f * (t - 1) - 1.70158f);
+	}
 
 
     //逃走(プレイヤーから逆方向に逃げ、一定距離で止まる)
@@ -696,13 +775,16 @@ public sealed partial class Enemy : CharaBase
 				//--振り向きによるspd変更
 				Lookback_SpdChange();
 
+				//--反撃ショットに移行
+				BreakShot_Shift();
+
 
 				//二人の距離が、音探知範囲*AwayAct.MAGより離れたら
 				if ((dist_to_player.magnitude >= enemy_sounddetect.Radius * AwayAct.MAG) && (is_ground))
                 {
                     enum_act = Enum_Act.END;
-                }
-                break;
+				}
+				break;
             case Enum_Act.END:
 				//プレイヤーの方向を向く
 				//transform.LookAt(transform.position - velocity);
@@ -755,7 +837,7 @@ public sealed partial class Enemy : CharaBase
 		away_act.kind.jump_front	 = away_act.kind.jump;
 	}
 
-	//--逃走の方法
+	//--逃走種類
 	void AwayActApproach() {
 		switch (enum_awaykind) {
 			case Enum_AwayKind.NORMAL:
@@ -770,34 +852,32 @@ public sealed partial class Enemy : CharaBase
 				//----逃走時のジャンプ移動
 				Away_Jump();
 				break;
+			case Enum_AwayKind.ZIGZAG:
+				//----逃走時のジグザグ移動
+				Away_Zigzag();
+				break;
+			default:
+				Away_Normal();
+				break;
 		}
 	}
 
 	//----逃走時の移動
 	void Away_Normal() {
-		AwayActBase(away_act.curve.normal_interval, away_act.curve.normal_spd);
+		AwayActBase(away_act.normal.interval, away_act.normal.spd);
 	}
 
 	//----逃走時のカーブ移動
 	void Away_Curve() {
-		AwayActBase(away_act.curve.curve_interval, away_act.curve.curve_spd);
-	}
-
-	//----逃走時のジャンプ移動
-	void Away_Jump() {
-
+		AwayActBase(away_act.curve.interval, away_act.curve.spd);
 	}
 
 	//------逃走時
-	void AwayActBase(int timer, float spd) {
+	void AwayActBase(int interval, float spd) {
 		//一定時間経つ、もしくは穴判定があれば向き切り替え
 		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg ||
-			(away_act.curve.timer >= timer)) {
+			WaitTimeBox(Enum_Timer.EACH_ACT, interval)) {
 			away_act.curve.one *= -1;
-			away_act.curve.timer = 0;
-		}
-		else {
-			away_act.curve.timer++;
 		}
 
 		//向き補正
@@ -810,6 +890,30 @@ public sealed partial class Enemy : CharaBase
 		}
 
 	}
+
+	//----逃走時のジャンプ移動
+	void Away_Jump() {
+		
+		if (is_ground && away_act.jump.flg) {
+			Jump(away_act.jump.power);
+			away_act.jump.flg = false;
+		}
+
+		if (WaitTimeBox(Enum_Timer.EACH_ACT, away_act.jump.time)) {
+			away_act.jump.flg = true;
+		}
+
+	}
+
+	//----逃走時のジグザグ移動
+	void Away_Zigzag() {
+		//Debug.Log("ジグザグ移動");
+		
+
+	}
+
+
+
 
 	//--穴に向かわないよう1fで向き修正
 	void FlashRotate() {
@@ -907,6 +1011,48 @@ public sealed partial class Enemy : CharaBase
 
 	}
 
+	//--反撃ショットに移行
+	void BreakShot_Shift() {
+		//音範囲にシャボンがあれば、ショットで破壊
+		if (is_ground && enum_awaykind == Enum_AwayKind.SHOT && 
+			enemy_sounddetect.FoundShotFlg) {
+			enum_state = Enum_State.BREAK;
+			Clear();
+		}
+	}
+
+	//反撃ショット(シャボンを破壊)
+	void BreakShot() {
+		//反撃敵で視界にシャボンがあれば、ショットで破壊
+		switch (enum_act) {
+			case Enum_Act.CLEAR:    //待機
+				velocity.x = 0;
+				velocity.z = 0;
+				enum_act = Enum_Act.WAIT;
+				break;
+			case Enum_Act.WAIT:
+				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
+					enemy_sounddetect.FoundShotFlg = false;
+					transform.LookAt(enemy_sounddetect.FoundHitPos);
+					enum_act = Enum_Act.BREAK;
+				}
+				break;
+			case Enum_Act.BREAK:    //ショット生成
+				Instantiate(breakshot_act.obj, transform.position + (transform.forward * BreakShotAct.MAG), transform.rotation);
+				enum_act = Enum_Act.END;
+				break;
+			case Enum_Act.END:      //待機(逃走のRUNに戻る)
+				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
+					Clear();
+					transform.localEulerAngles = Vector3.zero;
+					enum_state = Enum_State.AWAY;
+					enum_act = Enum_Act.RUN;
+				}
+				break;
+		}
+	}
+
+
 	//--振り向きによるspd変更
 	void Lookback_SpdChange()
     {
@@ -916,7 +1062,7 @@ public sealed partial class Enemy : CharaBase
 				velocity.x = transform.forward.x * run_speed;
 				velocity.z = transform.forward.z * run_speed;
 				//120f経ったら
-				if (WaitTime(away_act.lookback_interval)) {
+				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_interval)) {
 					//away_act.state = 1;
 					away_act.enum_lookback = AwayAct.Enum_LookBack.LOOKBACK;
 				}
@@ -926,7 +1072,7 @@ public sealed partial class Enemy : CharaBase
 				velocity.x = transform.forward.x * (run_speed / 2);
 				velocity.z = transform.forward.z * (run_speed / 2);
 				//30f経ったら
-				if (WaitTime(away_act.lookback_time)) {
+				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_time)) {
 					//away_act.state = 0;
 					away_act.enum_lookback = AwayAct.Enum_LookBack.NORMAL;
 				}
@@ -1111,7 +1257,7 @@ public sealed partial class Enemy : CharaBase
 				velocity.z = 0;
 
 				//時間経ったら
-				if (WaitTime(FAINT_TIME)) {
+				if (WaitTimeBox(Enum_Timer.FAINT, FAINT_TIME)) {
 					enum_act = Enum_Act.END;
 				}
 				break;

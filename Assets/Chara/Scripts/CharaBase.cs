@@ -50,8 +50,10 @@ public class CharaBase : MonoBehaviour {
 	[Tooltip("気絶時間")]
 	protected bool          is_faint			 = false;			//気絶判定
 	[Foldout("BaseParameter" ,false)]
-	protected int			wait_timer			 = 0;				//待機タイマー
-    protected const float	HALF				 = 0.5f;            // 半分計算用
+	protected int			wait_timer			 = 0;               //待機タイマー
+	protected const int     WAIT_BOX_NUM		 = 5;
+	protected int[]         wait_timer_box		 = new int[WAIT_BOX_NUM];               //待機タイマー
+	protected const float	HALF				 = 0.5f;            // 半分計算用
 
 
 
@@ -224,6 +226,9 @@ public class CharaBase : MonoBehaviour {
 		for (int i = 0; i < WORK_NUM; i++) {
 			fwork[i] = 0;
 		}
+		for (int i = 0; i < WAIT_BOX_NUM; i++) {
+			wait_timer_box[i] = 0;
+		}
 		wall_ray.Clear();
 		hole_ray.Clear();
 	}
@@ -358,10 +363,10 @@ public class CharaBase : MonoBehaviour {
 
 		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
 			(transform.forward * WallRay.ANGLE_MAG + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
-			//if (hit.collider.gameObject.tag == "Wall") {
+			if (hit.collider.gameObject.tag == "Wall") {
 				wall_ray.dist_right = hit.distance;  //壁との距離保存
 				return true;
-			//}
+			}
 		}
 		return false;
 	}
@@ -372,10 +377,10 @@ public class CharaBase : MonoBehaviour {
 
 		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
 			(transform.forward * WallRay.ANGLE_MAG + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
-			//if (hit.collider.gameObject.tag == "Wall") {
+			if (hit.collider.gameObject.tag == "Wall") {
 				wall_ray.dist_left = hit.distance;  //壁との距離保存
 				return true;
-			//}
+			}
 		}
 		return false;
 	}
