@@ -10,7 +10,7 @@ public class ShotBase : MonoBehaviour
     protected GameObject chara_object;  // ショット撃つ本体
     protected Rigidbody rigid;          // 物理
     protected Vector3 forward;          // 正面方向
-    private float timer;              // 経過時間
+    protected float timer;              // 経過時間
     protected float spd_down_timer;     // 減速するまでの時間
     public float spd_down_timer_max;
     public float speed = 15;                   // 速度
@@ -22,18 +22,20 @@ public class ShotBase : MonoBehaviour
     public float timer_fg;              // 何秒経ったら判定を消すか
     public float timer_fg_max;          // 時間設定
     public bool apper_fg;               // 出現したときの判定
-    private Color col;                  // 色取得
-    private bool hit_fg;                // 消えてからは当たり判定なくす
+    protected Color col;                  // 色取得
+    protected bool hit_fg;                // 消えてからは当たり判定なくす
+
+    public int test;
 
     public Vector3 target_pos;　　　　　　//やまなりショットの着地位置
 
     protected GameObject player;
 
-    private EffectManager effect;
+    protected EffectManager effect;
     // キャラ指定
-    private EffectManager.TYPE SHOT         = EffectManager.TYPE.SHOT;
+    protected EffectManager.TYPE SHOT         = EffectManager.TYPE.SHOT;
     private EffectManager.EFFECT APPER      = EffectManager.EFFECT.APPER;
-    private EffectManager.EFFECT DESTROY    = EffectManager.EFFECT.DESTROY;
+    protected EffectManager.EFFECT DESTROY    = EffectManager.EFFECT.DESTROY;
     private EffectManager.EFFECT TRAJECTORY = EffectManager.EFFECT.TRAJECTORY;
 
     // エフェクトの種類指定
@@ -151,7 +153,11 @@ public class ShotBase : MonoBehaviour
     // エフェクトを出す
     void Effect()
     {
-        if (speed >= 0) effect.Effect(SHOT, TRAJECTORY, transform.position, effect.trajectory_shot);
+        if (speed >= 0)
+        {
+            if (!effect) return;
+            effect.Effect(SHOT, TRAJECTORY, transform.position, effect.trajectory_shot);
+        }
     }
 
     //----------------------------------------------------------//

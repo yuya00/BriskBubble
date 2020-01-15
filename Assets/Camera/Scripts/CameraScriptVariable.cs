@@ -46,7 +46,7 @@ public sealed partial class CameraScript : MonoBehaviour
 
     //--------------------------------------------
     // 演出                          
-    //--------------------------------------------           
+    //--------------------------------------------    
     [Foldout("CameraProduction", true)]
     public Vector3 init_pos = new Vector3(60, 20, -80);               // 見渡し始める位置
 
@@ -54,7 +54,6 @@ public sealed partial class CameraScript : MonoBehaviour
     public float zoom_out_spd = 50.0f;      // 遠ざかる速さ
     public float zoom_len = 8.0f;           // どこまで近づくか
     public float approach_timer_max = 1.0f; // 近づいてから何秒とめるか
-    public float scene_move_spd = 1.0f;
     public float LOOK_SPD = 15.0f;          // 徐々に向かせる回転の速さ
     public float Y_CLEAR_SPD = 4.0f;        // カメラY位置初期化速度
 
@@ -65,6 +64,7 @@ public sealed partial class CameraScript : MonoBehaviour
     [Foldout("CameraProduction", false)]
     private GameObject[] obj;               // 敵のオブジェクト取得
     private GameObject scene;               // クリアフラグ取得
+    private GameObject post;                // postprocess取得
 
     private Vector3 save_pos;               // 演出前の位置を保存
     private Vector3 enm_pos;                // 敵の位置取得
@@ -75,7 +75,6 @@ public sealed partial class CameraScript : MonoBehaviour
     public bool enemy_hit_flg;              // 敵の判定取得
     private bool clear_end;                 // クリア演出終わったのをゲームマネージャーに
 
-    private int camera_state = 0;           // 通常時と演出時を分ける
     private int approach_state;             // 演出時のステート
     private int scene_pos_no;
     private int enm_id;                     // 敵の番号
@@ -84,12 +83,29 @@ public sealed partial class CameraScript : MonoBehaviour
     private const int ENM_HIT = 1;          // 敵倒すとき
     private const int SCENE = 2;            // シーン始まったとき
     private const int CLEAR = 3;
-    private const int SCENE_POS_MAX = 1;    // カメラが向かう目的地の数
 
     private const float SCENE_LEN = 1.0f;   // どこまで近づくか
     private const float FOLLOW_SPD = 1.0f;
     private const float STATE_CHECK = 0.2f;
 
+    // シーン始まった時のカメラ
+    [Foldout("SceneCameraTargetPos", true)]
+    public float camera_fadein_time = 0.35f;
+    public float camera_fadeout_time = 0.35f;
+    public int camera_state = 0;           // 通常時と演出時を分ける
+    public float scene_move_spd = 1.0f;
+    public float fade_timer_max = 0.7f;
+
+    public GameObject[] target      = new GameObject[SCENE_TARGET_MAX];
+    public float[]      pos_length  = new float[SCENE_TARGET_MAX];    // 目的地からどれくらい離したところに配置するか
+
+    [Foldout("SceneCameraTargetPos", false)]
+    private int select_scene_camera = 1;// debug
+
+    private const int SCENE_TARGET_MAX = 4;    // カメラが向かう目的地の数
+    private int scene_camera_state = 0;
+    private float fade_timer = 0;
+    private Vector3 scene_look_pos;
     //--------------------------------------------
 
 }

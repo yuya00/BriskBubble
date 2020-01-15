@@ -22,29 +22,39 @@ public class EnemyProdaction : MonoBehaviour
     private float timer = 0;
     public float timer_max = 1;
 
+    private EffectManager effect;   // エフェクト用
+    private Vector3 focus_pos;  // 集束位置
+
+
     // Start is called before the first frame update
     void Start()
     {
         save_pos = Vector3.zero;
+        effect = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-		//敵の耐久度がなくなった時に実行
-		if (obj.GetComponent<Enemy>().ShotToDefense <= 0) {
-			scale_chenge_on = true;
-			// 位置修正
-			PosCheck();
-		}
+        //敵の耐久度がなくなった時に実行
+        if (obj.GetComponent<Enemy>().ShotToDefense <= 0)
+        {
+            scale_chenge_on = true;
 
-		//// ショットが敵に当たった時に実行
-		//if (obj.GetComponent<Enemy>().ShotTouchFlg)
-  //      {
-  //          scale_chenge_on = true;
-  //          // 位置修正
-  //          PosCheck();
-  //      }
+            // どこに集束するかを設定
+            focus_pos = transform.position;
+
+            // 位置修正
+            PosCheck();
+        }
+
+        //// ショットが敵に当たった時に実行
+        //if (obj.GetComponent<Enemy>().ShotTouchFlg)
+        //      {
+        //          scale_chenge_on = true;
+        //          // 位置修正
+        //          PosCheck();
+        //      }
 
         // スケール変更
         if (scale_chenge_on)
@@ -54,8 +64,10 @@ public class EnemyProdaction : MonoBehaviour
             Scale();
         }
 
-        
+
     }
+
+    //void FixedUpdate()    {    }
 
     // スケール変更まとめ
     void Scale()
@@ -100,13 +112,25 @@ public class EnemyProdaction : MonoBehaviour
         obj.transform.position = transform.position;
     }
 
+    // キャラ指定
+    private EffectManager.TYPE ENEMY = EffectManager.TYPE.ENEMY;
+
+    // エフェクトの種類指定
+    private EffectManager.EFFECT EXPLOSION = EffectManager.EFFECT.EXPLOSION;
+    private EffectManager.EFFECT FOCUSING = EffectManager.EFFECT.FOCUSING;
+
     // 削除処理
     void Destroy()
     {
         if (transform.localScale.x < NULL)
         {
-            state = 0;
             scale_chenge_on = false;
+
+            // エフェクトの出現
+            effect.Effect(ENEMY, EXPLOSION, transform.position, effect.explosion_effect);
+            effect.Effect(ENEMY, FOCUSING, transform.position, effect.focusing_effect);
+
+            state = 0;
             Destroy(gameObject);
         }
     }
@@ -114,6 +138,12 @@ public class EnemyProdaction : MonoBehaviour
     public int State
     {
         get { return state; }
+    }
+
+    // 集束位置渡す
+    public Vector3 Focus_pos
+    {
+        get { return focus_pos; }
     }
 
     void OnGUI()
@@ -128,10 +158,7 @@ public class EnemyProdaction : MonoBehaviour
             // スクロールビュー
             leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
 
-            GUILayout.TextArea("save_pos\n" + save_pos);
-            GUILayout.TextArea("transform.position\n" + transform.position);
-            GUILayout.TextArea("obj.transform.position\n" + obj.transform.position);
-            //GUILayout.TextArea("pos\n" + pos);     
+            GUILayout.TextArea("位置\n" + transform.position);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);

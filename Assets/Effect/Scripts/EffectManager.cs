@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pixeye.Unity;
 
-public sealed partial class EffectManager : MonoBehaviour
+public partial class EffectManager : MonoBehaviour
 {
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        enemy = GameObject.FindGameObjectsWithTag("ProdactionEnemy");
 
         // 待機時間の初期化
         for (int i = 0; i < (int)TYPE.SHOT; ++i)
@@ -57,6 +58,9 @@ public sealed partial class EffectManager : MonoBehaviour
             case EFFECT.SHOT:
                 EffectSet(effect_shot, pos, num);
                 break;
+            case EFFECT.COIN:
+                EffectSet(effect_coin_get, pos, num);
+                break;
         }
     }
 
@@ -64,14 +68,17 @@ public sealed partial class EffectManager : MonoBehaviour
     void PlayerRun(RUN state, Vector3 pos)
     {
         int num = 0;
+        float rand = 0.5f;
         switch (state)
         {
+            case RUN.NONE:
+                break;
             case RUN.GROUND:
                 num = run_ground_player;
                 // 何フレーム置きに出現するか
                 if (WaitCheck(TYPE.PLAYER, run_ground_timer_player))
                 {
-                    EffectSet(effect_run_ground, pos, num);
+                    GroundEffect(pos, num);
                 }
                 break;
             case RUN.WATER:
@@ -79,9 +86,30 @@ public sealed partial class EffectManager : MonoBehaviour
                 // 何フレーム置きに出現するか
                 if (WaitCheck(TYPE.PLAYER, run_water_timer_player))
                 {
-                    EffectSet(effect_run_water, pos, num);
+                    for (int i = 0; i < num; ++i)
+                    {
+                        pos = new Vector3(pos.x + Random.Range(-rand, rand), pos.y, pos.z + Random.Range(-rand, rand));
+                        EffectSet(effect_run_water, new Vector3(pos.x, pos.y + 0.2f, pos.z), 1);
+                    }
                 }
                 break;
+        }
+    }
+
+    void GroundEffect(Vector3 pos, int num)
+    {
+        Vector3 front = player.GetComponent<Player>().Front;
+        float rand_x = 0.3f, rand_z = 0.5f;
+
+        // いっきにnum個のeffectを出す
+        for (int i = 0; i < num; ++i)
+        {
+            // 生成する物体、生成場所、回転軸の設定
+            pos = new Vector3(
+                    pos.x + Random.Range(-rand_x, rand_x),
+                    pos.y,
+                    pos.z + Random.Range(-rand_z, rand_z));
+            EffectSet(effect_run_ground, pos, 1);
         }
     }
 
@@ -95,6 +123,49 @@ public sealed partial class EffectManager : MonoBehaviour
     // エネミーのエフェクト----------------------------------------------
     void Enemy(EFFECT state, Vector3 pos, int num)
     {
+        switch (state)
+        {
+            case EFFECT.EXPLOSION:
+                EffectSet(effect_explosion, pos, num);
+                break;
+            case EFFECT.FOCUSING:
+                // 集束位置
+                focus_pos = pos;
+
+                // 爆発の欠片位置設定
+                DebrisSet(focus_pos, num);
+
+                break;
+        }
+    }
+
+    // 爆発の欠片位置設定
+    void DebrisSet(Vector3 pos, int num)
+    {
+        // 送られてきたnumの数だけループ
+        for (int n = 0; n < num; ++n)
+        {
+            // 位置の設定
+            pos = new Vector3(pos.x + x[data_no_x], pos.y + 0.3f, pos.z + 0.5f + z[data_no_z]);
+
+            // データの値を交互に使う
+            data_no_x++;
+            data_no_z++;
+            if (data_no_x > max_focus_data) data_no_x = 0;
+            if (data_no_z > max_focus_data) data_no_z = 0;
+
+            // 1個だけ出す
+            EffectSet(effect_focusing, new Vector3(pos.x - (data_focus_z * 0.5f), pos.y - 1, pos.z), 1);
+        }
+
+        // 初期化
+        data_no_x = 0;
+        data_no_z = 0;
+    }
+
+    public Vector3 Focus_pos
+    {
+        get { return focus_pos; }
     }
 
 
@@ -144,15 +215,16 @@ public sealed partial class EffectManager : MonoBehaviour
         return false;
     }
 
-	public bool gui_on;
+    public bool gui_on;
     // GUI---------------------------------------------------------------
     private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
     private float scroll_height = 330;
     void OnGUI()
     {
-		if (!gui_on) {
-			return;
-		}
+        if (!gui_on)
+        {
+            return;
+        }
 
         //スクロール高さを変更
         //(出来ればmaximize on playがonならに変更したい)
@@ -161,7 +233,7 @@ public sealed partial class EffectManager : MonoBehaviour
         GUILayout.Box("Effect");
 
         //着地判定
-        GUILayout.TextArea("debug_state\n" + debug_state);
+        GUILayout.TextArea("focus_pos\n" + focus_pos);
         //GUILayout.TextArea("debug_type\n" + debug_type);
         //GUILayout.TextArea("debug_state\n" + debug_state);
         //GUILayout.TextArea("debug_pos\n" + debug_pos);

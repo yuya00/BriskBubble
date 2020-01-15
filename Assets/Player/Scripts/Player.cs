@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public sealed partial class Player : CharaBase
@@ -27,12 +28,19 @@ public sealed partial class Player : CharaBase
 		velocity	    = Vector3.zero;
 		tread_on.size   = new Vector3(ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
 			ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
-		// エフェクト関連
-		//effect.effect_no = 0;
-	}
+        // エフェクト関連
+        //effect.effect_no = 0;
 
-	void Update()
+        //やまなりショット用の物理シーンを作成
+        scene = SceneManager.CreateScene("physicsScene", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+
+    }
+
+    void Update()
     {
+
+
+
         switch (state)
         {
             // 待機
@@ -974,7 +982,6 @@ public sealed partial class Player : CharaBase
 			is_faint = true;
 		}
 
-
 	}
 
 	private void OnCollisionExit(Collision other)
@@ -987,6 +994,13 @@ public sealed partial class Player : CharaBase
                 wall_touch_flg = false;
             }
         }
+
+        // 何にも当たってなかったら
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Water")
+        {
+            foot = (int)FOOT.NONE;
+        }
+
 
     }
 
@@ -1010,9 +1024,9 @@ public sealed partial class Player : CharaBase
         if (other.gameObject.tag == "Coin")
         {
             coin_count++;
+            effect.Effect(PLAYER, COIN, transform.position, effect.coin_get_player);
             Destroy(other.gameObject);
         }
-
 
 		////水の上なら
 		//if (other.gameObject.tag == "Water") {
@@ -1032,6 +1046,11 @@ public sealed partial class Player : CharaBase
         get { return transform.position; }
     }
 
+    public Vector3 Front
+    {
+        get { return transform.forward.normalized; }
+    }
+
     public int CoinCount
     {
         get { return coin_count; }
@@ -1040,6 +1059,11 @@ public sealed partial class Player : CharaBase
     public int Foot
     {
         get { return foot; }
+    }
+
+    public int FaintData
+    {
+        get { return (int)enum_faint; }
     }
 
 }

@@ -16,6 +16,9 @@ TagManager:
   - EffectManager
   - Ground
   - Water
+  - PostProcess
+  - FxTemporaire
+  - Sprite
   layers:
   - Default
   - TransparentFX
@@ -27,8 +30,8 @@ TagManager:
   - 
   - Shot
   - ShotDestroy
-  - 
-  - 
+  - PostProcessing
+  - Effect
   - 
   - 
   - 
@@ -52,4 +55,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: No
+    uniqueID: 3627392875
     locked: 0

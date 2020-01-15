@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Pixeye.Unity;
+
 
 public sealed class LimitTimer : MonoBehaviour
 {
@@ -19,6 +21,8 @@ public sealed class LimitTimer : MonoBehaviour
     private const int START = 0;
     private const int GAME = 1;
 
+    private GameObject timer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +33,7 @@ public sealed class LimitTimer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        switch(state)
+        switch (state)
         {
             case START:
                 if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
@@ -38,7 +42,7 @@ public sealed class LimitTimer : MonoBehaviour
                 // 制限時間計算
                 LimitTime();
                 // 文字設定
-                SetText();
+                if (time_text) SetText();
                 break;
         }
     }
@@ -63,6 +67,7 @@ public sealed class LimitTimer : MonoBehaviour
         }
     }
 
+
     // 文字設定
     void SetText()
     {
@@ -72,5 +77,15 @@ public sealed class LimitTimer : MonoBehaviour
     public bool TimerStop
     {
         get { return timer_stop; }
+    }
+
+    public int Min
+    {
+        get { return min; }
+    }
+
+    public float Sec
+    {
+        get { return sec; }
     }
 }

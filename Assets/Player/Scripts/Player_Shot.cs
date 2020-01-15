@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Pixeye.Unity;
 
 public sealed partial class Player : CharaBase
@@ -11,13 +12,12 @@ public sealed partial class Player : CharaBase
 	void Shot() {
 		// アニメーション
 		ShotAnime();
+        
+        // 次ショットまでの時間加算
+        ShotInterval();
 
-		// 次ショットまでの時間加算
-		ShotInterval();
-
-
-		//今までの操作方法
-		if (!shot_switch) {
+        //今までの操作方法
+        if (!shot_switch) {
 
 			//ショットの種類切り替え
 			if (Input.GetButtonDown("Shot_L")) {
@@ -58,9 +58,10 @@ public sealed partial class Player : CharaBase
 			}
 
 			//やまなりショットの軌道予測線を表示
-			if (shot_state == 2 && Input.GetButtonDown("Shot_R")) {
-				Physics_Simulate();
-			}
+			if (shot_state == 2 && Input.GetButton("Shot_R"))
+            {
+                Physics_Simulate();
+            }
 
 		}
 
@@ -182,6 +183,12 @@ public sealed partial class Player : CharaBase
         //ショットの発射距離リセット
         shot_charge_length = 0;
 
+        //やまなりショットの軌道予測を破棄
+        for (int i = 0; i < 10; i++)
+        {
+           Destroy(physics_simulate_object_clone[i]);
+        }
+
 
         //animator.speed = init_anim_spd;
         //animator.SetBool("Shot", false);
@@ -260,21 +267,65 @@ public sealed partial class Player : CharaBase
 
     void Physics_Simulate()
     {
+
+
         //シュミレート用のオブジェクトをプレイヤーの前に持ってくる
         physics_simulate_object.transform.position = transform.position + (transform.forward * SHOT_POSITION);
 
-        Rigidbody rigid = physics_simulate_object.GetComponent<Rigidbody>();
+        //シュミレート用のクローンを作成
+        GameObject obj = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
 
-        ////射出角度
+        Rigidbody rigid = obj.GetComponent<Rigidbody>();
+
+        //物理シーンを取得
+        physics_simulate_scene = scene.GetPhysicsScene();
+
+        //シュミレート用のオブジェクトのシーン移動
+        SceneManager.MoveGameObjectToScene(obj, scene);
+
+
+        //シュミレート用のオブジェクトに力を加える
         float angle = 50.0f;
 
-        Vector3 target_pos = transform.position + transform.forward * shot_charge_length;
+        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length+7.0f);
 
-        Vector3 velocity = CalVelocity(physics_simulate_object.transform.position, target_pos, angle);
+        Vector3 velocity = CalVelocity(obj.transform.position, target_pos, angle);
 
         rigid.AddForce(velocity, ForceMode.Impulse);
 
+        //以前の物を削除
+        for (int i = 0; i < 10; i++)
+        {
+            Destroy(physics_simulate_object_clone[i]);
+        }
+
+
+
+
+
+        //物理シュミレート開始
+        for (int i = 0; i < 10; i++)
+        {
+
+            physics_simulate_scene.Simulate(0.5f);
+
+            physics_simulate_pos[i] = obj.transform.position;
+
+        }
+        Destroy(obj);
         
+
+        //記録した座標の場所にオブジェクト設置
+            for (int i = 0; i < 10; i++)
+            {
+                physics_simulate_object_clone[i] = Instantiate(physics_simulate_object, physics_simulate_pos[i], Quaternion.identity);
+                Rigidbody rb = physics_simulate_object_clone[i].GetComponent<Rigidbody>();
+                rb.useGravity = false;
+            }
+
+
+        //GameObject obj = Instantiate(physics_simulate_object, physics_simulate_object.transform.position, Quaternion.identity);
+
     }
 
     //発射速度のシュミレート
