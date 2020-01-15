@@ -212,12 +212,18 @@ public class ShotBase : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
 
-    //----------------------------------------------------------//
-    //          　  速度を下げるまでの時間を設定                //
-    //----------------------------------------------------------//
-    public virtual bool SpeedDownCheck(float time_max)
+		if (col.name == "CounterShot(Clone)") {
+			Destroy(gameObject);
+		}
+
+
+	}
+
+	//----------------------------------------------------------//
+	//          　  速度を下げるまでの時間を設定                //
+	//----------------------------------------------------------//
+	public virtual bool SpeedDownCheck(float time_max)
     {
         spd_down_timer += Time.deltaTime;
 
