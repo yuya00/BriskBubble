@@ -75,7 +75,6 @@ public sealed partial class CameraScript : MonoBehaviour
     public bool enemy_hit_flg;              // 敵の判定取得
     private bool clear_end;                 // クリア演出終わったのをゲームマネージャーに
 
-    private int camera_state = 0;           // 通常時と演出時を分ける
     private int approach_state;             // 演出時のステート
     private int scene_pos_no;
     private int enm_id;                     // 敵の番号
@@ -93,7 +92,7 @@ public sealed partial class CameraScript : MonoBehaviour
     [Foldout("SceneCameraTargetPos", true)]
     public float camera_fadein_time = 0.35f;
     public float camera_fadeout_time = 0.35f;
-    public int select_scene_camera = 1;// debug
+    public int camera_state = 0;           // 通常時と演出時を分ける
     public float scene_move_spd = 1.0f;
     public float fade_timer_max = 0.7f;
 
@@ -101,6 +100,7 @@ public sealed partial class CameraScript : MonoBehaviour
     public float[]      pos_length  = new float[SCENE_TARGET_MAX];    // 目的地からどれくらい離したところに配置するか
 
     [Foldout("SceneCameraTargetPos", false)]
+    private int select_scene_camera = 1;// debug
 
     private const int SCENE_TARGET_MAX = 4;    // カメラが向かう目的地の数
     private int scene_camera_state = 0;

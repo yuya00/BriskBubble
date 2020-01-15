@@ -19,7 +19,7 @@ public sealed partial class CameraScript : MonoBehaviour
 
         init_up_pos = player.transform.position.y;
 
-        camera_state = SCENE;
+        //camera_state = SCENE;
         //camera_state = 0;
         scene_camera_state = 0;
 
