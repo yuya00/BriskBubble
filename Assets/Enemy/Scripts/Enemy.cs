@@ -1031,9 +1031,9 @@ public sealed partial class Enemy : CharaBase
 				enum_act = Enum_Act.WAIT;
 				break;
 			case Enum_Act.WAIT:
+				transform.LookAt(enemy_sounddetect.FoundHitPos);
 				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
 					enemy_sounddetect.FoundShotFlg = false;
-					transform.LookAt(enemy_sounddetect.FoundHitPos);
 					enum_act = Enum_Act.BREAK;
 				}
 				break;
