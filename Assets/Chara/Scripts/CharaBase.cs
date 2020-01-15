@@ -212,7 +212,6 @@ public class CharaBase : MonoBehaviour {
 
 
 
-
 	public virtual void Start()
     {
 		rigid = GetComponent<Rigidbody>();

@@ -430,6 +430,13 @@ public sealed partial class Enemy : CharaBase
 		}
 		#endregion
 
+
+		#region　崖ジャンプRay
+		if (cliffjump_ray.gizmo_on) {
+			Gizmos.color = Color.red - new Color(0, 0, 0, 0.0f);
+			Gizmos.DrawRay(transform.position + transform.forward * cliffjump_ray.startLength, -transform.up * cliffjump_ray.length);
+		}
+		#endregion
 	}
 
 
@@ -771,6 +778,8 @@ public sealed partial class Enemy : CharaBase
                 //--穴判定による向き変更
                 HoleRayRotateJudge();
 
+				//--崖ジャンプ
+				CliffJump();
 
 				//--振り向きによるspd変更
 				Lookback_SpdChange();
@@ -797,6 +806,17 @@ public sealed partial class Enemy : CharaBase
                 break;
         }
     }
+
+	//--穴に向かわないよう1fで向き修正
+	void FlashRotate() {
+		for (int i = 0; i < 30; i++) {
+			if (!hole_ray.hit_right_flg && !hole_ray.hit_left_flg) {
+				break;
+			}
+			HoleRayRotateJudge(); //--穴判定による向き変更
+		}
+	}
+
 
 	//逃走行動切り替え(エディタ側のOnDrawGizmosで実行)(未実行)
 	void AwaySwitch() {
@@ -913,189 +933,8 @@ public sealed partial class Enemy : CharaBase
 	}
 
 
-
-
-	//--穴に向かわないよう1fで向き修正
-	void FlashRotate() {
-		for (int i = 0; i < 30; i++) {
-			if (!hole_ray.hit_right_flg && !hole_ray.hit_left_flg) {
-				break;
-			}
-			HoleRayRotateJudge(); //--穴判定による向き変更
-		}
-	}
-
-	//--壁判定による向き変更
-	public override void WallRayRotate_Judge()
-    {
-		if (!wall_ray.judge_on) {
-			return;
-		}
-		//ジャンプの準備してたら飛ばす
-		if (jump_ray.advance_flg || (velocity.y != 0)) {
-			return;
-		}
-
-        //----壁判定Ray当たり判定
-        WallRayJudge();
-
-		//----めり込み判定
-		WallRayCavein();
-
-        //----向き変更
-        WallRayRotate();
-	}
-
-    //----めり込み判定
-    void WallRayCavein()
-    {
-		//両方めり込んでいた場合、めり込みが少ないほうに曲がる
-		if (wall_ray.hit_right_flg && wall_ray.hit_left_flg)
-        {
-			//めり込み少ない方を見る
-			if (wall_ray.dist_right <= wall_ray.dist_left) {
-				wall_ray.cavein_left_flg = true;
-			}
-			else {
-				wall_ray.cavein_right_flg = true;
-			}
-
-			#region ATACK判定への処理
-			/*
-			if (wall_dist1 <= wall_dist2) {
-				wall_rotate_flg2 = false;
-			}
-			else {
-				wall_rotate_flg1 = false;
-			}
-
-            //どこで一回と区切るか
-            //↓Clearで初期化
-            if (!wall_ray.both_flg)
-            {
-                wall_ray.both_count++;
-            }
-            wall_ray.both_flg = true;
-
-            //指定回数にめり込んだら、ATTACKに移行
-            if (wall_ray.both_count >= 4)
-            {
-                //プレイヤーの方を向く
-                transform.LookAt(transform.position + new Vector3(dist.x, 0, dist.y));
-                enum_state = Enum_State.ATTACK;
-                Clear();
-            }
-			// */
-			#endregion
-		}
-		else
-        {
-            wall_ray.both_flg = false;
-        }
-
-		//上で決めた方向に曲がる
-		if (wall_ray.cavein_left_flg) {
-			wall_ray.hit_left_flg = true;
-			wall_ray.hit_right_flg = false;
-			if (wall_ray.dist_left == 0) {
-				wall_ray.cavein_left_flg = false;
-			}
-		}
-		else if(wall_ray.cavein_right_flg) {
-			wall_ray.hit_right_flg = true;
-			wall_ray.hit_left_flg = false;
-			if (wall_ray.dist_right == 0) {
-				wall_ray.cavein_right_flg = false;
-			}
-		}
-
-	}
-
-	//--反撃ショットに移行
-	void BreakShot_Shift() {
-		//音範囲にシャボンがあれば、ショットで破壊
-		if (is_ground && enum_awaykind == Enum_AwayKind.SHOT && 
-			enemy_sounddetect.FoundShotFlg) {
-			enum_state = Enum_State.BREAK;
-			Clear();
-		}
-	}
-
-	//反撃ショット(シャボンを破壊)
-	void BreakShot() {
-		//反撃敵で視界にシャボンがあれば、ショットで破壊
-		switch (enum_act) {
-			case Enum_Act.CLEAR:    //待機
-				velocity.x = 0;
-				velocity.z = 0;
-				enum_act = Enum_Act.WAIT;
-				break;
-			case Enum_Act.WAIT:
-				transform.LookAt(enemy_sounddetect.FoundHitPos);
-				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
-					enemy_sounddetect.FoundShotFlg = false;
-					enum_act = Enum_Act.BREAK;
-				}
-				break;
-			case Enum_Act.BREAK:    //ショット生成
-				Instantiate(breakshot_act.obj, transform.position + (transform.forward * BreakShotAct.MAG), transform.rotation);
-				enum_act = Enum_Act.END;
-				break;
-			case Enum_Act.END:      //待機(逃走のRUNに戻る)
-				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
-					Clear();
-					transform.localEulerAngles = Vector3.zero;
-					enum_state = Enum_State.AWAY;
-					enum_act = Enum_Act.RUN;
-				}
-				break;
-		}
-	}
-
-
-	//--振り向きによるspd変更
-	void Lookback_SpdChange()
-    {
-		switch (away_act.enum_lookback) {
-			case AwayAct.Enum_LookBack.NORMAL:
-				//spd(通常)
-				velocity.x = transform.forward.x * run_speed;
-				velocity.z = transform.forward.z * run_speed;
-				//120f経ったら
-				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_interval)) {
-					//away_act.state = 1;
-					away_act.enum_lookback = AwayAct.Enum_LookBack.LOOKBACK;
-				}
-				break;
-			case AwayAct.Enum_LookBack.LOOKBACK:
-				//spd(振り向き)
-				velocity.x = transform.forward.x * (run_speed / 2);
-				velocity.z = transform.forward.z * (run_speed / 2);
-				//30f経ったら
-				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_time)) {
-					//away_act.state = 0;
-					away_act.enum_lookback = AwayAct.Enum_LookBack.NORMAL;
-				}
-				break;
-		}
-
-		//例外
-		//穴判定で曲がっている時、spd(振り向き)
-		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg) {
-			velocity.x = transform.forward.x * (run_speed / 2);
-			velocity.z = transform.forward.z * (run_speed / 2);
-		}
-		//ジャンプしてる時、spd(通常)
-		if (!is_ground) {
-			velocity.x = transform.forward.x * run_speed;
-			velocity.z = transform.forward.z * run_speed;
-		}
-
-	}
-
 	//--ジャンプ判定によるジャンプ
-	void JumpRayJump_Judge() 
-	{
+	void JumpRayJump_Judge() {
 		if (!jump_ray.judge_on) {
 			return;
 		}
@@ -1135,7 +974,7 @@ public sealed partial class Enemy : CharaBase
 
 		#region RayCast_Three
 		//右のレイ(上,下,真ん中)
-		if (JumpRay_Base(jump_ray.up_limit-0.2f, 1, jump_ray.advance_length)) {
+		if (JumpRay_Base(jump_ray.up_limit - 0.2f, 1, jump_ray.advance_length)) {
 			if (JumpAdvanceRay_Up()) {
 				jump_ray.advance_flg = true;
 			}
@@ -1183,7 +1022,7 @@ public sealed partial class Enemy : CharaBase
 			}
 		}
 		#endregion
-		
+
 		#region BoxCast
 		/*
 		if (jump_ray.advance_flg) {
@@ -1198,7 +1037,7 @@ public sealed partial class Enemy : CharaBase
 		}
 		// */
 		#endregion
-		
+
 		#region BoxCast(事前判定無しver)
 		/*
 		//Box:true ジャンプ上限Ray:false
@@ -1238,6 +1077,184 @@ public sealed partial class Enemy : CharaBase
 			}
 		}
 		return false;
+	}
+
+
+	//--壁判定による向き変更
+	public override void WallRayRotate_Judge() {
+		if (!wall_ray.judge_on) {
+			return;
+		}
+		//ジャンプの準備してたら飛ばす
+		if (jump_ray.advance_flg || (velocity.y != 0)) {
+			return;
+		}
+
+		//----壁判定Ray当たり判定
+		WallRayJudge();
+
+		//----めり込み判定
+		WallRayCavein();
+
+		//----向き変更
+		WallRayRotate();
+	}
+
+	//----めり込み判定
+	void WallRayCavein() {
+		//両方めり込んでいた場合、めり込みが少ないほうに曲がる
+		if (wall_ray.hit_right_flg && wall_ray.hit_left_flg) {
+			//めり込み少ない方を見る
+			if (wall_ray.dist_right <= wall_ray.dist_left) {
+				wall_ray.cavein_left_flg = true;
+			}
+			else {
+				wall_ray.cavein_right_flg = true;
+			}
+
+			#region ATACK判定への処理
+			/*
+			if (wall_dist1 <= wall_dist2) {
+				wall_rotate_flg2 = false;
+			}
+			else {
+				wall_rotate_flg1 = false;
+			}
+
+            //どこで一回と区切るか
+            //↓Clearで初期化
+            if (!wall_ray.both_flg)
+            {
+                wall_ray.both_count++;
+            }
+            wall_ray.both_flg = true;
+
+            //指定回数にめり込んだら、ATTACKに移行
+            if (wall_ray.both_count >= 4)
+            {
+                //プレイヤーの方を向く
+                transform.LookAt(transform.position + new Vector3(dist.x, 0, dist.y));
+                enum_state = Enum_State.ATTACK;
+                Clear();
+            }
+			// */
+			#endregion
+		}
+		else {
+			wall_ray.both_flg = false;
+		}
+
+		//上で決めた方向に曲がる
+		if (wall_ray.cavein_left_flg) {
+			wall_ray.hit_left_flg = true;
+			wall_ray.hit_right_flg = false;
+			if (wall_ray.dist_left == 0) {
+				wall_ray.cavein_left_flg = false;
+			}
+		}
+		else if (wall_ray.cavein_right_flg) {
+			wall_ray.hit_right_flg = true;
+			wall_ray.hit_left_flg = false;
+			if (wall_ray.dist_right == 0) {
+				wall_ray.cavein_right_flg = false;
+			}
+		}
+
+	}
+
+
+	//--崖ジャンプ
+	void CliffJump() {
+		if (!cliffjump_ray.judge_on) {
+			return;
+		}
+		RaycastHit hit;
+		if (is_ground && !Physics.Raycast(transform.position + transform.forward * cliffjump_ray.startLength, -transform.up, out hit, cliffjump_ray.length)){
+			Jump(cliffjump_ray.power);
+		}
+
+	}
+
+
+	//--振り向きによるspd変更
+	void Lookback_SpdChange() {
+		switch (away_act.enum_lookback) {
+			case AwayAct.Enum_LookBack.NORMAL:
+				//spd(通常)
+				velocity.x = transform.forward.x * run_speed;
+				velocity.z = transform.forward.z * run_speed;
+				//120f経ったら
+				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_interval)) {
+					//away_act.state = 1;
+					away_act.enum_lookback = AwayAct.Enum_LookBack.LOOKBACK;
+				}
+				break;
+			case AwayAct.Enum_LookBack.LOOKBACK:
+				//spd(振り向き)
+				velocity.x = transform.forward.x * (run_speed / 2);
+				velocity.z = transform.forward.z * (run_speed / 2);
+				//30f経ったら
+				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_time)) {
+					//away_act.state = 0;
+					away_act.enum_lookback = AwayAct.Enum_LookBack.NORMAL;
+				}
+				break;
+		}
+
+		//例外
+		//穴判定で曲がっている時、spd(振り向き)
+		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg) {
+			velocity.x = transform.forward.x * (run_speed / 2);
+			velocity.z = transform.forward.z * (run_speed / 2);
+		}
+		//ジャンプしてる時、spd(通常)
+		if (!is_ground) {
+			velocity.x = transform.forward.x * run_speed;
+			velocity.z = transform.forward.z * run_speed;
+		}
+
+	}
+
+
+	//--反撃ショットに移行
+	void BreakShot_Shift() {
+		//音範囲にシャボンがあれば、ショットで破壊
+		if (is_ground && enum_awaykind == Enum_AwayKind.SHOT && 
+			enemy_sounddetect.FoundShotFlg) {
+			enum_state = Enum_State.BREAK;
+			Clear();
+		}
+	}
+
+	//反撃ショット(シャボンを破壊)
+	void BreakShot() {
+		//反撃敵で視界にシャボンがあれば、ショットで破壊
+		switch (enum_act) {
+			case Enum_Act.CLEAR:    //待機
+				velocity.x = 0;
+				velocity.z = 0;
+				enum_act = Enum_Act.WAIT;
+				break;
+			case Enum_Act.WAIT:
+				transform.LookAt(enemy_sounddetect.FoundHitPos);
+				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
+					enemy_sounddetect.FoundShotFlg = false;
+					enum_act = Enum_Act.BREAK;
+				}
+				break;
+			case Enum_Act.BREAK:    //ショット生成
+				Instantiate(breakshot_act.obj, transform.position + (transform.forward * BreakShotAct.MAG), transform.rotation);
+				enum_act = Enum_Act.END;
+				break;
+			case Enum_Act.END:      //待機(逃走のRUNに戻る)
+				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
+					Clear();
+					transform.localEulerAngles = Vector3.zero;
+					enum_state = Enum_State.AWAY;
+					enum_act = Enum_Act.RUN;
+				}
+				break;
+		}
 	}
 
 
