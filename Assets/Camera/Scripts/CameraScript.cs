@@ -470,7 +470,7 @@ public sealed partial class CameraScript : MonoBehaviour
         v1.y = y;
         v1.Normalize();
         
-        scene_look_pos = pos + (v1 * l1)/* 中心方向にちょっと伸ばした位置 */;
+        scene_look_pos = pos + (v1 + target[scene_pos_no].transform.forward * l1)/* 中心方向にちょっと伸ばした位置 */;
     }
         
 
@@ -545,7 +545,12 @@ public sealed partial class CameraScript : MonoBehaviour
     public int Scene_camera_state
     {
         get { return scene_camera_state; }
-    }
+    }//camera_state
+
+    public int Camera_state
+    {
+        get { return camera_state; }
+    }//camera_state
 
     //GUI表示 -----------------------------------------------------
     private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
