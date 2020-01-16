@@ -34,7 +34,7 @@ public class KillNumProdaction : MonoBehaviour
     void Update()
     {
         // 演出on
-        if (obj.GetComponent<EnemyKillCount>().KillFg || Input.GetMouseButtonDown(2)) prodaction_fg = true;
+        if (obj.GetComponent<EnemyKillCount>().KillFg ) prodaction_fg = true;
 
         // 敵のカウントが減った時に演出させる
         Prodaction();
