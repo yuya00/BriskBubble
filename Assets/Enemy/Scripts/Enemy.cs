@@ -716,9 +716,12 @@ public sealed partial class Enemy : CharaBase
 				if (WaitTimeBox(Enum_Timer.EACH_ACT, 12)) {
 					enum_act = Enum_Act.END;
 				}
+				//scale変更
+				transform.localScale = Vector3.one * 1.25f;
 				break;
             case Enum_Act.END:
-                Clear();
+				transform.localScale = Vector3.one * 1;
+				Clear();
                 enum_state = Enum_State.AWAY; //警戒stateに移行
                 break;
         }
@@ -1404,4 +1407,13 @@ public sealed partial class Enemy : CharaBase
 	public bool IsWrap {
 		get { return enum_state == Enum_State.WRAP; }
 	}
+
+	public Enum_Act EnumAct {
+		get { return enum_act; }
+	}
+
+	//public Enum_Act EnumActSpin {
+	//	get { return Enum_Act.SPIN; }
+	//}
+
 }

@@ -479,6 +479,7 @@ public sealed partial class Player : CharaBase
         stop_fric = fric;
     }
 
+	//static int count = 0;
     // ジャンプまとめ
     void JumpMove()
     {
@@ -486,6 +487,8 @@ public sealed partial class Player : CharaBase
         if (JumpOn())
         {
             Jump(jump_power);
+			//Debug.Log(count);
+			//count++;
 
             // TYPE : キャラ、EFFECT : ジャンプ、POS : 位置、 effect.jump_player : 何個出すか
             effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, effect.jump_player);
@@ -572,6 +575,7 @@ public sealed partial class Player : CharaBase
         return false;
     }
 
+	//static int cound;
     // ジャンプする判定
     bool JumpOn()
     {
@@ -582,10 +586,13 @@ public sealed partial class Player : CharaBase
             {
                 if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP) ))
                 {
-                    //jump_fg = true;
-                    //jump_fg = false;
-                    //jump_timer = 0;
-                    return true;
+					//Debug.Log(cound);
+					//cound++;
+
+					//jump_fg = true;
+					//jump_fg = false;
+					//jump_timer = 0;
+					return true;
                 }
             }
         }
@@ -1033,6 +1040,12 @@ public sealed partial class Player : CharaBase
 		//	Debug.Log("Water");
 		//}
 
+		//SPINに当たって、それを持つ敵がSPIN状態なら気絶
+		if (other.gameObject.tag=="Spin") {
+			if (other.GetComponentInParent<Enemy>().EnumAct == Enemy.Enum_Act.SPIN) {
+				is_faint = true;
+			}
+		}
 	}
 
 	//get ------------------------------------------------------------
