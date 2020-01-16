@@ -29,7 +29,8 @@ public class Scene : MonoBehaviour
     private const int OVER = 1;
 
     public Text start_text;
-    private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
+    //private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
+    private string[] start_buf = { "", "", "", "", "S T A R T !!" };
     private int start_buf_no = 0;
     private int send_buf_no = 4;
     private float start_timer = 0;
