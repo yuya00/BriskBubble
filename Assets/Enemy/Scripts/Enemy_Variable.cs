@@ -264,7 +264,7 @@ public sealed partial class Enemy : CharaBase
 
 
 	//状態内の行動種類
-	enum Enum_Act {
+	public enum Enum_Act {
 		CLEAR,		//初期化
 		WAIT,		//待機
 		SWING,		//首振り
