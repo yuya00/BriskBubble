@@ -30,6 +30,10 @@ public class ImageSetPos : MonoBehaviour
     {
         my_transform.LookAt(camera.transform);
 
+        my_transform.rotation = Quaternion.Euler(0.0f, my_transform.localEulerAngles.y,0.0f);
+
+       //Debug.Log(my_transform.rotation.y);
+
         float distans = Vector3.Distance(player.transform.position, this.transform.position);
 
         if (distans > 10.0f)

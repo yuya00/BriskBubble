@@ -212,6 +212,23 @@ public sealed partial class Enemy : CharaBase
 	public JumpRay jump_ray;
 
 
+	//崖ジャンプRay ---------------------------------------------
+	[System.Serializable]
+	public class CliffJumpRay : RayBase {
+		//public float length;		//12
+
+		[Header("Rayの始点")]		//1.5
+		public float startLength;
+
+		[Header("ジャンプ力")]		//12
+		public float power;
+
+	}
+	[Header("崖ジャンプRay")]
+	public CliffJumpRay cliffjump_ray;
+
+
+
 
 	[Header("ショットへの耐久度"),SerializeField]
 	private int shot_to_defense = 3;
