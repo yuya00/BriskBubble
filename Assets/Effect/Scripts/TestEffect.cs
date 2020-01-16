@@ -23,6 +23,9 @@ public class TestEffect : MonoBehaviour
 
     public int EFFECT_NUM = 10;
 
+    public int state = 1;
+    public int step = 3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,8 +44,21 @@ public class TestEffect : MonoBehaviour
         app_timer += Time.deltaTime;
         if (app_timer > app_timer_max)
         {
-            Apper();
+            Test();
             app_timer = 0;
+        }
+    }
+
+    void Test()
+    {
+        switch(state)
+        {
+            case 0:
+                Apper();    // 位置設定しやんとき
+                break;
+            case 1:
+                Ap2(transform.position);
+                break;
         }
     }
 
@@ -51,6 +67,18 @@ public class TestEffect : MonoBehaviour
         for (int i = 0; i < EFFECT_NUM; ++i)
         {
             Instantiate(effect, transform.position, effect.transform.rotation);
+        }
+    }
+
+    void Ap2(Vector3 pos)
+    {
+
+        for (int i = 0; i < EFFECT_NUM; ++i)
+        {
+            for (int j = 0; j < step; ++j)
+            {
+                Instantiate(effect, new Vector3(pos.x, (pos.y - (step * 0.5f)) + j, pos.z), effect.transform.rotation);
+            }
         }
     }
 

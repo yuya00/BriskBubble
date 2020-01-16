@@ -245,6 +245,9 @@ public sealed partial class CameraScript : MonoBehaviour
                     // 位置を保存
                     enm_pos = obj[i].GetComponent<Enemy>().TransformPosition;
 
+                    // 一定値の位置を保存
+                    if (adjust_pos.x == 0) adjust_pos = enm_pos;
+
                     // 演出させる
                     enemy_hit_flg = true;
                 }
@@ -252,7 +255,10 @@ public sealed partial class CameraScript : MonoBehaviour
         }
 
         // 演出処理する
-        if (enemy_hit_flg) camera_state = ENM_HIT;
+        if (enemy_hit_flg)
+        {
+            camera_state = ENM_HIT;
+        }
     }
 
     void EnemyHitCamera()
@@ -260,25 +266,37 @@ public sealed partial class CameraScript : MonoBehaviour
         // どこまで近づいてどこまで遠ざかる(下がる)処理
         Approach(enm_pos, save_pos, zoom_len, zoom_in_spd, zoom_out_spd);
     }
-
+    private int test_time = 0;
+    private float sub;
+    private float speed;
     // 近づいて遠ざかる処理
     void Approach(Vector3 near_pos, Vector3 back_pos, float len, float zoom_in_spd, float zoom_out_spd)
     {
         // 初期化
         Vector3 vec = Vector3.zero;
 
+        // 60フレームで距離を割る(距離によって近づいたり遠ざかったりする速度を変える)
+        // 60分割したからsubで加算したら60フレーム後にはvec.magnitudeになる
+        sub = (adjust_pos - save_pos).magnitude * Time.deltaTime; 
+
         switch (approach_state)
         {
-            case 0:
+            case 0:              
                 // 送られてきた位置(敵位置)とのベクトル取得
                 vec = near_pos - transform.position;
 
+                // 速度設定
+                //speed = (zoom_in_spd * Time.deltaTime) * sub;
+                speed = sub * zoom_in_spd;
+
                 // 近づける(Lerpなしで)
-                transform.position += vec.normalized * (zoom_in_spd * Time.deltaTime);
+                //transform.position += vec.normalized * zoom_in_spd * Time.deltaTime;
+                transform.position += vec.normalized * speed;
+                //transform.position = Vector3.Lerp(transform.position, near_pos, speed);
 
                 // ブラーつける
                 SetBlur(true);
-
+                test_time++;
                 // 近づいたら次のステート
                 if (vec.magnitude < len) approach_state++;
                 break;
@@ -286,22 +304,29 @@ public sealed partial class CameraScript : MonoBehaviour
                 // 戻る位置とのベクトル取得
                 vec = back_pos - transform.position;
 
+                // 速度設定
+                //speed = (zoom_out_spd * Time.deltaTime) * sub;
+                speed = sub * zoom_out_spd;
+
                 // 時間経ったら遠ざける
                 if (TimerCheckEnemyHitCamera(approach_timer_max))
                 {
-                    transform.position += vec.normalized * (zoom_out_spd * Time.deltaTime);
+                    //transform.position += vec.normalized * sub * ((zoom_out_spd) * Time.deltaTime);
+                    transform.position += vec.normalized * speed;
+                    //transform.position = Vector3.Lerp(transform.position, back_pos, speed);
 
                     // 遠ざかったらカメラステート変更（approach_stateを初期化するのはNONEで）
-                    if (vec.magnitude < zoom_out_spd * Time.deltaTime)
+                    if (vec.magnitude < speed)
                     {
 						// 近づいた敵の判定を初期化する
 						if (obj[enm_id]) obj[enm_id].GetComponent<Enemy>().ShotTouchFlg = false;
 
-                        // 演出用の判定を初期化
-                        enemy_hit_flg = false;
-
                         // ブラーはずす
                         SetBlur(false);
+
+                        // 演出用の判定を初期化
+                        enemy_hit_flg = false;
+                        adjust_pos = Vector3.zero;
 
                         // カメラ状態をプレイヤー追従に
                         camera_state = NONE;
@@ -542,10 +567,10 @@ public sealed partial class CameraScript : MonoBehaviour
 
 
             #region ここに追加
-            GUILayout.TextArea("scene_camera_state\n" + scene_camera_state);
-            GUILayout.TextArea("target_pos\n" + target[scene_pos_no].transform.position);
-            //GUILayout.TextArea("pos\n" + pos);
-            //GUILayout.TextArea("pos\n" + pos);     
+            GUILayout.TextArea("sub\n" + sub);
+            GUILayout.TextArea("speed\n" + speed);
+            GUILayout.TextArea("adjust_pos\n" + adjust_pos);
+            GUILayout.TextArea("test_time\n" + test_time);     
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);     
