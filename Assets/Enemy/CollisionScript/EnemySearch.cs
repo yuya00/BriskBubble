@@ -155,7 +155,9 @@ public class EnemySearch : MonoBehaviour
 
 	//物に当たったら、その物を返す
 	private void OnTriggerEnter(Collider other) {
-		if (other.tag != "Player") return;
+		//if (other.tag != "Player") return;
+		if (other.tag != "Player" &&
+			other.tag != "Shot") return;
 		GameObject enterObject = other.gameObject;
 
 		// 念のため多重登録されないようにする。
@@ -166,7 +168,9 @@ public class EnemySearch : MonoBehaviour
 
 	//物に当たるのをやめたら、その物を返す
 	private void OnTriggerExit(Collider other) {
-		if (other.tag != "Player") return;
+		//if (other.tag != "Player") return;
+		if (other.tag != "Player" &&
+			other.tag != "Shot") return;
 		GameObject exitObject = other.gameObject;
 
 		var foundData = m_foundList.Find(value => value.Obj == exitObject);

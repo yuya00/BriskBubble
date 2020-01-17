@@ -29,7 +29,8 @@ public class Scene : MonoBehaviour
     private const int OVER = 1;
 
     public Text start_text;
-    private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
+    //private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
+    private string[] start_buf = { "", "", "", "", "S T A R T !!" };
     private int start_buf_no = 0;
     private int send_buf_no = 4;
     private float start_timer = 0;
@@ -38,6 +39,8 @@ public class Scene : MonoBehaviour
     private bool start_fg;
 
     public bool debug_fg;
+
+    private GameObject sprite;
 
     void Start()
     {
@@ -56,6 +59,10 @@ public class Scene : MonoBehaviour
         send_buf_no = 4;
         start_text.text = start_buf[start_buf_no];
         alpha = 1;
+
+        // 最初は消す
+        sprite = GameObject.FindGameObjectWithTag("Sprite");
+        sprite.SetActive(false);
     }
 
     void Update()
@@ -134,8 +141,8 @@ public class Scene : MonoBehaviour
         // ゲームシーン
         if (SceneManager.GetActiveScene().name == "yusuke_scene" || SceneManager.GetActiveScene().name == "stage_1")
         {
-            // スタート文字
-            SetText();
+            // スタート文字(カメラの初期動作が終わってから)
+            if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
 
             // 敵全滅させたらシーン移行
             if (GetComponent<EnemyKillCount>().EnemyNumMax <= 0)
@@ -158,7 +165,7 @@ public class Scene : MonoBehaviour
         }
 
         // 時間切れ
-        if(GetComponent<LimitTimer>().TimerStop)
+        if (GetComponent<LimitTimer>().TimerStop)
         {
             // クリア演出にはいる
             clear_fg = true;
@@ -188,6 +195,9 @@ public class Scene : MonoBehaviour
     // 文字切り替え
     void SetText()
     {
+        // スプライトつける
+        sprite.SetActive(true);
+
         // START!!がなくなるまで加算
         if (start_buf_no < 5)
         {
@@ -201,7 +211,7 @@ public class Scene : MonoBehaviour
             start_buf_no++;
 
             // スタートタイマーに送る用
-            if(send_buf_no > 0) send_buf_no--;
+            if (send_buf_no > 0) send_buf_no--;
             start_timer = 0;
         }
 

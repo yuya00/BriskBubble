@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2870087724055652981}
   - component: {fileID: 2673991487873982005}
   - component: {fileID: 2674651017370644609}
+  - component: {fileID: 6762889506137344845}
   m_Layer: 11
   m_Name: ExplosionEffect
   m_TagString: Untagged
@@ -151,7 +152,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 8
+      scalar: 6
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -249,7 +250,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 50
+      scalar: 60
       minScalar: 35
       maxCurve:
         serializedVersion: 2
@@ -535,7 +536,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -675,7 +676,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 7
       mode: 0
       spread: 0
       speed:
@@ -886,7 +887,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 20
+        scalar: 55
         minScalar: 80
         maxCurve:
           serializedVersion: 2
@@ -1272,7 +1273,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.94509804, b: 0, a: 1}
+        key0: {r: 1, g: 1, b: 0, a: 1}
         key1: {r: 1, g: 0.5647059, b: 0, a: 1}
         key2: {r: 0.85882354, g: 0.43819273, b: 0, a: 0}
         key3: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 0}
@@ -4713,6 +4714,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &6762889506137344845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2872860341603439731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79dba094e8117a448a71def2617afb79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2872969412591619225
 GameObject:
   m_ObjectHideFlags: 0
@@ -5985,7 +5998,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.9882353, b: 0.81960785, a: 1}
-        key1: {r: 0.85882354, g: 0, b: 0, a: 0.59607846}
+        key1: {r: 0.79085726, g: 0.48584908, b: 1, a: 0.59607846}
         key2: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}

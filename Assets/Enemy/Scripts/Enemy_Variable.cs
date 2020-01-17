@@ -4,17 +4,16 @@ using UnityEngine;
 
 public sealed partial class Enemy : CharaBase
 {
-	private GameObject          player_obj;
 	private EnemyNear           enemy_near;
 	private EnemySoundDetect    enemy_sounddetect;
+	private GameObject          player_obj;
 
-	private int					wait_timer_swing;
 	private bool				player_touch_flg;
 	private bool				shot_touch_flg;
 	private Vector3				dist_to_player;
 	private const int           FAINT_TIME	 = 180;     //気絶時間
 
-
+	private float easing_timer = 0;
 
 	//状態エフェクト -----------------------------------
 	[System.Serializable]
@@ -38,15 +37,15 @@ public sealed partial class Enemy : CharaBase
 	[System.Serializable]
 	public struct WaitAct {
 		[Header("首振り前待機")]
-		public int wait_time;			//240
+		public int wait_time;			//200
 		[Header("首振り前待機ランダム幅")]
 		public int wait_random;			//0
 		[Header("首振り時間")]
-		public int swing_time;			//70
+		public int swing_time;			//50
 		[Header("首振り時間ランダム幅")]
 		public int swing_random;		//0
 		[Header("首振り速さ")]
-		public int swing_spd;			//30
+		public int swing_spd;			//80
 		[Header("首振り間の間隔")]
 		public int swing_space_time;    //15
 
@@ -105,14 +104,21 @@ public sealed partial class Enemy : CharaBase
 		[System.NonSerialized]
 		public Enum_LookBack enum_lookback;
 
-		//逃走種類 -----------------------------
+		//敵行動の種類 -----------------------------
+		//クラスの外に出した方がいい？
 		[System.Serializable]
 		public struct Kind {
 
 			//インスペクター用
+			[Header("どれか一つだけチェック")]
 			public bool normal;
 			public bool curve;
 			public bool jump;
+			public bool zigzag;
+			[Space(8)]
+			public bool armar;
+			public bool shot;
+			public bool spin;
 
 			//前の状態保存
 			[System.NonSerialized]
@@ -128,40 +134,61 @@ public sealed partial class Enemy : CharaBase
 		[Header("種類")]
 		public Kind kind;
 
-		//逃走種類に応じた変数(カーブ) ---------
+		//逃走通常、カーブ
 		[System.Serializable]
 		public struct Curve {
-			//ジャンプも入れるかも
 
-			//符号反転用
-			[System.NonSerialized]
+			[System.NonSerialized]　		//符号反転用
 			public float        one;
 
-			[System.NonSerialized]
-			public float        timer;
-
 			[Header("向き切り替え時間")]	//120
-			public int			normal_interval;
+			public int          interval;
 
-			[Header("曲がる速さ")]			//0.02f
-			public float		normal_spd;
-
-			[Header("向き切り替え時間")]	//120
-			public int			curve_interval;
-
-			[Header("曲がる速さ")]			//0.5f
-			public float		curve_spd;
-
+			[Header("曲がる速さ")]			//0.04  0.5
+			public float        spd;
 		}
-		[Header("調整")]
+		public Curve normal;
 		public Curve curve;
+
+		//逃走ジャンプ
+		[System.Serializable]
+		public struct Jump {
+
+			[System.NonSerialized]
+			public bool flg;
+
+			[Header("ジャンプ力")]			//22
+			public int	power;
+
+			[Header("切り替え時間")]		//20
+			public int	time;
+		}
+		public Jump jump;
 
 	}
 	[Header("逃走行動")]
 	public AwayAct away_act;
 
 
-		
+	//反撃ショット --------------------------------------
+	[System.Serializable]
+	public struct BreakShotAct {
+
+		public GameObject obj;
+
+		//ショットの位置調整
+		public const int MAG = 5;
+
+		[Header("ショット前待機")]	//10
+		public int front_time;
+
+		[Header("ショット後待機")]	//30
+		public int back_time;
+	}
+	[Header("反撃ショット行動")]
+	public BreakShotAct breakshot_act;
+
+
 	//ジャンプ判定Ray ----------------------------------
 	[System.Serializable]
 	public class JumpRay : BoxCastAdjustBase {
@@ -185,6 +212,24 @@ public sealed partial class Enemy : CharaBase
 	public JumpRay jump_ray;
 
 
+	//崖ジャンプRay ---------------------------------------------
+	[System.Serializable]
+	public class CliffJumpRay : RayBase {
+		//public float length;		//12
+
+		[Header("Rayの始点")]		//1.5
+		public float startLength;
+
+		[Header("ジャンプ力")]		//12
+		public float power;
+
+	}
+	[Header("崖ジャンプRay")]
+	public CliffJumpRay cliffjump_ray;
+
+
+
+
 	[Header("ショットへの耐久度"),SerializeField]
 	private int shot_to_defense = 3;
 	//当たったショットの強さ保存
@@ -206,8 +251,9 @@ public sealed partial class Enemy : CharaBase
 	enum Enum_State{
 		WAIT,     //待機
 		WARNING,  //警戒
-		FIND,     //発見
+		FIND,     //発見(回転)
 		AWAY,     //逃走
+		BREAK,    //ショット破壊
 		ATTACK,   //攻撃
 		FAINT,    //気絶
 		WRAP,     //捕獲
@@ -218,7 +264,7 @@ public sealed partial class Enemy : CharaBase
 
 
 	//状態内の行動種類
-	enum Enum_Act {
+	public enum Enum_Act {
 		CLEAR,		//初期化
 		WAIT,		//待機
 		SWING,		//首振り
@@ -226,6 +272,8 @@ public sealed partial class Enemy : CharaBase
 		SWING3,		//首振り3
 		RUN,		//走る
 		JUMP,       //ジャンプ
+		SPIN,		//回転
+		BREAK,		//破壊
 		FAINT,      //気絶
 		END         //終了
 	}
@@ -234,42 +282,45 @@ public sealed partial class Enemy : CharaBase
 
 
 
+	//敵別の行動(逃走ベース、反撃など)
 	//逃走ベースの種類
 	enum Enum_AwayKind {
 		NORMAL,
 		CURVE,
-		JUMP
+		JUMP,
+		ZIGZAG,
+
+		ARMAR,
+		SHOT,
+		SPIN
 	}
 	Enum_AwayKind enum_awaykind;
 
 
 
 
-	//※要修正
-	//WaitTimeの最中でWaitTimeを使用したかったので
-	//もう一つ同じ用途の関数を用意した
 
-	//指定時間になったらtrue
-	bool WaitTime_Swing(int wait_time) {
-		if (wait_timer_swing >= wait_time) {
-			wait_timer_swing = 0;
+	//汎用タイマー(指定時間になったらtrue)
+	bool WaitTimeBox(Enum_Timer box_num,int wait_time) {
+		if (wait_timer_box[(int)box_num] >= wait_time) {
+			wait_timer_box[(int)box_num] = 0;
 			return true;
 		}
 		else {
-			wait_timer_swing++;
+			wait_timer_box[(int)box_num]++;
 			return false;
 		}
 	}
-	//指定時間になったらtrue
-	bool WaitTime(int wait_time) {
-		if (wait_timer >= wait_time) {
-			wait_timer = 0;
-			return true;
-		}
-		else {
-			wait_timer++;
-			return false;
-		}
+
+	//汎用タイマーの種類
+	enum Enum_Timer {
+		WAIT,           //待機
+		WAIT_SWING,     //待機首振り
+		LOOKBACK,       //振り向き
+		EACH_ACT,       //敵別行動
+		FAINT           //気絶
 	}
+	Enum_Timer enum_timer;
+
 
 }

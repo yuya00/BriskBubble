@@ -135,7 +135,8 @@ public sealed partial class Player : CharaBase
     private float init_back_speed;          // 初期速度保存用
     private float shot_charge_vol;          //ショットの大きさ加算
     private float shot_charge_speed;        //ショットのチャージスピード
-    private float shot_charge_length;       //やまりなショットの発射距離
+    private const float CHARGE_LENGTH_OFFSET = 3.0f;
+    private float shot_charge_length = CHARGE_LENGTH_OFFSET;       //やまりなショットの発射距離
     private float shot_length_charge_speed; //やまなりショットのチャージスピード
 
 
@@ -232,7 +233,7 @@ public sealed partial class Player : CharaBase
 	public struct LeadInput {
 		public bool			on;						//先行入力オンオフ
 		public const int	NUM = 3;				//保存するキー数
-		public const int    KEY_SERVE_TIME = 8;		//保存時間
+		public const int    KEY_SERVE_TIME = 6;		//保存時間
 	}
 	[Header("先行入力")]
 	public LeadInput lead_input;
