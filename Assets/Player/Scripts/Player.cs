@@ -39,7 +39,7 @@ public sealed partial class Player : CharaBase
     void Update()
     {
 
-
+		//Debug.Log(velocity);
 
         switch (state)
         {
@@ -578,30 +578,26 @@ public sealed partial class Player : CharaBase
         // モーションが終わってるときにジャンプできる
         if (is_ground && !is_faint)
         {
-            if (true) //!animator.GetBool("JumpEnd")
-			{
-                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP) ))
-                {
-					//jump_fg = true;
-					//jump_fg = false;
-					//jump_timer = 0;
-					return true;
-                }
-            }
-        }
-        //if (jump_fg)
-        //{
-        //    animator.speed = anim_spd;
-        //    jump_timer += Time.deltaTime;
-        //}
-        //if (jump_timer > jump_timer_max)
-        //{
-        //    jump_fg = false;
-        //    jump_timer = 0;
-        //    return true;
-        //}
+			if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP))) {
+				//jump_fg = true;
+				//jump_fg = false;
+				//jump_timer = 0;
+				return true;
+			}
+		}
+		//if (jump_fg)
+		//{
+		//    animator.speed = anim_spd;
+		//    jump_timer += Time.deltaTime;
+		//}
+		//if (jump_timer > jump_timer_max)
+		//{
+		//    jump_fg = false;
+		//    jump_timer = 0;
+		//    return true;
+		//}
 
-        return false;
+		return false;
     }
 
     // 落下中判定

@@ -541,33 +541,28 @@ public class CharaBase : MonoBehaviour {
 	//着地時にfalse
 	public virtual void Move()
     {
-        /***********************/
-        // 試しに
-        // ショットのレイヤーは8番
-        // shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
-        LayerMask shot_layer = ~(1 << 8);
+		/***********************/
+		// 試しに
+		// ショットのレイヤーは8番
+		// shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
+		//LayerMask shot_layer = ~(1 << 8);
+
+		//Wallのレイヤーが設定されている物とだけ当たる
+		//LayerMask wall_layer = (1 << 14);
+		LayerMask wall_layer = ~(1 << 8);
 		/***********************/
 
 
 		#region SphereCast
-		//足元から少し上の位置
-		ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y);
+		//足元(に加え,少し後ろにすることで壁に接触しながらジャンプするとすぐ着地してしまう問題を回避)
+		ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.forward * 0.2f);
 
 		RaycastHit hit;
-		if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, shot_layer)) {
-			//if ((this.gameObject.tag == "Player") ) {
-			//	Debug.Log(hit.collider.tag);
-			//}
-
-			if (hit.collider.tag != "Wall") {
-				return;
-			}
+		//中心から、足元より少し上の位置までsphereで判定
+		if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, wall_layer)) {
 			rigid.useGravity = true;
 			is_ground		 = true;
 			velocity.y		 = 0;
-			//if (this.gameObject.name == "Player") {
-			//	Debug.Log("プレイヤー着地");
-			//}
 		}
 		else {
 			is_ground = false;
@@ -578,9 +573,6 @@ public class CharaBase : MonoBehaviour {
 			else {
 				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
-			//if (this.gameObject.name == "Player") {
-			//	Debug.Log("プレイヤージャンプ中");
-			//}
 		}
 		#endregion
 
@@ -638,9 +630,6 @@ public class CharaBase : MonoBehaviour {
 		// */
 		#endregion
 
-		//if (this.gameObject.tag == "Player") {
-		//	Debug.Log("Base:is_ground:" + is_ground);
-		//}
 
 	}
 
