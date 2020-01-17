@@ -119,7 +119,7 @@ public class Scene : MonoBehaviour
         {
             fade.FadeIn(fadein);
         }
-        if (cam.GetComponent<CameraScript>().Scene_camera_state == 0)
+        if (cam.GetComponent<CameraScript>().Scene_camera_state == 0 || cam.GetComponent<CameraScript>().Camera_state == 0)
         {
             fade.FadeOut(fadeout);
         }
