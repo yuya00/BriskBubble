@@ -1412,8 +1412,5 @@ public sealed partial class Enemy : CharaBase
 		get { return enum_act; }
 	}
 
-	//public Enum_Act EnumActSpin {
-	//	get { return Enum_Act.SPIN; }
-	//}
 
 }
