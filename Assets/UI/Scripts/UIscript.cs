@@ -56,6 +56,7 @@ public class UIscript : MonoBehaviour
 
     private bool pos_fg;                 // trueのときはずっと演出
 
+    private int state;
     private int state_pos;
     private const int POS_UP = 1;
     private const int POS_DOWN = 2;
@@ -65,9 +66,13 @@ public class UIscript : MonoBehaviour
     // 演出エフェクト
     private GameObject ui_effect;
 
+    private GameObject game_manager;
+
     // Start is called before the first frame update
     void Start()
     {
+        game_manager = GameObject.FindGameObjectWithTag("GameManager");
+
         // 存在チェック
         ui_effect = GameObject.FindGameObjectWithTag("UIEffect");
 
@@ -78,28 +83,37 @@ public class UIscript : MonoBehaviour
         replace_fg = false;
         production_fg = false;
 
+        state = 0;
+
         // 演出存在off
         SetActive(production_fg);
     }
 
-    public float debug = 15;
-
     // Update is called once per frame
     void Update()
     {
-        StateCheck();
-        ProdactionScale();
-        ProdactionPos();
-        Replace(bubble);
+        switch (state)
+        {
+            case 0:
+                if (game_manager.GetComponent<Scene>().StartFg()) state++;
+                break;
+            case 1:
+                StateCheck();
+                ProdactionScale();
+                ProdactionPos();
+                Replace(bubble);
 
-        // 存在をフラグで管理
-        SetActive(production_fg);
+                // 存在をフラグで管理
+                SetActive(production_fg);
 
-        // 回転演出
-        //ProdactionRotation(bubble, debug);
-        //ProdactionRotation(normal, debug);
+                // 回転演出
+                //ProdactionRotation(bubble, debug);
+                //ProdactionRotation(normal, debug);
 
-        bubble.transform.position = pos_bubble;
+                bubble.transform.position = pos_bubble;
+
+                break;
+        }
     }
 
     // 演出判定
