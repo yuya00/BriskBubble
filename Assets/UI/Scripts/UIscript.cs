@@ -111,9 +111,10 @@ public class UIscript : MonoBehaviour
                 //ProdactionRotation(normal, debug);
 
                 bubble.transform.position = pos_bubble;
-
                 break;
         }
+
+
     }
 
     // 演出判定
@@ -297,8 +298,8 @@ public class UIscript : MonoBehaviour
 
             #region ここに追加
 
-            GUILayout.TextArea("rot_spd\n" + rot_spd);
-            //GUILayout.TextArea("pos\n" + pos);
+            GUILayout.TextArea("ui_effect.transform.position\n" + ui_effect.transform.position);
+            GUILayout.TextArea("bubble.transform.position\n" + bubble.transform.position);
             //GUILayout.TextArea("pos\n" + pos);     
             //GUILayout.TextArea("pos\n" + pos);
             //GUILayout.TextArea("pos\n" + pos);
