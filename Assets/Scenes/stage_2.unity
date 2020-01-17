@@ -2717,7 +2717,7 @@ MonoBehaviour:
   enemy_hit_flg: 0
   camera_fadein_time: 0.35
   camera_fadeout_time: 0.35
-  camera_state: 0
+  camera_state: 2
   scene_move_spd: 10
   fade_timer_max: 0.7
   target:

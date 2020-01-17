@@ -141,7 +141,8 @@ public class Scene : MonoBehaviour
         // ゲームシーン
         if (SceneManager.GetActiveScene().name == "yusuke_scene" ||
             SceneManager.GetActiveScene().name == "stage_1" || 
-            SceneManager.GetActiveScene().name == "stage_2")
+            SceneManager.GetActiveScene().name == "stage_2" ||
+            SceneManager.GetActiveScene().name == "stage_3")
         {
             // スタート文字(カメラの初期動作が終わってから)
             if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();

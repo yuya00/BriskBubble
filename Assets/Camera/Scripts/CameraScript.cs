@@ -383,6 +383,7 @@ public sealed partial class CameraScript : MonoBehaviour
         // スキップ
         if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2)))
         {
+            scene_camera_state = 3;
             scene_pos_no = 0;
             camera_state = NONE;
         }
