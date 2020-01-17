@@ -40,7 +40,7 @@ public class Scene : MonoBehaviour
 
     public bool debug_fg;
 
-    private GameObject stage_select;
+    private GameObject sprite;
 
     void Start()
     {
@@ -59,6 +59,10 @@ public class Scene : MonoBehaviour
         send_buf_no = 4;
         start_text.text = start_buf[start_buf_no];
         alpha = 1;
+
+        //最初は消す
+        sprite = GameObject.FindGameObjectWithTag("Sprite");
+        sprite.SetActive(false);
     }
 
     void Update()
