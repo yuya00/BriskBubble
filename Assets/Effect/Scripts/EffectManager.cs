@@ -38,6 +38,9 @@ public partial class EffectManager : MonoBehaviour
             case TYPE.SHOT:
                 Shot(state, pos, num);
                 break;
+            case TYPE.UI:
+                UI(state, pos, num);
+                break;
         }
     }
 
@@ -59,7 +62,10 @@ public partial class EffectManager : MonoBehaviour
                 EffectSet(effect_shot, pos, num);
                 break;
             case EFFECT.COIN:
-                EffectSet(effect_coin_get, pos, num);
+                for(int i = 0;i < 3;++i)
+                {
+                    EffectSet(effect_coin_get, new Vector3(pos.x, pos.y - 1.5f + (i), pos.z), num);
+                }
                 break;
         }
     }
@@ -187,6 +193,30 @@ public partial class EffectManager : MonoBehaviour
                     EffectSet(effect_trajectory, pos, num);
                 }
                 break;
+        }
+    }
+
+    // UIのエフェクト----------------------------------------------------
+    void UI(EFFECT state, Vector3 pos, int num)
+    {
+        // stateでどのエフェクトかを決める
+        switch (state)
+        {
+            case EFFECT.UI_FLASH:
+                UIEffectSet(pos, num);
+                break;
+        }
+    }
+
+    void UIEffectSet(Vector3 pos, int num)
+    {
+        int[] pos_data_x = { 1, -1, 0, 1, -1 };
+        int[] pos_data_y = { 1, 1, 0, -1, -1 };
+
+        for (int i = 0; i < num; ++i)
+        {
+            pos = new Vector3(pos.x + pos_data_x[i], pos.y + pos_data_y[i], pos.z);
+            EffectSet(effect_ui, pos, 1);
         }
     }
 

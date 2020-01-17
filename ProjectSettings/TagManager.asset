@@ -19,6 +19,7 @@ TagManager:
   - PostProcess
   - FxTemporaire
   - Sprite
+  - UIEffect
   layers:
   - Default
   - TransparentFX
@@ -32,8 +33,8 @@ TagManager:
   - ShotDestroy
   - PostProcessing
   - Effect
-  - 
-  - 
+  - SortBack
+  - SortFront
   - 
   - 
   - 
@@ -58,4 +59,7 @@ TagManager:
     locked: 0
   - name: No
     uniqueID: 3627392875
+    locked: 0
+  - name: New Layer
+    uniqueID: 77373655
     locked: 0

@@ -479,16 +479,16 @@ public sealed partial class Player : CharaBase
         stop_fric = fric;
     }
 
-    // ジャンプまとめ
-    void JumpMove()
+	// ジャンプまとめ
+	void JumpMove()
     {
         //　着地してるときにジャンプ そのときにエフェクト出す
         if (JumpOn())
         {
             Jump(jump_power);
 
-            // TYPE : キャラ、EFFECT : ジャンプ、POS : 位置、 effect.jump_player : 何個出すか
-            effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, effect.jump_player);
+			// TYPE : キャラ、EFFECT : ジャンプ、POS : 位置、 effect.jump_player : 何個出すか
+			effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, effect.jump_player);
         }
 
         // ショットに乗った時にジャンプをjump_power_up倍
@@ -524,7 +524,7 @@ public sealed partial class Player : CharaBase
         if (!is_ground)
         {
             jump_anim_count = 0;
-            animator.SetBool("JumpStart", false);
+            animator.SetBool("JumpEnd", false);
             animator.SetBool("Fall", true);
             //animator.SetBool("JumpEnd", true);
         }
@@ -578,14 +578,14 @@ public sealed partial class Player : CharaBase
         // モーションが終わってるときにジャンプできる
         if (is_ground && !is_faint)
         {
-            if (!animator.GetBool("JumpEnd"))
-            {
+            if (true) //!animator.GetBool("JumpEnd")
+			{
                 if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP) ))
                 {
-                    //jump_fg = true;
-                    //jump_fg = false;
-                    //jump_timer = 0;
-                    return true;
+					//jump_fg = true;
+					//jump_fg = false;
+					//jump_timer = 0;
+					return true;
                 }
             }
         }
@@ -889,7 +889,7 @@ public sealed partial class Player : CharaBase
 		LeadkeyKind leadkey_kind;
 
 		//入力から一時保存
-		if (Input.GetButtonDown("Jump")) {
+		if (!is_ground && Input.GetButtonDown("Jump")) {
 			leadkey_kind = LeadkeyKind.JUMP;
 		}
 		//else if (Input.GetButtonDown("Jump")) {
@@ -1033,6 +1033,12 @@ public sealed partial class Player : CharaBase
 		//	Debug.Log("Water");
 		//}
 
+		//SPINに当たって、それを持つ敵がSPIN状態なら気絶
+		if (other.gameObject.tag=="Spin") {
+			if (other.GetComponentInParent<Enemy>().EnumAct == Enemy.Enum_Act.SPIN) {
+				is_faint = true;
+			}
+		}
 	}
 
 	//get ------------------------------------------------------------

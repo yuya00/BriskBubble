@@ -68,6 +68,7 @@ public sealed partial class CameraScript : MonoBehaviour
 
     private Vector3 save_pos;               // 演出前の位置を保存
     private Vector3 enm_pos;                // 敵の位置取得
+    private Vector3 adjust_pos;             // 敵に寄るときの一定値
 
     private float init_zoom_out_spd;        // 遠ざかる速さ(初期化用)
     private float approach_timer;

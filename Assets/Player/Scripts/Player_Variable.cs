@@ -233,7 +233,7 @@ public sealed partial class Player : CharaBase
 	public struct LeadInput {
 		public bool			on;						//先行入力オンオフ
 		public const int	NUM = 3;				//保存するキー数
-		public const int    KEY_SERVE_TIME = 8;		//保存時間
+		public const int    KEY_SERVE_TIME = 6;		//保存時間
 	}
 	[Header("先行入力")]
 	public LeadInput lead_input;
