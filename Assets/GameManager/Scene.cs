@@ -60,7 +60,7 @@ public class Scene : MonoBehaviour
         start_text.text = start_buf[start_buf_no];
         alpha = 1;
 
-        // 最初は消す
+        //最初は消す
         sprite = GameObject.FindGameObjectWithTag("Sprite");
         sprite.SetActive(false);
     }
@@ -119,11 +119,10 @@ public class Scene : MonoBehaviour
         {
             fade.FadeIn(fadein);
         }
-        if (cam.GetComponent<CameraScript>().Scene_camera_state == 0)
+        if (cam.GetComponent<CameraScript>().Scene_camera_state == 0 || cam.GetComponent<CameraScript>().Camera_state == 0)
         {
             fade.FadeOut(fadeout);
         }
-
     }
 
     // シーンごとに移行条件を設定
@@ -139,7 +138,10 @@ public class Scene : MonoBehaviour
         }
 
         // ゲームシーン
-        if (SceneManager.GetActiveScene().name == "yusuke_scene" || SceneManager.GetActiveScene().name == "stage_1")
+        if (SceneManager.GetActiveScene().name == "yusuke_scene" ||
+            SceneManager.GetActiveScene().name == "stage_1" || 
+            SceneManager.GetActiveScene().name == "stage_2" ||
+            SceneManager.GetActiveScene().name == "stage_3")
         {
             // スタート文字(カメラの初期動作が終わってから)
             if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
@@ -173,6 +175,18 @@ public class Scene : MonoBehaviour
             end_text.text = buf[buf_no];
             end_text.gameObject.SetActive(true);
         }
+
+        //ステージセレクトシーン
+        if(SceneManager.GetActiveScene().name == "stage_select")
+        {
+            if(GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name!="")
+            {
+                scene_name = GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name;
+                SceneLastFadeIn();
+                
+            }
+        }
+
     }
 
     // シーン遷移用コルーチン .

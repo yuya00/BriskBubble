@@ -46,7 +46,10 @@ public sealed partial class Player : CharaBase
 					case 2:
 						if (Input.GetButton("Shot_R")) {
 							ShotChargeLength();
-						}
+                            //やまなりショットの軌道予測線を表示
+                            Physics_Simulate();
+   
+                        }
 						break;
 				}
 				// 最終ショット発射
@@ -57,11 +60,7 @@ public sealed partial class Player : CharaBase
 				}
 			}
 
-			//やまなりショットの軌道予測線を表示
-			if (shot_state == 2 && Input.GetButton("Shot_R"))
-            {
-                Physics_Simulate();
-            }
+
 
             //軌道予測線削除
             if(!Input.GetButton("Shot_R"))
