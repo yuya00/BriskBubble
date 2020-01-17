@@ -39,6 +39,8 @@ public class Scene : MonoBehaviour
 
     public bool debug_fg;
 
+    private GameObject stage_select;
+
     void Start()
     {
         fade_fg = false;
@@ -56,6 +58,7 @@ public class Scene : MonoBehaviour
         send_buf_no = 4;
         start_text.text = start_buf[start_buf_no];
         alpha = 1;
+
     }
 
     void Update()
@@ -116,7 +119,6 @@ public class Scene : MonoBehaviour
         {
             fade.FadeOut(fadeout);
         }
-
     }
 
     // シーンごとに移行条件を設定
@@ -166,6 +168,18 @@ public class Scene : MonoBehaviour
             end_text.text = buf[buf_no];
             end_text.gameObject.SetActive(true);
         }
+
+        //ステージセレクトシーン
+        if(SceneManager.GetActiveScene().name == "stage_select")
+        {
+            if(GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name!="")
+            {
+                scene_name = GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name;
+                SceneLastFadeIn();
+                
+            }
+        }
+
     }
 
     // シーン遷移用コルーチン .
