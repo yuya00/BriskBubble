@@ -32,7 +32,9 @@ public class CharaBase : MonoBehaviour {
     public float			jump_power			 = 15.0f;			//ジャンプ力
 	protected float			stop_fric			 = 0.3f;			//慣性(停止)
 	protected float			jump_fric			 = 0;				//慣性(ジャンプ)
-	protected float			jump_fric_power		 = 0.7f;			//慣性(ジャンプ)
+	protected float			jump_fric_power		 = 0.7f;            //慣性(ジャンプ)
+	protected float         water_fric           = 0;	            //慣性(水)
+	public float	        water_fric_power     = 0.7f;            //慣性(水)
 	protected bool			is_ground			 = false;           //地面接地判定
 	//protected Transform		chara_ray;							//レイを飛ばす位置(地面判別に使用)
 	//protected float			chara_ray_length	 = 0.4f;

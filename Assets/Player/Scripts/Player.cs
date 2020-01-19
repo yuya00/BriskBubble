@@ -21,7 +21,8 @@ public sealed partial class Player : CharaBase
 		state = START;
         init_speed      = run_speed;
         init_fric       = stop_fric;
-        init_back_speed = back_speed;
+		water_fric		= 1;
+		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
@@ -435,8 +436,8 @@ public sealed partial class Player : CharaBase
                 break;
             case RUN:
                 // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * run_speed;
-                velocity.z = move.normalized.z * run_speed;
+                velocity.x = move.normalized.x * run_speed * water_fric;
+                velocity.z = move.normalized.z * run_speed * water_fric;
                 animator.SetBool("Run", true);
                 animator.SetBool("Walk", false);
                 effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
@@ -954,14 +955,10 @@ public sealed partial class Player : CharaBase
 		//}
 
 		//壁との当たり判定
-		if (other.gameObject.tag == "Wall")
+		if (other.gameObject.tag == "Wall" && !wall_touch_flg)
         {
-            if (!wall_touch_flg)
-            {
-                wall_touch_flg = true;
-				//Debug.Log("Wall");
-
-			}
+            wall_touch_flg = true;
+			//Debug.Log("Wall");
 		}
 
 
@@ -1007,13 +1004,8 @@ public sealed partial class Player : CharaBase
         if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
         {
             foot = (int)FOOT.GROUND;
-        }
-        // 水
-        if (other.gameObject.tag == "Water")
-        {
-            foot = (int)FOOT.WATER;
-        }
-    }
+		}
+	}
 
 	private void OnTriggerEnter(Collider other)
     {
@@ -1024,11 +1016,6 @@ public sealed partial class Player : CharaBase
             Destroy(other.gameObject);
         }
 
-		////水の上なら
-		//if (other.gameObject.tag == "Water") {
-		//	Debug.Log("Water");
-		//}
-
 		//SPINに当たって、それを持つ敵がSPIN状態なら気絶
 		if (other.gameObject.tag=="Spin") {
 			if (other.GetComponentInParent<Enemy>().EnumAct == Enemy.Enum_Act.SPIN) {
@@ -1036,6 +1023,23 @@ public sealed partial class Player : CharaBase
 			}
 		}
 	}
+
+
+	private void OnTriggerStay(Collider other) {
+		// 水
+		if (other.gameObject.tag == "Water") {
+			foot = (int)FOOT.WATER;
+			water_fric = water_fric_power;
+		}
+	}
+
+	private void OnTriggerExit(Collider other) {
+		// 水
+		if (other.gameObject.tag == "Water") {
+			water_fric = 1;
+		}
+	}
+
 
 	//get ------------------------------------------------------------
 	public float RunSpeed
