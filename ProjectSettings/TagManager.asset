@@ -20,6 +20,7 @@ TagManager:
   - FxTemporaire
   - Sprite
   - UIEffect
+  - Spin
   layers:
   - Default
   - TransparentFX
@@ -35,7 +36,7 @@ TagManager:
   - Effect
   - SortBack
   - SortFront
-  - 
+  - Wall
   - 
   - 
   - 
