@@ -412,11 +412,32 @@ public class CharaBase : MonoBehaviour {
 
 	//----穴判定Ray当たり判定
 	public void HoleRayJudge() {
-		RaycastHit hit;
+		//RaycastHit hit;
+		LayerMask wall_layer = (1 << 14);
 
 		//何にも当たっていなかったら
+		#region BoxCast
+		//右のレイ
+		if (!Physics.BoxCast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)),
+			Vector3.one,-transform.up, transform.rotation, hole_ray.length,wall_layer)) {
+			hole_ray.hit_right_flg = true;
+		}
+		else {
+			hole_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (!Physics.BoxCast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength)),
+			Vector3.one, -transform.up, transform.rotation, hole_ray.length, wall_layer)) {
+			hole_ray.hit_left_flg = true;
+		}
+		else {
+			hole_ray.hit_left_flg = false;
+		}
+		#endregion
+
 		#region 4RayCast 縦横
-		//*
+		/*
 		//右のレイ
 		float var = 1;
 		if ((!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
