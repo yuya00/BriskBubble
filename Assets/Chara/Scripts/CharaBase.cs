@@ -550,8 +550,8 @@ public class CharaBase : MonoBehaviour {
 		//LayerMask shot_layer = ~(1 << 8);
 
 		//Wallのレイヤーが設定されている物とだけ当たる
-		//LayerMask wall_layer = (1 << 14);
-		LayerMask wall_layer = ~(1 << 8);
+		LayerMask wall_layer = (1 << 14);
+		//LayerMask wall_layer = ~(1 << 8);
 		/***********************/
 
 
