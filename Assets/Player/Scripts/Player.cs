@@ -21,7 +21,8 @@ public sealed partial class Player : CharaBase
 		state = START;
         init_speed      = run_speed;
         init_fric       = stop_fric;
-        init_back_speed = back_speed;
+		water_fric		= 1;
+		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
@@ -39,7 +40,7 @@ public sealed partial class Player : CharaBase
     void Update()
     {
 
-
+		//Debug.Log(velocity);
 
         switch (state)
         {
@@ -435,8 +436,8 @@ public sealed partial class Player : CharaBase
                 break;
             case RUN:
                 // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * run_speed;
-                velocity.z = move.normalized.z * run_speed;
+                velocity.x = move.normalized.x * run_speed * water_fric;
+                velocity.z = move.normalized.z * run_speed * water_fric;
                 animator.SetBool("Run", true);
                 animator.SetBool("Walk", false);
                 effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
@@ -578,30 +579,26 @@ public sealed partial class Player : CharaBase
         // モーションが終わってるときにジャンプできる
         if (is_ground && !is_faint)
         {
-            if (true) //!animator.GetBool("JumpEnd")
-			{
-                if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP) ))
-                {
-					//jump_fg = true;
-					//jump_fg = false;
-					//jump_timer = 0;
-					return true;
-                }
-            }
-        }
-        //if (jump_fg)
-        //{
-        //    animator.speed = anim_spd;
-        //    jump_timer += Time.deltaTime;
-        //}
-        //if (jump_timer > jump_timer_max)
-        //{
-        //    jump_fg = false;
-        //    jump_timer = 0;
-        //    return true;
-        //}
+			if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2) || (lead_key == LeadkeyKind.JUMP))) {
+				//jump_fg = true;
+				//jump_fg = false;
+				//jump_timer = 0;
+				return true;
+			}
+		}
+		//if (jump_fg)
+		//{
+		//    animator.speed = anim_spd;
+		//    jump_timer += Time.deltaTime;
+		//}
+		//if (jump_timer > jump_timer_max)
+		//{
+		//    jump_fg = false;
+		//    jump_timer = 0;
+		//    return true;
+		//}
 
-        return false;
+		return false;
     }
 
     // 落下中判定
@@ -658,22 +655,39 @@ public sealed partial class Player : CharaBase
 		}
 
 		RaycastHit hit;
+		LayerMask enemy_layer = (1 << 15);
+
+		//踏みつけ判定(真下から飛ばす)
+		if (Physics.BoxCast(transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.up * (ground_cast.capsule_collider.height / 2)),
+			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE,enemy_layer)
+			&& !hit.collider.GetComponent<Enemy>().IsFaint) 
+			{
+			tread_on.flg = true;
+			hit.collider.GetComponent<Enemy>().IsFaint = true;
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			Jump(TreadOn_BoxCast.JUMP_POWER);
+			//Debug.Log("敵を踏んだ");
+		}
+
+		#region 踏みつけ判定(レイヤー判定なし)
+		/*
 		//踏みつけ判定
-		if (Physics.BoxCast(transform.position + 
-			(transform.up * ground_cast.capsule_collider.center.y) - 
-			(transform.up * (ground_cast.capsule_collider.height / 2)), 
+		if (Physics.BoxCast(transform.position +
+			(transform.up * ground_cast.capsule_collider.center.y) -
+			(transform.up * (ground_cast.capsule_collider.height / 2)),
 			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE)
 			//Physics.BoxCast(ground_ray_pos, tread_on.size, -transform.up, out hit, transform.rotation, 0.1f)
 			&& hit.collider.tag == "Enemy"
 			&& !hit.collider.GetComponent<Enemy>().IsFaint
-			&& !tread_on.flg) 
-			{
-			tread_on.flg		 = true;
+			&& !tread_on.flg) {
+			tread_on.flg = true;
 			hit.collider.GetComponent<Enemy>().IsFaint = true;
-			velocity			 = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
 			Jump(TreadOn_BoxCast.JUMP_POWER);
 			//Debug.Log("敵を踏んだ");
 		}
+		*/
+		#endregion
 
 		//着地するまでが踏みつけ
 		if (is_ground) {
@@ -958,14 +972,10 @@ public sealed partial class Player : CharaBase
 		//}
 
 		//壁との当たり判定
-		if (other.gameObject.tag == "Wall")
+		if (other.gameObject.tag == "Wall" && !wall_touch_flg)
         {
-            if (!wall_touch_flg)
-            {
-                wall_touch_flg = true;
-				//Debug.Log("Wall");
-
-			}
+            wall_touch_flg = true;
+			//Debug.Log("Wall");
 		}
 
 
@@ -1011,13 +1021,8 @@ public sealed partial class Player : CharaBase
         if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
         {
             foot = (int)FOOT.GROUND;
-        }
-        // 水
-        if (other.gameObject.tag == "Water")
-        {
-            foot = (int)FOOT.WATER;
-        }
-    }
+		}
+	}
 
 	private void OnTriggerEnter(Collider other)
     {
@@ -1028,11 +1033,6 @@ public sealed partial class Player : CharaBase
             Destroy(other.gameObject);
         }
 
-		////水の上なら
-		//if (other.gameObject.tag == "Water") {
-		//	Debug.Log("Water");
-		//}
-
 		//SPINに当たって、それを持つ敵がSPIN状態なら気絶
 		if (other.gameObject.tag=="Spin") {
 			if (other.GetComponentInParent<Enemy>().EnumAct == Enemy.Enum_Act.SPIN) {
@@ -1040,6 +1040,24 @@ public sealed partial class Player : CharaBase
 			}
 		}
 	}
+
+
+	private void OnTriggerStay(Collider other) {
+		// 水
+		if (other.gameObject.tag == "Water") {
+			foot = (int)FOOT.WATER;
+			water_fric = water_fric_power;
+		}
+	}
+
+	private void OnTriggerExit(Collider other) {
+		// 水
+		if (other.gameObject.tag == "Water") {
+			water_fric = 1;
+			foot = (int)FOOT.NONE;
+		}
+	}
+
 
 	//get ------------------------------------------------------------
 	public float RunSpeed
