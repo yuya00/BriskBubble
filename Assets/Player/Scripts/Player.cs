@@ -407,7 +407,7 @@ public sealed partial class Player : CharaBase
         front.y = 0;
 
         // 横方向
-        Vector3 right = Vector3.Cross(new Vector3(0, transform.position.y + 1.0f, 0), front).normalized;
+        Vector3 right = Vector3.Cross(new Vector3(0, 1.0f, 0), front).normalized;
 
         // 方向に値を設定
         move = right * axis_x;
