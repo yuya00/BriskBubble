@@ -655,22 +655,39 @@ public sealed partial class Player : CharaBase
 		}
 
 		RaycastHit hit;
+		LayerMask enemy_layer = (1 << 15);
+
+		//踏みつけ判定(真下から飛ばす)
+		if (Physics.BoxCast(transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.up * (ground_cast.capsule_collider.height / 2)),
+			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE,enemy_layer)
+			&& !hit.collider.GetComponent<Enemy>().IsFaint) 
+			{
+			tread_on.flg = true;
+			hit.collider.GetComponent<Enemy>().IsFaint = true;
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			Jump(TreadOn_BoxCast.JUMP_POWER);
+			//Debug.Log("敵を踏んだ");
+		}
+
+		#region 踏みつけ判定(レイヤー判定なし)
+		/*
 		//踏みつけ判定
-		if (Physics.BoxCast(transform.position + 
-			(transform.up * ground_cast.capsule_collider.center.y) - 
-			(transform.up * (ground_cast.capsule_collider.height / 2)), 
+		if (Physics.BoxCast(transform.position +
+			(transform.up * ground_cast.capsule_collider.center.y) -
+			(transform.up * (ground_cast.capsule_collider.height / 2)),
 			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE)
 			//Physics.BoxCast(ground_ray_pos, tread_on.size, -transform.up, out hit, transform.rotation, 0.1f)
 			&& hit.collider.tag == "Enemy"
 			&& !hit.collider.GetComponent<Enemy>().IsFaint
-			&& !tread_on.flg) 
-			{
-			tread_on.flg		 = true;
+			&& !tread_on.flg) {
+			tread_on.flg = true;
 			hit.collider.GetComponent<Enemy>().IsFaint = true;
-			velocity			 = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
 			Jump(TreadOn_BoxCast.JUMP_POWER);
 			//Debug.Log("敵を踏んだ");
 		}
+		*/
+		#endregion
 
 		//着地するまでが踏みつけ
 		if (is_ground) {
@@ -1037,6 +1054,7 @@ public sealed partial class Player : CharaBase
 		// 水
 		if (other.gameObject.tag == "Water") {
 			water_fric = 1;
+			foot = (int)FOOT.NONE;
 		}
 	}
 
