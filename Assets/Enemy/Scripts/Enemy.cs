@@ -401,6 +401,7 @@ public sealed partial class Enemy : CharaBase
 		if (hole_ray.gizmo_on) {
 			//hole_ray.BoxCast_Cal2(transform);
 			Gizmos.color = Color.green - new Color(0, 0, 0, 0.0f);
+			Gizmos.color = (Color.red + Color.yellow) / 2 + new Color(0, 0, 0, 0.3f);
 
 			//if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right * 2)
 
@@ -409,12 +410,18 @@ public sealed partial class Enemy : CharaBase
 			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right * 1), -transform.up * hole_ray.length);
 			//Gizmos.DrawRay((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right * 1), -transform.up * hole_ray.length);
 
+			//RayCast
 			Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * hole_ray.startLength, -transform.up * hole_ray.length);
 			Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * hole_ray.startLength, -transform.up * hole_ray.length);
+
+			//BoxCast(末端のみ)
+			Gizmos.DrawWireCube(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * hole_ray.startLength - transform.up * hole_ray.length, Vector3.one);
+			Gizmos.DrawWireCube(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * hole_ray.startLength - transform.up * hole_ray.length, Vector3.one);
+
 		}
-#endregion
-		
-		
+		#endregion
+
+
 		#region ジャンプ判定Ray
 		if (jump_ray.gizmo_on) 
 		{
