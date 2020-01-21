@@ -569,7 +569,7 @@ public sealed partial class Enemy : CharaBase
                 break;
             case Enum_Act.WAIT:     //待機
                 once_random.num = OnceRandom(-wait_act.wait_random, wait_act.wait_random);  //ランダム値設定
-				if (WaitTimeBox(Enum_Timer.WAIT, wait_act.wait_time + once_random.num)) {
+				if (WaitTimeBox((int)Enum_Timer.WAIT, wait_act.wait_time + once_random.num)) {
 					enum_act = Enum_Act.SWING;
 				}
                 break;
@@ -593,12 +593,12 @@ public sealed partial class Enemy : CharaBase
 		switch (wait_act.enum_swing) {
 			case WaitAct.Enum_Swing.SWING:    //首振り
 				transform.Rotate(0, spd * Mathf.Deg2Rad, 0);
-				if (WaitTimeBox(Enum_Timer.WAIT_SWING, time)) {
+				if (WaitTimeBox((int)Enum_Timer.WAIT_SWING, time)) {
 					wait_act.enum_swing = WaitAct.Enum_Swing.WAIT;
 				}
 				break;
 			case WaitAct.Enum_Swing.WAIT:     //首振りの間
-				if (WaitTimeBox(Enum_Timer.WAIT_SWING, wait_time)) {
+				if (WaitTimeBox((int)Enum_Timer.WAIT_SWING, wait_time)) {
 					wait_act.enum_swing = WaitAct.Enum_Swing.SWING;
 					enum_act = next_state;
 				}
@@ -719,12 +719,12 @@ public sealed partial class Enemy : CharaBase
 				//Debug.Log(Easing(easing_timer));
 				//transform.Rotate(0, 20*Easing(easing_timer), 0);
 				//easing_timer += 0.1f;
-				transform.Rotate(0, 25, 0);
-				if (WaitTimeBox(Enum_Timer.EACH_ACT, 12)) {
+				transform.Rotate(0, 15, 0);
+				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, 12)) {
 					enum_act = Enum_Act.END;
 				}
 				//scale変更
-				transform.localScale = Vector3.one * 1.25f;
+				transform.localScale = Vector3.one * 1.4f;
 				break;
             case Enum_Act.END:
 				transform.localScale = Vector3.one * 1;
@@ -906,7 +906,7 @@ public sealed partial class Enemy : CharaBase
 	void AwayActBase(int interval, float spd) {
 		//一定時間経つ、もしくは穴判定があれば向き切り替え
 		if (hole_ray.hit_right_flg || hole_ray.hit_left_flg ||
-			WaitTimeBox(Enum_Timer.EACH_ACT, interval)) {
+			WaitTimeBox((int)Enum_Timer.EACH_ACT, interval)) {
 			away_act.curve.one *= -1;
 		}
 
@@ -929,7 +929,7 @@ public sealed partial class Enemy : CharaBase
 			away_act.jump.flg = false;
 		}
 
-		if (WaitTimeBox(Enum_Timer.EACH_ACT, away_act.jump.time)) {
+		if (WaitTimeBox((int)Enum_Timer.EACH_ACT, away_act.jump.time)) {
 			away_act.jump.flg = true;
 		}
 
@@ -1194,7 +1194,7 @@ public sealed partial class Enemy : CharaBase
 				velocity.x = transform.forward.x * run_speed;
 				velocity.z = transform.forward.z * run_speed;
 				//120f経ったら
-				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_interval)) {
+				if (WaitTimeBox((int)Enum_Timer.LOOKBACK, away_act.lookback_interval)) {
 					//away_act.state = 1;
 					away_act.enum_lookback = AwayAct.Enum_LookBack.LOOKBACK;
 				}
@@ -1204,7 +1204,7 @@ public sealed partial class Enemy : CharaBase
 				velocity.x = transform.forward.x * (run_speed / 2);
 				velocity.z = transform.forward.z * (run_speed / 2);
 				//30f経ったら
-				if (WaitTimeBox(Enum_Timer.LOOKBACK, away_act.lookback_time)) {
+				if (WaitTimeBox((int)Enum_Timer.LOOKBACK, away_act.lookback_time)) {
 					//away_act.state = 0;
 					away_act.enum_lookback = AwayAct.Enum_LookBack.NORMAL;
 				}
@@ -1247,7 +1247,7 @@ public sealed partial class Enemy : CharaBase
 				break;
 			case Enum_Act.WAIT:
 				transform.LookAt(enemy_sounddetect.FoundHitPos);
-				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
+				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
 					enemy_sounddetect.FoundShotFlg = false;
 					enum_act = Enum_Act.BREAK;
 				}
@@ -1257,7 +1257,7 @@ public sealed partial class Enemy : CharaBase
 				enum_act = Enum_Act.END;
 				break;
 			case Enum_Act.END:      //待機(逃走のRUNに戻る)
-				if (WaitTimeBox(Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
+				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
 					Clear();
 					transform.localEulerAngles = Vector3.zero;
 					enum_state = Enum_State.AWAY;
@@ -1284,7 +1284,7 @@ public sealed partial class Enemy : CharaBase
 				velocity.z = 0;
 
 				//時間経ったら
-				if (WaitTimeBox(Enum_Timer.FAINT, FAINT_TIME)) {
+				if (WaitTimeBox((int)Enum_Timer.FAINT, FAINT_TIME)) {
 					enum_act = Enum_Act.END;
 				}
 				break;

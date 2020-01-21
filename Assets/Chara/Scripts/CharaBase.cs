@@ -693,4 +693,16 @@ public class CharaBase : MonoBehaviour {
 	}
 
 
+	//汎用タイマー(指定時間になったらtrue)
+	protected bool WaitTimeBox(int box_num, int wait_time) {
+		if (wait_timer_box[box_num] >= wait_time) {
+			wait_timer_box[box_num] = 0;
+			return true;
+		}
+		else {
+			wait_timer_box[box_num]++;
+			return false;
+		}
+	}
+
 }

@@ -300,17 +300,6 @@ public sealed partial class Enemy : CharaBase
 
 
 
-	//汎用タイマー(指定時間になったらtrue)
-	bool WaitTimeBox(Enum_Timer box_num,int wait_time) {
-		if (wait_timer_box[(int)box_num] >= wait_time) {
-			wait_timer_box[(int)box_num] = 0;
-			return true;
-		}
-		else {
-			wait_timer_box[(int)box_num]++;
-			return false;
-		}
-	}
 
 	//汎用タイマーの種類
 	enum Enum_Timer {

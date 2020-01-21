@@ -6,9 +6,14 @@
 
 
 
-踏みつけ時は動けるようにする
+SPINの回転遅くする
+transform.Rotate(0, 15, 0);
 
-踏みつけと気絶が同時に出ている
+EnemyのSpin
+Center Z -6.65
+Size   Z  6
+
+
 
 
 
