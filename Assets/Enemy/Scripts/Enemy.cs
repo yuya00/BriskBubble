@@ -720,7 +720,7 @@ public sealed partial class Enemy : CharaBase
 				//transform.Rotate(0, 20*Easing(easing_timer), 0);
 				//easing_timer += 0.1f;
 				transform.Rotate(0, 15, 0);
-				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, 12)) {
+				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, 15)) {
 					enum_act = Enum_Act.END;
 				}
 				//scale変更

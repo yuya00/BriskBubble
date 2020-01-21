@@ -6,13 +6,6 @@
 
 
 
-SPINの回転遅くする
-transform.Rotate(0, 15, 0);
-
-EnemyのSpin
-Center Z -6.65
-Size   Z  6
-
 
 
 
@@ -49,12 +42,13 @@ Gizmo Build　エラー　調べる
 
 ジャンプ判定下限 より 壁判定下限が上
 
-SPIN幅小さくする
-EnemyPrefabの中のSpinのBoxColliderの大きさを変更
-
 穴判定長さは20くらい？
 
 橋のtagをwallにする
+
+EnemyのSpin
+Center Z -6.65
+Size   Z  6
 
 
 
