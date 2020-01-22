@@ -206,13 +206,13 @@ MonoBehaviour:
     lookback_interval: 120
     lookback_time: 30
     kind:
-      normal: 0
+      normal: 1
       curve: 0
       jump: 0
       zigzag: 0
       armar: 0
       shot: 0
-      spin: 1
+      spin: 0
     normal:
       interval: 120
       spd: 0.04
@@ -649,8 +649,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 6.5, z: 9}
-  m_Center: {x: 0, y: 0, z: -7}
+  m_Size: {x: 1, y: 6.5, z: 6}
+  m_Center: {x: 0, y: 0, z: -6.65}
 --- !u!54 &5603315632737031675
 Rigidbody:
   m_ObjectHideFlags: 0
