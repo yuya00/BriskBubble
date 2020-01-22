@@ -36,10 +36,12 @@ public class CharaBase : MonoBehaviour {
 	protected float         water_fric           = 0;	            //慣性(水)
 	public float	        water_fric_power     = 0.7f;            //慣性(水)
 	protected bool			is_ground			 = false;           //地面接地判定
-	//protected Transform		chara_ray;							//レイを飛ばす位置(地面判別に使用)
-	//protected float			chara_ray_length	 = 0.4f;
-	//protected CapsuleCollider   capsule_collider;
-	protected Vector3       ground_ray_pos       = Vector3.zero;
+    protected bool          is_floor             = false;           //動く床接地判定
+
+    //protected Transform		chara_ray;							//レイを飛ばす位置(地面判別に使用)
+    //protected float			chara_ray_length	 = 0.4f;
+    //protected CapsuleCollider   capsule_collider;
+    protected Vector3       ground_ray_pos       = Vector3.zero;
 	protected float         ground_ray_upadjust  = 0.1f;
 	protected float         ground_ray_length    = 0.5f;
 	[Tooltip("重力の倍率")]
@@ -210,16 +212,20 @@ public class CharaBase : MonoBehaviour {
 	[Header("穴判定Ray")]
 	public HoleRay hole_ray;
 
+    // 動く床用
+    private GameObject[] floor;
+    protected Vector3 floor_pos;
 
-
-
-
-	public virtual void Start()
+    public virtual void Start()
     {
 		rigid = GetComponent<Rigidbody>();
-		velocity = Vector3.zero;
+        floor = GameObject.FindGameObjectsWithTag("Ground");
+
+        velocity = Vector3.zero;
 		is_ground = false;
-		ground_cast.capsule_collider = GetComponent<CapsuleCollider>();
+        is_floor = false;
+
+        ground_cast.capsule_collider = GetComponent<CapsuleCollider>();
 		ground_cast.length = (ground_cast.capsule_collider.height / 2) - GroundCast.UPADJUST;
 		for (int i = 0; i < WORK_NUM; i++) {
 			iwork[i] = 0;
@@ -561,8 +567,8 @@ public class CharaBase : MonoBehaviour {
 
 
 
-	//着地時にfalse
-	public virtual void Move()
+    //着地時にfalse
+    public virtual void Move()
     {
 		/***********************/
 		// 試しに
@@ -572,37 +578,63 @@ public class CharaBase : MonoBehaviour {
 
 		//Wallのレイヤーが設定されている物とだけ当たる
 		LayerMask wall_layer = (1 << 14);
-		//LayerMask wall_layer = ~(1 << 8);
-		/***********************/
+        //LayerMask wall_layer = ~(1 << 8);
+
+        // 動く床
+        LayerMask ground_layer = (1 << 16);
+        /***********************/
 
 
-		#region SphereCast
-		//足元(に加え,少し後ろにすることで壁に接触しながらジャンプするとすぐ着地してしまう問題を回避)
-		ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.forward * 0.2f);
+        #region SphereCast
+        //足元(に加え,少し後ろにすることで壁に接触しながらジャンプするとすぐ着地してしまう問題を回避)
+        ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.forward * 0.2f);
 
 		RaycastHit hit;
 		//中心から、足元より少し上の位置までsphereで判定
-		if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, wall_layer)) {
+		if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, wall_layer))
+        {
 			rigid.useGravity = true;
 			is_ground		 = true;
 			velocity.y		 = 0;
 		}
-		else {
+		else
+        {
 			is_ground = false;
 			//落下速度の上限
-			if (velocity.y >= -fallspd_limit) {
+			if (velocity.y >= -fallspd_limit)
+            {
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
 			}
-			else {
+			else
+            {
 				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
 		}
-		#endregion
+
+        // 動く床
+        for (int i = 0; i < 3; ++i)
+        {
+            if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, ground_layer))
+            {
+                rigid.useGravity = true;
+                is_ground = true;
+                is_floor = true;
+                velocity.y = 0;
+
+                floor_pos = transform.position + floor[i].GetComponent<MoveFloor>().MoveVector;
+            }
+            else
+            {
+                is_floor = false;
+            }
+        }
+
+        #endregion
 
 
-		#region Ray
-		//足元から少し上の位置
-		ground_ray_pos = transform.position +
+        #region Ray
+        //足元から少し上の位置
+        ground_ray_pos = transform.position +
 			(transform.up * ground_cast.capsule_collider.center.y) -
 			(transform.up * (ground_cast.capsule_collider.height / 2)) +
 			(transform.up * ground_ray_upadjust);
@@ -669,17 +701,20 @@ public class CharaBase : MonoBehaviour {
 
 
 
-    public virtual void FixedUpdate(){
-		//キャラクターを移動させる処理
-		//if (this.gameObject.tag == "Player") {
-		//	Debug.Log(velocity);
-		//}
-		rigid.MovePosition(transform.position + velocity * Time.deltaTime);
-	}
+    public virtual void FixedUpdate()
+    {
+        //キャラクターを移動させる処理
+        //if (this.gameObject.tag == "Player") {
+        //	Debug.Log(velocity);
+        //}
+        rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+
+        //transform.position = transform.position + velocity * Time.deltaTime;
+    }
 
 
 
-	protected bool WaitTimeOnce(int wait_time)
+    protected bool WaitTimeOnce(int wait_time)
     {
 		if (wait_timer >= wait_time)
         {

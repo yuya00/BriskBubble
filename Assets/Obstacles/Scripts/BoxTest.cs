@@ -5,6 +5,7 @@ using UnityEngine;
 public class BoxTest : MonoBehaviour
 {
     private Rigidbody rigid;
+    private GameObject floor;
     private GameObject cam;              // カメラオブジェ
     private Vector3 velocity;           //速さ(rigd.velocityでも良いかも)
     private Vector3 floor_pos;
@@ -15,25 +16,37 @@ public class BoxTest : MonoBehaviour
     public float slope = 0.3f;          // スティックの傾き具合設定用
     public float rot_speed = 10.0f;     // カメラの回転速度
     public float jump_power = 15.0f;			//ジャンプ力
+    private float fric = 0;
+    private bool floor_fg;
+
+    private Vector3 scale;
 
     // Start is called before the first frame update
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
         cam = GameObject.FindGameObjectWithTag("Camera");
+        floor = GameObject.FindGameObjectWithTag("Ground");
+        scale = transform.localScale;
+        floor_pos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.localScale = scale;
         Move();
         if (Input.GetButtonDown("Jump") || (Input.GetMouseButtonDown(2)))            Jump(jump_power);
     }
 
     void FixedUpdate()
     {
+        //floor_pos = transform.position;
+        velocity.y -= fric;
         //キャラクターを移動させる処理
-        rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        //rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        if (floor_fg)   transform.position = floor_pos + velocity * Time.deltaTime;
+        else            transform.position = transform.position + velocity * Time.deltaTime;
     }
 
     void Move()
@@ -136,34 +149,84 @@ public class BoxTest : MonoBehaviour
     private void OnCollisionExit(Collision other)
     {
         // 何にも当たってなかったら
-        if (other.gameObject.tag == "Ground")
-        {
-            transform.SetParent(null);
-        }
+        floor_pos = transform.position;
+        floor_fg = false;
 
+        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Ground")
+        {
+            fric = 3;
+        }
 
     }
 
-    //当たり判定 -----------------------------------------------
     // 物体に当たってるときに呼ばれる
-    //private void OnCollisionStay(Collision other)
-    //{
-    //    // 床
-    //    if (other.gameObject.tag == "Ground")
-    //    {
-    //        floor_pos = gameObject.transform.position;
-    //    }
-    //}
+    private void OnCollisionStay(Collision other)
+    {
+        // 床
+        //if (other.gameObject.tag == "Ground")
+        //{
+        //    transform.SetParent(other.transform);
+        //}
+
+        // 床
+        if (other.gameObject.tag == "Ground")
+        {
+            //floor.GetComponent<MoveFloor>().MoveVector;
+            // 床の位置を設定
+            floor_pos = new Vector3(
+                transform.position.x + floor.GetComponent<MoveFloor>().MoveVector.x, 
+                transform.position.y,
+                transform.position.z + floor.GetComponent<MoveFloor>().MoveVector.z);
+
+            floor_fg = true;
+        }
+    }
 
     private void OnCollisionEnter(Collision other)
     {
         // 床
-        if (other.gameObject.tag == "Ground")
+        //if (other.gameObject.tag == "Ground")
+        //{
+        //    transform.SetParent(other.transform);
+        //}
+        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Ground")
         {
-            transform.SetParent(other.transform);
+            velocity.y = 0;
+            fric = 0;
         }
+
     }
 
+    //GUI表示 -----------------------------------------------------
+    private Vector2 left_scroll_pos = Vector2.zero;   //uGUIスクロールビュー用
+    private float scroll_height = 330;
+    public bool gui;
+    void OnGUI()
+    {
+        if (!gui)
+        {
+            return;
+        }
+
+        GUILayout.BeginVertical("box", GUILayout.Width(190));
+        left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
+        GUILayout.Box("Test");
+
+        if (gui)
+        {
+            //着地判定
+            GUILayout.TextArea("velocity\n " + velocity);
+            GUILayout.TextArea("fric\n " + fric);
+            GUILayout.TextArea("floor_pos\n " + floor_pos);
+            GUILayout.TextArea("transform.position\n " + transform.position);
+            GUILayout.TextArea("fg\n " + floor_fg);
+            //GUILayout.TextArea("velocity\n " + velocity);
+            //GUILayout.TextArea("velocity\n " + velocity);
+        }
+
+        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
+    }
 
 
 }

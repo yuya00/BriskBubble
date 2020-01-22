@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public sealed partial class Player : CharaBase
 {
+
     // 初期値設定
     public override void Start()
     {
@@ -15,10 +16,10 @@ public sealed partial class Player : CharaBase
         game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
         animator		 = GetComponent<Animator>();
 		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
-		//chara_ray       = transform.Find("CharaRay");
+        //chara_ray       = transform.Find("CharaRay");
 
-		// プレイヤーのパラメーター設定
-		state = START;
+        // プレイヤーのパラメーター設定
+        state = START;
         init_speed      = run_speed;
         init_fric       = stop_fric;
 		water_fric		= 1;
@@ -124,7 +125,10 @@ public sealed partial class Player : CharaBase
                 if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
                 break;
             case GAME:
-                base.FixedUpdate();
+                //base.FixedUpdate();
+                if (is_floor)  transform.position = floor_pos + velocity * Time.deltaTime;
+                else           transform.position = transform.position + velocity * Time.deltaTime;
+
                 // 移動
                 LstickMove();
                 break;
@@ -992,9 +996,11 @@ public sealed partial class Player : CharaBase
 			is_faint = true;
 		}
 
-	}
 
-	private void OnCollisionExit(Collision other)
+
+    }
+
+    private void OnCollisionExit(Collision other)
     {
 		//壁との当たり判定
 		if (other.gameObject.tag == "Wall")
@@ -1011,6 +1017,12 @@ public sealed partial class Player : CharaBase
             foot = (int)FOOT.NONE;
         }
 
+        // 床の同期解除
+        //if (other.gameObject.tag == "Ground")
+        //{
+        //    transform.SetParent(null);
+        //}
+
 
     }
 
@@ -1021,10 +1033,28 @@ public sealed partial class Player : CharaBase
         if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
         {
             foot = (int)FOOT.GROUND;
-		}
-	}
+        }
 
-	private void OnTriggerEnter(Collider other)
+        //// 床と同期させて一緒に移動
+        //if (other.gameObject.tag == "Ground")
+        //{
+        //    transform.SetParent(other.transform);
+        //}
+
+        //// 床
+        //if (is_ground && other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
+        //{
+        //    //floor.GetComponent<MoveFloor>().MoveVector;
+        //    // 床の位置を設定
+        //    floor_pos = new Vector3(
+        //        transform.position.x + floor.GetComponent<MoveFloor>().MoveVector.x,
+        //        transform.position.y,
+        //        transform.position.z + floor.GetComponent<MoveFloor>().MoveVector.z);
+        //}
+
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Coin")
         {
