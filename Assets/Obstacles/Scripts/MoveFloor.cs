@@ -61,7 +61,7 @@ public class MoveFloor : MonoBehaviour
                 TimerCheck(MOVE.GO);
                 break;
         }
-        Debug.Log(timer);
+
     }
 
     // 速度設定
