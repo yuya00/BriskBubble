@@ -38,7 +38,7 @@ public sealed partial class Player : CharaBase
 					case 0:
 						//ショットのチャージ(大きさ)
 						if (Input.GetButton("Shot_R")) {
-							ShotCharge();
+							//ShotCharge();
 						}
 						break;
 					case 1:
@@ -63,10 +63,13 @@ public sealed partial class Player : CharaBase
 
 
             //軌道予測線削除
-            if(!Input.GetButton("Shot_R"))
-            for (int i = 0; i < 10; i++)
+            if (!Input.GetButton("Shot_R"))
             {
-                Destroy(physics_simulate_object_clone[i]);
+                for (int i = 0; i < physics_simulate_object_clone.Count; i++)
+                {
+                    Destroy(physics_simulate_object_clone[i]);
+                }
+                physics_simulate_object_clone.Clear();
             }
 
         }
@@ -190,10 +193,11 @@ public sealed partial class Player : CharaBase
         shot_charge_length = CHARGE_LENGTH_OFFSET;
 
         //やまなりショットの軌道予測を破棄
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < physics_simulate_object_clone.Count; i++)
         {
-           Destroy(physics_simulate_object_clone[i]);
+            Destroy(physics_simulate_object_clone[i]);
         }
+        physics_simulate_object_clone.Clear();
 
 
         //animator.speed = init_anim_spd;
@@ -300,34 +304,40 @@ public sealed partial class Player : CharaBase
         rigid.AddForce(velocity, ForceMode.Impulse);
 
         //以前の物を削除
-        for (int i = 0; i < 10; i++)
+
+        for (int i = 0; i < physics_simulate_object_clone.Count; i++)
         {
             Destroy(physics_simulate_object_clone[i]);
         }
+        physics_simulate_object_clone.Clear();
 
 
 
 
 
         //物理シュミレート開始
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < simulate_object_num; i++)
         {
 
-            physics_simulate_scene.Simulate(0.5f);
+            physics_simulate_scene.Simulate(simulate_interval);
 
-            physics_simulate_pos[i] = obj.transform.position;
+            physics_simulate_pos.Add(obj.transform.position);
 
         }
         Destroy(obj);
         
 
         //記録した座標の場所にオブジェクト設置
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < simulate_object_num; i++)
             {
-                physics_simulate_object_clone[i] = Instantiate(physics_simulate_object, physics_simulate_pos[i], Quaternion.identity);
+
+                GameObject ob = Instantiate(physics_simulate_object, physics_simulate_pos[i], Quaternion.identity);
+                physics_simulate_object_clone.Add(ob);
                 Rigidbody rb = physics_simulate_object_clone[i].GetComponent<Rigidbody>();
                 rb.useGravity = false;
             }
+
+            physics_simulate_pos.Clear();
 
     }
 

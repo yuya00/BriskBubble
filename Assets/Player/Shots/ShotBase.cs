@@ -217,6 +217,11 @@ public class ShotBase : MonoBehaviour
 			Destroy(gameObject);
 		}
 
+        if(col.tag == "Wall")
+        {
+            Destroy(gameObject);
+        }
+
 
 	}
 

@@ -117,10 +117,12 @@ public sealed partial class Player : CharaBase
 
     public float max_charge_length;　　　　 //やまなりショットの最大距離
     public float shot_length_charge_time;　 //やまなりショットの距離が最大になる時間
-
+    public float simulate_interval;
     public GameObject physics_simulate_object;   //やまなりショットの軌道予測用のオブジェクト
-    private Vector3[] physics_simulate_pos = new Vector3[10]; //やまなりショットの座標記憶用
-    private GameObject[] physics_simulate_object_clone = new GameObject[10];//やまなりショットの軌道表示用
+
+    private const int simulate_object_num = 40;
+    private List<Vector3> physics_simulate_pos = new List<Vector3>(); //やまなりショットの座標記憶用
+    private List<GameObject> physics_simulate_object_clone = new List<GameObject>();//やまなりショットの軌道表示用
     public PhysicsScene physics_simulate_scene; 　　　//やまなりショット用の物理シーン
     public UnityEngine.SceneManagement.Scene scene;　 //やまなりショット用の物理シーン
 
