@@ -578,10 +578,10 @@ public class CharaBase : MonoBehaviour {
 
 		//Wallのレイヤーが設定されている物とだけ当たる
 		LayerMask wall_layer = (1 << 14);
-        //LayerMask wall_layer = ~(1 << 8);
+		//LayerMask wall_layer = (1 << 14) | (1 << 16);
 
-        // 動く床
-        LayerMask ground_layer = (1 << 16);
+		// 動く床
+		LayerMask ground_layer = (1 << 16);
         /***********************/
 
 
