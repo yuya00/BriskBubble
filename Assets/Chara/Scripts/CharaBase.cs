@@ -20,7 +20,6 @@ public class CharaBase : MonoBehaviour {
 	[Header("GUI")]
 	public GUI gui;
 
-
 	[Foldout("BaseParameter" ,true)]
 	protected				Rigidbody			 rigid;
 	protected				Vector3				 velocity;			//速さ(rigd.velocityでも良いかも)
@@ -600,19 +599,22 @@ public class CharaBase : MonoBehaviour {
 		else
         {
 			is_ground = false;
+			//rigid.useGravity = false;
+
 			//落下速度の上限
 			if (velocity.y >= -fallspd_limit)
-            {
+			{
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
 			}
 			else
-            {
+			{
 				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
+
 		}
 
-        // 動く床
-        for (int i = 0; i < 3; ++i)
+		// 動く床
+		for (int i = 0; i < 3; ++i)
         {
             if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, ground_layer))
             {
