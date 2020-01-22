@@ -17,7 +17,7 @@ public class UIProduction : MonoBehaviour
     public float alpha_spd = 3;
 
     // 位置を固定
-    private Vector3 pos = new Vector3(224.5f, 100.5f, 0);
+    private Vector3 pos = new Vector3(186, 532, 0);
 
     // Start is called before the first frame update
     void Start()
