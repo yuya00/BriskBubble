@@ -612,7 +612,7 @@ public class CharaBase : MonoBehaviour {
 		}
 
         // 動く床
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < floor.Length; ++i)
         {
             if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, ground_layer))
             {
