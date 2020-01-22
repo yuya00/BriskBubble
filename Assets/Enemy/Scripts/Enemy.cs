@@ -703,8 +703,8 @@ public sealed partial class Enemy : CharaBase
                 Jump(jump_power);
                 enum_act = Enum_Act.WAIT;
 				break;
-            case Enum_Act.WAIT:	//着地まで待機
-                if (is_ground)
+            case Enum_Act.WAIT:	//着地まで待機(もしくは15f経ったら)
+                if (is_ground || WaitTimeBox((int)Enum_Timer.EACH_ACT, 15))
                 {
 					if (enum_awaykind == Enum_AwayKind.SPIN) {
 						enum_act = Enum_Act.SPIN;
@@ -712,13 +712,10 @@ public sealed partial class Enemy : CharaBase
 					else {
 						enum_act = Enum_Act.END;
 					}
-                }
+					wait_timer_box[(int)Enum_Timer.EACH_ACT] = 0;
+				}
                 break;
 			case Enum_Act.SPIN: //回転攻撃(1割:ゆっくり、8割:早い、1割:ゆっくり)
-				//Debug.Log("回転");
-				//Debug.Log(Easing(easing_timer));
-				//transform.Rotate(0, 20*Easing(easing_timer), 0);
-				//easing_timer += 0.1f;
 				transform.Rotate(0, 15, 0);
 				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, 15)) {
 					enum_act = Enum_Act.END;
