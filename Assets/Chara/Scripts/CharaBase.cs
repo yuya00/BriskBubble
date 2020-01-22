@@ -20,7 +20,6 @@ public class CharaBase : MonoBehaviour {
 	[Header("GUI")]
 	public GUI gui;
 
-
 	[Foldout("BaseParameter" ,true)]
 	protected				Rigidbody			 rigid;
 	protected				Vector3				 velocity;			//速さ(rigd.velocityでも良いかも)
@@ -578,10 +577,10 @@ public class CharaBase : MonoBehaviour {
 
 		//Wallのレイヤーが設定されている物とだけ当たる
 		LayerMask wall_layer = (1 << 14);
-        //LayerMask wall_layer = ~(1 << 8);
+		//LayerMask wall_layer = (1 << 14) | (1 << 16);
 
-        // 動く床
-        LayerMask ground_layer = (1 << 16);
+		// 動く床
+		LayerMask ground_layer = (1 << 16);
         /***********************/
 
 
@@ -600,15 +599,18 @@ public class CharaBase : MonoBehaviour {
 		else
         {
 			is_ground = false;
+			//rigid.useGravity = false;
+
 			//落下速度の上限
 			if (velocity.y >= -fallspd_limit)
-            {
+			{
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
 			}
 			else
-            {
+			{
 				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
+
 		}
 
         // 動く床
