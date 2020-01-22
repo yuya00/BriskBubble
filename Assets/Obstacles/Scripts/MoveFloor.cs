@@ -32,7 +32,7 @@ public class MoveFloor : MonoBehaviour
     {
         state = MOVE.GO;
         init_pos = transform.position;
-        hit_obj = false;   
+        hit_obj = false;
     }
 
     // Update is called once per frame
@@ -44,24 +44,28 @@ public class MoveFloor : MonoBehaviour
     // 移動まとめ
     void Move()
     {
-        switch(state)
+        switch (state)
         {
             case MOVE.GO:
-                SpeedCheck(spd);            // 速度調整
-                ChangeState(MOVE.WAIT1);    // ステート管理
+                Vector3 go_pos = init_pos + move_vector.normalized * len_max;
+                SpeedCheck(spd);                    // 速度調整
+                ChangeState(MOVE.WAIT1, go_pos);      // ステート管理
                 break;
             case MOVE.WAIT1:
-                TimerCheck(MOVE.BACK);      // 待機時間
+                move_vector = Vector3.zero;
+                TimerCheck(MOVE.BACK);              // 待機時間
                 break;
             case MOVE.BACK:
+                Vector3 back_pos = init_pos + move_vector.normalized * len_max;
                 SpeedCheck(-spd);
-                ChangeState(MOVE.WAIT2);
+                ChangeState(MOVE.WAIT2, back_pos);
                 break;
             case MOVE.WAIT2:
+                move_vector = Vector3.zero;
                 TimerCheck(MOVE.GO);
                 break;
         }
-        Debug.Log(timer);
+
     }
 
     // 速度設定
@@ -70,7 +74,7 @@ public class MoveFloor : MonoBehaviour
         float move = spd * Time.deltaTime;
 
         // 正面or縦に移動
-        switch(type)
+        switch (type)
         {
             case 0: // 縦に動く
                 move_vector = transform.up.normalized * move;
@@ -81,13 +85,18 @@ public class MoveFloor : MonoBehaviour
                 transform.position += move_vector;
                 break;
         }
+
     }
 
     // 切り替え
-    void ChangeState(MOVE state)
+    void ChangeState(MOVE state, Vector3 pos)
     {
         float l1 = (transform.position - init_pos).magnitude;
-        if (l1 > len_max) this.state = state;
+        if (l1 > len_max)
+        {
+            transform.position = pos;
+            this.state = state;
+        }
     }
 
     // 時間で切り替え
@@ -97,7 +106,7 @@ public class MoveFloor : MonoBehaviour
         timer += Time.deltaTime;
 
         // 時間がおかしかったから、加算してる分で差分とって合わせた
-        if(timer >= wait_timer - Time.deltaTime)
+        if (timer >= wait_timer - Time.deltaTime)
         {
             timer = 0;
             this.state = state;
@@ -136,11 +145,50 @@ public class MoveFloor : MonoBehaviour
     public bool Hit
     {
         get { return hit_obj; }
-    }        
+    }
 
     public Vector3 MoveVector
     {
         get { return move_vector; }
+    }
+
+    public bool gui_on;
+
+    void OnGUI()
+    {
+        if (gui_on)
+        {
+            GUILayout.BeginVertical("box");
+
+            //uGUIスクロールビュー用
+            Vector2 leftScrollPos = Vector2.zero;
+
+            // スクロールビュー
+            leftScrollPos = GUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(200), GUILayout.Height(400));
+            GUILayout.Box("floor");
+
+
+            #region ここに追加
+
+            GUILayout.TextArea("len\n" + (transform.position - init_pos).magnitude);
+            GUILayout.TextArea("state\n" + state);
+            GUILayout.TextArea("move_vector\n" + move_vector);
+            GUILayout.TextArea("transform.position\n" + transform.position);
+            GUILayout.TextArea("timer\n" + timer);
+            //GUILayout.TextArea("pos\n" + pos);     
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);
+            //GUILayout.TextArea("pos\n" + pos);     
+
+            // スペース
+            GUILayout.Space(200);
+            GUILayout.Space(10);
+            #endregion
+
+
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+        }
     }
 
 }

@@ -25,7 +25,7 @@ public sealed partial class Player : CharaBase
 		water_fric		= 1;
 		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
-        respawn_pos     = transform.position;   
+		respawn_pos	    = transform.position;   
         shot_jump_fg    = false;
 		velocity	    = Vector3.zero;
 		tread_on.size = new Vector3(TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,TreadOn_BoxCast.RADIUS_MAG_XZ);
@@ -65,7 +65,8 @@ public sealed partial class Player : CharaBase
     // Update内で待機
     void Wait()
     {
-        base.Move();
+		base.Move();
+
         // ジャンプアニメーション
         AnimeJump();
         if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
@@ -125,8 +126,8 @@ public sealed partial class Player : CharaBase
                 break;
             case GAME:
                 //base.FixedUpdate();
+                transform.position = transform.position + velocity * Time.deltaTime;
                 if (is_floor)  transform.position = floor_pos + velocity * Time.deltaTime;
-                else           transform.position = transform.position + velocity * Time.deltaTime;
 
                 // 移動
                 LstickMove();
@@ -378,7 +379,8 @@ public sealed partial class Player : CharaBase
     // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
     void LstickMove()
     {
-		if (is_faint || tread_on.flg) {
+		//気絶,踏みつけ,ゲーム開始前,は動かない
+		if (is_faint || tread_on.flg || (cam.GetComponent<CameraScript>().Camera_state != 0)) {
 			//→ここに気絶アニメの処理
 			animator.SetBool("Walk", false);
 			animator.SetBool("Run", false);
@@ -390,13 +392,15 @@ public sealed partial class Player : CharaBase
         // スピード
         float axis_x = 0, axis_y = 0;
 
-        // パッド情報代入
-        float pad_x = Input.GetAxis("L_Stick_H");
-        float pad_y = -Input.GetAxis("L_Stick_V");
-        pad_x = Input.GetAxis("Horizontal");
-        pad_y = Input.GetAxis("Vertical");
+		// パッド情報代入
+		float pad_x = 0;
+		float pad_y = 0;
+		pad_x = Input.GetAxis("L_Stick_H");
+		pad_y = -Input.GetAxis("L_Stick_V");
+		pad_x = Input.GetAxis("Horizontal");
+		pad_y = Input.GetAxis("Vertical");
 
-        axis_x += pad_x;
+		axis_x += pad_x;
         axis_y += pad_y;
 
         // 平方根を求めて正規化
@@ -507,7 +511,7 @@ public sealed partial class Player : CharaBase
     // ジャンプの挙動
     void Jump(float jump_power)
     {
-        rigid.useGravity = false;
+		rigid.useGravity = false;
         //is_ground = false;
         velocity.y = 0;
         velocity.y = jump_power;

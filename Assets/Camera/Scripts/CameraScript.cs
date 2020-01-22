@@ -75,10 +75,12 @@ public sealed partial class CameraScript : MonoBehaviour
             camera_state = CLEAR;
         }
 
-    }
 
-    // カメラが何を見るかまとめ---------------------------
-    void Look()
+
+	}
+
+	// カメラが何を見るかまとめ---------------------------
+	void Look()
     {
         // 最終的に見る方向初期化
         Vector3 look_pos = Vector3.zero;
@@ -101,8 +103,10 @@ public sealed partial class CameraScript : MonoBehaviour
     #region プレイヤー追従カメラ(通常時)
     void CameraNone()
     {
-        // カメラ位置
-        Vector3 cam_pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
+		// カメラ位置
+		if (player.transform.position.y >= -50) {
+			cam_pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
+		}
 
         // パッド情報を取得
         pad_rx = -Input.GetAxis("R_Stick_H");
@@ -160,12 +164,13 @@ public sealed partial class CameraScript : MonoBehaviour
 
         // 正規化
         direction.Normalize();
-    }
 
-    // カメラの追従
-    void FollowCamera()
+	}
+
+	// カメラの追従
+	void FollowCamera()
     {
-        StateCheck(player.transform.right.normalized - player.transform.forward.normalized, pad_lx);
+		StateCheck(player.transform.right.normalized - player.transform.forward.normalized, pad_lx);
     }
 
     // カメラとプレイヤーの角度によって追従を変更

@@ -21,6 +21,7 @@ TagManager:
   - Sprite
   - UIEffect
   - Spin
+  - pivot
   layers:
   - Default
   - TransparentFX

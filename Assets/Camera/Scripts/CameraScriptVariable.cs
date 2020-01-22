@@ -36,7 +36,8 @@ public sealed partial class CameraScript : MonoBehaviour
 
     [Foldout("CameraFollowPlayer", false)]
 
-    private Vector3 direction;              // 方向ベクトル
+	private Vector3 cam_pos;				// カメラ位置
+	private Vector3 direction;              // 方向ベクトル
     private float init_up_pos;              // 初期プレイヤーのＹ位置
     private float pad_rx;                   // スティック情報の値
     private float pad_ry;                   // スティック情報の値

@@ -11,10 +11,13 @@ public class UIProduction : MonoBehaviour
     private float timer = 0;
     private float timer_max = 0.3f;
 
-    private float alpha = 0.6f;
-    private float alpha_max;
+    private float alpha = 0.0f;
+    public float alpha_max = 0.4f;
 
     public float alpha_spd = 3;
+
+    // 位置を固定
+    public Vector3 pos = new Vector3(186, 532, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +26,8 @@ public class UIProduction : MonoBehaviour
         canvas = GetComponent<CanvasRenderer>();
         col = canvas.GetColor();
         timer = 0;
-        alpha_max = alpha;
+        //alpha_max = alpha;
+        transform.position = pos;
     }
 
     // Update is called once per frame
