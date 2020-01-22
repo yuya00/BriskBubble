@@ -126,8 +126,8 @@ public sealed partial class Player : CharaBase
                 break;
             case GAME:
                 //base.FixedUpdate();
+                transform.position = transform.position + velocity * Time.deltaTime;
                 if (is_floor)  transform.position = floor_pos + velocity * Time.deltaTime;
-                else           transform.position = transform.position + velocity * Time.deltaTime;
 
                 // 移動
                 LstickMove();
