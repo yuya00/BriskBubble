@@ -14,8 +14,8 @@ public sealed partial class CameraScript : MonoBehaviour
         // カメラの位置を設定
         transform.position = init_pos;
 
-        // カメラの位置をプレイヤーの後ろにする為の方向ベクトル
-        direction = -player.transform.forward.normalized;
+		// カメラの位置をプレイヤーの後ろにする為の方向ベクトル
+		direction = -player.transform.forward.normalized;
 
         init_up_pos = player.transform.position.y;
 
@@ -30,7 +30,8 @@ public sealed partial class CameraScript : MonoBehaviour
         enemy_hit_flg = false;
         enm_id = 0;
         clear_end = false;
-        scene = GameObject.FindGameObjectWithTag("GameManager");
+		fall_can_move = true;
+		scene = GameObject.FindGameObjectWithTag("GameManager");
         post = GameObject.FindGameObjectWithTag("PostProcess");
         // ブラーはずす
         SetBlur(false);
@@ -103,13 +104,13 @@ public sealed partial class CameraScript : MonoBehaviour
     #region プレイヤー追従カメラ(通常時)
     void CameraNone()
     {
-		// カメラ位置
-		if (player.transform.position.y >= -50) {
+		// カメラ位置(-60以上は落ちたら追従しない)
+		if (fall_can_move) {
 			cam_pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
 		}
 
-        // パッド情報を取得
-        pad_rx = -Input.GetAxis("R_Stick_H");
+		// パッド情報を取得
+		pad_rx = -Input.GetAxis("R_Stick_H");
         pad_ry = Input.GetAxis("R_Stick_V");
         pad_lx = Input.GetAxis("L_Stick_H");
 
@@ -617,6 +618,13 @@ public sealed partial class CameraScript : MonoBehaviour
 		#endregion
 
 
+	}
+
+
+
+	public bool FallCanMove {
+		get { return fall_can_move; }
+		set { fall_can_move = value; }
 	}
 
 #endif

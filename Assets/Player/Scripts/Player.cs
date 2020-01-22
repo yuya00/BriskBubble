@@ -23,6 +23,7 @@ public sealed partial class Player : CharaBase
         init_speed      = run_speed;
         init_fric       = stop_fric;
 		water_fric		= 1;
+		fall_can_move   = true;
 		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
 		respawn_pos	    = transform.position;   
@@ -339,7 +340,6 @@ public sealed partial class Player : CharaBase
         if (is_ground)
         {
             jump_fric = 1;
-            fall_y = transform.position.y;  // 着地してるときは自分のy位置を保存
         }
         else jump_fric = jump_fric_power;
 
@@ -352,8 +352,8 @@ public sealed partial class Player : CharaBase
         // ジャンプまとめ
         JumpMove();
 
-        // リスポーン
-        RespawnFall();
+		//落下まとめ(最大落下地点まで落ちた時の判定,リスポーン)
+		Fall();
 
         // 頭方向に何か当たったか
         HeadHit();
@@ -379,15 +379,15 @@ public sealed partial class Player : CharaBase
     // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
     void LstickMove()
     {
-		//気絶,踏みつけ,ゲーム開始前,は動かない
-		if (is_faint || tread_on.flg || (cam.GetComponent<CameraScript>().Camera_state != 0)) {
+		//気絶,踏みつけ,ステージ下落下,ゲーム開始前,は動けない
+		if (is_faint || tread_on.flg || !fall_can_move || (cam.GetComponent<CameraScript>().Camera_state != 0)) {
 			//→ここに気絶アニメの処理
 			animator.SetBool("Walk", false);
 			animator.SetBool("Run", false);
 			return;
 		}
 
-        Vector3 move = new Vector3(0, 0, 0);
+		Vector3 move = new Vector3(0, 0, 0);
 
         // スピード
         float axis_x = 0, axis_y = 0;
@@ -456,8 +456,8 @@ public sealed partial class Player : CharaBase
         #endregion
     }
 
-    // その方向を向く
-    void LookAt(Vector3 vec)
+	// その方向を向く
+	void LookAt(Vector3 vec)
     {
         Vector3 target_pos = transform.position + vec.normalized;
         Vector3 target = Vector3.Lerp(transform.position + transform.forward, target_pos, rot_speed * Time.deltaTime);
@@ -564,15 +564,39 @@ public sealed partial class Player : CharaBase
         animator.speed = INIT_ANIME_SPD;
     }
 
-    // リスポーン処理
-    void RespawnFall()
+	//落下まとめ
+	void Fall() {
+		//最大落下地点まで落ちた時の判定
+		FallMax();
+
+		// リスポーン処理
+		FallRespawn();
+
+		//リスポーン後の着地で動けるようになる
+		if (is_ground) {
+			fall_can_move = true;
+		}
+	}
+
+	//カメラ追従停止地点まで落ちた時の判定
+	void FallMax() {
+		//移動不可判定
+		if (transform.position.y <= FALL_Y_CHACE_MAX) {
+			fall_can_move = false;
+			cam.GetComponent<CameraScript>().FallCanMove = false;
+		}
+	}
+
+	// リスポーン処理
+	void FallRespawn()
     {
-        // 最大限落ちた
-        if(FallCheck(fall_y,fall_y_max))
-        {
-            transform.position = respawn_pos;
+		// 最大限落ちたら、リスポーン
+		if (transform.position.y < FALL_Y_MAX) {
+			//Debug.Log(transform.position.y);
+			transform.position = respawn_pos;
 			velocity = Vector3.zero;
-        }
+			cam.GetComponent<CameraScript>().FallCanMove = true;
+		}
     }
 
     // 飛んでる判定
@@ -617,13 +641,6 @@ public sealed partial class Player : CharaBase
         shot_jump_fg = false;
         // 落下判定
         if (velocity.y < 0.0f) return true;
-        return false;
-    }
-
-    // 最大限落ちた
-    bool FallCheck(float fall_y,float fall_y_max)
-    {
-        if (fall_y + transform.position.y < fall_y_max) return true;
         return false;
     }
 
@@ -1149,6 +1166,5 @@ public sealed partial class Player : CharaBase
     {
         get { return (int)enum_faint; }
     }
-
 }
 

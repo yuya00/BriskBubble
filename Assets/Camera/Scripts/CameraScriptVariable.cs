@@ -36,6 +36,7 @@ public sealed partial class CameraScript : MonoBehaviour
 
     [Foldout("CameraFollowPlayer", false)]
 
+	private bool fall_can_move;             // 追従できる
 	private Vector3 cam_pos;				// カメラ位置
 	private Vector3 direction;              // 方向ベクトル
     private float init_up_pos;              // 初期プレイヤーのＹ位置

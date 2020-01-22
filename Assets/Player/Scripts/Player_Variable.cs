@@ -8,9 +8,11 @@ public sealed partial class Player : CharaBase
 {
 	[Foldout("PlayerParameter", true)]
     public float slope = 0.3f;          // スティックの傾き具合設定用
-    public float fall_y_max = -100.0f;  // リスポーン用
+	private const float FALL_Y_CHACE_MAX	 = -60.0f;  // 移動不可,カメラ追従停止(リスポーン用)
+	private const float FALL_Y_MAX		 = -100.0f; // 最大落下地点(リスポーン用)
+	private bool fall_can_move;
 
-    public GameObject cam;              // カメラオブジェ
+	public GameObject cam;              // カメラオブジェ
     public float rot_speed = 10.0f;     // カメラの回転速度
 
     [Foldout("PlayerParameter", false)]
