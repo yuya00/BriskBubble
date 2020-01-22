@@ -37,8 +37,8 @@ TagManager:
   - SortBack
   - SortFront
   - Wall
-  - 
-  - 
+  - Enemy
+  - Ground
   - 
   - 
   - 

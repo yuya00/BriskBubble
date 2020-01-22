@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public sealed partial class Player : CharaBase
 {
+
     // 初期値設定
     public override void Start()
     {
@@ -15,10 +16,10 @@ public sealed partial class Player : CharaBase
         game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
         animator		 = GetComponent<Animator>();
 		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
-		//chara_ray       = transform.Find("CharaRay");
+        //chara_ray       = transform.Find("CharaRay");
 
-		// プレイヤーのパラメーター設定
-		state = START;
+        // プレイヤーのパラメーター設定
+        state = START;
         init_speed      = run_speed;
         init_fric       = stop_fric;
 		water_fric		= 1;
@@ -27,13 +28,12 @@ public sealed partial class Player : CharaBase
         respawn_pos     = transform.position;   
         shot_jump_fg    = false;
 		velocity	    = Vector3.zero;
-		tread_on.size   = new Vector3(ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,
-			ground_cast.capsule_collider.radius * TreadOn_BoxCast.RADIUS_MAG_XZ);
-        // エフェクト関連
-        //effect.effect_no = 0;
+		tread_on.size = new Vector3(TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,TreadOn_BoxCast.RADIUS_MAG_XZ);
+		// エフェクト関連
+		//effect.effect_no = 0;
 
-        //やまなりショット用の物理シーンを作成
-        scene = SceneManager.CreateScene("physicsScene", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+		//やまなりショット用の物理シーンを作成
+		scene = SceneManager.CreateScene("physicsScene", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
 
     }
 
@@ -124,7 +124,10 @@ public sealed partial class Player : CharaBase
                 if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
                 break;
             case GAME:
-                base.FixedUpdate();
+                //base.FixedUpdate();
+                if (is_floor)  transform.position = floor_pos + velocity * Time.deltaTime;
+                else           transform.position = transform.position + velocity * Time.deltaTime;
+
                 // 移動
                 LstickMove();
                 break;
@@ -312,8 +315,9 @@ public sealed partial class Player : CharaBase
 		if (tread_on.gizmo_on && ground_cast.capsule_collider) {
 			Gizmos.color = Color.red - new Color(0, 0, 0, 0.6f);
 			Gizmos.DrawWireCube(transform.position + 
-								(transform.up * ground_cast.capsule_collider.center.y) - 
-								(transform.up * (ground_cast.capsule_collider.height / 2)), tread_on.size);
+							   (transform.up * ground_cast.capsule_collider.center.y)
+							  -(transform.up * (ground_cast.capsule_collider.height / 2))
+							  -(transform.forward * 0.2f), tread_on.size);
 			//Gizmos.DrawRay(ground_ray_pos, -transform.up * ground_ray_length);
 		}
 		#endregion
@@ -408,7 +412,7 @@ public sealed partial class Player : CharaBase
         front.y = 0;
 
         // 横方向
-        Vector3 right = Vector3.Cross(new Vector3(0, transform.position.y + 1.0f, 0), front).normalized;
+        Vector3 right = Vector3.Cross(new Vector3(0, 1.0f, 0), front).normalized;
 
         // 方向に値を設定
         move = right * axis_x;
@@ -417,14 +421,15 @@ public sealed partial class Player : CharaBase
         //　方向キーが多少押されていたらその方向向く
         if (axis_x != 0f || axis_y != 0f) LookAt(move);
 
-        #region 状態分け
-        switch (StickState(axis_x, axis_y))
+
+		#region 状態分け
+		switch (StickState(axis_x, axis_y))
         {
             case WAIT:
-                //停止時慣性(徐々に遅くなる)              
-                velocity.x -= velocity.x * stop_fric;
+				//停止時慣性(徐々に遅くなる)          
+				velocity.x -= velocity.x * stop_fric;
                 velocity.z -= velocity.z * stop_fric;
-                animator.SetBool("Walk", false);
+				animator.SetBool("Walk", false);
                 animator.SetBool("Run", false);
                 break;
             case WALK:
@@ -435,9 +440,9 @@ public sealed partial class Player : CharaBase
                 animator.SetBool("Run", false);
                 break;
             case RUN:
-                // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * run_speed * water_fric;
-                velocity.z = move.normalized.z * run_speed * water_fric;
+				// カメラから見てスティックを倒したほうへ進む
+				velocity.x = move.normalized.x * run_speed * water_fric;
+				velocity.z = move.normalized.z * run_speed * water_fric;
                 animator.SetBool("Run", true);
                 animator.SetBool("Walk", false);
                 effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
@@ -650,31 +655,72 @@ public sealed partial class Player : CharaBase
 
 	//踏みつけ(踏んだらジャンプ)
 	void TreadOn() {
-		if (!tread_on.judge_on && is_faint) {
+		if (!tread_on.judge_on || is_faint) {
 			return;
 		}
 
 		RaycastHit hit;
+		LayerMask enemy_layer = (1 << 15);
+
+		#region 踏みつけ判定(中心から)(ちょっと後ろ)(レイヤー判定あり)
+		//踏みつけ判定(真下から飛ばす)
+		if (Physics.BoxCast(transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.forward * 0.2f),
+			tread_on.size, -transform.up, out hit, transform.rotation, (ground_cast.capsule_collider.height / 2), enemy_layer)
+			&& !hit.collider.GetComponent<Enemy>().IsFaint) 
+			{
+			//Debug.Log("敵を踏んだ");
+			tread_on.flg = true;
+			hit.collider.GetComponent<Enemy>().IsFaint = true;
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			Jump(TreadOn_BoxCast.JUMP_POWER);
+		}
+		#endregion
+
+		#region 踏みつけ判定(真下から)(レイヤー判定あり)
+		/*
+		//踏みつけ判定(真下から飛ばす)
+		if (Physics.BoxCast(transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.up * (ground_cast.capsule_collider.height / 2)),
+			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE,enemy_layer)
+			&& !hit.collider.GetComponent<Enemy>().IsFaint) 
+			{
+			tread_on.flg = true;
+			hit.collider.GetComponent<Enemy>().IsFaint = true;
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			Jump(TreadOn_BoxCast.JUMP_POWER);
+			//Debug.Log("敵を踏んだ");
+		}
+		*/
+		#endregion
+
+		#region 踏みつけ判定(レイヤー判定なし)
+		/*
 		//踏みつけ判定
-		if (Physics.BoxCast(transform.position + 
-			(transform.up * ground_cast.capsule_collider.center.y) - 
-			(transform.up * (ground_cast.capsule_collider.height / 2)), 
+		if (Physics.BoxCast(transform.position +
+			(transform.up * ground_cast.capsule_collider.center.y) -
+			(transform.up * (ground_cast.capsule_collider.height / 2)),
 			tread_on.size, -transform.up, out hit, Quaternion.identity, TreadOn_BoxCast.MAX_DISTANCE)
 			//Physics.BoxCast(ground_ray_pos, tread_on.size, -transform.up, out hit, transform.rotation, 0.1f)
 			&& hit.collider.tag == "Enemy"
 			&& !hit.collider.GetComponent<Enemy>().IsFaint
-			&& !tread_on.flg) 
-			{
-			tread_on.flg		 = true;
+			&& !tread_on.flg) {
+			tread_on.flg = true;
 			hit.collider.GetComponent<Enemy>().IsFaint = true;
-			velocity			 = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
+			velocity = (transform.forward * TreadOn_BoxCast.FOWARD_POWER);
 			Jump(TreadOn_BoxCast.JUMP_POWER);
 			//Debug.Log("敵を踏んだ");
 		}
+		*/
+		#endregion
 
 		//着地するまでが踏みつけ
-		if (is_ground) {
-			tread_on.flg = false;
+		//if (is_ground) {
+		//	tread_on.flg = false;
+		//}
+		//15f経ったら踏みつけジャンプ状態解除(動ける)
+		if (tread_on.flg) {
+			if (WaitTimeBox(0, 15)) {
+				tread_on.flg = false;
+			}
 		}
 	}
 
@@ -967,6 +1013,7 @@ public sealed partial class Player : CharaBase
 			//踏みつけジャンプ中ではなく、敵が捕獲以外なら気絶
 			if (!is_faint && !tread_on.flg && !other.gameObject.GetComponent<Enemy>().IsWrap) {
 				is_faint = true;
+				//Debug.Log("敵に当たった");
 			}
 		}
 
@@ -975,9 +1022,11 @@ public sealed partial class Player : CharaBase
 			is_faint = true;
 		}
 
-	}
 
-	private void OnCollisionExit(Collision other)
+
+    }
+
+    private void OnCollisionExit(Collision other)
     {
 		//壁との当たり判定
 		if (other.gameObject.tag == "Wall")
@@ -994,6 +1043,12 @@ public sealed partial class Player : CharaBase
             foot = (int)FOOT.NONE;
         }
 
+        // 床の同期解除
+        //if (other.gameObject.tag == "Ground")
+        //{
+        //    transform.SetParent(null);
+        //}
+
 
     }
 
@@ -1004,10 +1059,28 @@ public sealed partial class Player : CharaBase
         if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
         {
             foot = (int)FOOT.GROUND;
-		}
-	}
+        }
 
-	private void OnTriggerEnter(Collider other)
+        //// 床と同期させて一緒に移動
+        //if (other.gameObject.tag == "Ground")
+        //{
+        //    transform.SetParent(other.transform);
+        //}
+
+        //// 床
+        //if (is_ground && other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
+        //{
+        //    //floor.GetComponent<MoveFloor>().MoveVector;
+        //    // 床の位置を設定
+        //    floor_pos = new Vector3(
+        //        transform.position.x + floor.GetComponent<MoveFloor>().MoveVector.x,
+        //        transform.position.y,
+        //        transform.position.z + floor.GetComponent<MoveFloor>().MoveVector.z);
+        //}
+
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Coin")
         {
@@ -1037,6 +1110,7 @@ public sealed partial class Player : CharaBase
 		// 水
 		if (other.gameObject.tag == "Water") {
 			water_fric = 1;
+			foot = (int)FOOT.NONE;
 		}
 	}
 

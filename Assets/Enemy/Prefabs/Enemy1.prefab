@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 2587862109830307869}
   - component: {fileID: 4011280076669137943}
   - component: {fileID: 2821904174435107906}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -162,12 +162,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui:
-    on: 1
-    all_view: 1
+    on: 0
+    all_view: 0
     debug_view: 0
   run_speed: 8
   walk_speed: 3
   jump_power: 10
+  water_fric_power: 0.7
   gravity_power: 5
   fallspd_limit: 30
   ground_cast:
@@ -205,13 +206,13 @@ MonoBehaviour:
     lookback_interval: 120
     lookback_time: 30
     kind:
-      normal: 0
+      normal: 1
       curve: 0
       jump: 0
       zigzag: 0
       armar: 0
       shot: 0
-      spin: 1
+      spin: 0
     normal:
       interval: 120
       spd: 0.04
@@ -648,8 +649,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 6.5, z: 9}
-  m_Center: {x: 0, y: 0, z: -7}
+  m_Size: {x: 1, y: 6.5, z: 6}
+  m_Center: {x: 0, y: 0, z: -6.65}
 --- !u!54 &5603315632737031675
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -748,6 +749,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: -3815348637671979988, guid: cb4abfcd19cf1bf49aaed6f4b4e15075,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 6271573414225017425, guid: b3a9b2d9847c7a74cad0435d7968ded0,
+        type: 3}
+    - target: {fileID: 6200443131042155592, guid: cb4abfcd19cf1bf49aaed6f4b4e15075,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: efdeeb5352db55448ad4622677abe3ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb4abfcd19cf1bf49aaed6f4b4e15075, type: 3}
 --- !u!4 &7085250919333643072 stripped

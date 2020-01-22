@@ -195,16 +195,15 @@ public sealed partial class Player : CharaBase
 		//flgはジャンプ中、着地するまでtrue
 
 		//半径に掛ける,XZ軸の倍率
-		public const float RADIUS_MAG_XZ = 2.5f;
+		public const float RADIUS_MAG_XZ = 1.5f;
 
 		//Y軸の長さ
-		public const float LENGTH_Y		 = 0.3f;
+		public const float LENGTH_Y		 = 0.6f;
 
 		//BoxCastを飛ばす最大の長さ
 		public const float MAX_DISTANCE	 = 0.2f;
 
-
-		public const int FOWARD_POWER	 = 10;
+		public const int FOWARD_POWER	 = 13;
 
 		public const int JUMP_POWER		 = 30;
 
@@ -214,7 +213,7 @@ public sealed partial class Player : CharaBase
 
 	//気絶時のノックバック ----------------------------
 	private struct KnockBack {
-		public const float SPD_MAG       = 4;
+		public const float SPD_MAG       = 4.5f;
 		public const float JUMP_POWER    = 20;
 		public const int   TIME          = 30;
 		public const int   FAINT_TIME    = 80 - TIME;  //硬直時間(-ノックバック)

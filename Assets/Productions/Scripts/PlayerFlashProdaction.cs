@@ -25,8 +25,9 @@ public class PlayerFlashProdaction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.GetComponent<Player>().FaintData > 0)
-            Flash();
+        if (player.GetComponent<Player>().FaintData > 0) {
+            //Flash();
+		}
         else Clear();
     }
 
