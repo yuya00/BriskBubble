@@ -187,6 +187,15 @@ public class Scene : MonoBehaviour
             }
         }
 
+        //チュートリアルシーン
+        if (SceneManager.GetActiveScene().name == "tutorial")
+        {
+            if (Input.GetButtonDown("Start"))
+            {
+                SceneLastFadeIn();
+            }
+        }
+
     }
 
     // シーン遷移用コルーチン .
