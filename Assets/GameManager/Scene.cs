@@ -190,6 +190,10 @@ public class Scene : MonoBehaviour
         //チュートリアルシーン
         if (SceneManager.GetActiveScene().name == "tutorial")
         {
+            // スタート文字(カメラの初期動作が終わってから)
+            if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
+
+
             if (Input.GetButtonDown("Start"))
             {
                 SceneLastFadeIn();
