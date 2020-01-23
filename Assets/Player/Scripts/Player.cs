@@ -154,7 +154,7 @@ public sealed partial class Player : CharaBase
 		if (gui.all_view) {
 			scroll_height = 700;
 		}
-		else scroll_height = 330;
+		else scroll_height = 360;
 
 		GUILayout.BeginVertical("box", GUILayout.Width(190));
            left_scroll_pos = GUILayout.BeginScrollView(left_scroll_pos, GUILayout.Width(180), GUILayout.Height(scroll_height));
@@ -246,7 +246,15 @@ public sealed partial class Player : CharaBase
 			//汎用タイマー
 			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
-            GUILayout.TextArea("発射する弾の種類\n " + shot_state);
+			//汎用タイマー配列
+			GUILayout.TextArea("汎用タイマー\n"
+				+ wait_timer_box[0] / 10 + "   "
+				+ wait_timer_box[1] / 10 + "   "
+				+ wait_timer_box[2] / 10 + "   "
+				+ wait_timer_box[3] / 10 + "   "
+				+ wait_timer_box[4] / 10);
+
+			GUILayout.TextArea("発射する弾の種類\n " + shot_state);
 
             ////ジャンプアニメカウント
             //GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
@@ -572,10 +580,11 @@ public sealed partial class Player : CharaBase
 		// リスポーン処理
 		FallRespawn();
 
-		//リスポーン後の着地で動けるようになる
-		if (is_ground) {
+		//リスポーン後の一定時間後で動けるようになる
+		if (!fall_can_move && WaitTimeBox((int)Enum_Timer.RESPAWN, 60)) {
 			fall_can_move = true;
 		}
+
 	}
 
 	//カメラ追従停止地点まで落ちた時の判定
@@ -739,7 +748,7 @@ public sealed partial class Player : CharaBase
 		//}
 		//15f経ったら踏みつけジャンプ状態解除(動ける)
 		if (tread_on.flg) {
-			if (WaitTimeBox(0, 15)) {
+			if (WaitTimeBox((int)Enum_Timer.TREAD_ON, 15)) {
 				tread_on.flg = false;
 			}
 		}

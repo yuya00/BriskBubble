@@ -231,6 +231,18 @@ public sealed partial class Player : CharaBase
 
 
 
+
+
+	//汎用タイマーの種類
+	enum Enum_Timer {
+		TREAD_ON,		//踏みつけ
+		RESPAWN,		//リスポーン
+	}
+	Enum_Timer enum_timer;
+
+
+
+
 	//先行入力 --------------------------------------------------
 	[System.Serializable]
 	public struct LeadInput {
