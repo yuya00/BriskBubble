@@ -9,7 +9,7 @@ public sealed class LimitTimer : MonoBehaviour
 {
     private GameObject game_manager;
 
-    public Text time_text;
+    //public Text time_text;
 
     public  int min;    // 分
     public float sec;   // 秒
@@ -42,7 +42,7 @@ public sealed class LimitTimer : MonoBehaviour
                 // 制限時間計算
                 LimitTime();
                 // 文字設定
-                if (time_text) SetText();
+                //if (time_text) SetText();
                 break;
         }
     }
@@ -71,7 +71,7 @@ public sealed class LimitTimer : MonoBehaviour
     // 文字設定
     void SetText()
     {
-        time_text.text = min + "分" + (int)sec + "秒";
+        //time_text.text = min + "分" + (int)sec + "秒";
     }
 
     public bool TimerStop

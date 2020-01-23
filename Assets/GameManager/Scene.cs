@@ -21,14 +21,14 @@ public class Scene : MonoBehaviour
     public float interval_time_max;
 
     private GameObject cam;
-    public Text end_text;
+    //public Text end_text;
     private string[] buf = { "C O M P L E T E !!", "G A M E O V E R" };
     private int buf_no = 0;
 
     private const int CLEAR = 0;
     private const int OVER = 1;
 
-    public Text start_text;
+    //public Text start_text;
     //private string[] start_buf = { "", "3", "2", "1", "S T A R T !!" };
     private string[] start_buf = { "", "", "", "", "S T A R T !!" };
     private int start_buf_no = 0;
@@ -52,15 +52,15 @@ public class Scene : MonoBehaviour
         clear_fg = false;
         //GameObject.FindGameObjectsWithTag("Enemy");
         cam = GameObject.FindGameObjectWithTag("Camera");
-        end_text.text = "";
+        //end_text.text = "";
         buf_no = 0;
 
         start_fg = false;
-        start_text.gameObject.SetActive(true);
+        //start_text.gameObject.SetActive(true);
         // この番号を配列の番目にして文字を切り替え
         start_buf_no = 0;
         send_buf_no = 4;
-        start_text.text = start_buf[start_buf_no];
+        //start_text.text = start_buf[start_buf_no];
         alpha = 1;
 
         //最初は消す
@@ -164,8 +164,8 @@ public class Scene : MonoBehaviour
                 // クリア演出にはいる
                 clear_fg = true;
                 buf_no = CLEAR;
-                end_text.text = buf[buf_no];
-                end_text.gameObject.SetActive(true);
+                //end_text.text = buf[buf_no];
+                //end_text.gameObject.SetActive(true);
             }
         }
 
@@ -184,8 +184,8 @@ public class Scene : MonoBehaviour
             // クリア演出にはいる
             clear_fg = true;
             buf_no = OVER;
-            end_text.text = buf[buf_no];
-            end_text.gameObject.SetActive(true);
+            //end_text.text = buf[buf_no];
+            //end_text.gameObject.SetActive(true);
         }
 
         //ステージセレクトシーン
@@ -241,7 +241,7 @@ public class Scene : MonoBehaviour
         if (start_buf_no < 5)
         {
             // 文字を更新
-            start_text.text = start_buf[start_buf_no];
+            //start_text.text = start_buf[start_buf_no];
             start_timer += Time.deltaTime;
         }
 
@@ -271,9 +271,9 @@ public class Scene : MonoBehaviour
     // 文字を消す
     void TextAlpha()
     {
-        alpha -= Time.deltaTime;
-        start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, alpha);
-        if (alpha <= 0) start_text.gameObject.SetActive(false);
+        //alpha -= Time.deltaTime;
+        //start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, alpha);
+        //if (alpha <= 0) start_text.gameObject.SetActive(false);
     }
 
     public bool StartFg()
