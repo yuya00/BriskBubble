@@ -1091,8 +1091,9 @@ public sealed partial class Player : CharaBase
     private void OnCollisionStay(Collision other)
     {
         // 床
-        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
+        if ((other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall") && !fool_fg)
         {
+            fool_fg = false;
             foot = (int)FOOT.GROUND;
         }
 
@@ -1136,7 +1137,8 @@ public sealed partial class Player : CharaBase
 	private void OnTriggerStay(Collider other) {
 		// 水
 		if (other.gameObject.tag == "Water") {
-			foot = (int)FOOT.WATER;
+            fool_fg = true;
+            foot = (int)FOOT.WATER;
 			water_fric = water_fric_power;
 		}
 	}
@@ -1144,7 +1146,8 @@ public sealed partial class Player : CharaBase
 	private void OnTriggerExit(Collider other) {
 		// 水
 		if (other.gameObject.tag == "Water") {
-			water_fric = 1;
+            fool_fg = false;
+            water_fric = 1;
 			foot = (int)FOOT.NONE;
 		}
 	}

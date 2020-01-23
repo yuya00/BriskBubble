@@ -54,9 +54,8 @@ MonoBehaviour:
   init_rot_max: 360
   init_rot_min: 0
   rot_x: 50
-  alpha_spd: 2
+  alpha_spd: 2.5
   destroy_timer_max: 1
-  rot: {x: 30, y: 30, z: 30}
 --- !u!33 &1024459011614124057
 MeshFilter:
   m_ObjectHideFlags: 0

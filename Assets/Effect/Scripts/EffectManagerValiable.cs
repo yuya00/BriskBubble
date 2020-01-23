@@ -126,7 +126,7 @@ public partial class EffectManager : MonoBehaviour
     [Foldout("待機時間まとめ", false)]
     #endregion
 
-    EFFECT debug_state;
+    RUN debug_state;
 
 
 }

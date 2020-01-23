@@ -48,7 +48,6 @@ public partial class EffectManager : MonoBehaviour
     // プレイヤーのエフェクト--------------------------------------------
     void Player(EFFECT state, Vector3 pos, int num)
     {
-        debug_state = state;
         // stateでどのエフェクトかを決める
         switch (state)
         {
@@ -100,6 +99,7 @@ public partial class EffectManager : MonoBehaviour
                 }
                 break;
         }
+        debug_state = state;
     }
 
     void GroundEffect(Vector3 pos, int num)
@@ -263,8 +263,8 @@ public partial class EffectManager : MonoBehaviour
         GUILayout.Box("Effect");
 
         //着地判定
-        GUILayout.TextArea("focus_pos\n" + focus_pos);
-        //GUILayout.TextArea("debug_type\n" + debug_type);
+        GUILayout.TextArea("GetFoot\n" + GetFoot());
+        GUILayout.TextArea("debug_state\n" + debug_state);
         //GUILayout.TextArea("debug_state\n" + debug_state);
         //GUILayout.TextArea("debug_pos\n" + debug_pos);
         //GUILayout.TextArea("debug_obj\n" + debug_obj);

@@ -83,7 +83,7 @@ public sealed partial class Player : CharaBase
         WATER,
     }
     private int foot = 0;
-
+    private bool fool_fg;
     // プレイヤーの足元用データ
     private Vector3[] ofset_layer_pos =
     {
