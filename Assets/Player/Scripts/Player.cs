@@ -388,14 +388,18 @@ public sealed partial class Player : CharaBase
     void LstickMove()
     {
 		//気絶,踏みつけ,ステージ下落下,ゲーム開始前,は動けない
-		if (is_faint || tread_on.flg || !fall_can_move || (cam.GetComponent<CameraScript>().Camera_state != 0)) {
+		if (is_faint || tread_on.flg || !fall_can_move) {
 			//→ここに気絶アニメの処理
 			animator.SetBool("Walk", false);
 			animator.SetBool("Run", false);
 			return;
 		}
+        if (cam.GetComponent<CameraScript>().Camera_state != 0 && (cam.GetComponent<CameraScript>().Camera_state != 1))
+        {
 
-		Vector3 move = new Vector3(0, 0, 0);
+        }
+
+            Vector3 move = new Vector3(0, 0, 0);
 
         // スピード
         float axis_x = 0, axis_y = 0;

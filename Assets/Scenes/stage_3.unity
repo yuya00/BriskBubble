@@ -3417,17 +3417,17 @@ PrefabInstance:
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -125
+      value: -69.8
       objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7
+      value: 12.7
       objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40
+      value: 8.7
       objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
@@ -6543,7 +6543,7 @@ PrefabInstance:
     - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: run_speed
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
@@ -6555,6 +6555,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hole_ray.length
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: walk_speed
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7792426121856248950, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
@@ -21792,7 +21797,7 @@ MonoBehaviour:
   interval_time_max: 1
   end_text: {fileID: 2029747248}
   start_text: {fileID: 1538860483}
-  debug_fg: 0
+  debug_fg: 1
   gui_on: 0
 --- !u!114 &1316627063
 MonoBehaviour:
