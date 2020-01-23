@@ -22,6 +22,10 @@ TagManager:
   - UIEffect
   - Spin
   - pivot
+  - StartText
+  - EndText
+  - TimeUpText
+  - UIText
   layers:
   - Default
   - TransparentFX

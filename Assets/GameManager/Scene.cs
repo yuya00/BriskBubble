@@ -41,6 +41,9 @@ public class Scene : MonoBehaviour
     public bool debug_fg;
 
     private GameObject sprite;
+    private GameObject start;
+    private GameObject time_up;
+    private GameObject end;
 
     void Start()
     {
@@ -61,6 +64,13 @@ public class Scene : MonoBehaviour
         alpha = 1;
 
         //最初は消す
+        start       = GameObject.FindGameObjectWithTag("StartText");    // スプライトを消す前にこっちを消す
+        time_up     = GameObject.FindGameObjectWithTag("TimeUpText");   // スプライトを消す前にこっちを消す
+        end         = GameObject.FindGameObjectWithTag("EndText");      // スプライトを消す前にこっちを消す
+        start.SetActive(false);
+        time_up.SetActive(false);
+        end.SetActive(false);
+
         sprite = GameObject.FindGameObjectWithTag("Sprite");
         sprite.SetActive(false);
     }
@@ -150,6 +160,7 @@ public class Scene : MonoBehaviour
             if (GetComponent<EnemyKillCount>().EnemyNumMax <= 0)
             {
                 //SceneLastFadeIn();
+                end.SetActive(true);
                 // クリア演出にはいる
                 clear_fg = true;
                 buf_no = CLEAR;
@@ -169,6 +180,7 @@ public class Scene : MonoBehaviour
         // 時間切れ
         if (GetComponent<LimitTimer>().TimerStop)
         {
+            time_up.SetActive(true);
             // クリア演出にはいる
             clear_fg = true;
             buf_no = OVER;
@@ -190,6 +202,10 @@ public class Scene : MonoBehaviour
         //チュートリアルシーン
         if (SceneManager.GetActiveScene().name == "tutorial")
         {
+            // スタート文字(カメラの初期動作が終わってから)
+            if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
+
+
             if (Input.GetButtonDown("Start"))
             {
                 SceneLastFadeIn();
@@ -242,6 +258,7 @@ public class Scene : MonoBehaviour
         if (start_buf_no > 3)
         {
             start_timer_max = 2.0f;
+            start.SetActive(true);
             start_fg = true;
         }
 
