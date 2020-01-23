@@ -387,32 +387,33 @@ public sealed partial class Player : CharaBase
     // カメラの正面にプレイヤーが進むようにする(横移動したときにカメラも移動するように)
     void LstickMove()
     {
-		//気絶,踏みつけ,ステージ下落下,ゲーム開始前,は動けない
-		if (is_faint || tread_on.flg || !fall_can_move) {
-			//→ここに気絶アニメの処理
-			animator.SetBool("Walk", false);
-			animator.SetBool("Run", false);
-			return;
-		}
+        //気絶,踏みつけ,ステージ下落下,ゲーム開始前,は動けない
+        if (is_faint || tread_on.flg || !fall_can_move)
+        {
+            //→ここに気絶アニメの処理
+            animator.SetBool("Walk", false);
+            animator.SetBool("Run", false);
+            return;
+        }
         if (cam.GetComponent<CameraScript>().Camera_state != 0 && (cam.GetComponent<CameraScript>().Camera_state != 1))
         {
-
+            return;
         }
 
-            Vector3 move = new Vector3(0, 0, 0);
+        Vector3 move = new Vector3(0, 0, 0);
 
         // スピード
         float axis_x = 0, axis_y = 0;
 
-		// パッド情報代入
-		float pad_x = 0;
-		float pad_y = 0;
-		pad_x = Input.GetAxis("L_Stick_H");
-		pad_y = -Input.GetAxis("L_Stick_V");
-		pad_x = Input.GetAxis("Horizontal");
-		pad_y = Input.GetAxis("Vertical");
+        // パッド情報代入
+        float pad_x = 0;
+        float pad_y = 0;
+        pad_x = Input.GetAxis("L_Stick_H");
+        pad_y = -Input.GetAxis("L_Stick_V");
+        pad_x = Input.GetAxis("Horizontal");
+        pad_y = Input.GetAxis("Vertical");
 
-		axis_x += pad_x;
+        axis_x += pad_x;
         axis_y += pad_y;
 
         // 平方根を求めて正規化
@@ -438,14 +439,14 @@ public sealed partial class Player : CharaBase
         if (axis_x != 0f || axis_y != 0f) LookAt(move);
 
 
-		#region 状態分け
-		switch (StickState(axis_x, axis_y))
+        #region 状態分け
+        switch (StickState(axis_x, axis_y))
         {
             case WAIT:
-				//停止時慣性(徐々に遅くなる)          
-				velocity.x -= velocity.x * stop_fric;
+                //停止時慣性(徐々に遅くなる)          
+                velocity.x -= velocity.x * stop_fric;
                 velocity.z -= velocity.z * stop_fric;
-				animator.SetBool("Walk", false);
+                animator.SetBool("Walk", false);
                 animator.SetBool("Run", false);
                 break;
             case WALK:
@@ -456,9 +457,9 @@ public sealed partial class Player : CharaBase
                 animator.SetBool("Run", false);
                 break;
             case RUN:
-				// カメラから見てスティックを倒したほうへ進む
-				velocity.x = move.normalized.x * run_speed * water_fric;
-				velocity.z = move.normalized.z * run_speed * water_fric;
+                // カメラから見てスティックを倒したほうへ進む
+                velocity.x = move.normalized.x * run_speed * water_fric;
+                velocity.z = move.normalized.z * run_speed * water_fric;
                 animator.SetBool("Run", true);
                 animator.SetBool("Walk", false);
                 effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
