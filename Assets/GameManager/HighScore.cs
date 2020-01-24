@@ -6,12 +6,12 @@ using UnityEngine.EventSystems;
 public class HighScore : MonoBehaviour
 {
     //ハイスコア保存用変数
-    static private int stage1_score=3;
-    static private int stage2_score=2;
-    static private int stage3_score=1;
+    static private int stage1_score=180;
+    static private int stage2_score=180;
+    static private int stage3_score=180;
 
     //開始時の時間保存用
-    private int temp_time;
+    private int temp_time=0;
 
     private LimitTimer limit_timer;
     // Start is called before the first frame update
@@ -21,6 +21,8 @@ public class HighScore : MonoBehaviour
 
         temp_time += limit_timer.min * 60;
         temp_time += (int)limit_timer.sec;
+
+        Debug.Log(temp_time);
     }
 
     // Update is called once per frame
@@ -28,18 +30,18 @@ public class HighScore : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "stage_select")
         {
-            switch(EventSystem.current.currentSelectedGameObject.name)
-            {
-                case "stage_1":
-                    Debug.Log(stage1_score);
-                    break;
-                case "stage_2":
-                    Debug.Log(stage2_score);
-                    break;
-                case "stage_3":
-                    Debug.Log(stage3_score);
-                    break;
-            }
+            //switch (EventSystem.current.currentSelectedGameObject.name)
+            //{
+                //case "stage_1":
+                    //Debug.Log(stage1_score);
+                    //break;
+                //case "stage_2":
+                    //Debug.Log(stage2_score);
+                    //break;
+                //case "stage_3":
+                    //Debug.Log(stage3_score);
+                    //break;
+            //}
         }
     }
 
@@ -50,19 +52,19 @@ public class HighScore : MonoBehaviour
             case "stage_1":
                 if (stage1_score > temp_time - (limit_timer.min * 60 + (int)limit_timer.sec))
                 {
-                    stage1_score = limit_timer.min * 60 + (int)limit_timer.sec;
+                    stage1_score = temp_time - (limit_timer.min * 60 + (int)limit_timer.sec);
                 }
                 break;
             case "stage_2":
                 if (stage2_score > temp_time - (limit_timer.min * 60 + (int)limit_timer.sec))
                 {
-                    stage2_score = limit_timer.min * 60 + (int)limit_timer.sec;
+                    stage2_score = temp_time - (limit_timer.min * 60 + (int)limit_timer.sec);
                 }
                 break;
             case "stage_3":
                 if (stage3_score > temp_time - (limit_timer.min * 60 + (int)limit_timer.sec))
                 {
-                    stage3_score = limit_timer.min * 60 + (int)limit_timer.sec;
+                    stage3_score = temp_time - (limit_timer.min * 60 + (int)limit_timer.sec);
                 }
                 break;
         }
