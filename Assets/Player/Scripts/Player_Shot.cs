@@ -25,8 +25,14 @@ public sealed partial class Player : CharaBase
 				if (shot_state >= shot_object.Length) {
 					shot_state = 0;
 				}
-				Riset();
-			}
+                for (int i = 0; i < physics_simulate_object_clone.Count; i++)
+                {
+                    Destroy(physics_simulate_object_clone[i]);
+                }
+                physics_simulate_object_clone.Clear();
+                shot_charge_length = CHARGE_LENGTH_OFFSET;
+                //Riset();
+            }
 
 			// 撃てるとき
 			if (ShotIntervalCheck()) {

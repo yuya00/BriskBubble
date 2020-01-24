@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 public class StageSelectManager : MonoBehaviour
 {
@@ -28,7 +30,7 @@ public class StageSelectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Debug.Log(EventSystem.current.currentSelectedGameObject.transform.position.x);
     }
 
     public void SetSceneName(string name)
