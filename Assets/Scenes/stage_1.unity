@@ -1208,6 +1208,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyProdaction (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792316940313276748, guid: e8b264a370e6acd48ac004eec0fa1622,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3887,6 +3892,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyProdaction (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792316940313276748, guid: e8b264a370e6acd48ac004eec0fa1622,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4044,6 +4054,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyProdaction (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792316940313276748, guid: e8b264a370e6acd48ac004eec0fa1622,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
@@ -6762,6 +6777,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyProdaction (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792316940313276748, guid: e8b264a370e6acd48ac004eec0fa1622,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7389,6 +7409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyProdaction (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792316940313276748, guid: e8b264a370e6acd48ac004eec0fa1622,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
@@ -9088,6 +9113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyProdaction (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792316940313276748, guid: e8b264a370e6acd48ac004eec0fa1622,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6777624916078303766, guid: e8b264a370e6acd48ac004eec0fa1622,
         type: 3}
