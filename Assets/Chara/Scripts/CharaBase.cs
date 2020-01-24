@@ -721,16 +721,16 @@ public class CharaBase : MonoBehaviour {
         // 床全部を検索
         for (int i = 0; i < floor.Length; ++i)
         {
-            // 当たった床の進む方向をfrontに設定
-            if (floor[i].GetComponent<MoveFloor>().Hit)
-            {
-                front = floor[i].GetComponent<MoveFloor>().MoveVector;
-                front.y = 0;
-            }            
-
-            // 前進 キャラの位置にfloorの進む方向を入れてる
-            floor_pos = transform.position + front;
+            //// 当たった床の進む方向をfrontに設定
+            //if (floor[i].GetComponent<MoveFloor>().Hit)
+            //{
+            //    front = floor[i].GetComponent<MoveFloor>().MoveVector;
+            //    front.y = 0;
+            //}            
+            front = floor[i].GetComponent<MoveFloor>().MoveVector;
         }
+        // 前進 キャラの位置にfloorの進む方向を入れてる
+        floor_pos = transform.position + front;
     }
 
 
