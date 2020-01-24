@@ -18,6 +18,10 @@ public sealed partial class Enemy : CharaBase
 	//状態エフェクト -----------------------------------
 	[System.Serializable]
 	public struct ConditionEffect {
+
+		//[System.NonSerialized]
+		//public const int MAX = 5;
+
 		public  GameObject warning;
 		public  GameObject find;
 		public  GameObject away;
@@ -27,10 +31,21 @@ public sealed partial class Enemy : CharaBase
 		public  GameObject obj_attach;
 
 		[System.NonSerialized]
-		public GameObject obj_entitya;
+		public  GameObject[] obj_attach2;
+
+
+		[System.NonSerialized]
+		public GameObject obj_entity;
+
+		[System.NonSerialized]
+		public GameObject[] obj_entity2;
+
+
+		//[System.NonSerialized]
+		//public GameObject[] obj_entity;
 	}
 	[Header("状態エフェクト")]
-	public ConditionEffect condition_effect;
+	public ConditionEffect condition_eff;
 
 
 	//待機 ---------------------------------------------
@@ -270,6 +285,8 @@ public sealed partial class Enemy : CharaBase
 		SWING,		//首振り
 		SWING2,		//首振り2
 		SWING3,		//首振り3
+		WARNING1,	//警戒1
+		WARNING2,	//警戒2
 		RUN,		//走る
 		JUMP,       //ジャンプ
 		SPIN,		//回転
@@ -300,11 +317,11 @@ public sealed partial class Enemy : CharaBase
 
 
 
-
 	//汎用タイマーの種類
 	enum Enum_Timer {
 		WAIT,           //待機
 		WAIT_SWING,     //待機首振り
+		WARNIG,			//警戒
 		LOOKBACK,       //振り向き
 		EACH_ACT,       //敵別行動
 		FAINT           //気絶

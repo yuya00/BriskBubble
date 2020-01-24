@@ -32,7 +32,15 @@ public sealed partial class Enemy : CharaBase
 
 		away_act.jump.flg = true;
 
-		//敵別の行動
+		//敵別の行動セット
+		AwayKindSet();
+
+		//状態エフェクト設定
+		CoditionEffect_Set();
+	}
+
+	//--敵別の行動セット
+	void AwayKindSet() {
 		//逃走の種類決定
 		if (away_act.kind.normal) {
 			enum_awaykind = Enum_AwayKind.NORMAL;
@@ -58,18 +66,45 @@ public sealed partial class Enemy : CharaBase
 		else {
 			enum_awaykind = Enum_AwayKind.NORMAL;
 		}
+	}
+
+	//--状態エフェクト設定
+	void CoditionEffect_Set() {
+
+		//状態Enumの最大数
+		int enum_max = System.Enum.GetNames(typeof(Enum_State)).Length;
+
+		//インスペクターの情報を配列に代入してまとめる
+		condition_eff.obj_attach2 = new GameObject[enum_max];
+		condition_eff.obj_attach2[(int)Enum_State.WARNING]	 = condition_eff.warning;
+		condition_eff.obj_attach2[(int)Enum_State.FIND]		 = condition_eff.find;
+		condition_eff.obj_attach2[(int)Enum_State.AWAY]		 = condition_eff.away;
+		condition_eff.obj_attach2[(int)Enum_State.ATTACK]	 = condition_eff.attack;
+		condition_eff.obj_attach2[(int)Enum_State.FAINT]	 = condition_eff.faint;
+
+		//生成、子として設定、非アクティブ
+		for (int i = 0; i < enum_max; i++) {
+			if (condition_eff.obj_attach2[i] == null) {
+				continue;
+			}
+			condition_eff.obj_attach2[i] = Instantiate(condition_eff.obj_attach2[i], transform.position + transform.up * 4, transform.rotation);
+			condition_eff.obj_attach2[i].transform.parent = transform;
+			condition_eff.obj_attach2[i].SetActive(false);
+		}
 
 	}
+
+
 
 	void Update()
     {
         base.Move();
 
-		StateChange();      //プレイヤーとの当たり判定でstate変更
-		DistPlayer();		//プレイヤーとの距離
-		Action();           //stateに応じて個別関数に飛ぶ
-		CondtionEffect();   //状態エフェクト
-		Damage();           //ショットからのダメージ
+		StateChange();				//プレイヤーとの当たり判定でstate変更
+		DistPlayer();				//プレイヤーとの距離
+		Action();					//stateに応じて個別関数に飛ぶ
+		CoditionEffect_Active();    //状態エフェクトを状況に応じてアクティブにする
+		Damage();					//ショットからのダメージ
 		old_state = enum_state;
 
 		DebugLog();
@@ -82,63 +117,25 @@ public sealed partial class Enemy : CharaBase
 			new Vector3(1.0f, 0.0f, 1.0f));
 	}
 
-	//状態エフェクト
-	void CondtionEffect() {
-		CondtionEffect_Create(Enum_State.WARNING);
+	//状態エフェクトを状況に応じてアクティブにする
+	void CoditionEffect_Active() {
 
-		CondtionEffect_Create(Enum_State.FIND);
-
-		CondtionEffect_Create(Enum_State.AWAY);
-
-		CondtionEffect_Create(Enum_State.ATTACK);
-
-		CondtionEffect_Create(Enum_State.FAINT);
-	}
-
-	//--エフェクト生成
-	void CondtionEffect_Create(Enum_State state) {
-		//切り替わった瞬間なら進む
-		if (!((enum_state == state) && (old_state != state))) {
+		//stateが切り替わっていたら進む
+		if ((enum_state == old_state)) {
 			return;
 		}
 
-		//何も入っていなかったら進む
-		if (condition_effect.obj_entitya != null) {
-			return;
+		//ひとつ前のstateを参照して、非アクティブにする
+		if ((old_state != Enum_State.WAIT) &&
+			(condition_eff.obj_attach2[(int)old_state] != null)) {
+			condition_eff.obj_attach2[(int)old_state].SetActive(false);
+		}
+		//現在stateを参照して、アクティブにする
+		if ((enum_state != Enum_State.WAIT) &&
+			(condition_eff.obj_attach2[(int)enum_state] != null)) {
+			condition_eff.obj_attach2[(int)enum_state].SetActive(true);
 		}
 
-		//----各々のエフェクトを代入
-		CondtionEffect_Assign(state);
-
-		//エフェクトが入っていれば進む
-		if (condition_effect.obj_attach == null) {
-			return;
-		}
-
-		//生成,子としてに設定
-		condition_effect.obj_entitya = Instantiate(condition_effect.obj_attach, transform.position + transform.up * 4, transform.rotation);
-		condition_effect.obj_entitya.transform.parent = transform;
-	}
-
-	//----各々のエフェクトを代入
-	void CondtionEffect_Assign(Enum_State state) {
-		switch (state) {
-			case Enum_State.WARNING:
-				condition_effect.obj_attach = condition_effect.warning;
-				break;
-			case Enum_State.FIND:
-				condition_effect.obj_attach = condition_effect.find;
-				break;
-			case Enum_State.AWAY:
-				condition_effect.obj_attach = condition_effect.away;
-				break;
-			case Enum_State.ATTACK:
-				condition_effect.obj_attach = condition_effect.attack;
-				break;
-			case Enum_State.FAINT:
-				condition_effect.obj_attach = condition_effect.faint;
-				break;
-		}
 	}
 
 	//ショットからのダメージ
@@ -241,7 +238,8 @@ public sealed partial class Enemy : CharaBase
 				+ wait_timer_box[1] / 10 + "   "
 				+ wait_timer_box[2] / 10 + "   "
 				+ wait_timer_box[3] / 10 + "   "
-				+ wait_timer_box[4] / 10);
+				+ wait_timer_box[4] / 10 + "   "
+				+ wait_timer_box[5] / 10);
 
 			//状態(待機や警戒など)
 			GUILayout.TextArea("状態\n enum_state：" + enum_state.ToString());
@@ -315,11 +313,12 @@ public sealed partial class Enemy : CharaBase
 
 			//汎用タイマー配列
 			GUILayout.TextArea("汎用タイマー\n"
-				+ wait_timer_box[0]/10 + "   " 
-				+ wait_timer_box[1]/10 + "   "
-				+ wait_timer_box[2]/10 + "   "
-				+ wait_timer_box[3]/10 + "   "
-				+ wait_timer_box[4]/10);
+				+ wait_timer_box[0] / 10 + "   "
+				+ wait_timer_box[1] / 10 + "   "
+				+ wait_timer_box[2] / 10 + "   "
+				+ wait_timer_box[3] / 10 + "   "
+				+ wait_timer_box[4] / 10 + "   "
+				+ wait_timer_box[5] / 10);
 
 			//視界にプレイヤーが入った判定
 			GUILayout.TextArea("視界にP\n" + found_player_flg);
@@ -620,24 +619,42 @@ public sealed partial class Enemy : CharaBase
 	}
 
 
-	//警戒(ゆっくり首を振る)
+	//警戒(即座に対象の方向を向く)
 	void Warning()
     {
-		//近くにプレイヤーがいた場合なら
-		if (enemy_near.HitFlg) {
-			transform.LookAt(transform.position + dist_to_player); //プレイヤーの方向を向く
-			Clear();
+		switch (enum_act) {
+			case Enum_Act.CLEAR:
+				//今の角度保存
+
+				//近くにプレイヤー
+				if (enemy_near.HitFlg) {
+					enum_act = Enum_Act.WARNING1;
+				}
+				//音範囲内で音
+				if (enemy_sounddetect.HitFlg) {
+					enum_act = Enum_Act.WARNING2;
+				}
+				break;
+			case Enum_Act.WARNING1: //プレイヤーの方向を向く
+				transform.LookAt(transform.position + dist_to_player);
+				enum_act = Enum_Act.WAIT;
+				break;
+			case Enum_Act.WARNING2:  //ショットの方向を向く
+				Vector3 dist = Vector3.Scale(
+					enemy_sounddetect.Hitpos - transform.position,
+					new Vector3(1.0f, 0.0f, 1.0f));
+				transform.LookAt(transform.position + dist);
+				enum_act = Enum_Act.WAIT;
+				break;
+			case Enum_Act.WAIT:
+				if (WaitTimeBox((int)Enum_Timer.WARNIG, 60)) {
+					enemy_sounddetect.HitFlg = false;
+					Clear();
+					enum_state = Enum_State.WAIT;
+				}
+				break;
 		}
 
-		//音範囲内で音があったら
-		if (enemy_sounddetect.HitFlg) {
-			Vector3 dist = Vector3.Scale(enemy_sounddetect.Hitpos - transform.position,
-							new Vector3(1.0f, 0.0f, 1.0f));
-			enemy_sounddetect.HitFlg = false;
-			transform.LookAt(transform.position + dist); //ショットの方向を向く
-			Clear();
-			enum_state = Enum_State.WAIT;
-		}
 
 		#region 見回す処理
 		/*

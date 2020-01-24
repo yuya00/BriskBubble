@@ -54,7 +54,7 @@ public class CharaBase : MonoBehaviour {
 	protected bool          is_faint			 = false;			//気絶判定
 	[Foldout("BaseParameter" ,false)]
 	protected int			wait_timer			 = 0;               //待機タイマー
-	protected const int     WAIT_BOX_NUM		 = 5;
+	protected const int     WAIT_BOX_NUM		 = 6;
 	protected int[]         wait_timer_box		 = new int[WAIT_BOX_NUM];               //待機タイマー
 	protected const float	HALF				 = 0.5f;            // 半分計算用
 
