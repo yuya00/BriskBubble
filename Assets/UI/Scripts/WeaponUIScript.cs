@@ -39,7 +39,7 @@ public class WeaponUIScript : MonoBehaviour
     void MovePos()
     {
         // 切り替え（位置変え）
-        if (Input.GetMouseButtonDown(0)) no++;
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Shot_L")) no++;
         if (no >= 3) no = 0;
 
         // 移動する位置
