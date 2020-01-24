@@ -10,7 +10,6 @@ public class MoveFloor : MonoBehaviour
         WAIT1,
         BACK,
         WAIT2,
-
     }
 
     private MOVE state;     // 前進か後退か
@@ -36,7 +35,7 @@ public class MoveFloor : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Move();
     }
@@ -139,7 +138,17 @@ public class MoveFloor : MonoBehaviour
 
     // 物体に当たってるときに呼ばれる
     private void OnCollisionStay(Collision other)
+    {        
+        //// プレイヤーが当たった
+        //if (other.gameObject.name == "Player")
+        //{
+        //    hit_obj = true;
+        //}
+    }
+
+    public int Type
     {
+        get { return type; }
     }
 
     public bool Hit

@@ -214,6 +214,7 @@ public class CharaBase : MonoBehaviour {
     // 動く床用
     private GameObject[] floor;
     protected Vector3 floor_pos;
+    protected Vector3 front;
 
     public virtual void Start()
     {
@@ -565,7 +566,6 @@ public class CharaBase : MonoBehaviour {
 
 
 
-
     //着地時にfalse
     public virtual void Move()
     {
@@ -576,11 +576,10 @@ public class CharaBase : MonoBehaviour {
 		//LayerMask shot_layer = ~(1 << 8);
 
 		//Wallのレイヤーが設定されている物とだけ当たる
-		LayerMask wall_layer = (1 << 14);
-		//LayerMask wall_layer = (1 << 14) | (1 << 16);
+		//LayerMask wall_layer = (1 << 14);
+        LayerMask wall_layer = (1 << 14) | (1 << 16);
+        //LayerMask ground_layer = (1 << 16);
 
-		// 動く床
-		LayerMask ground_layer = (1 << 16);
         /***********************/
 
 
@@ -613,23 +612,6 @@ public class CharaBase : MonoBehaviour {
 
 		}
 
-        // 動く床
-        for (int i = 0; i < floor.Length; ++i)
-        {
-            if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, ground_layer))
-            {
-                rigid.useGravity = true;
-                is_ground = true;
-                is_floor = true;
-                velocity.y = 0;
-
-                floor_pos = transform.position + floor[i].GetComponent<MoveFloor>().MoveVector;
-            }
-            else
-            {
-                is_floor = false;
-            }
-        }
 
         #endregion
 
@@ -709,11 +691,47 @@ public class CharaBase : MonoBehaviour {
         //if (this.gameObject.tag == "Player") {
         //	Debug.Log(velocity);
         //}
+
         rigid.MovePosition(transform.position + velocity * Time.deltaTime);
 
         //transform.position = transform.position + velocity * Time.deltaTime;
     }
 
+    // 床と同期
+    public virtual void FloorHit()
+    {
+        RaycastHit hit;
+        // 動く床
+        LayerMask ground_layer = (1 << 16);
+
+        if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, ground_layer))
+        {
+            is_floor = true;
+            FloorMoveSelect();    // 動く床によって移動方向を選択
+        }
+        else
+        {
+            is_floor = false;
+        }
+    }
+
+    // 動く床によって移動方向を選択
+    void FloorMoveSelect()
+    {
+        // 床全部を検索
+        for (int i = 0; i < floor.Length; ++i)
+        {
+            //// 当たった床の進む方向をfrontに設定
+            //if (floor[i].GetComponent<MoveFloor>().Hit)
+            //{
+            //    front = floor[i].GetComponent<MoveFloor>().MoveVector;
+            //    front.y = 0;
+            //}            
+            front = floor[i].GetComponent<MoveFloor>().MoveVector;
+        }
+        // 前進 キャラの位置にfloorの進む方向を入れてる
+        floor_pos = transform.position + front;
+    }
 
 
     protected bool WaitTimeOnce(int wait_time)

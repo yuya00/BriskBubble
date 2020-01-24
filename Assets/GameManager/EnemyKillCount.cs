@@ -10,13 +10,13 @@ public sealed class EnemyKillCount : MonoBehaviour
     private int enm_num_max;
     private bool kill_fg;
 
-    public Text enemy_num_text;
+    //public Text enemy_num_text;
 
     void Start()
     {
         EnemyCountInit();
         //enemy_num_text.text = "残り : " + enm_num_max + "体";
-        enemy_num_text.text = "残り : ";
+        //enemy_num_text.text = "残り : ";
     }
 
     void Update()
@@ -24,7 +24,7 @@ public sealed class EnemyKillCount : MonoBehaviour
         kill_fg = false;
         EnemyCount();
         //enemy_num_text.text = "残り : " + enm_num_max + "体";
-        enemy_num_text.text = "残り : ";
+        //enemy_num_text.text = "残り : ";
     }
 
     // Start is called before the first frame update
