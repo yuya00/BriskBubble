@@ -5,8 +5,10 @@
 やること ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 
-点滅の仕方変更する
 
+
+コマンドで壁掴み追加！
+　手の色変更(material)
 
 
 
@@ -25,6 +27,36 @@ SPINのエフェクトを出す(風圧とか)
 リスポーン時、カメラの角度も戻す
 　fall_yいらない
 
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+		//this.gameObject.SetActive(false);
+		//Color color = new Color(10, 0, 0, 1);
+		Color color = new Color(1, 1, 1, 0);
+		//GetComponent<SkinnedMeshRenderer>().material.color = new Color(0, 0, 0, 0);
+		for (int i = 0; i < 7; i++) {
+			//GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
+			//Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
+		}
+		//for (int i = 0; i < 7; i++) {
+		//	GetComponent<SkinnedMeshRenderer>().materials[i] = null;
+		//}
+
+		//GetComponent<SkinnedMeshRenderer>().materials[0].color = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().materials[1].color = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().materials[2].color = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().materials[3].color = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().materials[4].color = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().materials[5].color = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().materials[6].color = new Color(0, 0, 0, 0);
+
+		//GetComponent<Renderer>().material.color = new Color(0, 0, 0, 0);
+		//GetComponent<Mesh>().colors[0] = new Color(0, 0, 0, 0);
+		//GetComponent<SkinnedMeshRenderer>().material = null;
+
+	}
 
 
 
@@ -128,3 +160,5 @@ Size   Z  6
 
 ・発見ジャンプの後、着地しないことがある
 　前に進むことで補正され、着地している
+
+・ダメージ時の点滅を半透明にする

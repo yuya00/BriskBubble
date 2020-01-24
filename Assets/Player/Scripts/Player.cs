@@ -36,9 +36,9 @@ public sealed partial class Player : CharaBase
 		//やまなりショット用の物理シーンを作成
 		scene = SceneManager.CreateScene("physicsScene", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
 
-    }
+	}
 
-    void Update()
+	void Update()
     {
 
 		//Debug.Log(velocity);
@@ -775,7 +775,7 @@ public sealed partial class Player : CharaBase
 				enum_faint = Enum_Faint.WAIT;
 				break;
 			case Enum_Faint.WAIT:   //ノックバック時間
-				if (WaitTimeOnce(30)) {
+				if (WaitTimeOnce(KnockBack.TIME)) {
 					wait_timer = 0;
 					velocity = Vector3.zero;
 					enum_faint = Enum_Faint.WAIT2;
