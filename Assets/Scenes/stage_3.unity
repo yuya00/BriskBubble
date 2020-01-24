@@ -21546,6 +21546,7 @@ GameObject:
   - component: {fileID: 1316627064}
   - component: {fileID: 1316627063}
   - component: {fileID: 1316627062}
+  - component: {fileID: 1316627067}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -21630,6 +21631,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1316627067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316627061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13211a9f052e99f41ad58f22aa31f7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TIME_MAX: 0.15
 --- !u!1 &1319828875 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 54af2d06eafd4854a91a9344765be815,
@@ -21889,11 +21903,6 @@ PrefabInstance:
       propertyPath: gui.all_view
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363856407093239074, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1075969294217420851, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_RootOrder
@@ -21953,6 +21962,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239074, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}

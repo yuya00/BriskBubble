@@ -218,7 +218,7 @@ public sealed partial class Player : CharaBase
 		public const float SPD_MAG       = 4.5f;
 		public const float JUMP_POWER    = 20;
 		public const int   TIME          = 30;
-		public const int   FAINT_TIME    = 80 - TIME;  //硬直時間(-ノックバック)
+		public const int   FAINT_TIME    = 40 - TIME;  //硬直時間(-ノックバック)
 	}
 
 	enum Enum_Faint {
