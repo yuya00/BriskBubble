@@ -185,16 +185,18 @@ MonoBehaviour:
   hole_ray:
     gizmo_on: 1
     judge_on: 1
-    length: 100
+    length: 30
     startLength: 11
     angle: 0
     speed: 15
   condition_effect:
-    warning: {fileID: 0}
+    warning: {fileID: 4451092004596259361, guid: 12832ca8a8ef25f4c9252f315ac45046,
+      type: 3}
     find: {fileID: 1458771595821501554, guid: 22eb9fe6ecd450242bb5eab1b37359c2, type: 3}
-    away: {fileID: 0}
-    attack: {fileID: 0}
-    faint: {fileID: 0}
+    away: {fileID: 1734600180102722152, guid: 335e14eb6d2cb844e9c2806eef4d3aa7, type: 3}
+    attack: {fileID: 3844172726005428060, guid: 223f0a984be6a7345930aa65538616c6,
+      type: 3}
+    faint: {fileID: 8497792365168755349, guid: 4429036338f6584428764793e2c19423, type: 3}
   wait_act:
     wait_time: 200
     wait_random: 0
