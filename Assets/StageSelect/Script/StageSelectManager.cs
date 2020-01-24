@@ -30,7 +30,7 @@ public class StageSelectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(EventSystem.current.currentSelectedGameObject.transform.position.x);
+        //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
     }
 
     public void SetSceneName(string name)

@@ -1402,6 +1402,7 @@ GameObject:
   - component: {fileID: 1035455847}
   - component: {fileID: 1035455846}
   - component: {fileID: 1035455845}
+  - component: {fileID: 1035455850}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1426,8 +1427,6 @@ MonoBehaviour:
   fade_in_time: 0.5
   fade_out_time: 0.5
   interval_time_max: 0.5
-  end_text: {fileID: 214680331}
-  start_text: {fileID: 301113711}
   debug_fg: 0
   gui_on: 0
 --- !u!114 &1035455846
@@ -1455,7 +1454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3cafa12baf4c8240994e4552e1d26e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_num_text: {fileID: 0}
 --- !u!114 &1035455848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1468,7 +1466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fa42ca1cc3a4843ad60dab8bab31be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time_text: {fileID: 0}
   min: 3
   sec: 0
 --- !u!4 &1035455849
@@ -1486,6 +1483,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1035455850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035455844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9a171c633bd06498c6adb9a03793b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1066246213
 GameObject:
   m_ObjectHideFlags: 0
