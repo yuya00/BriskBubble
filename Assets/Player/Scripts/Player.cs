@@ -126,9 +126,10 @@ public sealed partial class Player : CharaBase
                 if (game_manager.GetComponent<Scene>().StartFg()) state = GAME;
                 break;
             case GAME:
+                base.FloorHit();
                 //base.FixedUpdate();
                 transform.position = transform.position + velocity * Time.deltaTime;
-                if (is_floor)  transform.position = floor_pos + velocity * Time.deltaTime;
+                if (is_floor) transform.position = floor_pos + velocity * Time.deltaTime;
 
                 // 移動
                 LstickMove();

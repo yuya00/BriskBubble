@@ -67,12 +67,19 @@ public class Scene : MonoBehaviour
         start       = GameObject.FindGameObjectWithTag("StartText");    // スプライトを消す前にこっちを消す
         time_up     = GameObject.FindGameObjectWithTag("TimeUpText");   // スプライトを消す前にこっちを消す
         end         = GameObject.FindGameObjectWithTag("EndText");      // スプライトを消す前にこっちを消す
-        start.SetActive(false);
-        time_up.SetActive(false);
-        end.SetActive(false);
+        sprite      = GameObject.FindGameObjectWithTag("Sprite");
 
-        sprite = GameObject.FindGameObjectWithTag("Sprite");
-        sprite.SetActive(false);
+        // スプライトをセットして消す
+        SpriteSet();
+    }
+
+    // スプライトをセット
+    void SpriteSet()
+    {
+        if (start   != null) start.SetActive(false);
+        if (time_up != null) time_up.SetActive(false);
+        if (end     != null) end.SetActive(false);
+        if (sprite  != null) sprite.SetActive(false);
     }
 
     void Update()

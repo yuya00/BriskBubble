@@ -236,6 +236,8 @@ public sealed partial class CameraScript : MonoBehaviour
     // カメラが敵に近づく演出するための処理---------------
     void CameraEnemyApproach()
     {
+        if (obj == null) return;
+
         // 敵を全て探す
         for (int i = 0; i < obj.Length; i++)
         {
@@ -345,6 +347,7 @@ public sealed partial class CameraScript : MonoBehaviour
     // ブラーをonにしたり、offにしたり
     void SetBlur(bool on)
     {
+        if (post == null) return;
         post.SetActive(on);
     }
 
