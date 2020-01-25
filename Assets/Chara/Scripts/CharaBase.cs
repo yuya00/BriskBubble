@@ -611,10 +611,7 @@ public class CharaBase : MonoBehaviour {
 			}
 
 		}
-
-
         #endregion
-
 
         #region Ray
         //足元から少し上の位置
@@ -669,10 +666,7 @@ public class CharaBase : MonoBehaviour {
 		// */
 		#endregion
 
-
 	}
-
-
 
 	public virtual void DebugLog(){
 		/*
@@ -682,8 +676,6 @@ public class CharaBase : MonoBehaviour {
         Debug.Log("vel:"+velocity);
 		// */
     }
-
-
 
     public virtual void FixedUpdate()
     {

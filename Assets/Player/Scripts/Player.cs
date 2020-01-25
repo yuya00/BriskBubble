@@ -440,8 +440,9 @@ public sealed partial class Player : CharaBase
         if (axis_x != 0f || axis_y != 0f) LookAt(move);
 
 
-        #region 状態分け
-        switch (StickState(axis_x, axis_y))
+
+		#region 状態分け
+		switch (StickState(axis_x, axis_y))
         {
             case WAIT:
                 //停止時慣性(徐々に遅くなる)          
@@ -458,17 +459,41 @@ public sealed partial class Player : CharaBase
                 animator.SetBool("Run", false);
                 break;
             case RUN:
-                // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * run_speed * water_fric;
-                velocity.z = move.normalized.z * run_speed * water_fric;
-                animator.SetBool("Run", true);
-                animator.SetBool("Walk", false);
-                effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
-                break;
-        }
+				// カメラから見てスティックを倒したほうへ進む
+				if (speedy_flg) goto case SPEEDYRUN;
+				else {
+					velocity.x = move.normalized.x * run_speed * water_fric;
+					velocity.z = move.normalized.z * run_speed * water_fric;
+					animator.SetBool("Run", true);
+					animator.SetBool("Walk", false);
+					effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
+					//if (WaitTimeBox((int)Enum_Timer.RUN, 90)) {
+					//	speedy_flg = true;
+					//}
+					//else {
+					//	speedy_flg = false;
+					//}
+				}
+				break;
+			case SPEEDYRUN:
+				//RUNから一定時間後、加速
+				velocity.x = move.normalized.x * speedrun_spd * water_fric;
+				velocity.z = move.normalized.z * speedrun_spd * water_fric;
+				animator.SetBool("Run", true);
+				animator.SetBool("Walk", false);
+				effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
+				break;
+		}
+		//RUN以外のstateなら加速をやめる
+		if (StickState(axis_x, axis_y) == WAIT ||
+			StickState(axis_x, axis_y) == WALK) {
+			wait_timer_box[(int)Enum_Timer.RUN] = 0;
+			speedy_flg = false;
+		}
 
-        #endregion
-    }
+
+		#endregion
+	}
 
 	// その方向を向く
 	void LookAt(Vector3 vec)
