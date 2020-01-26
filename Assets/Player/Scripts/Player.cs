@@ -58,13 +58,12 @@ public sealed partial class Player : CharaBase
 		//先行入力まとめ
 		LeadKeyAll();
 
-
 		DebugLog();
         RayDebug();
     }
 
-    // Update内で待機
-    void Wait()
+	// Update内で待機
+	void Wait()
     {
 		base.Move();
 
@@ -823,6 +822,9 @@ public sealed partial class Player : CharaBase
 	//--壁掴み判定Rayによる掴み
 	void WallGrabRayGrabJudge()
     {
+		//壁掴み発動コマンド
+		WallGrabCommand();
+
 		if (!wall_grab_ray.judge_on) {
 			return;
 		}
@@ -833,6 +835,14 @@ public sealed partial class Player : CharaBase
         //----掴む
         WallGrabRayGrab();
     }
+
+	//壁掴み発動コマンド
+	void WallGrabCommand() {
+		if (Input.GetButtonDown("WallGrab_B") && Input.GetButtonDown("WallGrab_Y")) {
+			this.GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = new Color(0.3f, 0, 0.3f, 1.0f);
+			wall_grab_ray.judge_on = true;
+		}
+	}
 
 	//----当たり判定
 	void WallGrabRayJudge() {
@@ -963,18 +973,17 @@ public sealed partial class Player : CharaBase
 			wall_grab_ray.flg = false;
 		}
 
-		if (WaitTimeOnce(wall_grab_ray.delay_time)) {
-			//上入力で登る
-			if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+		//上入力で登る
+		if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+			if (WaitTimeBox((int)Enum_Timer.WALL_GRAB, wall_grab_ray.delay_time)) {
 				transform.position += new Vector3(0, 4.5f, 1.0f);
 				wall_grab_ray.flg = false;
 			}
-			//下入力で降りる
-			else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
-				wall_grab_ray.flg = false;
-			}
 		}
-
+		//下入力で降りる
+		else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
+			wall_grab_ray.flg = false;
+		}
 	}
 
 

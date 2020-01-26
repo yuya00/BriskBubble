@@ -155,7 +155,7 @@ public sealed partial class Player : CharaBase
 		//length 2.0f
 
 		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
-		public float height;		//1.3f
+		public float height;		//0.2f
 
 		[System.NonSerialized]	//掴み準備判定
 		public bool prepare_flg;
@@ -241,7 +241,8 @@ public sealed partial class Player : CharaBase
 	enum Enum_Timer {
 		RUN,			//走り
 		TREAD_ON,		//踏みつけ
-		RESPAWN,		//リスポーン
+		RESPAWN,        //リスポーン
+		WALL_GRAB,      //壁掴み
 	}
 	Enum_Timer enum_timer;
 

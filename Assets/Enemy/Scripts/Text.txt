@@ -8,39 +8,6 @@
 
 
 
-コマンドで壁掴み追加！
-　手の色変更(material)
-
-    // Start is called before the first frame update
-    void Start()
-    {
-		//this.gameObject.SetActive(false);
-		//Color color = new Color(10, 0, 0, 1);
-		Color color = new Color(1, 1, 1, 0);
-		//GetComponent<SkinnedMeshRenderer>().material.color = new Color(0, 0, 0, 0);
-		for (int i = 0; i < 7; i++) {
-			//GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
-			//Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
-		}
-		//for (int i = 0; i < 7; i++) {
-		//	GetComponent<SkinnedMeshRenderer>().materials[i] = null;
-		//}
-
-		//GetComponent<SkinnedMeshRenderer>().materials[0].color = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().materials[1].color = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().materials[2].color = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().materials[3].color = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().materials[4].color = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().materials[5].color = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().materials[6].color = new Color(0, 0, 0, 0);
-
-		//GetComponent<Renderer>().material.color = new Color(0, 0, 0, 0);
-		//GetComponent<Mesh>().colors[0] = new Color(0, 0, 0, 0);
-		//GetComponent<SkinnedMeshRenderer>().material = null;
-
-	}
-
-
 
 
 
@@ -96,6 +63,14 @@ stageの見渡し2つでいい
 EnemyのSpin
 Center Z -6.65
 Size   Z  6
+
+コマンドで壁掴み追加
+　手の色変更(material)
+  for (int i = 0; i < 7; i++) {
+     //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
+     //Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
+  }
+
 
 
 
