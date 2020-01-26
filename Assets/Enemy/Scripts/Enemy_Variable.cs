@@ -15,6 +15,88 @@ public sealed partial class Enemy : CharaBase
 
 	private float easing_timer = 0;
 
+	//壁判定Ray ---------------------------------------------
+	[System.Serializable]
+	public class WallRay : BoxCastAdjustBase {
+		//public float length;		//20.0f
+		//public float up_limit;	//1.9f	2.7f
+		//public float down_limit;	//3.0f	2.5f
+
+		public const int ANGLE_MAG = 3; //角度調整
+
+		[Header("Rayの角度")]	//0.0f 未使用
+		public float angle;
+
+		[System.NonSerialized]	//壁との距離保存用
+		public float dist_right, dist_left;
+
+		[System.NonSerialized]	//壁との当たり判定
+		public bool hit_right_flg, hit_left_flg;
+
+		[System.NonSerialized]	//めり込み判定
+		public bool cavein_right_flg, cavein_left_flg;
+
+		[System.NonSerialized]	//両方のRayが当たった回数
+		public int both_count;
+
+		[System.NonSerialized]	//両方のRayが当たった回数判定
+		public bool both_flg;
+
+		[Header("向き変更の速さ")]
+		public float spd;       //1.5f
+
+		public void Clear() {
+			dist_right = 0;
+			dist_left = 0;
+			hit_right_flg = false;
+			hit_left_flg = false;
+			cavein_right_flg = false;
+			cavein_left_flg = false;
+			both_count = 0;
+			both_flg = false;
+		}
+
+	}
+	[Header("壁判定Ray")]
+	public WallRay wall_ray;
+
+
+	//穴判定Ray ---------------------------------------------
+	[System.Serializable]
+	public class HoleRay : RayBase {
+		//public float length;    //100.0f
+
+		[Header("Rayの始点")]		//11.0f
+		public float startLength;
+
+		[Header("Rayの角度")]		//00.0f 未使用
+		public float angle;
+
+		//[System.NonSerialized] //穴との距離保存用
+		//public float dist_right, dist_left;
+
+		[System.NonSerialized]		//穴との当たり判定
+		public bool hit_right_flg, hit_left_flg;
+
+		//[System.NonSerialized] //両方のRayが当たった回数
+		//public int both_count;
+
+		//[System.NonSerialized] //両方のRayが当たった回数判定
+		//public bool both_flg;
+
+		[Header("向き変更の速さ")]	//15.0f
+		public float speed;
+
+		public void Clear() {
+			hit_right_flg = false;
+			hit_left_flg = false;
+		}
+
+	}
+	[Header("穴判定Ray")]
+	public HoleRay hole_ray;
+
+
 	//状態エフェクト -----------------------------------
 	[System.Serializable]
 	public struct ConditionEffect {

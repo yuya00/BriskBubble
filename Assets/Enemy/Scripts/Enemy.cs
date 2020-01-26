@@ -16,6 +16,8 @@ public sealed partial class Enemy : CharaBase
 		//chara_ray = transform.Find("CharaRay");
 
 		//敵のパラメーター設定
+		wall_ray.Clear();
+		hole_ray.Clear();
 		player_touch_flg = false;
 		shot_touch_flg		 = false;
 		dist_to_player		 = Vector3.zero;
@@ -1105,7 +1107,7 @@ public sealed partial class Enemy : CharaBase
 
 
 	//--壁判定による向き変更
-	public override void WallRayRotate_Judge() {
+	void WallRayRotate_Judge() {
 		if (!wall_ray.judge_on) {
 			return;
 		}
@@ -1122,6 +1124,138 @@ public sealed partial class Enemy : CharaBase
 
 		//----向き変更
 		WallRayRotate();
+	}
+
+	//----壁判定Ray当たり判定
+	void WallRayJudge() {
+		//RaycastHit hit;
+		wall_ray.BoxCastCal(transform);
+
+		#region BoxCast
+		/*
+		//右のレイ
+		if (Physics.BoxCast(wall_ray.box_pos, wall_ray.box_size,
+				(transform.forward * angle_mag + transform.right).normalized, out hit,
+				transform.rotation, wall_ray.length / 2)) 
+			{
+			if (hit.collider.gameObject.tag == "Wall") {
+				wall_ray.dist_right = hit.distance;  //壁との距離保存
+				wall_ray.hit_right_flg = true;       //壁との当たり判定
+			}
+		}
+		else {
+			wall_ray.dist_right = 0;
+			wall_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (Physics.BoxCast(wall_ray.box_pos, wall_ray.box_size,
+			(transform.forward * angle_mag + (-transform.right)).normalized, out hit,
+			transform.rotation, wall_ray.length / 2)) 
+			{
+			if (hit.collider.gameObject.tag == "Wall") {
+				wall_ray.dist_left = hit.distance;  //壁との距離保存
+				wall_ray.hit_left_flg = true;       //壁との当たり判定
+			}
+		}
+		else {
+			wall_ray.dist_left = 0;
+			wall_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region RayCast_Three
+		//*
+		//右のレイ(上,下,真ん中)
+		if (WallRayRight(wall_ray.up_limit, 1, 1)) {
+			wall_ray.hit_right_flg = true;
+		}
+		else if (WallRayRight(wall_ray.down_limit, -1, 1)) {
+			wall_ray.hit_right_flg = true;
+		}
+		else if (WallRayRight(0, 0, 1)) {
+			wall_ray.hit_right_flg = true;
+		}
+		else {
+			wall_ray.dist_right = 0;
+			wall_ray.hit_right_flg = false;
+		}
+
+		//左のレイ(上,下,真ん中)
+		if (WallRayLeft(wall_ray.up_limit, 1, -1)) {
+			wall_ray.hit_left_flg = true;
+		}
+		else if (WallRayLeft(wall_ray.down_limit, -1, -1)) {
+			wall_ray.hit_left_flg = true;
+		}
+		else if (WallRayLeft(0, 0, -1)) {
+			wall_ray.hit_left_flg = true;
+		}
+		else {
+			wall_ray.dist_left = 0;
+			wall_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region RayCast
+		/*
+		//右のレイ
+		if (Physics.Raycast(transform.position,
+			(transform.forward * angle_mag + transform.right).normalized, out hit, wall_ray.length)) {
+			if (hit.collider.gameObject.tag == "Wall") {
+				wall_ray.dist_right = hit.distance;  //壁との距離保存
+				wall_ray.hit_right_flg = true;       //壁との当たり判定
+			}
+		}
+		else {
+			wall_ray.dist_right = 0;
+			wall_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (Physics.Raycast(transform.position,
+			(transform.forward * angle_mag + (-transform.right)).normalized, out hit, wall_ray.length)) {
+			if (hit.collider.gameObject.tag == "Wall") {
+				wall_ray.dist_left = hit.distance;   //壁との距離保存
+				wall_ray.hit_left_flg = true;        //壁との当たり判定
+			}
+		}
+		else {
+			wall_ray.dist_left = 0;
+			wall_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+	}
+
+	//------右レイ
+	bool WallRayRight(float limit, int limit_one, int right_one) {
+		RaycastHit hit;
+
+		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
+			(transform.forward * WallRay.ANGLE_MAG + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
+			if (hit.collider.gameObject.tag == "Wall") {
+				wall_ray.dist_right = hit.distance;  //壁との距離保存
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//------左レイ
+	bool WallRayLeft(float limit, int limit_one, int right_one) {
+		RaycastHit hit;
+
+		if (Physics.Raycast(wall_ray.box_pos + (transform.up * limit * limit_one),
+			(transform.forward * WallRay.ANGLE_MAG + (transform.right * right_one)).normalized, out hit, wall_ray.length)) {
+			if (hit.collider.gameObject.tag == "Wall") {
+				wall_ray.dist_left = hit.distance;  //壁との距離保存
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//----めり込み判定
@@ -1185,6 +1319,178 @@ public sealed partial class Enemy : CharaBase
 		}
 
 	}
+
+	//----向き変更
+	void WallRayRotate() {
+		if (wall_ray.hit_right_flg) {
+			transform.Rotate(0.0f, -wall_ray.spd, 0.0f);
+		}
+		else if (wall_ray.hit_left_flg) {
+			transform.Rotate(0.0f, wall_ray.spd, 0.0f);
+		}
+	}
+
+
+	//--穴判定による向き変更
+	public void HoleRayRotateJudge() {
+		if (!hole_ray.judge_on) {
+			return;
+		}
+		//----穴判定Ray当たり判定
+		HoleRayJudge();
+
+		//----向き変更
+		HoleRayRotate();
+	}
+
+	//----穴判定Ray当たり判定
+	public void HoleRayJudge() {
+		//RaycastHit hit;
+		LayerMask wall_layer = (1 << 14);
+
+		//何にも当たっていなかったら
+		#region BoxCast
+		//右のレイ
+		if (!Physics.BoxCast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)),
+			Vector3.one, -transform.up, transform.rotation, hole_ray.length, wall_layer)) {
+			hole_ray.hit_right_flg = true;
+		}
+		else {
+			hole_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (!Physics.BoxCast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength)),
+			Vector3.one, -transform.up, transform.rotation, hole_ray.length, wall_layer)) {
+			hole_ray.hit_left_flg = true;
+		}
+		else {
+			hole_ray.hit_left_flg = false;
+		}
+		#endregion
+
+		#region 4RayCast 縦横
+		/*
+		//右のレイ
+		float var = 1;
+		if ((!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength + var)),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (transform.right)).normalized * (hole_ray.startLength - var)),
+			-transform.up, out hit, hole_ray.length)) ) {
+			hole_ray.hit_right_flg = true;
+		}
+		else {
+			hole_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if ((!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right * var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength + var)),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * (hole_ray.startLength - var)),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_left_flg = true;
+		}
+		else {
+			hole_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region 2RayCast 横
+		/*
+		//右のレイ
+		float var = 1;
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) + (transform.right*var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength)) - (transform.right* var),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_right_flg = true;
+		}
+		else {
+			hole_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if ((!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) + (transform.right* var),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast((transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength)) - (transform.right* var),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_left_flg = true;
+		}
+		else {
+			hole_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region 2RayCast 縦
+		/*
+		//右のレイ
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength + 1),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (transform.right)).normalized * (hole_ray.startLength - 1),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_right_flg = true;
+		}
+		else {
+			hole_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if ((!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength + 1),
+			-transform.up, out hit, hole_ray.length)) &&
+			(!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * (hole_ray.startLength - 1),
+			-transform.up, out hit, hole_ray.length))) {
+			hole_ray.hit_left_flg = true;
+		}
+		else {
+			hole_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+		#region RayCast
+		/*
+		//右のレイ
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + transform.right).normalized * wall_ray.length,
+			-transform.up, out hit, hole_ray.length)) {
+			hole_ray.hit_right_flg = true;
+		}
+		else {
+			hole_ray.hit_right_flg = false;
+		}
+
+		//左のレイ
+		if (!Physics.Raycast(transform.position + (transform.forward * angle_mag + (-transform.right)).normalized * wall_ray.length,
+			-transform.up, out hit, hole_ray.length)) {
+			hole_ray.hit_left_flg = true;
+		}
+		else {
+			hole_ray.hit_left_flg = false;
+		}
+		// */
+		#endregion
+
+	}
+
+	//----向き変更
+	public void HoleRayRotate() {
+		if (hole_ray.hit_right_flg) {
+			transform.Rotate(0.0f, -hole_ray.speed, 0.0f);
+		}
+		else if (hole_ray.hit_left_flg) {
+			transform.Rotate(0.0f, hole_ray.speed, 0.0f);
+		}
+	}
+
 
 
 	//--崖ジャンプ

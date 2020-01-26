@@ -80,8 +80,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gui:
-    on: 1
-    all_view: 1
+    on: 0
+    all_view: 0
     debug_view: 0
   run_speed: 15
   walk_speed: 3
@@ -92,25 +92,10 @@ MonoBehaviour:
   ground_cast:
     gizmo_on: 0
     judge_on: 1
-  wall_ray:
-    gizmo_on: 0
-    judge_on: 0
-    length: 0
-    up_limit: 0
-    down_limit: 0
-    angle: 0
-    spd: 0
-  hole_ray:
-    gizmo_on: 0
-    judge_on: 0
-    length: 0
-    startLength: 0
-    angle: 0
-    speed: 0
   slope: 0.3
-  fall_y_max: -100
   cam: {fileID: 0}
   rot_speed: 10
+  speedrun_spd: 20
   shot_switch: 0
   shot_object:
   - {fileID: 2143015356249492500, guid: b72b0d48d995ce046b1da87cdaf8539e, type: 3}
@@ -133,10 +118,10 @@ MonoBehaviour:
   wall_grab_ray:
     gizmo_on: 0
     judge_on: 0
-    length: 1.1
-    height: 1.3
+    length: 2
+    height: 0.2
     side_length: 1.2
-    delay_time: 10
+    delay_time: 5
   tread_on:
     gizmo_on: 0
     judge_on: 1

@@ -194,15 +194,6 @@ public sealed partial class Player : CharaBase
 				//GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
 				//GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
 
-				//壁判定
-				GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
-				GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
-				GUILayout.TextArea("壁判定左めり込み距離\n" + wall_ray.dist_left);
-				GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
-
-				//穴判定
-				GUILayout.TextArea("穴判定左右\n " + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
-
 				//踏みつけジャンプ判定(着地まで)
 				GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
 
@@ -288,26 +279,6 @@ public sealed partial class Player : CharaBase
 		#endregion
 
 
-		#region 壁判定Ray
-		if (wall_ray.gizmo_on)
-        {
-            Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length);
-            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length);
-        }
-		#endregion
-
-
-		#region 穴判定Ray
-		if (hole_ray.gizmo_on)
-        {
-            Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
-        }
-		#endregion
-
-
 		#region 壁掴み判定Ray
 		if (wall_grab_ray.gizmo_on)
         {
@@ -372,12 +343,6 @@ public sealed partial class Player : CharaBase
 		//敵に接触(気絶)
 		Faint();
 
-
-		////--壁判定による向き変更
-		//WallRayRotate_Judge();
-
-		////--穴判定による向き変更
-		//HoleRayRotateJudge();
 
 		//--壁掴み判定Rayによる掴み
 		WallGrabRayGrabJudge();
