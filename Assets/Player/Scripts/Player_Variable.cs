@@ -15,7 +15,11 @@ public sealed partial class Player : CharaBase
 	public GameObject cam;              // カメラオブジェ
     public float rot_speed = 10.0f;     // カメラの回転速度
 
-    [Foldout("PlayerParameter", false)]
+	private bool speedy_flg;
+	//public float SPEEDYRUN_SPEED = 20.0f;
+	public float speedrun_spd = 20.0f;
+
+	[Foldout("PlayerParameter", false)]
     private Vector3 axis;                   //入力値
     private Vector3 input;                  //入力値
 
@@ -40,7 +44,6 @@ public sealed partial class Player : CharaBase
 
     private int coin_count;     // コイン入手数
 
-
 	private GameObject game_manager;
 	private SphereCollider sphere_collider = null;
 
@@ -58,8 +61,9 @@ public sealed partial class Player : CharaBase
     private const int WAIT = 0;
     private const int WALK = 1;
     private const int RUN = 2;
+	private const int SPEEDYRUN = 3;
 
-    private EffectManager effect;
+	private EffectManager effect;
 
     // キャラ指定
     private EffectManager.TYPE PLAYER = EffectManager.TYPE.PLAYER;
@@ -151,7 +155,7 @@ public sealed partial class Player : CharaBase
 		//length 2.0f
 
 		[SerializeField, Range(0.0f, 2.0f), Header("Rayの高さ")]
-		public float height;		//1.3f
+		public float height;		//0.2f
 
 		[System.NonSerialized]	//掴み準備判定
 		public bool prepare_flg;
@@ -235,8 +239,10 @@ public sealed partial class Player : CharaBase
 
 	//汎用タイマーの種類
 	enum Enum_Timer {
+		RUN,			//走り
 		TREAD_ON,		//踏みつけ
-		RESPAWN,		//リスポーン
+		RESPAWN,        //リスポーン
+		WALL_GRAB,      //壁掴み
 	}
 	Enum_Timer enum_timer;
 

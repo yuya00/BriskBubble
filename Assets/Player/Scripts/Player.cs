@@ -58,13 +58,12 @@ public sealed partial class Player : CharaBase
 		//先行入力まとめ
 		LeadKeyAll();
 
-
 		DebugLog();
         RayDebug();
     }
 
-    // Update内で待機
-    void Wait()
+	// Update内で待機
+	void Wait()
     {
 		base.Move();
 
@@ -195,15 +194,6 @@ public sealed partial class Player : CharaBase
 				//GUILayout.TextArea("壁左方向との内積\n" + wall_left_angle.ToString());
 				//GUILayout.TextArea("プレイヤーの角度\n" + transform.localEulerAngles.ToString());
 
-				//壁判定
-				GUILayout.TextArea("壁判定左右\n" + wall_ray.hit_left_flg + "  " + wall_ray.hit_right_flg);
-				GUILayout.TextArea("壁判定両方左右\n" + wall_ray.cavein_left_flg + "  " + wall_ray.cavein_right_flg);
-				GUILayout.TextArea("壁判定左めり込み距離\n" + wall_ray.dist_left);
-				GUILayout.TextArea("壁判定右めり込み距離\n" + wall_ray.dist_right);
-
-				//穴判定
-				GUILayout.TextArea("穴判定左右\n " + hole_ray.hit_left_flg + "  " + hole_ray.hit_right_flg);
-
 				//踏みつけジャンプ判定(着地まで)
 				GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
 
@@ -289,26 +279,6 @@ public sealed partial class Player : CharaBase
 		#endregion
 
 
-		#region 壁判定Ray
-		if (wall_ray.gizmo_on)
-        {
-            Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length);
-            Gizmos.DrawRay(transform.position, (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length);
-        }
-		#endregion
-
-
-		#region 穴判定Ray
-		if (hole_ray.gizmo_on)
-        {
-            Gizmos.color = Color.green - new Color(0, 0, 0, 0.3f);
-            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + transform.right).normalized * wall_ray.length, -transform.up * hole_ray.length);
-            Gizmos.DrawRay(transform.position + (transform.forward * WallRay.ANGLE_MAG + (-transform.right)).normalized * wall_ray.length, -transform.up * hole_ray.length);
-        }
-		#endregion
-
-
 		#region 壁掴み判定Ray
 		if (wall_grab_ray.gizmo_on)
         {
@@ -374,12 +344,6 @@ public sealed partial class Player : CharaBase
 		Faint();
 
 
-		////--壁判定による向き変更
-		//WallRayRotate_Judge();
-
-		////--穴判定による向き変更
-		//HoleRayRotateJudge();
-
 		//--壁掴み判定Rayによる掴み
 		WallGrabRayGrabJudge();
 
@@ -440,8 +404,9 @@ public sealed partial class Player : CharaBase
         if (axis_x != 0f || axis_y != 0f) LookAt(move);
 
 
-        #region 状態分け
-        switch (StickState(axis_x, axis_y))
+
+		#region 状態分け
+		switch (StickState(axis_x, axis_y))
         {
             case WAIT:
                 //停止時慣性(徐々に遅くなる)          
@@ -458,17 +423,41 @@ public sealed partial class Player : CharaBase
                 animator.SetBool("Run", false);
                 break;
             case RUN:
-                // カメラから見てスティックを倒したほうへ進む
-                velocity.x = move.normalized.x * run_speed * water_fric;
-                velocity.z = move.normalized.z * run_speed * water_fric;
-                animator.SetBool("Run", true);
-                animator.SetBool("Walk", false);
-                effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
-                break;
-        }
+				// カメラから見てスティックを倒したほうへ進む
+				if (speedy_flg) goto case SPEEDYRUN;
+				else {
+					velocity.x = move.normalized.x * run_speed * water_fric;
+					velocity.z = move.normalized.z * run_speed * water_fric;
+					animator.SetBool("Run", true);
+					animator.SetBool("Walk", false);
+					effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
+					//if (WaitTimeBox((int)Enum_Timer.RUN, 90)) {
+					//	speedy_flg = true;
+					//}
+					//else {
+					//	speedy_flg = false;
+					//}
+				}
+				break;
+			case SPEEDYRUN:
+				//RUNから一定時間後、加速
+				velocity.x = move.normalized.x * speedrun_spd * water_fric;
+				velocity.z = move.normalized.z * speedrun_spd * water_fric;
+				animator.SetBool("Run", true);
+				animator.SetBool("Walk", false);
+				effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
+				break;
+		}
+		//RUN以外のstateなら加速をやめる
+		if (StickState(axis_x, axis_y) == WAIT ||
+			StickState(axis_x, axis_y) == WALK) {
+			wait_timer_box[(int)Enum_Timer.RUN] = 0;
+			speedy_flg = false;
+		}
 
-        #endregion
-    }
+
+		#endregion
+	}
 
 	// その方向を向く
 	void LookAt(Vector3 vec)
@@ -798,6 +787,9 @@ public sealed partial class Player : CharaBase
 	//--壁掴み判定Rayによる掴み
 	void WallGrabRayGrabJudge()
     {
+		//壁掴み発動コマンド
+		WallGrabCommand();
+
 		if (!wall_grab_ray.judge_on) {
 			return;
 		}
@@ -808,6 +800,14 @@ public sealed partial class Player : CharaBase
         //----掴む
         WallGrabRayGrab();
     }
+
+	//壁掴み発動コマンド
+	void WallGrabCommand() {
+		if (Input.GetButtonDown("WallGrab_B") && Input.GetButtonDown("WallGrab_Y")) {
+			this.GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = new Color(0.3f, 0, 0.3f, 1.0f);
+			wall_grab_ray.judge_on = true;
+		}
+	}
 
 	//----当たり判定
 	void WallGrabRayJudge() {
@@ -938,18 +938,17 @@ public sealed partial class Player : CharaBase
 			wall_grab_ray.flg = false;
 		}
 
-		if (WaitTimeOnce(wall_grab_ray.delay_time)) {
-			//上入力で登る
-			if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+		//上入力で登る
+		if (Input.GetAxis("L_Stick_V") < -0.5f || Input.GetKeyDown(KeyCode.UpArrow)) {
+			if (WaitTimeBox((int)Enum_Timer.WALL_GRAB, wall_grab_ray.delay_time)) {
 				transform.position += new Vector3(0, 4.5f, 1.0f);
 				wall_grab_ray.flg = false;
 			}
-			//下入力で降りる
-			else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
-				wall_grab_ray.flg = false;
-			}
 		}
-
+		//下入力で降りる
+		else if (Input.GetAxis("L_Stick_V") > 0.5f || Input.GetKeyDown(KeyCode.DownArrow)) {
+			wall_grab_ray.flg = false;
+		}
 	}
 
 
