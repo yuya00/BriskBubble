@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 public class HighScore : MonoBehaviour
 {
     //ハイスコア保存用変数
-    static private int stage1_score=180;
-    static private int stage2_score=180;
-    static private int stage3_score=180;
+    static private int stage1_score=151;
+    static private int stage2_score=76;
+    static private int stage3_score=53;
 
     //開始時の時間保存用
     private int temp_time=0;
+
+    //ベストタイム表示用
+    public Text min;
+    public Text sec;
 
     private LimitTimer limit_timer;
     // Start is called before the first frame update
@@ -21,8 +26,6 @@ public class HighScore : MonoBehaviour
 
         temp_time += limit_timer.min * 60;
         temp_time += (int)limit_timer.sec;
-
-        Debug.Log(temp_time);
     }
 
     // Update is called once per frame
@@ -30,18 +33,21 @@ public class HighScore : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "stage_select")
         {
-            //switch (EventSystem.current.currentSelectedGameObject.name)
-            //{
-                //case "stage_1":
-                    //Debug.Log(stage1_score);
-                    //break;
-                //case "stage_2":
-                    //Debug.Log(stage2_score);
-                    //break;
-                //case "stage_3":
-                    //Debug.Log(stage3_score);
-                    //break;
-            //}
+            switch (EventSystem.current.currentSelectedGameObject.name)
+            {
+                case "stage_1":
+                    min.text = stage1_score/60+"分";
+                    sec.text = "" + stage1_score%60 + "秒";
+                     break;
+                case "stage_2":
+                    min.text = "" + stage2_score/60 + "分";
+                    sec.text = "" + stage2_score% 60 + "秒";
+                    break;
+                case "stage_3":
+                    min.text = "" + stage3_score/60 + "分";
+                    sec.text = "" + stage3_score% 60 + "秒";
+                    break;
+            }
         }
     }
 
