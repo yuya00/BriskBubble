@@ -17,6 +17,7 @@ public class HighScore : MonoBehaviour
     //ベストタイム表示用
     public Text min;
     public Text sec;
+    public Text best;
 
     private LimitTimer limit_timer;
     // Start is called before the first frame update
@@ -38,14 +39,22 @@ public class HighScore : MonoBehaviour
                 case "stage_1":
                     min.text = stage1_score/60+"分";
                     sec.text = "" + stage1_score%60 + "秒";
-                     break;
+                    best.text = "ベストタイム";
+                    break;
                 case "stage_2":
                     min.text = "" + stage2_score/60 + "分";
                     sec.text = "" + stage2_score% 60 + "秒";
+                    best.text = "ベストタイム";
                     break;
                 case "stage_3":
                     min.text = "" + stage3_score/60 + "分";
                     sec.text = "" + stage3_score% 60 + "秒";
+                    best.text = "ベストタイム";
+                    break;
+                case "tutorial":
+                    min.text = "";
+                    sec.text = "";
+                    best.text = "";
                     break;
             }
         }
