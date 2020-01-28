@@ -4,10 +4,6 @@
 やること ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 
-着地時一瞬がたる
-
-
-
 Playerから壁判定、穴判定消去
 状態エフェクト修正
 移動床ジャンプしにくい
@@ -65,12 +61,11 @@ EnemyのSpin
 Center Z -6.65
 Size   Z  6
 
-コマンドで壁掴み追加
-　手の色変更(material)
-  for (int i = 0; i < 7; i++) {
-     //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
-     //Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
-  }
+プレイヤーの色変え
+ for (int i = 0; i < 7; i++) {
+    //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
+    //Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
+ }
 
   stage3一番目のEnemyProdactionに敵が二人いる
 
