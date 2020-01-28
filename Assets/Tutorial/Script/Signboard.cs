@@ -10,6 +10,7 @@ public class Signboard : MonoBehaviour
     //private GameObject read_button;
     private ImageSetPos read_button;
     private GameObject player;
+    private bool first_look;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,8 @@ public class Signboard : MonoBehaviour
 
         //ボタン表示のコンポーネントを取得  
         read_button = GameObject.Find("WorldCanvas").GetComponent<ImageSetPos>();
+
+        first_look = true;
     }
 
     // Update is called once per frame
@@ -36,9 +39,16 @@ public class Signboard : MonoBehaviour
 
         if (distans < 10.0f)
         {
-
-          if (Input.GetButtonDown("Read")) signboard_image.enabled = !signboard_image.enabled;
-          read_button.SetReadButton(this.transform.position);
+            if(first_look)
+            {
+                signboard_image.enabled = true;
+                first_look = false;
+            }
+            if (Input.GetButtonDown("Read"))
+            {
+                signboard_image.enabled = !signboard_image.enabled;
+            }
+            read_button.SetReadButton(this.transform.position);
         }
         else
         {

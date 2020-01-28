@@ -803,10 +803,10 @@ public sealed partial class Player : CharaBase
 
 	//壁掴み発動コマンド
 	void WallGrabCommand() {
-		//if (Input.GetButtonDown("WallGrab_B") && Input.GetButtonDown("WallGrab_Y")) {
-		//	this.GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = new Color(0.3f, 0, 0.3f, 1.0f);
-		//	wall_grab_ray.judge_on = true;
-		//}
+		if (Input.GetButtonDown("WallGrab_B") && Input.GetButtonDown("WallGrab_Y")) {
+			this.GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = new Color(0.3f, 0, 0.3f, 1.0f);
+			wall_grab_ray.judge_on = true;
+		}
 	}
 
 	//----当たり判定
