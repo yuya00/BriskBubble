@@ -1649,7 +1649,9 @@ public sealed partial class Enemy : CharaBase
 	//捕獲
 	void Wrap()
     {
-		run_speed = 0;
+		if (Mathf.Abs(velocity.z) > 0.0f) {
+			velocity.z = velocity.z / 3;
+		}
 	}
 
 
