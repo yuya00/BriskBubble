@@ -126,12 +126,11 @@ public sealed partial class Player : CharaBase
                 break;
             case GAME:
                 base.FloorHit();
-                //base.FixedUpdate();
-                transform.position = transform.position + velocity * Time.deltaTime;
-                if (is_floor) transform.position = floor_pos + velocity * Time.deltaTime;
+				base.FixedUpdate();
+				//transform.position = transform.position + floor_spd + velocity * Time.deltaTime;
 
-                // 移動
-                LstickMove();
+				// スティックでの移動
+				LstickMove();
                 break;
             case CLEAR:
 
@@ -234,6 +233,8 @@ public sealed partial class Player : CharaBase
 			//気絶
 			GUILayout.TextArea("気絶\n " + is_faint);
 
+			GUILayout.TextArea("動く床に触れている\n " + is_floor);
+
 			//汎用タイマー
 			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
@@ -247,10 +248,10 @@ public sealed partial class Player : CharaBase
 
 			GUILayout.TextArea("発射する弾の種類\n " + shot_state);
 
-            ////ジャンプアニメカウント
-            //GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+			////ジャンプアニメカウント
+			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
 
-        }
+		}
 		#endregion
 		#endregion
 

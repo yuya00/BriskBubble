@@ -57,7 +57,7 @@ public class CharaBase : MonoBehaviour {
 	protected const int     WAIT_BOX_NUM		 = 7;
 	protected int[]         wait_timer_box		 = new int[WAIT_BOX_NUM];               //待機タイマー
 	protected const float	HALF				 = 0.5f;            // 半分計算用
-
+	protected Vector3		floor_spd			 = Vector3.zero;	//動く床のspd
 
 
 	// Gizmo基底 -------------------------------------------
@@ -130,15 +130,11 @@ public class CharaBase : MonoBehaviour {
 	public GroundCast ground_cast;
 
 
-    // 動く床用
-    private GameObject[] floor;
-    protected Vector3 floor_pos;
-    protected Vector3 front;
+
 
     public virtual void Start()
     {
 		rigid = GetComponent<Rigidbody>();
-        floor = GameObject.FindGameObjectsWithTag("Ground");
 
         velocity = Vector3.zero;
 		is_ground = false;
@@ -157,7 +153,6 @@ public class CharaBase : MonoBehaviour {
 		}
 	}
 
-
 	void Update()
     {
 
@@ -168,23 +163,13 @@ public class CharaBase : MonoBehaviour {
     //着地時にfalse
     public virtual void Move()
     {
-		/***********************/
-		// 試しに
-		// ショットのレイヤーは8番
-		// shotのレイヤーを設定している物とだけ衝突しない( ～ ←で条件を反転するから ～ を取ったらショットとだけ衝突するようになる )
-		//LayerMask shot_layer = ~(1 << 8);
-
 		//Wallのレイヤーが設定されている物とだけ当たる
 		//LayerMask wall_layer = (1 << 14);
         LayerMask wall_layer = (1 << 14) | (1 << 16);
-        //LayerMask ground_layer = (1 << 16);
 
-        /***********************/
-
-
-        #region SphereCast
-        //足元(に加え,少し後ろにすることで壁に接触しながらジャンプするとすぐ着地してしまう問題を回避)
-        ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.forward * 0.2f);
+		#region SphereCast
+		//足元から少し後ろ(壁に接触しながらジャンプするとすぐ着地してしまう問題を回避)
+		ground_cast.pos = transform.position + (transform.up * ground_cast.capsule_collider.center.y) - (transform.forward * 0.2f);
 
 		RaycastHit hit;
 		//中心から、足元より少し上の位置までsphereで判定
@@ -200,12 +185,10 @@ public class CharaBase : MonoBehaviour {
 			//rigid.useGravity = false;
 
 			//落下速度の上限
-			if (velocity.y >= -fallspd_limit)
-			{
+			if (velocity.y >= -fallspd_limit){
 				velocity.y += Physics.gravity.y * gravity_power * Time.deltaTime;
 			}
-			else
-			{
+			else{
 				velocity.y += Physics.gravity.y * gravity_power / 10 * Time.deltaTime;
 			}
 
@@ -278,51 +261,30 @@ public class CharaBase : MonoBehaviour {
 
     public virtual void FixedUpdate()
     {
-        //キャラクターを移動させる処理
-        //if (this.gameObject.tag == "Player") {
-        //	Debug.Log(velocity);
-        //}
+		//キャラクターを移動させる処理
+		//rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+		rigid.MovePosition(transform.position = transform.position + floor_spd + velocity * Time.deltaTime);
 
-        rigid.MovePosition(transform.position + velocity * Time.deltaTime);
-
-        //transform.position = transform.position + velocity * Time.deltaTime;
+		//transform.position = transform.position + velocity * Time.deltaTime;
     }
 
-    // 床と同期
+    // 動く床との判定
     public virtual void FloorHit()
     {
         RaycastHit hit;
         // 動く床
         LayerMask ground_layer = (1 << 16);
 
-        if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length, ground_layer))
-        {
-            is_floor = true;
-            FloorMoveSelect();    // 動く床によって移動方向を選択
+		//着地判定より長い判定
+        if (Physics.SphereCast(ground_cast.pos, GroundCast.RADIUS, -transform.up, out hit, ground_cast.length * 2, ground_layer)){
+			floor_spd = hit.collider.GetComponent<MoveFloor>().MoveVector;
         }
-        else
-        {
-            is_floor = false;
-        }
+        else{
+			floor_spd = Vector3.zero;
+		}
+
     }
 
-    // 動く床によって移動方向を選択
-    void FloorMoveSelect()
-    {
-        // 床全部を検索
-        for (int i = 0; i < floor.Length; ++i)
-        {
-            //// 当たった床の進む方向をfrontに設定
-            //if (floor[i].GetComponent<MoveFloor>().Hit)
-            //{
-            //    front = floor[i].GetComponent<MoveFloor>().MoveVector;
-            //    front.y = 0;
-            //}            
-            front = floor[i].GetComponent<MoveFloor>().MoveVector;
-        }
-        // 前進 キャラの位置にfloorの進む方向を入れてる
-        floor_pos = transform.position + front;
-    }
 
 
     protected bool WaitTimeOnce(int wait_time)
