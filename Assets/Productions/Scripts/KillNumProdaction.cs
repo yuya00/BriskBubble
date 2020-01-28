@@ -14,6 +14,7 @@ public class KillNumProdaction : MonoBehaviour
     // 変数宣言
     private GameObject obj;             // 敵倒したのを取得
     private Vector3 init_pos;           // 修正位置
+    private Vector3 init_scale;
     public float scale_spd = 1.0f;      // 大きくなる速さ
     public float scale_max = 3.0f;      // 最大サイズ
     public float move_spd = 5.0f;       // 移動する速さ
@@ -27,6 +28,7 @@ public class KillNumProdaction : MonoBehaviour
     {
         obj = GameObject.FindGameObjectWithTag("GameManager");
         init_pos = transform.position;
+        init_scale = transform.localScale;
         state = 0;
     }
 
@@ -34,7 +36,7 @@ public class KillNumProdaction : MonoBehaviour
     void Update()
     {
         // 演出on
-        if (obj.GetComponent<EnemyKillCount>().KillFg ) prodaction_fg = true;
+        if (obj.GetComponent<EnemyKillCount>().KillFg || Input.GetMouseButtonDown(0)) prodaction_fg = true;
 
         // 敵のカウントが減った時に演出させる
         Prodaction();
@@ -58,6 +60,14 @@ public class KillNumProdaction : MonoBehaviour
             case 2:
                 ScaleChange(-scale_spd);    // サイズ変更
                 PosChange(move_spd);        // 位置変更
+
+                if (transform.localScale.x < init_scale.x)
+                {
+                    // 大きさ修正
+                    transform.localScale = init_scale;
+                    state = 0;
+                }
+
                 break;
         }
     }
@@ -74,12 +84,6 @@ public class KillNumProdaction : MonoBehaviour
             // 大きさ修正
             transform.localScale = new Vector3(scale_max, scale_max, scale_max);
             state++;
-        }
-        if (transform.localScale.x < 1.0f)
-        {
-            // 大きさ修正
-            transform.localScale = new Vector3(1, 1, 1);
-            state = 0;
         }
 
         // 動いてるときは初期化

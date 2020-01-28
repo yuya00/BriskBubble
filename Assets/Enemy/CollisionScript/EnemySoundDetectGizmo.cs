@@ -4,7 +4,7 @@ using UnityEditor;
 
 public class EnemySoundDetectGizmo : MonoBehaviour
 {
-	//*
+	/*
 	private static readonly Color GIZMO_COLOR = new Color(1.0f, 1.0f, 0.0f, 0.7f);
 
 	//ギズモ描画
