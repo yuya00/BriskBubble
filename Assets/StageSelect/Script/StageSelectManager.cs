@@ -12,6 +12,11 @@ public class StageSelectManager : MonoBehaviour
     Button stage2;
     Button stage3;
 
+    public Image tutorial_image;
+    public Image stage1_image;
+    public Image stage2_image;
+    public Image stage3_image;
+
     public string next_scene_name;
 
     // Start is called before the first frame update
@@ -30,7 +35,26 @@ public class StageSelectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+        stage1_image.enabled = false;
+        stage2_image.enabled = false;
+        stage3_image.enabled = false;
+        tutorial_image.enabled = false;
+
+        switch (EventSystem.current.currentSelectedGameObject.name)
+            {
+                case "stage_1":
+                    stage1_image.enabled = true;
+                    break;
+                case "stage_2":
+                    stage2_image.enabled = true;
+                    break;
+                case "stage_3":
+                    stage3_image.enabled = true;
+                    break;
+                case "tutorial":
+                    tutorial_image.enabled = true;
+                break;
+            }
     }
 
     public void SetSceneName(string name)
