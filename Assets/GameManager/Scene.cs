@@ -40,10 +40,23 @@ public class Scene : MonoBehaviour
 
     public bool debug_fg;
 
+    private bool flash_on;
+
     private GameObject sprite;
     private GameObject start;
     private GameObject time_up;
     private GameObject end;
+
+    // 点滅用
+    private GameObject press;
+
+    private float flash_timer = 0;
+    public float flash_timer_max = 0.15f;
+    private bool flash_fg = true;
+    private int type = 1;               // 透明、不透明を交互にやる用
+    private float wait_timer = 0;
+    private float wait_timer_max = 1.5f;
+
 
     void Start()
     {
@@ -56,6 +69,7 @@ public class Scene : MonoBehaviour
         buf_no = 0;
 
         start_fg = false;
+        flash_on = false;
         //start_text.gameObject.SetActive(true);
         // この番号を配列の番目にして文字を切り替え
         start_buf_no = 0;
@@ -69,8 +83,15 @@ public class Scene : MonoBehaviour
         end         = GameObject.FindGameObjectWithTag("EndText");      // スプライトを消す前にこっちを消す
         sprite      = GameObject.FindGameObjectWithTag("Sprite");
 
+        press       = GameObject.Find("Start");
         // スプライトをセットして消す
         SpriteSet();
+
+        flash_timer = 0;
+        flash_fg = true;
+        type = 1;
+        wait_timer = 0;
+        wait_timer_max = 1.5f;
     }
 
     // スプライトをセット
@@ -80,6 +101,7 @@ public class Scene : MonoBehaviour
         if (time_up != null) time_up.SetActive(false);
         if (end     != null) end.SetActive(false);
         if (sprite  != null) sprite.SetActive(false);
+        if (press   != null) return;
     }
 
     void Update()
@@ -150,9 +172,12 @@ public class Scene : MonoBehaviour
         {
             if (Input.GetButtonDown("Start"))
             {
-                SceneLastFadeIn();
+                flash_on = true;
             }
         }
+
+        // スタートボタン点滅
+        if (flash_on && press != null) TitleSceneFlash();
 
         // ゲームシーン
         if (SceneManager.GetActiveScene().name == "yusuke_scene" ||
@@ -217,6 +242,35 @@ public class Scene : MonoBehaviour
             {
                 SceneLastFadeIn();
             }
+        }
+
+    }
+
+    void TitleSceneFlash()
+    {
+        press.SetActive(flash_fg);
+
+        // 加算
+        flash_timer += Time.deltaTime;
+        wait_timer += Time.deltaTime;
+
+        // 点滅間隔
+        if (flash_timer > flash_timer_max)
+        {
+            flash_timer = 0;
+            type *= -1;
+        }
+
+        // つけるか消すか
+        if (type > 0)   flash_fg = true;
+        else            flash_fg = false;
+
+        // シーン以降
+        if(wait_timer > wait_timer_max)
+        {
+            flash_fg = true;
+            SceneLastFadeIn();
+            //wait_timer = 0;
         }
 
     }

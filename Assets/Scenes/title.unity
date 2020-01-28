@@ -726,9 +726,8 @@ MonoBehaviour:
   fade_in_time: 0.5
   fade_out_time: 0.5
   interval_time_max: 0.5
-  end_text: {fileID: 1445063320}
-  start_text: {fileID: 573039975}
   debug_fg: 0
+  flash_timer_max: 0.1
   gui_on: 0
 --- !u!114 &1035455846
 MonoBehaviour:
@@ -755,7 +754,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3cafa12baf4c8240994e4552e1d26e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_num_text: {fileID: 0}
 --- !u!114 &1035455848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -768,7 +766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fa42ca1cc3a4843ad60dab8bab31be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time_text: {fileID: 0}
   min: 3
   sec: 0
 --- !u!4 &1035455849
@@ -1120,7 +1117,7 @@ GameObject:
   - component: {fileID: 1670370475}
   - component: {fileID: 1670370474}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1766,6 +1763,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3181049681994095724, guid: 8cb9b6a156152b44d9095bbfa5c1cfbd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.0999994
+      objectReference: {fileID: 0}
     - target: {fileID: 3181049680511243291, guid: 8cb9b6a156152b44d9095bbfa5c1cfbd,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -1800,11 +1802,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -5.8999996
-      objectReference: {fileID: 0}
-    - target: {fileID: 3181049681994095724, guid: 8cb9b6a156152b44d9095bbfa5c1cfbd,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.0999994
       objectReference: {fileID: 0}
     - target: {fileID: 3181049681180540878, guid: 8cb9b6a156152b44d9095bbfa5c1cfbd,
         type: 3}

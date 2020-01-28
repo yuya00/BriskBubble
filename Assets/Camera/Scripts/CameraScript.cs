@@ -306,7 +306,7 @@ public sealed partial class CameraScript : MonoBehaviour
                 SetBlur(true);
                 test_time++;
                 // 近づいたら次のステート
-                if (vec.magnitude < len) approach_state++;
+                if (vec.magnitude - speed < len) approach_state++;
                 break;
             case 1:
                 // 戻る位置とのベクトル取得

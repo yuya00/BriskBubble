@@ -2899,7 +2899,7 @@ MonoBehaviour:
   ANGLE: 75
   ANGLE_MAX: 145
   init_pos: {x: 60, y: 20, z: -80}
-  zoom_in_spd: 4
+  zoom_in_spd: 3
   zoom_out_spd: 10
   zoom_len: 10
   approach_timer_max: 1
@@ -33716,6 +33716,7 @@ MonoBehaviour:
   fade_out_time: 1
   interval_time_max: 1
   debug_fg: 1
+  flash_timer_max: 0.15
   gui_on: 0
 --- !u!114 &1858658909
 MonoBehaviour:

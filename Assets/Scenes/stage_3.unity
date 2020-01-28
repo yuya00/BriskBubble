@@ -22892,6 +22892,7 @@ MonoBehaviour:
   fade_out_time: 1
   interval_time_max: 1
   debug_fg: 1
+  flash_timer_max: 0.15
   gui_on: 0
 --- !u!114 &1316627063
 MonoBehaviour:
@@ -23219,6 +23220,11 @@ PrefabInstance:
       propertyPath: gui.all_view
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6363856407093239074, guid: 7e9c244afbff85a409194df0f933b3ff,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1075969294217420851, guid: 7e9c244afbff85a409194df0f933b3ff,
         type: 3}
       propertyPath: m_RootOrder
@@ -23278,11 +23284,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6363856407093239074, guid: 7e9c244afbff85a409194df0f933b3ff,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e9c244afbff85a409194df0f933b3ff, type: 3}
@@ -34023,7 +34024,7 @@ MonoBehaviour:
   ANGLE: 75
   ANGLE_MAX: 145
   init_pos: {x: 60, y: 20, z: -80}
-  zoom_in_spd: 4
+  zoom_in_spd: 3
   zoom_out_spd: 10
   zoom_len: 10
   approach_timer_max: 1

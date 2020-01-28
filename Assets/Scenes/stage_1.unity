@@ -9785,6 +9785,7 @@ MonoBehaviour:
   fade_out_time: 1
   interval_time_max: 1
   debug_fg: 1
+  flash_timer_max: 0.15
   gui_on: 0
 --- !u!114 &2025036708
 MonoBehaviour:
