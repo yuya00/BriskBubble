@@ -88,4 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234aa3b6d0282dd4db19c61b70fa4d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alpha_spd: 3
+  alpha_max: 0.4
+  alpha_spd: 1
+  pos: {x: 270, y: 838, z: 0}
