@@ -3,6 +3,17 @@
 
 やること ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
+敵追いつめられると、発見回転ばかりするので、回転の頻度を下げる
+(一度回転したら次の回転は1秒後等)
+
+敵SPIN中に踏まれたら、元の大きさに戻る
+
+
+
+移動床ジャンプしにくい
+上りの時でジャンプできない
+
+
 Playerから壁判定、穴判定消去
 状態エフェクト修正
 
@@ -35,11 +46,9 @@ Playerから壁判定、穴判定消去
 
 穴判定長さは20くらい？
 
-Enemy1 (5)のRunspeedが0になってるのは仕様？
 
 stage3に下から上に上がる方法がないのは仕様？
 
-stage3一番目のEnemyProdactionに敵が二人いる
 
 stageの見渡し2つでいい
 
@@ -67,6 +76,9 @@ Size   Z  6
      //Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
   }
 
+  stage3一番目のEnemyProdactionに敵が二人いる
+
+  Enemy1 (5)のRunspeedが0になってるのは仕様？
 
 
 
