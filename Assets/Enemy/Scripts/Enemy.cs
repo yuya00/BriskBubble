@@ -16,6 +16,7 @@ public sealed partial class Enemy : CharaBase
 		//chara_ray = transform.Find("CharaRay");
 
 		//敵のパラメーター設定
+		respawn_pos = transform.position;
 		wall_ray.Clear();
 		hole_ray.Clear();
 		player_touch_flg = false;
@@ -108,8 +109,9 @@ public sealed partial class Enemy : CharaBase
 		CoditionEffect_Active();    //状態エフェクトを状況に応じてアクティブにする
 		Damage();                   //ショットからのダメージ
 		SpinIntervalTimer();        //SPIN間の間を開けるための処理
-		old_state = enum_state;
+		FallRespawn();				//リスポーン処理
 
+		old_state = enum_state;
 		DebugLog();
 	}
 
@@ -177,6 +179,17 @@ public sealed partial class Enemy : CharaBase
 			return;
 		}
 		spin_timer--;
+	}
+
+	//リスポーン処理
+	void FallRespawn() {
+		// 最大限落ちたら、リスポーン
+		if (transform.position.y < FALL_Y_MAX) {
+			transform.position = respawn_pos;
+			velocity = Vector3.zero;
+			enum_state = Enum_State.WAIT;
+			Clear();
+		}
 	}
 
 

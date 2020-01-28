@@ -35,8 +35,6 @@ public sealed partial class Player : CharaBase
 
     private float fall_y;
 
-    private Vector3 respawn_pos;
-
     private float jump_anim_count = 0;
     private const float NORMALIZE = 1.0f;
     private bool ray_fg;
