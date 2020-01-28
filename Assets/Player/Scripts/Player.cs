@@ -432,12 +432,12 @@ public sealed partial class Player : CharaBase
 					animator.SetBool("Run", true);
 					animator.SetBool("Walk", false);
 					effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
-					//if (WaitTimeBox((int)Enum_Timer.RUN, 90)) {
-					//	speedy_flg = true;
-					//}
-					//else {
-					//	speedy_flg = false;
-					//}
+					if (WaitTimeBox((int)Enum_Timer.RUN, SPEDDY_TIME)) {
+						speedy_flg = true;
+					}
+					else {
+						speedy_flg = false;
+					}
 				}
 				break;
 			case SPEEDYRUN:
