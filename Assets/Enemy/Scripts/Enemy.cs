@@ -106,7 +106,8 @@ public sealed partial class Enemy : CharaBase
 		DistPlayer();				//プレイヤーとの距離
 		Action();					//stateに応じて個別関数に飛ぶ
 		CoditionEffect_Active();    //状態エフェクトを状況に応じてアクティブにする
-		Damage();					//ショットからのダメージ
+		Damage();                   //ショットからのダメージ
+		SpinIntervalTimer();        //SPIN間の間を開けるための処理
 		old_state = enum_state;
 
 		DebugLog();
@@ -168,6 +169,14 @@ public sealed partial class Enemy : CharaBase
 		if (shot_to_defense >= 0) {
 			
 		}
+	}
+
+	//SPIN間の間を開けるための処理
+	void SpinIntervalTimer() {
+		if (enum_awaykind != Enum_AwayKind.SPIN || spin_timer <= 0) {
+			return;
+		}
+		spin_timer--;
 	}
 
 
@@ -725,7 +734,7 @@ public sealed partial class Enemy : CharaBase
             case Enum_Act.WAIT:	//着地まで待機(もしくは15f経ったら)
                 if (is_ground || WaitTimeBox((int)Enum_Timer.EACH_ACT, 15))
                 {
-					if (enum_awaykind == Enum_AwayKind.SPIN) {
+					if (enum_awaykind == Enum_AwayKind.SPIN && spin_timer <= 0) {
 						enum_act = Enum_Act.SPIN;
 					}
 					else {
@@ -737,9 +746,9 @@ public sealed partial class Enemy : CharaBase
 			case Enum_Act.SPIN: //回転攻撃(1割:ゆっくり、8割:早い、1割:ゆっくり)
 				transform.Rotate(0, 15, 0);
 				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, 15)) {
+					spin_timer = SPIN_INTERVAL_TIME;
 					enum_act = Enum_Act.END;
 				}
-				//scale変更
 				transform.localScale = Vector3.one * 1.4f;
 				break;
             case Enum_Act.END:
@@ -1596,6 +1605,7 @@ public sealed partial class Enemy : CharaBase
 		switch (enum_act) {
 			case Enum_Act.CLEAR:
 				//Debug.Log(this.name + " がプレイヤーに踏まれた");
+				transform.localScale = Vector3.one * 1;
 				enum_act = Enum_Act.FAINT;
 				break;
 			case Enum_Act.FAINT: //気絶

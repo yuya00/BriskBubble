@@ -4,7 +4,7 @@ using UnityEditor;
 
 public class EnemySoundDetectGizmo : MonoBehaviour
 {
-	/*
+#if UNITY_EDITOR
 	private static readonly Color GIZMO_COLOR = new Color(1.0f, 1.0f, 0.0f, 0.7f);
 
 	//ギズモ描画
@@ -26,6 +26,5 @@ public class EnemySoundDetectGizmo : MonoBehaviour
 
 		Gizmos.DrawWireSphere(pos, search_object.Radius);
 	}
-
-	// */
+#endif
 }

@@ -12,6 +12,8 @@ public sealed partial class Enemy : CharaBase
 	private bool				shot_touch_flg;
 	private Vector3				dist_to_player;
 	private const int           FAINT_TIME	 = 180;     //気絶時間
+	private int                 spin_timer = 0;
+	private int                 SPIN_INTERVAL_TIME = 90;
 
 	private float easing_timer = 0;
 

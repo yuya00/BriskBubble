@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class EnemySearchGizmo : MonoBehaviour
 {
-	/*
+#if UNITY_EDITOR
 	private static readonly int     TRIANGLE_COUNT   = 12;  //
 	private static readonly Color   GIZMO_COLOR      = new Color(1.0f, 1.0f, 0.0f, 0.5f);
 
@@ -96,8 +96,5 @@ public class EnemySearchGizmo : MonoBehaviour
 		//配列に変換して返す
 		return vertices.ToArray();
 	}
-
-	// */
-
-
+#endif
 }

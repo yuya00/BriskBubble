@@ -4,7 +4,7 @@ using UnityEditor;
 
 public class EnemyNearGizmo : MonoBehaviour
 {
-	/*
+#if UNITY_EDITOR
 	private static readonly Color GIZMO_COLOR = new Color(1.0f, 1.0f, 0.0f, 0.7f);
 
 	//ギズモ描画
@@ -25,5 +25,5 @@ public class EnemyNearGizmo : MonoBehaviour
 
 		Gizmos.DrawWireSphere(pos, search_object.Radius);
 	}
-	// */
+#endif
 }
