@@ -5,17 +5,15 @@
 
 
 
-移動床ジャンプしにくい
-上りの時でジャンプできない
-
-壁掴み判定修正
-　settingsに追加できずエラー
-
+落ちた敵はリスポーン
 
 
 
 Playerから壁判定、穴判定消去
 状態エフェクト修正
+移動床ジャンプしにくい
+　上って、停止した時大ジャンプしてしまう
+　下りでガタガタする
 
 走っていたら加速
 
@@ -51,8 +49,6 @@ stage3に下から上に上がる方法がないのは仕様？
 
 stageの見渡し2つでいい
 
-着地判定コードなぜ分けているのか
-　WallとGround
 
 GAMECLEARしたらカウントダウン停止
 
@@ -64,26 +60,14 @@ GAMECLEARしたらカウントダウン停止
 
 ジャンプ判定下限 より 壁判定下限が上
 
-EnemyのSpin
-Center Z -6.65
-Size   Z  6
 
-コマンドで壁掴み追加
-　手の色変更(material)
-  for (int i = 0; i < 7; i++) {
-     //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
-     //Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
-  }
-
-  stage3一番目のEnemyProdactionに敵が二人いる
-
-  Enemy1 (5)のRunspeedが0になってるのは仕様？
+stage3一番目のEnemyProdactionに敵が二人いる
 
 
-  敵追いつめられると、発見回転ばかりするので、回転の頻度を下げる
-　(一度回転したら次の回転は1秒後等)
+敵追いつめられると、発見回転ばかりするので、回転の頻度を下げる
+(一度回転したら次の回転は1秒後等)
 
-　敵SPIN中に踏まれたら、元の大きさに戻る
+敵SPIN中に踏まれたら、元の大きさに戻る
 
 
 
@@ -175,3 +159,9 @@ Size   Z  6
 　前に進むことで補正され、着地している
 
 ・ダメージ時の点滅を半透明にする
+
+・プレイヤーの色変え
+　for (int i = 0; i < 7; i++) {
+    //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
+  　//Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
+　}
