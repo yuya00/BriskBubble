@@ -21,10 +21,14 @@ public class WeaponUIScript : MonoBehaviour
 
     private Vector3 scale = Vector3.zero;
 
+    private GameObject game_manager;
+
+    private int state = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        game_manager = GameObject.FindGameObjectWithTag("GameManager");
         ui = GameObject.FindGameObjectWithTag("pivot");
         scale = transform.localScale;
     }
@@ -32,8 +36,16 @@ public class WeaponUIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MovePos();      
-        ScaleManager();
+        switch (state)
+        {
+            case 0:
+                if (game_manager.GetComponent<Scene>().StartFg()) state++;
+                break;
+            case 1:
+                MovePos();
+                ScaleManager();
+                break;
+        }
     }
 
     void MovePos()
