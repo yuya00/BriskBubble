@@ -13,10 +13,11 @@ public sealed partial class Enemy : CharaBase
 		enemy_near			 = GetComponentInChildren<EnemyNear>();
 		enemy_sounddetect	 = GetComponentInChildren<EnemySoundDetect>();
 		player_obj			 = GameObject.Find("Player");
-		//chara_ray = transform.Find("CharaRay");
+        //chara_ray = transform.Find("CharaRay");
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
-		//敵のパラメーター設定
-		respawn_pos = transform.position;
+        //敵のパラメーター設定
+        respawn_pos = transform.position;
 		wall_ray.Clear();
 		hole_ray.Clear();
 		player_touch_flg = false;
@@ -82,7 +83,6 @@ public sealed partial class Enemy : CharaBase
 		condition_eff.obj_attach2[(int)Enum_State.WARNING]	 = condition_eff.warning;
 		condition_eff.obj_attach2[(int)Enum_State.FIND]		 = condition_eff.find;
 		condition_eff.obj_attach2[(int)Enum_State.AWAY]		 = condition_eff.away;
-		condition_eff.obj_attach2[(int)Enum_State.ATTACK]	 = condition_eff.attack;
 		condition_eff.obj_attach2[(int)Enum_State.FAINT]	 = condition_eff.faint;
 
 		//生成、子として設定、非アクティブ
@@ -538,9 +538,6 @@ public sealed partial class Enemy : CharaBase
 			case Enum_State.FAINT:   //踏まれる(気絶) -------------
 				TreadBy();
 				break;
-			case Enum_State.ATTACK:  //攻撃 ---------------
-                Attack();
-                break;
 			case Enum_State.WRAP:    //捕獲 ---------------
                 Wrap();
                 break;
@@ -1596,9 +1593,12 @@ public sealed partial class Enemy : CharaBase
 				break;
 			case Enum_Act.BREAK:    //ショット生成
 				Instantiate(breakshot_act.obj, transform.position + (transform.forward * BreakShotAct.MAG), transform.rotation);
+				breakshot_act.flg = true;
+                sound.SoundSE(ENEMY_SE, SHOT_SE);
 				enum_act = Enum_Act.END;
 				break;
 			case Enum_Act.END:      //待機(逃走のRUNに戻る)
+				breakshot_act.flg = false;
 				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
 					Clear();
 					transform.localEulerAngles = Vector3.zero;
@@ -1618,13 +1618,24 @@ public sealed partial class Enemy : CharaBase
 		switch (enum_act) {
 			case Enum_Act.CLEAR:
 				//Debug.Log(this.name + " がプレイヤーに踏まれた");
+				//大きさを元に戻す
 				transform.localScale = Vector3.one * 1;
+				//斜め方向
+				faint_giddy.upward = transform.position + transform.up * 1 + transform.forward * 5;
+				//前方向を保存しておく
+				faint_giddy.forward = transform.forward * 5;
+
 				enum_act = Enum_Act.FAINT;
 				break;
 			case Enum_Act.FAINT: //気絶
 				//移動停止
 				velocity.x = 0;
 				velocity.z = 0;
+
+				//目が回る
+				transform.LookAt(faint_giddy.upward + 
+					new Vector3(FaintGiddy.RADIUS_SIN * Mathf.Sin(Time.time * FaintGiddy.ROTATE_SPD), 0, 
+								FaintGiddy.RADIUS_COS * Mathf.Cos(Time.time * FaintGiddy.ROTATE_SPD) ));
 
 				//時間経ったら
 				if (WaitTimeBox((int)Enum_Timer.FAINT, FAINT_TIME)) {
@@ -1634,15 +1645,11 @@ public sealed partial class Enemy : CharaBase
 			case Enum_Act.END:
 				Clear();
 				is_faint = false;
+				//向きリセット
+				transform.localEulerAngles = Vector3.zero;
 				enum_state = Enum_State.WAIT;
 				break;
 		}
-	}
-
-
-	//攻撃
-	void Attack() {
-		velocity = transform.forward * (run_speed);
 	}
 
 

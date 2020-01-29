@@ -142,9 +142,6 @@ public class Scene : MonoBehaviour
         // シーンごとに移行条件を設定
         SceneSelect();
 
-        // サウンドセット
-        SoundSet(STAGE);
-
         // シーン切り替え
         if (fade_fg)
         {
@@ -203,6 +200,13 @@ public class Scene : MonoBehaviour
             }
         }
 
+        if (SceneManager.GetActiveScene().name == "tutorial")
+        {
+            // サウンドセット
+            SoundSet(STAGE);
+        }
+
+
         // スタートボタン点滅
         if (flash_on && press != null) TitleSceneFlash();
 
@@ -212,6 +216,9 @@ public class Scene : MonoBehaviour
             SceneManager.GetActiveScene().name == "stage_2" ||
             SceneManager.GetActiveScene().name == "stage_3")
         {
+            // サウンドセット
+            SoundSet(STAGE);
+
             // スタート文字(カメラの初期動作が終わってから)
             if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
 
@@ -380,7 +387,7 @@ public class Scene : MonoBehaviour
         switch (sound_state)
         {
             case 0:
-                if (start_fg || SceneManager.GetActiveScene().name == "title") sound_state++;
+                sound_state++;
                 break;
             case 1:
                 sound_state++;
