@@ -317,7 +317,7 @@ public sealed partial class Player : CharaBase
         //シュミレート用のオブジェクトに力を加える
         float angle = 50.0f;
 
-        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length+7.0f);
+        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length);
 
         Vector3 velocity = CalVelocity(obj.transform.position, target_pos, angle);
 
