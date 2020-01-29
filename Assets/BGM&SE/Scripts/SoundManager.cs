@@ -118,6 +118,10 @@ public partial class SoundManager : MonoBehaviour
                 AudioSet(stage_select);
                 debug_se = SE_TYPE.STAGE_SELECT;
                 break;
+            case SE_TYPE.CLEAR:                
+                AudioSet(clear);
+                debug_se = SE_TYPE.CLEAR;
+                break;
         }
     }
 

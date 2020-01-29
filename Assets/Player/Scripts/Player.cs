@@ -1065,6 +1065,7 @@ public sealed partial class Player : CharaBase
 			//踏みつけジャンプ中ではなく、敵が捕獲以外なら気絶
 			if (!is_faint && !tread_on.flg && !other.gameObject.GetComponent<Enemy>().IsWrap) {
 				is_faint = true;
+                sound.SoundSE(PLAYER_SE, DAMAGE_SE);
 				//Debug.Log("敵に当たった");
 			}
 		}

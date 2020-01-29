@@ -69,8 +69,10 @@ public class Scene : MonoBehaviour
     private BGMManager.BGM_TYPE TITLE = BGMManager.BGM_TYPE.TITLE;
     private SoundManager.SE_TYPE START_SE = SoundManager.SE_TYPE.START_COUNT;
     private SoundManager.SE_TYPE SELECT_SE = SoundManager.SE_TYPE.STAGE_SELECT;
+    private SoundManager.SE_TYPE CLEAR_SE = SoundManager.SE_TYPE.CLEAR;
 
     private int sound_state = 0;
+    private int se_state = 0;
 
     void Start()
     {
@@ -86,6 +88,8 @@ public class Scene : MonoBehaviour
             bgm = GameObject.FindGameObjectWithTag("BGMManager").GetComponent<BGMManager>();
 
         sound_state = 0;
+        se_state = 0;
+
         //end_text.text = "";
         buf_no = 0;
 
@@ -234,6 +238,8 @@ public class Scene : MonoBehaviour
                 //end_text.gameObject.SetActive(true);
                 //ベストタイム設定
                 GetComponent<HighScore>().SetScore();
+                // クリア音
+                SESet(SCENE_SE, CLEAR_SE);
             }
         }
 
@@ -287,6 +293,8 @@ public class Scene : MonoBehaviour
                 // クリア演出にはいる
                 clear_fg = true;
                 buf_no = CLEAR;
+                // クリア音
+                SESet(SCENE_SE, CLEAR_SE);
             }
         }
 
@@ -401,8 +409,19 @@ public class Scene : MonoBehaviour
         }
     }
 
-    // 文字を消す
-    void TextAlpha()
+    void SESet(SoundManager.CHARA_TYPE ct, SoundManager.SE_TYPE st)
+    {
+        if(se_state == 0)
+        {
+            // 音1フレームだけオン
+            sound.SoundSE(ct, st);
+            se_state = 1;
+        }
+        se_state++;
+    }
+
+// 文字を消す
+void TextAlpha()
     {
         //alpha -= Time.deltaTime;
         //start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, alpha);

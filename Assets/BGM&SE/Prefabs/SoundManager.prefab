@@ -51,10 +51,12 @@ MonoBehaviour:
   jump: {fileID: 8300000, guid: 607df1f6c22de9441a269f2d8672db72, type: 3}
   start_count: {fileID: 8300000, guid: cd0815936ef15b742b4a5193b68fe04a, type: 3}
   stage_select: {fileID: 8300000, guid: 56ccaa738cdfb5341b540ec4caaad403, type: 3}
+  clear: {fileID: 8300000, guid: 4a44ad97308f77e4d91e2792cf1eecff, type: 3}
   enemy_shot: {fileID: 8300000, guid: 82f06d6fe750f474ab4bf9c1a322ad0c, type: 3}
   enemy_destroy: {fileID: 8300000, guid: 713a1936a4c5e1c43a44cc9c27cb074f, type: 3}
   enemy_find: {fileID: 8300000, guid: d4ed7c8878532db4091c8b48e6da5d1e, type: 3}
   weapon_change: {fileID: 8300000, guid: 1793a13838003fb409a4447e8d7157ac, type: 3}
+  damage: {fileID: 8300000, guid: d24e6dde0fb45b2459d74795ac8020bb, type: 3}
 --- !u!82 &8506931010833281830
 AudioSource:
   m_ObjectHideFlags: 0
