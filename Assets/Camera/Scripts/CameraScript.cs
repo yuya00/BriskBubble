@@ -19,6 +19,9 @@ public sealed partial class CameraScript : MonoBehaviour
 
         init_up_pos = player.transform.position.y;
 
+		respawn_dir = direction;
+		respawn_init_up_pos = init_up_pos;
+
         //camera_state = SCENE;
         //camera_state = 0;
         scene_camera_state = 0;
@@ -109,6 +112,8 @@ public sealed partial class CameraScript : MonoBehaviour
 			cam_pos = new Vector3(player.transform.position.x, player.transform.position.y + init_up_pos + UP, player.transform.position.z);
 		}
 
+		Respawn_Reset(); //リスポーン時の初期化処理
+
 		// パッド情報を取得
 		pad_rx = -Input.GetAxis("R_Stick_H");
         pad_ry = Input.GetAxis("R_Stick_V");
@@ -125,8 +130,16 @@ public sealed partial class CameraScript : MonoBehaviour
         ClearEnemyHitCamera();
     }
 
-    // 右スティックでカメラ移動
-    void RotateX(Vector3 cam_pos, float pad_rx)
+	//リスポーン時の初期化処理
+	void Respawn_Reset() {
+		if (front_fall_can_move == false && fall_can_move == true) {
+			direction = respawn_dir;
+		}
+		front_fall_can_move = fall_can_move;
+	}
+
+	// 右スティックでカメラ移動
+	void RotateX(Vector3 cam_pos, float pad_rx)
     {
         // 正規化に使う平方根
         float x_len = Mathf.Sqrt(pad_rx * pad_rx);
@@ -629,6 +642,12 @@ public sealed partial class CameraScript : MonoBehaviour
 		get { return fall_can_move; }
 		set { fall_can_move = value; }
 	}
+
+	public Vector3 Position {
+		get { return transform.position; }
+		set { transform.position = value; }
+	}
+
 
 #endif
 	#endregion
