@@ -25,12 +25,21 @@ public class EnemyProdaction : MonoBehaviour
     private EffectManager effect;   // エフェクト用
     private Vector3 focus_pos;  // 集束位置
 
+    private SoundManager sound;
+
+    // キャラ指定
+    private SoundManager.CHARA_TYPE ENEMY_SE = SoundManager.CHARA_TYPE.ENEMY;
+
+    // 音の種類指定
+    private SoundManager.SE_TYPE DESTROY_SE = SoundManager.SE_TYPE.ENEMY_DESTROY;
+
 
     // Start is called before the first frame update
     void Start()
     {
         save_pos = Vector3.zero;
         effect = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -129,6 +138,7 @@ public class EnemyProdaction : MonoBehaviour
             // エフェクトの出現
             effect.Effect(ENEMY, EXPLOSION, transform.position, effect.explosion_effect);
             effect.Effect(ENEMY, FOCUSING, transform.position, effect.focusing_effect);
+            sound.SoundSE(ENEMY_SE, DESTROY_SE); // サウンド発生
 
             state = 0;
             Destroy(gameObject);

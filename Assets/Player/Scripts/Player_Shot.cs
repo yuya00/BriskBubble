@@ -64,6 +64,7 @@ public sealed partial class Player : CharaBase
 					// ショットをstateの値で選択
 					ShotSelect(shot_object[shot_state]);
 					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+                    sound.SoundSE(PLAYER_SE, SHOT_SE); // サウンド発生
 				}
 			}
 
