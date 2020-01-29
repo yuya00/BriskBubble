@@ -14,9 +14,11 @@ public sealed partial class Enemy : CharaBase
 	private const int           FAINT_TIME	 = 180;     //気絶時間
 	private int                 spin_timer = 0;
 	private int                 SPIN_INTERVAL_TIME = 90;
-	private const float FALL_Y_MAX       = -100.0f; // 最大落下地点(リスポーン用)
+	private const float			FALL_Y_MAX       = -100.0f; // 最大落下地点(リスポーン用)
 
 	private float easing_timer = 0;
+
+
 
 	//壁判定Ray ---------------------------------------------
 	[System.Serializable]
@@ -110,7 +112,6 @@ public sealed partial class Enemy : CharaBase
 		public  GameObject warning;
 		public  GameObject find;
 		public  GameObject away;
-		public  GameObject attack;
 		public  GameObject faint;
 		[System.NonSerialized]
 		public  GameObject obj_attach;
@@ -328,6 +329,23 @@ public sealed partial class Enemy : CharaBase
 	public CliffJumpRay cliffjump_ray;
 
 
+	//気絶して目が回る ---------------------------------------------
+	[System.Serializable]
+	private struct FaintGiddy {
+
+		[System.NonSerialized] //方向保存
+		public Vector3 forward,upward;
+
+		//半径
+		public const float RADIUS_SIN = 1.5f;
+		public const float RADIUS_COS = 1.8f;
+
+		//回転の速さ
+		public const float ROTATE_SPD = 5.0f;
+
+	}
+	private FaintGiddy faint_giddy;
+
 
 
 	[Header("ショットへの耐久度"),SerializeField]
@@ -354,7 +372,6 @@ public sealed partial class Enemy : CharaBase
 		FIND,     //発見(回転)
 		AWAY,     //逃走
 		BREAK,    //ショット破壊
-		ATTACK,   //攻撃
 		FAINT,    //気絶
 		WRAP,     //捕獲
 		END       //消去

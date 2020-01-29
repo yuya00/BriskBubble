@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2500135204827733092}
   - component: {fileID: 5191399730913509941}
   m_Layer: 0
-  m_Name: qmark 3
+  m_Name: EnemyFaintEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7d2fc51bf19e4714e9cac147160b5989, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 37886c867bd6e844e95960d007e75e8a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
