@@ -40,7 +40,9 @@ public partial class BGMManager : MonoBehaviour
     void AudioSet(AudioClip audio)
     {
         if (!audio) return;
-        audioSource.PlayOneShot(audio);
+        
+        audioSource.clip = audio;
+        audioSource.Play();
     }
 
     // 音を止める
