@@ -1302,16 +1302,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2821904174156304107, guid: c83d4d80d1887e6438857407936a7b30,
-        type: 3}
-      propertyPath: m_Radius
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2821904174156304106, guid: c83d4d80d1887e6438857407936a7b30,
-        type: 3}
-      propertyPath: gizmo_on
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7792426121856248950, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1323,6 +1313,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: efdeeb5352db55448ad4622677abe3ee, type: 2}
+    - target: {fileID: 2821904174156304107, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: m_Radius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821904174156304106, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: gizmo_on
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c83d4d80d1887e6438857407936a7b30, type: 3}
 --- !u!1 &190450547
@@ -2779,7 +2779,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: d88067211fce00048893c86128b0cda3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 272b8265bdec7014296f0bb5a5e82e12, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3222,16 +3222,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2821904174156304107, guid: c83d4d80d1887e6438857407936a7b30,
-        type: 3}
-      propertyPath: m_Radius
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2821904174156304106, guid: c83d4d80d1887e6438857407936a7b30,
-        type: 3}
-      propertyPath: gizmo_on
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7792426121856248950, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3243,6 +3233,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: efdeeb5352db55448ad4622677abe3ee, type: 2}
+    - target: {fileID: 2821904174156304107, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: m_Radius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821904174156304106, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: gizmo_on
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c83d4d80d1887e6438857407936a7b30, type: 3}
 --- !u!1 &529890233
@@ -3821,16 +3821,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2821904174156304107, guid: c83d4d80d1887e6438857407936a7b30,
-        type: 3}
-      propertyPath: m_Radius
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2821904174156304106, guid: c83d4d80d1887e6438857407936a7b30,
-        type: 3}
-      propertyPath: gizmo_on
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7792426121856248950, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3842,6 +3832,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: efdeeb5352db55448ad4622677abe3ee, type: 2}
+    - target: {fileID: 2821904174156304107, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: m_Radius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821904174156304106, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: gizmo_on
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c83d4d80d1887e6438857407936a7b30, type: 3}
 --- !u!1 &627143127
