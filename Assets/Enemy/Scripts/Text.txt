@@ -5,8 +5,9 @@
 
 
 
-敵捕まえても動く
 
+リスポーン時、カメラの角度も戻す
+　fall_yいらない
 
 
 
@@ -19,11 +20,7 @@
 
 カウントダウンを修正する
 　STARTの表示短くする
-
-リスポーン時、カメラの角度も戻す
-　fall_yいらない
-
-カメラ追従を瞬間ではなく、徐々にする
+　GAMECLEARしたら停止
 
 ショットの当たり判定を小さくする
 　敵や壁にめり込んでから消える
@@ -31,7 +28,6 @@
 
 穴判定長さは20くらい？
 
-GAMECLEARしたらカウントダウン停止
 
 
 
@@ -56,6 +52,8 @@ Playerから壁判定、穴判定消去
 
 走っていたら加速
 
+
+敵捕まえても動く
 
 
 あとから ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -151,3 +149,5 @@ Playerから壁判定、穴判定消去
     //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
   　//Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
 　}
+
+・カメラ追従を瞬間ではなく、徐々にする

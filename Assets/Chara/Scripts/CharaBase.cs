@@ -58,7 +58,8 @@ public class CharaBase : MonoBehaviour {
 	protected int[]         wait_timer_box		 = new int[WAIT_BOX_NUM];               //待機タイマー
 	protected const float	HALF				 = 0.5f;            // 半分計算用
 	protected Vector3		floor_spd			 = Vector3.zero;    //動く床のspd
-	protected Vector3		respawn_pos;		//
+	protected Vector3		respawn_pos;        //
+	protected Vector3       respawn_angle;		//
 
 
 	// Gizmo基底 -------------------------------------------

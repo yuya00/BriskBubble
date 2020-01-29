@@ -26,8 +26,9 @@ public sealed partial class Player : CharaBase
 		fall_can_move   = true;
 		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
-		respawn_pos	    = transform.position;   
-        shot_jump_fg    = false;
+		respawn_pos	    = transform.position;
+		respawn_angle   = transform.localEulerAngles;
+		shot_jump_fg    = false;
 		velocity	    = Vector3.zero;
 		tread_on.size = new Vector3(TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,TreadOn_BoxCast.RADIUS_MAG_XZ);
 		// エフェクト関連
@@ -599,6 +600,7 @@ public sealed partial class Player : CharaBase
 		if (transform.position.y < FALL_Y_MAX) {
 			//Debug.Log(transform.position.y);
 			transform.position = respawn_pos;
+			transform.localEulerAngles = respawn_angle;
 			velocity = Vector3.zero;
 			cam.GetComponent<CameraScript>().FallCanMove = true;
 		}
