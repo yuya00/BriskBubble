@@ -380,7 +380,7 @@ public class Scene : MonoBehaviour
         switch (sound_state)
         {
             case 0:
-                if (start_fg || SceneManager.GetActiveScene().name == "title") sound_state++;
+                sound_state++;
                 break;
             case 1:
                 sound_state++;

@@ -24,8 +24,9 @@ public partial class Enemy : CharaBase
 		if (i_foundObject.tag == "Player" &&
 			enum_state != Enum_State.FIND) {
 			found_player_flg = true;
-		}
-		m_targets.Add(i_foundObject);
+            sound.SoundSE(ENEMY_SE, FIND_SE); // サウンド発生
+        }
+        m_targets.Add(i_foundObject);
 	}
 
 	private void OnLost(GameObject i_lostObject) {

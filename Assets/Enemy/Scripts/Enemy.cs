@@ -13,10 +13,11 @@ public sealed partial class Enemy : CharaBase
 		enemy_near			 = GetComponentInChildren<EnemyNear>();
 		enemy_sounddetect	 = GetComponentInChildren<EnemySoundDetect>();
 		player_obj			 = GameObject.Find("Player");
-		//chara_ray = transform.Find("CharaRay");
+        //chara_ray = transform.Find("CharaRay");
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
-		//敵のパラメーター設定
-		respawn_pos = transform.position;
+        //敵のパラメーター設定
+        respawn_pos = transform.position;
 		wall_ray.Clear();
 		hole_ray.Clear();
 		player_touch_flg = false;
