@@ -19,6 +19,15 @@ public class StageSelectManager : MonoBehaviour
 
     public string next_scene_name;
 
+    private string name="tutorial";
+
+    private SoundManager sound;
+    private BGMManager bgm;
+
+    private BGMManager.BGM_TYPE TITLE = BGMManager.BGM_TYPE.TITLE;
+    private SoundManager.CHARA_TYPE SCENE_SE = SoundManager.CHARA_TYPE.SCENE;
+    private SoundManager.SE_TYPE SELECT_SE = SoundManager.SE_TYPE.STAGE_SELECT;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +39,13 @@ public class StageSelectManager : MonoBehaviour
         tutorial.Select();
 
         next_scene_name = "";
+
+        if (GameObject.FindGameObjectWithTag("SoundManager") != null)
+            sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        if (GameObject.FindGameObjectWithTag("BGMManager") != null)
+            bgm = GameObject.FindGameObjectWithTag("BGMManager").GetComponent<BGMManager>();
+
+        bgm.SoundBGM(TITLE);
     }
 
     // Update is called once per frame
@@ -39,6 +55,13 @@ public class StageSelectManager : MonoBehaviour
         stage2_image.enabled = false;
         stage3_image.enabled = false;
         tutorial_image.enabled = false;
+
+        if(name != EventSystem.current.currentSelectedGameObject.name)
+        {
+            name = EventSystem.current.currentSelectedGameObject.name;
+            sound.SoundSE(SCENE_SE,SELECT_SE);
+        }
+
 
         switch (EventSystem.current.currentSelectedGameObject.name)
             {
