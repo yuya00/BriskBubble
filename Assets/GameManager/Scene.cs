@@ -142,9 +142,6 @@ public class Scene : MonoBehaviour
         // シーンごとに移行条件を設定
         SceneSelect();
 
-        // サウンドセット
-        SoundSet(STAGE);
-
         // シーン切り替え
         if (fade_fg)
         {
@@ -212,6 +209,9 @@ public class Scene : MonoBehaviour
             SceneManager.GetActiveScene().name == "stage_2" ||
             SceneManager.GetActiveScene().name == "stage_3")
         {
+            // サウンドセット
+            SoundSet(STAGE);
+
             // スタート文字(カメラの初期動作が終わってから)
             if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
 
