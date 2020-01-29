@@ -1585,7 +1585,15 @@ public sealed partial class Enemy : CharaBase
 				enum_act = Enum_Act.WAIT;
 				break;
 			case Enum_Act.WAIT:
+				//ショットの方を向く(ifでうつむきすぎないよう調整)
 				transform.LookAt(enemy_sounddetect.FoundHitPos);
+				if (transform.localEulerAngles.x >= 12.0f && transform.localEulerAngles.x <= 90.0f) {
+					transform.localEulerAngles = new Vector3(12.0f, transform.localEulerAngles.y, transform.localEulerAngles.z);
+				}
+				if (transform.localEulerAngles.x <= 320.0f && transform.localEulerAngles.x >= 270.0f) {
+					transform.localEulerAngles = new Vector3(320.0f, transform.localEulerAngles.y, transform.localEulerAngles.z);
+				}
+				//待機
 				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, breakshot_act.front_time)) {
 					enemy_sounddetect.FoundShotFlg = false;
 					enum_act = Enum_Act.BREAK;
