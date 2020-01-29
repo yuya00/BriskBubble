@@ -7,6 +7,8 @@ using Pixeye.Unity;
 public partial class SoundManager : MonoBehaviour
 {
     private SE_TYPE debug_se;
+
+
     void Start()
     {
         //Componentを取得
