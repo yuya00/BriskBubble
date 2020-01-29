@@ -317,7 +317,7 @@ public sealed partial class Player : CharaBase
         //シュミレート用のオブジェクトに力を加える
         float angle = 50.0f;
 
-        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length+7.0f);
+        Vector3 target_pos = transform.position + transform.forward * (shot_charge_length);
 
         Vector3 velocity = CalVelocity(obj.transform.position, target_pos, angle);
 
@@ -325,11 +325,7 @@ public sealed partial class Player : CharaBase
 
         //以前の物を削除
 
-        for (int i = 0; i < physics_simulate_object_clone.Count; i++)
-        {
-            Destroy(physics_simulate_object_clone[i]);
-        }
-        physics_simulate_object_clone.Clear();
+
 
 
 
@@ -345,9 +341,20 @@ public sealed partial class Player : CharaBase
 
         }
         Destroy(obj);
-        
+
 
         //記録した座標の場所にオブジェクト設置
+        if (physics_simulate_object_clone != null && physics_simulate_object_clone.Count > 0)
+        {
+            for (int i = 0; i < simulate_object_num; i++)
+            {
+
+                physics_simulate_object_clone[i].transform.position = physics_simulate_pos[i];
+                if (physics_simulate_object_clone[i].GetComponent<physics_simu>().enemy_hit) enemy_hit = true;
+            }
+        }
+        else
+        {
             for (int i = 0; i < simulate_object_num; i++)
             {
 
@@ -356,8 +363,31 @@ public sealed partial class Player : CharaBase
                 Rigidbody rb = physics_simulate_object_clone[i].GetComponent<Rigidbody>();
                 rb.useGravity = false;
             }
+        }
 
-            physics_simulate_pos.Clear();
+        if(enemy_hit)
+        {
+            for (int i = 0; i < simulate_object_num; i++)
+            {
+                physics_simulate_object_clone[i].GetComponent<Renderer>().material.color = Color.red;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < simulate_object_num; i++)
+            {
+                physics_simulate_object_clone[i].GetComponent<Renderer>().material.color = Color.white;
+            }
+        }
+
+        enemy_hit = false;
+
+
+
+
+
+
+        physics_simulate_pos.Clear();
 
     }
 
