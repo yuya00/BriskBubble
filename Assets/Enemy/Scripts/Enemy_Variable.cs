@@ -18,10 +18,18 @@ public sealed partial class Enemy : CharaBase
 
 	private float easing_timer = 0;
 
+    private SoundManager sound;
+
+    // キャラ指定
+    private SoundManager.CHARA_TYPE ENEMY_SE = SoundManager.CHARA_TYPE.ENEMY;
+
+    // 音の種類指定
+    private SoundManager.SE_TYPE FIND_SE = SoundManager.SE_TYPE.ENEMY_FIND;
+    private SoundManager.SE_TYPE SHOT_SE = SoundManager.SE_TYPE.ENEMY_SHOT;
 
 
-	//壁判定Ray ---------------------------------------------
-	[System.Serializable]
+    //壁判定Ray ---------------------------------------------
+    [System.Serializable]
 	public class WallRay : BoxCastAdjustBase {
 		//public float length;		//20.0f
 		//public float up_limit;	//1.9f	2.7f
@@ -274,6 +282,8 @@ public sealed partial class Enemy : CharaBase
 	//反撃ショット --------------------------------------
 	[System.Serializable]
 	public struct BreakShotAct {
+
+		public bool flg;
 
 		public GameObject obj;
 

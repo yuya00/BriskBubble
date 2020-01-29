@@ -13,10 +13,11 @@ public sealed partial class Enemy : CharaBase
 		enemy_near			 = GetComponentInChildren<EnemyNear>();
 		enemy_sounddetect	 = GetComponentInChildren<EnemySoundDetect>();
 		player_obj			 = GameObject.Find("Player");
-		//chara_ray = transform.Find("CharaRay");
+        //chara_ray = transform.Find("CharaRay");
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
-		//敵のパラメーター設定
-		respawn_pos = transform.position;
+        //敵のパラメーター設定
+        respawn_pos = transform.position;
 		wall_ray.Clear();
 		hole_ray.Clear();
 		player_touch_flg = false;
@@ -1592,9 +1593,11 @@ public sealed partial class Enemy : CharaBase
 				break;
 			case Enum_Act.BREAK:    //ショット生成
 				Instantiate(breakshot_act.obj, transform.position + (transform.forward * BreakShotAct.MAG), transform.rotation);
+				breakshot_act.flg = true;
 				enum_act = Enum_Act.END;
 				break;
 			case Enum_Act.END:      //待機(逃走のRUNに戻る)
+				breakshot_act.flg = false;
 				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
 					Clear();
 					transform.localEulerAngles = Vector3.zero;
