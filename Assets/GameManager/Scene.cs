@@ -200,12 +200,6 @@ public class Scene : MonoBehaviour
             }
         }
 
-        if (SceneManager.GetActiveScene().name == "tutorial")
-        {
-            // サウンドセット
-            SoundSet(STAGE);
-        }
-
         // スタートボタン点滅
         if (flash_on && press != null) TitleSceneFlash();
 
