@@ -47,7 +47,7 @@ public sealed class LimitTimer : MonoBehaviour
                 if (game_manager.GetComponent<Scene>().ClearFg()) state = CLEAR;
                 break;
             case CLEAR:
-                timer_stop = true;
+                //timer_stop = true;
                 break;
         }
     }
