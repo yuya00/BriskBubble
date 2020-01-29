@@ -37,7 +37,7 @@ public class Signboard : MonoBehaviour
 
         float distans = Vector3.Distance(player.transform.position,this.transform.position);
 
-        if (distans < 10.0f)
+        if (distans < 6.5f)
         {
             if(first_look)
             {
