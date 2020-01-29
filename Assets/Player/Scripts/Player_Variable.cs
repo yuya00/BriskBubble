@@ -142,7 +142,7 @@ public sealed partial class Player : CharaBase
     private List<GameObject> physics_simulate_object_clone = new List<GameObject>();//やまなりショットの軌道表示用
     public PhysicsScene physics_simulate_scene; 　　　//やまなりショット用の物理シーン
     public UnityEngine.SceneManagement.Scene scene;　 //やまなりショット用の物理シーン
-
+    private bool enemy_hit = false;
     [Foldout("ShotParameter", false)]
 
     private const float SHOT_POSITION = 3.5f;   // ショットを出す正面方向の位置補正
