@@ -22799,7 +22799,7 @@ MonoBehaviour:
   fade_in_time: 0.5
   fade_out_time: 1
   interval_time_max: 1
-  debug_fg: 1
+  debug_fg: 0
   flash_timer_max: 0.15
   gui_on: 0
 --- !u!114 &1316627063
