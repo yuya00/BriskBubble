@@ -39,6 +39,7 @@ public class WeaponUIScript : MonoBehaviour
         switch (state)
         {
             case 0:
+                ScaleManager();
                 if (game_manager.GetComponent<Scene>().StartFg()) state++;
                 break;
             case 1:
