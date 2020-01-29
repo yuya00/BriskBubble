@@ -198,6 +198,8 @@ public class Scene : MonoBehaviour
                 buf_no = CLEAR;
                 //end_text.text = buf[buf_no];
                 //end_text.gameObject.SetActive(true);
+                //ベストタイム設定
+                GetComponent<HighScore>().SetScore();
             }
         }
 
@@ -241,6 +243,16 @@ public class Scene : MonoBehaviour
             if (Input.GetButtonDown("Start"))
             {
                 SceneLastFadeIn();
+            }
+
+            // 敵全滅させたらシーン移行
+            if (GetComponent<EnemyKillCount>().EnemyNumMax <= 0)
+            {
+                //SceneLastFadeIn();
+                end.SetActive(true);
+                // クリア演出にはいる
+                clear_fg = true;
+                buf_no = CLEAR;
             }
         }
 
