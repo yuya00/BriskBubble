@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class HighScore : MonoBehaviour
 {
     //ハイスコア保存用変数
-    static private int stage1_score=151;
-    static private int stage2_score=76;
-    static private int stage3_score=53;
+    static private int stage1_score=180;
+    static private int stage2_score=180;
+    static private int stage3_score=180;
 
     //開始時の時間保存用
     private int temp_time=0;

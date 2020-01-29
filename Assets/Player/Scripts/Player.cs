@@ -26,8 +26,9 @@ public sealed partial class Player : CharaBase
 		fall_can_move   = true;
 		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
-		respawn_pos	    = transform.position;   
-        shot_jump_fg    = false;
+		respawn_pos	    = transform.position;
+		respawn_angle   = transform.localEulerAngles;
+		shot_jump_fg    = false;
 		velocity	    = Vector3.zero;
 		tread_on.size = new Vector3(TreadOn_BoxCast.RADIUS_MAG_XZ, TreadOn_BoxCast.LENGTH_Y,TreadOn_BoxCast.RADIUS_MAG_XZ);
 		// エフェクト関連
@@ -126,12 +127,11 @@ public sealed partial class Player : CharaBase
                 break;
             case GAME:
                 base.FloorHit();
-                //base.FixedUpdate();
-                transform.position = transform.position + velocity * Time.deltaTime;
-                if (is_floor) transform.position = floor_pos + velocity * Time.deltaTime;
+				base.FixedUpdate();
+				//transform.position = transform.position + floor_spd + velocity * Time.deltaTime;
 
-                // 移動
-                LstickMove();
+				// スティックでの移動
+				LstickMove();
                 break;
             case CLEAR:
 
@@ -234,6 +234,8 @@ public sealed partial class Player : CharaBase
 			//気絶
 			GUILayout.TextArea("気絶\n " + is_faint);
 
+			GUILayout.TextArea("動く床に触れている\n " + is_floor);
+
 			//汎用タイマー
 			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
@@ -247,10 +249,10 @@ public sealed partial class Player : CharaBase
 
 			GUILayout.TextArea("発射する弾の種類\n " + shot_state);
 
-            ////ジャンプアニメカウント
-            //GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+			////ジャンプアニメカウント
+			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
 
-        }
+		}
 		#endregion
 		#endregion
 
@@ -431,12 +433,12 @@ public sealed partial class Player : CharaBase
 					animator.SetBool("Run", true);
 					animator.SetBool("Walk", false);
 					effect.Effect(PLAYER, EFC_RUN, transform.position + transform.up * run_down_pos);
-					//if (WaitTimeBox((int)Enum_Timer.RUN, 90)) {
-					//	speedy_flg = true;
-					//}
-					//else {
-					//	speedy_flg = false;
-					//}
+					if (WaitTimeBox((int)Enum_Timer.RUN, SPEDDY_TIME)) {
+						speedy_flg = true;
+					}
+					else {
+						speedy_flg = false;
+					}
 				}
 				break;
 			case SPEEDYRUN:
@@ -598,6 +600,7 @@ public sealed partial class Player : CharaBase
 		if (transform.position.y < FALL_Y_MAX) {
 			//Debug.Log(transform.position.y);
 			transform.position = respawn_pos;
+			transform.localEulerAngles = respawn_angle;
 			velocity = Vector3.zero;
 			cam.GetComponent<CameraScript>().FallCanMove = true;
 		}

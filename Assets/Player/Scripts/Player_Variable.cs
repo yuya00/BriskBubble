@@ -35,12 +35,12 @@ public sealed partial class Player : CharaBase
 
     private float fall_y;
 
-    private Vector3 respawn_pos;
-
     private float jump_anim_count = 0;
     private const float NORMALIZE = 1.0f;
     private bool ray_fg;
 	private bool wall_touch_flg = false;        //壁との当たり判定
+
+	private const int SPEDDY_TIME = 90;			 //加速までの時間
 
     private int coin_count;     // コイン入手数
 

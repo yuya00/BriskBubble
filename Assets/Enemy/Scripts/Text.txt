@@ -5,19 +5,10 @@
 
 
 
-移動床ジャンプしにくい
-上りの時でジャンプできない
 
-壁掴み判定修正
-　settingsに追加できずエラー
+リスポーン時、カメラの角度も戻す
+　fall_yいらない
 
-
-
-
-Playerから壁判定、穴判定消去
-状態エフェクト修正
-
-走っていたら加速
 
 
 
@@ -28,33 +19,15 @@ Playerから壁判定、穴判定消去
 　敵消滅エフェクトもう少し早く出す
 
 カウントダウンを修正する
-　小さくする
-　透明にする
 　STARTの表示短くする
-
-リスポーン時、カメラの角度も戻す
-　fall_yいらない
-
-カメラ追従を瞬間ではなく、徐々にする
+　GAMECLEARしたら停止
 
 ショットの当たり判定を小さくする
 　敵や壁にめり込んでから消える
 
 
-移動床移動する
-
 穴判定長さは20くらい？
 
-
-stage3に下から上に上がる方法がないのは仕様？
-
-
-stageの見渡し2つでいい
-
-着地判定コードなぜ分けているのか
-　WallとGround
-
-GAMECLEARしたらカウントダウン停止
 
 
 
@@ -64,28 +37,23 @@ GAMECLEARしたらカウントダウン停止
 
 ジャンプ判定下限 より 壁判定下限が上
 
-EnemyのSpin
-Center Z -6.65
-Size   Z  6
 
-コマンドで壁掴み追加
-　手の色変更(material)
-  for (int i = 0; i < 7; i++) {
-     //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
-     //Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
-  }
-
-  stage3一番目のEnemyProdactionに敵が二人いる
-
-  Enemy1 (5)のRunspeedが0になってるのは仕様？
+stage3一番目のEnemyProdactionに敵が二人いる
 
 
-  敵追いつめられると、発見回転ばかりするので、回転の頻度を下げる
-　(一度回転したら次の回転は1秒後等)
+敵追いつめられると、発見回転ばかりするので、回転の頻度を下げる
+(一度回転したら次の回転は1秒後等)
 
-　敵SPIN中に踏まれたら、元の大きさに戻る
+敵SPIN中に踏まれたら、元の大きさに戻る
+
+Playerから壁判定、穴判定消去
+
+状態エフェクト修正
+
+走っていたら加速
 
 
+敵捕まえても動く
 
 
 あとから ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -175,3 +143,11 @@ Size   Z  6
 　前に進むことで補正され、着地している
 
 ・ダメージ時の点滅を半透明にする
+
+・プレイヤーの色変え
+　for (int i = 0; i < 7; i++) {
+    //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
+  　//Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
+　}
+
+・カメラ追従を瞬間ではなく、徐々にする

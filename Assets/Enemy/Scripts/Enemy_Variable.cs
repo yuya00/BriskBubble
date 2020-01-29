@@ -14,6 +14,7 @@ public sealed partial class Enemy : CharaBase
 	private const int           FAINT_TIME	 = 180;     //気絶時間
 	private int                 spin_timer = 0;
 	private int                 SPIN_INTERVAL_TIME = 90;
+	private const float FALL_Y_MAX       = -100.0f; // 最大落下地点(リスポーン用)
 
 	private float easing_timer = 0;
 

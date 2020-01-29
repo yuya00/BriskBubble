@@ -10,6 +10,7 @@ public sealed partial class Player : CharaBase
 
 
 	void Shot() {
+
 		// アニメーション
 		ShotAnime();
         
@@ -114,8 +115,17 @@ public sealed partial class Player : CharaBase
 
 		}
 
+		//ショット打ったら、プレイヤー走りの加速停止
+		SpeedyCancel();
+
 	}
 
+	//ショット打ったら、プレイヤー走りの加速停止
+	void SpeedyCancel() {
+		if (Input.GetButtonDown("Shot_R")) {
+			speedy_flg = false;
+		}
+	}
 
 	// ショットのアニメーション
 	void ShotAnime()

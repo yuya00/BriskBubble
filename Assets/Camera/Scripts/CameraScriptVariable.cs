@@ -37,6 +37,7 @@ public sealed partial class CameraScript : MonoBehaviour
     [Foldout("CameraFollowPlayer", false)]
 
 	private bool fall_can_move;             // 追従できる
+	private bool front_fall_can_move;       // 追従できる
 	private Vector3 cam_pos;				// カメラ位置
 	private Vector3 direction;              // 方向ベクトル
     private float init_up_pos;              // 初期プレイヤーのＹ位置
@@ -46,10 +47,13 @@ public sealed partial class CameraScript : MonoBehaviour
 
     private int follow_state;
 
-    //--------------------------------------------
-    // 演出                          
-    //--------------------------------------------    
-    [Foldout("CameraProduction", true)]
+	private Vector3 respawn_dir;            // 方向ベクトル
+	private float	respawn_init_up_pos;    // 初期プレイヤーのＹ位置
+
+	//--------------------------------------------
+	// 演出                          
+	//--------------------------------------------    
+	[Foldout("CameraProduction", true)]
     public Vector3 init_pos = new Vector3(60, 20, -80);               // 見渡し始める位置
 
     public float zoom_in_spd = 30.0f;       // 近づく早さ
