@@ -7,6 +7,8 @@ using Pixeye.Unity;
 public partial class SoundManager : MonoBehaviour
 {
     private SE_TYPE debug_se;
+
+
     void Start()
     {
         //Componentを取得
@@ -52,6 +54,10 @@ public partial class SoundManager : MonoBehaviour
             case SE_TYPE.WEAPON_CHANGE:
                 AudioSet(weapon_change);
                 debug_se = SE_TYPE.WEAPON_CHANGE;
+                break;
+            case SE_TYPE.DAMAGE:
+                AudioSet(damage);
+                debug_se = SE_TYPE.DAMAGE;
                 break;
         }
     }
@@ -111,6 +117,10 @@ public partial class SoundManager : MonoBehaviour
             case SE_TYPE.STAGE_SELECT:
                 AudioSet(stage_select);
                 debug_se = SE_TYPE.STAGE_SELECT;
+                break;
+            case SE_TYPE.CLEAR:                
+                AudioSet(clear);
+                debug_se = SE_TYPE.CLEAR;
                 break;
         }
     }

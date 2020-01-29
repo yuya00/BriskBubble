@@ -83,6 +83,7 @@ public sealed partial class Player : CharaBase
     private SoundManager.SE_TYPE JUMP_SE = SoundManager.SE_TYPE.JUMP;
     private SoundManager.SE_TYPE SHOT_SE = SoundManager.SE_TYPE.SHOT;
     private SoundManager.SE_TYPE CHANGE_SE = SoundManager.SE_TYPE.WEAPON_CHANGE;
+    private SoundManager.SE_TYPE DAMAGE_SE = SoundManager.SE_TYPE.DAMAGE;
 
 
     // 位置変数
@@ -142,7 +143,7 @@ public sealed partial class Player : CharaBase
     private List<GameObject> physics_simulate_object_clone = new List<GameObject>();//やまなりショットの軌道表示用
     public PhysicsScene physics_simulate_scene; 　　　//やまなりショット用の物理シーン
     public UnityEngine.SceneManagement.Scene scene;　 //やまなりショット用の物理シーン
-
+    private bool enemy_hit = false;
     [Foldout("ShotParameter", false)]
 
     private const float SHOT_POSITION = 3.5f;   // ショットを出す正面方向の位置補正

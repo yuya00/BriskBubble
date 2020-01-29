@@ -1602,6 +1602,7 @@ public sealed partial class Enemy : CharaBase
 			case Enum_Act.BREAK:    //ショット生成
 				Instantiate(breakshot_act.obj, transform.position + (transform.forward * BreakShotAct.MAG), transform.rotation);
 				breakshot_act.flg = true;
+                sound.SoundSE(ENEMY_SE, SHOT_SE);
 				enum_act = Enum_Act.END;
 				break;
 			case Enum_Act.END:      //待機(逃走のRUNに戻る)
