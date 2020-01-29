@@ -6325,6 +6325,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54af2d06eafd4854a91a9344765be815, type: 3}
+--- !u!1 &323242794 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: c469d4cb75cc9e54ca3270995a3b415c,
+    type: 3}
+  m_PrefabInstance: {fileID: 940480368}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &323242798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323242794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c31fbcde86f5fc42a410e62cb391d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spd: 10
+  len_max: 15
+  wait_timer: 3
+  type: 0
+  gui_on: 0
+--- !u!64 &323242799
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323242794}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: -5076798556035486163, guid: c469d4cb75cc9e54ca3270995a3b415c, type: 3}
 --- !u!1001 &341971332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16931,20 +16968,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: honeycomb_tip
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c469d4cb75cc9e54ca3270995a3b415c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c469d4cb75cc9e54ca3270995a3b415c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c469d4cb75cc9e54ca3270995a3b415c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -54.7
+      value: -76.8
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c469d4cb75cc9e54ca3270995a3b415c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.3
+      value: -13.9
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c469d4cb75cc9e54ca3270995a3b415c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 57.4
+      value: 172
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c469d4cb75cc9e54ca3270995a3b415c,
         type: 3}
