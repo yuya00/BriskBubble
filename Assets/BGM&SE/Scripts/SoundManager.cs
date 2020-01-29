@@ -55,6 +55,10 @@ public partial class SoundManager : MonoBehaviour
                 AudioSet(weapon_change);
                 debug_se = SE_TYPE.WEAPON_CHANGE;
                 break;
+            case SE_TYPE.DAMAGE:
+                AudioSet(damage);
+                debug_se = SE_TYPE.DAMAGE;
+                break;
         }
     }
 

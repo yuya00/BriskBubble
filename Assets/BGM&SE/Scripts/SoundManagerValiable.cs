@@ -24,6 +24,7 @@ public partial class SoundManager : MonoBehaviour
         ENEMY_GET,
         SHOT_CRACK,
         START_COUNT,
+        DAMAGE,
 
         STAGE_SELECT,
 
@@ -50,6 +51,7 @@ public partial class SoundManager : MonoBehaviour
     public AudioClip enemy_destroy;
     public AudioClip enemy_find;
     public AudioClip weapon_change;
+    public AudioClip damage;
     [Foldout("SEObject", false)]
     #endregion
 
