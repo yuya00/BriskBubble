@@ -40,6 +40,9 @@ public class WeaponUIScript : MonoBehaviour
         {
             case 0:
                 ScaleManager();
+                // 移動する位置
+                Vector3 pos = ui.transform.position + pos_data[no];
+                transform.position = pos;
                 if (game_manager.GetComponent<Scene>().StartFg()) state++;
                 break;
             case 1:
