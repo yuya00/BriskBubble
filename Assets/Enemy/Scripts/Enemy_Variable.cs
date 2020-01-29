@@ -275,6 +275,8 @@ public sealed partial class Enemy : CharaBase
 	[System.Serializable]
 	public struct BreakShotAct {
 
+		public bool flg;
+
 		public GameObject obj;
 
 		//ショットの位置調整
