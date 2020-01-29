@@ -20,6 +20,7 @@ public sealed class LimitTimer : MonoBehaviour
 
     private const int START = 0;
     private const int GAME = 1;
+    private const int CLEAR = 2;
 
     private GameObject timer;
 
@@ -43,6 +44,10 @@ public sealed class LimitTimer : MonoBehaviour
                 LimitTime();
                 // 文字設定
                 //if (time_text) SetText();
+                if (game_manager.GetComponent<Scene>().ClearFg()) state = CLEAR;
+                break;
+            case CLEAR:
+                timer_stop = true;
                 break;
         }
     }
@@ -65,6 +70,7 @@ public sealed class LimitTimer : MonoBehaviour
             if (!timer_stop) sec = 60;
             if (min > 0) min--;
         }
+
     }
 
 
