@@ -13,8 +13,7 @@ public partial class SoundManager : MonoBehaviour
         ENEMY,
         SHOT,
         UI,
-        STAGE,
-        TITLE,
+        SCENE,
     }
 
     // 音の種類

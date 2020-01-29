@@ -58,6 +58,18 @@ public class Scene : MonoBehaviour
     private float wait_timer_max = 1.5f;
 
 
+    private SoundManager sound;
+
+    // キャラ指定
+    private SoundManager.CHARA_TYPE SCENE_SE = SoundManager.CHARA_TYPE.SCENE;
+
+    // 音の種類指定
+    private SoundManager.BGM_TYPE STAGE = SoundManager.BGM_TYPE.STAGE;
+    private SoundManager.BGM_TYPE TITLE = SoundManager.BGM_TYPE.TITLE;
+    private SoundManager.SE_TYPE START_SE = SoundManager.SE_TYPE.START_COUNT;
+
+    private int sound_state = 0;
+
     void Start()
     {
         fade_fg = false;
@@ -65,6 +77,11 @@ public class Scene : MonoBehaviour
         clear_fg = false;
         //GameObject.FindGameObjectsWithTag("Enemy");
         cam = GameObject.FindGameObjectWithTag("Camera");
+
+        if (GameObject.FindGameObjectWithTag("SoundManager") != null)
+            sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+
+        sound_state = 0;
         //end_text.text = "";
         buf_no = 0;
 
@@ -121,6 +138,9 @@ public class Scene : MonoBehaviour
         // シーンごとに移行条件を設定
         SceneSelect();
 
+        // サウンドセット
+        SoundSet(STAGE);
+
         // シーン切り替え
         if (fade_fg)
         {
@@ -170,6 +190,8 @@ public class Scene : MonoBehaviour
         // タイトル
         if (SceneManager.GetActiveScene().name == "title")
         {
+            // サウンドセット
+            SoundSet(TITLE);
             if (Input.GetButtonDown("Start"))
             {
                 flash_on = true;
@@ -322,8 +344,14 @@ public class Scene : MonoBehaviour
         {
             start_buf_no++;
 
+            // 音を出すタイミング
+            if (start_buf_no <= 1) sound.SoundSE(SCENE_SE, START_SE);
+
             // スタートタイマーに送る用
-            if (send_buf_no > 0) send_buf_no--;
+            if (send_buf_no > 0)
+            {
+                send_buf_no--;
+            }
             start_timer = 0;
         }
 
@@ -338,6 +366,26 @@ public class Scene : MonoBehaviour
         if (start_buf_no > 4)
         {
             TextAlpha();
+        }
+    }
+
+    // 音セット
+    void SoundSet(SoundManager.BGM_TYPE type)
+    {
+        switch (sound_state)
+        {
+            case 0:
+                if (start_fg || SceneManager.GetActiveScene().name == "title") sound_state++;
+                break;
+            case 1:
+                sound_state++;
+                // 音1フレームだけオン
+                sound.SoundBGM(type);
+                break;
+            case 2:
+                // 音とめる
+                if (clear_fg) sound.AudioStop();
+                break;
         }
     }
 

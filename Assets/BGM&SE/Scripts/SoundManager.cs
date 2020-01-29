@@ -19,16 +19,24 @@ public partial class SoundManager : MonoBehaviour
     }
 
     #region /* BGMまとめ */
-    public void SoundBGM(CHARA_TYPE chara, BGM_TYPE bgm)
+    public void SoundBGM(BGM_TYPE bgm)
     {
-        // typeに値が入ってる
-        switch (chara)
+        // シーンのBGM
+        Scene(bgm);
+    }
+
+    void Scene(BGM_TYPE bgm)
+    {
+        // stateでどの音かを決める
+        switch (bgm)
         {
-            case CHARA_TYPE.STAGE:
-                //Player(bgm);
+            case BGM_TYPE.STAGE:
+                AudioSet(stage);
+                //debug_se = SE_TYPE.JUMP;
                 break;
-            case CHARA_TYPE.TITLE:
-                //Enemy(bgm, pos, num);
+            case BGM_TYPE.TITLE:
+                AudioSet(title);
+                //debug_se = SE_TYPE.SHOT;
                 break;
         }
     }
@@ -37,7 +45,7 @@ public partial class SoundManager : MonoBehaviour
     #region /* SEまとめ */
     public void SoundSE(CHARA_TYPE chara, SE_TYPE se)
     {
-        // typeに値が入ってる
+        // charaに値が入ってる
         switch (chara)
         {
             case CHARA_TYPE.PLAYER:
@@ -49,9 +57,13 @@ public partial class SoundManager : MonoBehaviour
             case CHARA_TYPE.SHOT:
                 Shot(se);
                 break;
-            case CHARA_TYPE.UI:
-                //UI(se);
+            case CHARA_TYPE.SCENE:
+                Scene(se);
                 break;
+
+                //case CHARA_TYPE.UI:
+                //    //UI(se);
+                //    break;
         }
     }
 
@@ -106,6 +118,20 @@ public partial class SoundManager : MonoBehaviour
         }
     }
 
+    // シーンのSE--------------------------------------------
+    void Scene(SE_TYPE se)
+    {
+        // stateでどのエフェクトかを決める
+        switch (se)
+        {
+            case SE_TYPE.START_COUNT:
+                AudioSet(start_count);
+                debug_se = SE_TYPE.ENEMY_GET;
+                break;
+        }
+    }
+
+
     #endregion
 
     // 実際に音を出す処理----------------------------------------
@@ -114,6 +140,13 @@ public partial class SoundManager : MonoBehaviour
         if (!audio) return;
         audioSource.PlayOneShot(audio);
     }
+
+    // 音を止める
+    public void AudioStop()
+    {
+        audioSource.Stop();
+    }
+
 
     public bool gui_on;
 
