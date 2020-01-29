@@ -62,6 +62,7 @@ public sealed partial class Player : CharaBase
 
 		DebugLog();
         RayDebug();
+
     }
 
 	// Update内で待機
@@ -380,15 +381,24 @@ public sealed partial class Player : CharaBase
         // スピード
         float axis_x = 0, axis_y = 0;
 
-        // パッド情報代入
-        float pad_x = 0;
+		// パッド情報代入
+		float pad_x = 0;
         float pad_y = 0;
-        pad_x = Input.GetAxis("L_Stick_H");
-        pad_y = -Input.GetAxis("L_Stick_V");
-        pad_x = Input.GetAxis("Horizontal");
-        pad_y = Input.GetAxis("Vertical");
 
-        axis_x += pad_x;
+		//LTriggerを押しながらLStickを操作すると移動せずに向きだけ変化する
+		if (Input.GetAxis("LTrigger") > 0) {
+			transform.Rotate(0.0f, Input.GetAxis("L_Stick_H"), 0.0f);
+		}
+		else {
+			//移動
+			pad_x = Input.GetAxis("L_Stick_H");
+			pad_y = -Input.GetAxis("L_Stick_V");
+			pad_x = Input.GetAxis("Horizontal");
+			pad_y = Input.GetAxis("Vertical");
+		}
+
+
+		axis_x += pad_x;
         axis_y += pad_y;
 
         // 平方根を求めて正規化

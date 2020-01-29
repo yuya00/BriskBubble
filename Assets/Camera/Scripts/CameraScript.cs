@@ -116,15 +116,22 @@ public sealed partial class CameraScript : MonoBehaviour
 
 		// パッド情報を取得
 		pad_rx = -Input.GetAxis("R_Stick_H");
-        pad_ry = Input.GetAxis("R_Stick_V");
-        pad_lx = Input.GetAxis("L_Stick_H");
+		pad_ry = Input.GetAxis("R_Stick_V");
+		//LTriggerを押しながらLStickを操作すると、プレイヤーを後ろから映す,RStickは効かない
+		if (Input.GetAxis("LTrigger") > 0) {
+			//↓プレイヤーを後ろから映していたいのでこの速度
+			pad_rx = -Input.GetAxis("L_Stick_H") / 3.5f;
+		}
+		else {
+			pad_lx = Input.GetAxis("L_Stick_H");
+		}
 
-        // カメラの位置変更
-        RotateX(cam_pos, pad_rx);
-        RotateY(cam_pos, pad_ry, pad_rx);
+		// カメラの位置変更
+		RotateX(cam_pos, pad_rx);
+		RotateY(cam_pos, pad_ry, pad_rx);
 
-        // 左スティックで入力してる時に条件付でカメラ追従
-        if (PadLxCheck(pad_lx)) FollowCamera();
+		// 左スティックで入力してる時に条件付でカメラ追従
+		if (PadLxCheck(pad_lx)) FollowCamera();
 
         // 位置が戻ってきたらここに来て初期化
         ClearEnemyHitCamera();
