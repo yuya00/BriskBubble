@@ -18,6 +18,7 @@ public sealed partial class Enemy : CharaBase
 
         //敵のパラメーター設定
         respawn_pos = transform.position;
+		respawn_angle = transform.localEulerAngles;
 		wall_ray.Clear();
 		hole_ray.Clear();
 		player_touch_flg = false;
@@ -186,6 +187,7 @@ public sealed partial class Enemy : CharaBase
 		// 最大限落ちたら、リスポーン
 		if (transform.position.y < FALL_Y_MAX) {
 			transform.position = respawn_pos;
+			transform.localEulerAngles = respawn_angle;
 			velocity = Vector3.zero;
 			enum_state = Enum_State.WAIT;
 			Clear();
