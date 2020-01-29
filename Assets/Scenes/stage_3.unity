@@ -7716,6 +7716,11 @@ PrefabInstance:
     - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: away_act.kind.normal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011280076669137943, guid: c83d4d80d1887e6438857407936a7b30,
+        type: 3}
+      propertyPath: away_act.kind.jump
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6055239177030775123, guid: c83d4d80d1887e6438857407936a7b30,
@@ -14264,7 +14269,7 @@ PrefabInstance:
     - target: {fileID: 5477997683705533379, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -7.7
       objectReference: {fileID: 0}
     - target: {fileID: 5477997683705533379, guid: e135e19e0c2556a4fb3d489f97fedba6,
         type: 3}
@@ -21146,7 +21151,7 @@ PrefabInstance:
     - target: {fileID: 2587862109830307868, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -7.7
       objectReference: {fileID: 0}
     - target: {fileID: 2587862109830307868, guid: c83d4d80d1887e6438857407936a7b30,
         type: 3}
@@ -22893,7 +22898,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 3f429d037ce67aa4cb16794396af9c76,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -102.6
+      value: -103.4
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3f429d037ce67aa4cb16794396af9c76,
         type: 3}
@@ -23112,7 +23117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: {fileID: 1903704606}
-  scene_name: title
+  scene_name: stage_select
   fade_in_time: 0.5
   fade_out_time: 1
   interval_time_max: 1
@@ -35212,7 +35217,7 @@ RectTransform:
   m_GameObject: {fileID: 2122021305}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 1331064200}
   m_RootOrder: 4

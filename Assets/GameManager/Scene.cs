@@ -192,7 +192,7 @@ public class Scene : MonoBehaviour
     // シーンごとに移行条件を設定
     void SceneSelect()
     {
-        // タイトル
+        // タイトル画面
         if (SceneManager.GetActiveScene().name == "title")
         {
             // サウンドセット
@@ -203,7 +203,7 @@ public class Scene : MonoBehaviour
                 flash_on = true;
             }
         }
-
+        //チュートリアル画面
         if (SceneManager.GetActiveScene().name == "tutorial")
         {
             // サウンドセット
@@ -265,7 +265,8 @@ public class Scene : MonoBehaviour
         //ステージセレクトシーン
         if(SceneManager.GetActiveScene().name == "stage_select")
         {
-            if(GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name!="")
+            SoundSet(TITLE);
+            if (GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name!="")
             {
                 scene_name = GameObject.Find("StageSelectManager").GetComponent<StageSelectManager>().next_scene_name;
                 SceneLastFadeIn();
