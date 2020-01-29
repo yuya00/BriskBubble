@@ -27,6 +27,7 @@ TagManager:
   - TimeUpText
   - UIText
   - SoundManager
+  - BGMManager
   layers:
   - Default
   - TransparentFX

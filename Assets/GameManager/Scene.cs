@@ -59,14 +59,16 @@ public class Scene : MonoBehaviour
 
 
     private SoundManager sound;
+    private BGMManager bgm;
 
     // キャラ指定
     private SoundManager.CHARA_TYPE SCENE_SE = SoundManager.CHARA_TYPE.SCENE;
 
     // 音の種類指定
-    private SoundManager.BGM_TYPE STAGE = SoundManager.BGM_TYPE.STAGE;
-    private SoundManager.BGM_TYPE TITLE = SoundManager.BGM_TYPE.TITLE;
+    private BGMManager.BGM_TYPE STAGE = BGMManager.BGM_TYPE.STAGE;
+    private BGMManager.BGM_TYPE TITLE = BGMManager.BGM_TYPE.TITLE;
     private SoundManager.SE_TYPE START_SE = SoundManager.SE_TYPE.START_COUNT;
+    private SoundManager.SE_TYPE SELECT_SE = SoundManager.SE_TYPE.STAGE_SELECT;
 
     private int sound_state = 0;
 
@@ -80,6 +82,8 @@ public class Scene : MonoBehaviour
 
         if (GameObject.FindGameObjectWithTag("SoundManager") != null)
             sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        if (GameObject.FindGameObjectWithTag("BGMManager") != null)
+            bgm = GameObject.FindGameObjectWithTag("BGMManager").GetComponent<BGMManager>();
 
         sound_state = 0;
         //end_text.text = "";
@@ -194,6 +198,7 @@ public class Scene : MonoBehaviour
             SoundSet(TITLE);
             if (Input.GetButtonDown("Start"))
             {
+                sound.SoundSE(SCENE_SE, SELECT_SE);
                 flash_on = true;
             }
         }
@@ -370,7 +375,7 @@ public class Scene : MonoBehaviour
     }
 
     // 音セット
-    void SoundSet(SoundManager.BGM_TYPE type)
+    void SoundSet(BGMManager.BGM_TYPE type)
     {
         switch (sound_state)
         {
@@ -380,11 +385,11 @@ public class Scene : MonoBehaviour
             case 1:
                 sound_state++;
                 // 音1フレームだけオン
-                sound.SoundBGM(type);
+                bgm.SoundBGM(type);
                 break;
             case 2:
                 // 音とめる
-                if (clear_fg) sound.AudioStop();
+                if (clear_fg) bgm.AudioStop();
                 break;
         }
     }

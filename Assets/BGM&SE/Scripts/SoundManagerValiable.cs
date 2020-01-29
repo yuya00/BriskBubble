@@ -17,13 +17,6 @@ public partial class SoundManager : MonoBehaviour
     }
 
     // 音の種類
-    public enum BGM_TYPE
-    {
-        STAGE = 0,
-        TITLE,
-    }
-
-    // 音の種類
     public enum SE_TYPE
     {
         JUMP = 0,
@@ -31,22 +24,33 @@ public partial class SoundManager : MonoBehaviour
         ENEMY_GET,
         SHOT_CRACK,
         START_COUNT,
+
+        STAGE_SELECT,
+
         ENEMY_DESTROY,
+        ENEMY_SHOT,
+        ENEMY_FIND,
+
+        WEAPON_CHANGE,
     }
 
     #endregion
 
     #region /* オブジェクトまとめ */
-    [Foldout("EffectObject", true)]
+    [Foldout("SEObject", true)]
     public AudioClip get;
     public AudioClip crack;
     public AudioClip shot;
     public AudioClip jump;
     public AudioClip start_count;
-    public AudioClip stage;
-    public AudioClip title;
+    public AudioClip stage_select;
+    //public AudioClip stage;
+    //public AudioClip title;
+    public AudioClip enemy_shot;
     public AudioClip enemy_destroy;
-    [Foldout("EffectObject", false)]
+    public AudioClip enemy_find;
+    public AudioClip weapon_change;
+    [Foldout("SEObject", false)]
     #endregion
 
     private AudioSource audioSource;

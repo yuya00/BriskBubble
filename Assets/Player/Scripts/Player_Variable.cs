@@ -82,6 +82,7 @@ public sealed partial class Player : CharaBase
     // 音の種類指定
     private SoundManager.SE_TYPE JUMP_SE = SoundManager.SE_TYPE.JUMP;
     private SoundManager.SE_TYPE SHOT_SE = SoundManager.SE_TYPE.SHOT;
+    private SoundManager.SE_TYPE CHANGE_SE = SoundManager.SE_TYPE.WEAPON_CHANGE;
 
 
     // 位置変数

@@ -14,34 +14,6 @@ public partial class SoundManager : MonoBehaviour
         debug_se = 0;
     }
 
-    void Update()
-    {
-    }
-
-    #region /* BGMまとめ */
-    public void SoundBGM(BGM_TYPE bgm)
-    {
-        // シーンのBGM
-        Scene(bgm);
-    }
-
-    void Scene(BGM_TYPE bgm)
-    {
-        // stateでどの音かを決める
-        switch (bgm)
-        {
-            case BGM_TYPE.STAGE:
-                AudioSet(stage);
-                //debug_se = SE_TYPE.JUMP;
-                break;
-            case BGM_TYPE.TITLE:
-                AudioSet(title);
-                //debug_se = SE_TYPE.SHOT;
-                break;
-        }
-    }
-    #endregion
-
     #region /* SEまとめ */
     public void SoundSE(CHARA_TYPE chara, SE_TYPE se)
     {
@@ -60,10 +32,6 @@ public partial class SoundManager : MonoBehaviour
             case CHARA_TYPE.SCENE:
                 Scene(se);
                 break;
-
-                //case CHARA_TYPE.UI:
-                //    //UI(se);
-                //    break;
         }
     }
 
@@ -81,6 +49,10 @@ public partial class SoundManager : MonoBehaviour
                 AudioSet(shot);
                 debug_se = SE_TYPE.SHOT;
                 break;
+            case SE_TYPE.WEAPON_CHANGE:
+                AudioSet(weapon_change);
+                debug_se = SE_TYPE.WEAPON_CHANGE;
+                break;
         }
     }
 
@@ -97,6 +69,14 @@ public partial class SoundManager : MonoBehaviour
             case SE_TYPE.ENEMY_DESTROY:
                 AudioSet(enemy_destroy);
                 debug_se = SE_TYPE.ENEMY_DESTROY;
+                break;
+            case SE_TYPE.ENEMY_FIND:
+                AudioSet(enemy_find);
+                debug_se = SE_TYPE.ENEMY_FIND;
+                break;
+            case SE_TYPE.ENEMY_SHOT:
+                AudioSet(enemy_shot);
+                debug_se = SE_TYPE.ENEMY_SHOT;
                 break;
         }
     }
@@ -128,6 +108,10 @@ public partial class SoundManager : MonoBehaviour
                 AudioSet(start_count);
                 debug_se = SE_TYPE.ENEMY_GET;
                 break;
+            case SE_TYPE.STAGE_SELECT:
+                AudioSet(stage_select);
+                debug_se = SE_TYPE.STAGE_SELECT;
+                break;
         }
     }
 
@@ -141,11 +125,11 @@ public partial class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(audio);
     }
 
-    // 音を止める
-    public void AudioStop()
-    {
-        audioSource.Stop();
-    }
+    //// 音を止める
+    //public void AudioStop()
+    //{
+    //    audioSource.Stop();
+    //}
 
 
     public bool gui_on;

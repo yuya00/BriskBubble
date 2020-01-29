@@ -21,9 +21,12 @@ public sealed partial class Player : CharaBase
         if (!shot_switch) {
 
 			//ショットの種類切り替え
-			if (Input.GetButtonDown("Shot_L")) {
+			if (Input.GetButtonDown("Shot_L"))
+            {
 				shot_state++;
-				if (shot_state >= shot_object.Length) {
+                sound.SoundSE(PLAYER_SE, CHANGE_SE);
+				if (shot_state >= shot_object.Length)
+                {
 					shot_state = 0;
 				}
                 for (int i = 0; i < physics_simulate_object_clone.Count; i++)
