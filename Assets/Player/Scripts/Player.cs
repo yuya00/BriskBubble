@@ -16,6 +16,7 @@ public sealed partial class Player : CharaBase
         game_manager	 = GameObject.FindGameObjectWithTag("GameManager");
         animator		 = GetComponent<Animator>();
 		effect			 = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
+        sound            = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         //chara_ray       = transform.Find("CharaRay");
 
         // プレイヤーのパラメーター設定
@@ -204,60 +205,67 @@ public sealed partial class Player : CharaBase
 			#endregion
 		#region 開発用
 		else if (gui.debug_view) {
-			//GUILayout.TextArea("effect\n" + effect.effect_jump);
+            //GUILayout.TextArea("effect\n" + effect.effect_jump);
 
-			//GUILayout.TextArea("先行入力キー\n" + lead_key);
-			//GUILayout.TextArea("先行入力押されたキー");
-			//for (int i = 0; i < lead_key_num; i++) {
-			//	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
-			//	GUILayout.TextArea("" + lead_inputs[i].frame);
-			//}
+            //GUILayout.TextArea("先行入力キー\n" + lead_key);
+            //GUILayout.TextArea("先行入力押されたキー");
+            //for (int i = 0; i < lead_key_num; i++) {
+            //	GUILayout.TextArea(""+lead_inputs[i].pushed_key);
+            //	GUILayout.TextArea("" + lead_inputs[i].frame);
+            //}
 
-			//座標
-			float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
-			float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
-			float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
-			GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
+            ////座標
+            //float posx = Mathf.Round(transform.position.x * 100.0f) / 100.0f;
+            //float posy = Mathf.Round(transform.position.y * 100.0f) / 100.0f;
+            //float posz = Mathf.Round(transform.position.z * 100.0f) / 100.0f;
+            //GUILayout.TextArea("座標\n (" + posx.ToString() + ", " + posy.ToString() + ", " + posz.ToString() + ")");
 
-			//速さ
-			spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
-			spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
-			spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
-			GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
+            ////速さ
+            //spdx = Mathf.Round(velocity.x * 100.0f) / 100.0f;
+            //spdy = Mathf.Round(velocity.y * 100.0f) / 100.0f;
+            //spdz = Mathf.Round(velocity.z * 100.0f) / 100.0f;
+            //GUILayout.TextArea("速さ\n (" + spdx.ToString() + ", " + spdy.ToString() + ", " + spdz.ToString() + ")");
 
-			//着地判定
-			GUILayout.TextArea("着地判定\n " + is_ground);
+            ////着地判定
+            //GUILayout.TextArea("着地判定\n " + is_ground);
 
-			//踏みつけジャンプ判定(着地まで)
-			GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
+            ////踏みつけジャンプ判定(着地まで)
+            //GUILayout.TextArea("踏みつけジャンプ\n " + tread_on.flg);
 
-			//気絶
-			GUILayout.TextArea("気絶\n " + is_faint);
+            ////気絶
+            //GUILayout.TextArea("気絶\n " + is_faint);
 
-			GUILayout.TextArea("動く床に触れている\n " + is_floor);
+            //GUILayout.TextArea("動く床に触れている\n " + is_floor);
 
-			//汎用タイマー
-			GUILayout.TextArea("汎用タイマー\n" + wait_timer);
+            ////汎用タイマー
+            //GUILayout.TextArea("汎用タイマー\n" + wait_timer);
 
-			//汎用タイマー配列
-			GUILayout.TextArea("汎用タイマー\n"
-				+ wait_timer_box[0] / 10 + "   "
-				+ wait_timer_box[1] / 10 + "   "
-				+ wait_timer_box[2] / 10 + "   "
-				+ wait_timer_box[3] / 10 + "   "
-				+ wait_timer_box[4] / 10);
+            ////汎用タイマー配列
+            //GUILayout.TextArea("汎用タイマー\n"
+            //	+ wait_timer_box[0] / 10 + "   "
+            //	+ wait_timer_box[1] / 10 + "   "
+            //	+ wait_timer_box[2] / 10 + "   "
+            //	+ wait_timer_box[3] / 10 + "   "
+            //	+ wait_timer_box[4] / 10);
 
-			GUILayout.TextArea("発射する弾の種類\n " + shot_state);
+            //GUILayout.TextArea("発射する弾の種類\n " + shot_state);
 
-			////ジャンプアニメカウント
-			//GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
+            ////ジャンプアニメカウント
+            //GUILayout.TextArea("ジャンプアニメカウント\n " + jump_anim_count);
 
-		}
-		#endregion
-		#endregion
+            //GUILayout.TextArea("sound\n " + sound);
+            //GUILayout.TextArea("SHOT_SE\n " + SHOT_SE);
+            //GUILayout.TextArea("PLAYER_SE\n " + PLAYER_SE);
+            //GUILayout.TextArea("SHOT_SE\n " + SHOT_SE);
+            //GUILayout.TextArea("PLAYER_SE\n " + PLAYER_SE);
+            //GUILayout.TextArea("SHOT_SE\n " + SHOT_SE);
+
+        }
+        #endregion
+        #endregion
 
 
-		GUILayout.EndScrollView();
+        GUILayout.EndScrollView();
         GUILayout.EndVertical();
     }
 
@@ -504,10 +512,16 @@ public sealed partial class Player : CharaBase
 
 			// TYPE : キャラ、EFFECT : ジャンプ、POS : 位置、 effect.jump_player : 何個出すか
 			effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, effect.jump_player);
+            sound.SoundSE(PLAYER_SE, JUMP_SE); // サウンド発生
         }
 
         // ショットに乗った時にジャンプをjump_power_up倍
-        if (DownHitShot()) Jump(jump_power * jump_power_up);
+        if (DownHitShot())
+        {
+            Jump(jump_power * jump_power_up);
+            effect.Effect(PLAYER, JUMP, transform.position + transform.up * jump_down_pos, effect.jump_player);
+            sound.SoundSE(PLAYER_SE, JUMP_SE); // サウンド発生
+        }
 
         // ジャンプアニメーション
         AnimeJump();

@@ -46,6 +46,14 @@ public class ShotBase : MonoBehaviour
         TRAJECTORY,
     }
 
+    private SoundManager sound;
+
+    // キャラ指定
+    private SoundManager.CHARA_TYPE SHOT_SE = SoundManager.CHARA_TYPE.SHOT;
+
+    // 音の種類指定
+    private SoundManager.SE_TYPE GET_SE = SoundManager.SE_TYPE.ENEMY_GET;
+    private SoundManager.SE_TYPE CRACK_SE = SoundManager.SE_TYPE.SHOT_CRACK;
 
     protected float PLR_SPD = 0.2f;
 
@@ -62,6 +70,7 @@ public class ShotBase : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         effect = GameObject.FindGameObjectWithTag("EffectManager").GetComponent<EffectManager>();
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
         // 物理取得
         rigid = this.GetComponent<Rigidbody>();
@@ -187,12 +196,14 @@ public class ShotBase : MonoBehaviour
             // 透明にする
             gameObject.GetComponent<Renderer>().material.color = col;
 
+
             // レイヤーで当たり判定なくす
             //gameObject.layer = LayerMask.NameToLayer("ShotDestroy");
 
             // +0.2fの時間で消去する
             if (timer >= destroy_time + 0.2f)
             {
+                sound.SoundSE(SHOT_SE, CRACK_SE); // サウンド発生
                 Destroy(gameObject);
                 effect.Effect(SHOT, DESTROY, transform.position, effect.destroy_shot);
             }
@@ -205,20 +216,24 @@ public class ShotBase : MonoBehaviour
         // ショットが消えてなくて敵と当たった時
         if(hit_fg && col.tag == "Enemy")
         {
+            sound.SoundSE(SHOT_SE, GET_SE); // サウンド発生
             Performance();
         }
 
         if(col.tag == "Player")
         {
+            sound.SoundSE(SHOT_SE, CRACK_SE); // サウンド発生
             Destroy(gameObject);
         }
 
 		if (col.name == "CounterShot(Clone)") {
-			Destroy(gameObject);
+            sound.SoundSE(SHOT_SE, CRACK_SE); // サウンド発生
+            Destroy(gameObject);
 		}
 
         if(col.tag == "Wall")
         {
+            sound.SoundSE(SHOT_SE, CRACK_SE); // サウンド発生
             Destroy(gameObject);
         }
 

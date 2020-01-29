@@ -74,6 +74,17 @@ public sealed partial class Player : CharaBase
     private EffectManager.EFFECT SHOT = EffectManager.EFFECT.SHOT;
     private EffectManager.EFFECT COIN = EffectManager.EFFECT.COIN;
 
+    private SoundManager sound;
+
+    // キャラ指定
+    private SoundManager.CHARA_TYPE PLAYER_SE = SoundManager.CHARA_TYPE.PLAYER;
+
+    // 音の種類指定
+    private SoundManager.SE_TYPE JUMP_SE = SoundManager.SE_TYPE.JUMP;
+    private SoundManager.SE_TYPE SHOT_SE = SoundManager.SE_TYPE.SHOT;
+    private SoundManager.SE_TYPE CHANGE_SE = SoundManager.SE_TYPE.WEAPON_CHANGE;
+
+
     // 位置変数
     private float jump_down_pos = -1.0f;
     private float run_down_pos = -1.5f;

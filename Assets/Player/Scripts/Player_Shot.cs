@@ -21,9 +21,12 @@ public sealed partial class Player : CharaBase
         if (!shot_switch) {
 
 			//ショットの種類切り替え
-			if (Input.GetButtonDown("Shot_L")) {
+			if (Input.GetButtonDown("Shot_L"))
+            {
 				shot_state++;
-				if (shot_state >= shot_object.Length) {
+                sound.SoundSE(PLAYER_SE, CHANGE_SE);
+				if (shot_state >= shot_object.Length)
+                {
 					shot_state = 0;
 				}
                 for (int i = 0; i < physics_simulate_object_clone.Count; i++)
@@ -64,6 +67,7 @@ public sealed partial class Player : CharaBase
 					// ショットをstateの値で選択
 					ShotSelect(shot_object[shot_state]);
 					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
+                    sound.SoundSE(PLAYER_SE, SHOT_SE); // サウンド発生
 				}
 			}
 

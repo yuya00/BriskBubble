@@ -58,6 +58,20 @@ public class Scene : MonoBehaviour
     private float wait_timer_max = 1.5f;
 
 
+    private SoundManager sound;
+    private BGMManager bgm;
+
+    // キャラ指定
+    private SoundManager.CHARA_TYPE SCENE_SE = SoundManager.CHARA_TYPE.SCENE;
+
+    // 音の種類指定
+    private BGMManager.BGM_TYPE STAGE = BGMManager.BGM_TYPE.STAGE;
+    private BGMManager.BGM_TYPE TITLE = BGMManager.BGM_TYPE.TITLE;
+    private SoundManager.SE_TYPE START_SE = SoundManager.SE_TYPE.START_COUNT;
+    private SoundManager.SE_TYPE SELECT_SE = SoundManager.SE_TYPE.STAGE_SELECT;
+
+    private int sound_state = 0;
+
     void Start()
     {
         fade_fg = false;
@@ -65,6 +79,13 @@ public class Scene : MonoBehaviour
         clear_fg = false;
         //GameObject.FindGameObjectsWithTag("Enemy");
         cam = GameObject.FindGameObjectWithTag("Camera");
+
+        if (GameObject.FindGameObjectWithTag("SoundManager") != null)
+            sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        if (GameObject.FindGameObjectWithTag("BGMManager") != null)
+            bgm = GameObject.FindGameObjectWithTag("BGMManager").GetComponent<BGMManager>();
+
+        sound_state = 0;
         //end_text.text = "";
         buf_no = 0;
 
@@ -170,8 +191,11 @@ public class Scene : MonoBehaviour
         // タイトル
         if (SceneManager.GetActiveScene().name == "title")
         {
+            // サウンドセット
+            SoundSet(TITLE);
             if (Input.GetButtonDown("Start"))
             {
+                sound.SoundSE(SCENE_SE, SELECT_SE);
                 flash_on = true;
             }
         }
@@ -185,6 +209,9 @@ public class Scene : MonoBehaviour
             SceneManager.GetActiveScene().name == "stage_2" ||
             SceneManager.GetActiveScene().name == "stage_3")
         {
+            // サウンドセット
+            SoundSet(STAGE);
+
             // スタート文字(カメラの初期動作が終わってから)
             if (cam.GetComponent<CameraScript>().Camera_state == 0) SetText();
 
@@ -198,6 +225,8 @@ public class Scene : MonoBehaviour
                 buf_no = CLEAR;
                 //end_text.text = buf[buf_no];
                 //end_text.gameObject.SetActive(true);
+                //ベストタイム設定
+                GetComponent<HighScore>().SetScore();
             }
         }
 
@@ -241,6 +270,16 @@ public class Scene : MonoBehaviour
             if (Input.GetButtonDown("Start"))
             {
                 SceneLastFadeIn();
+            }
+
+            // 敵全滅させたらシーン移行
+            if (GetComponent<EnemyKillCount>().EnemyNumMax <= 0)
+            {
+                //SceneLastFadeIn();
+                end.SetActive(true);
+                // クリア演出にはいる
+                clear_fg = true;
+                buf_no = CLEAR;
             }
         }
 
@@ -310,8 +349,14 @@ public class Scene : MonoBehaviour
         {
             start_buf_no++;
 
+            // 音を出すタイミング
+            if (start_buf_no <= 1) sound.SoundSE(SCENE_SE, START_SE);
+
             // スタートタイマーに送る用
-            if (send_buf_no > 0) send_buf_no--;
+            if (send_buf_no > 0)
+            {
+                send_buf_no--;
+            }
             start_timer = 0;
         }
 
@@ -326,6 +371,26 @@ public class Scene : MonoBehaviour
         if (start_buf_no > 4)
         {
             TextAlpha();
+        }
+    }
+
+    // 音セット
+    void SoundSet(BGMManager.BGM_TYPE type)
+    {
+        switch (sound_state)
+        {
+            case 0:
+                if (start_fg || SceneManager.GetActiveScene().name == "title") sound_state++;
+                break;
+            case 1:
+                sound_state++;
+                // 音1フレームだけオン
+                bgm.SoundBGM(type);
+                break;
+            case 2:
+                // 音とめる
+                if (clear_fg) bgm.AudioStop();
+                break;
         }
     }
 
