@@ -147,7 +147,8 @@ public sealed partial class Player : CharaBase
     [Foldout("ShotParameter", false)]
 
     private const float SHOT_POSITION = 3.5f;   // ショットを出す正面方向の位置補正
-    private int shot_state;                 // debugでpublicにしてる
+	[System.NonSerialized]
+    public int shot_state = 0;                 // debugでpublicにしてる
     private float charge_time;              // チャージ時間
     private float shot_interval_time;       // ショットの間隔
     private bool back_player;               // ショット3を撃った後にプレイヤーを後ろに飛ばす

@@ -4,8 +4,6 @@
 やること ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 
-STREATショットもう少し早くする
-　遅くて、至近距離でしか捕まえられないから
 
 CURVEショット予測中は動けなくする
 
@@ -112,3 +110,24 @@ Debug.Log("Hit");
     //GetComponent<SkinnedMeshRenderer>().materials[i].color = color;
   　//Debug.Log(GetComponent<SkinnedMeshRenderer>().materials[i].name);
 　}
+
+・LTrigger
+//LTriggerを押しながらLStickを操作すると移動せずに向きだけ変化する
+if (Input.GetAxis("LTrigger") > 0) {
+	transform.Rotate(0.0f, Input.GetAxis("L_Stick_H"), 0.0f);
+}
+else {
+	pad_x = Input.GetAxis("L_Stick_H");
+	pad_y = -Input.GetAxis("L_Stick_V");
+	pad_x = Input.GetAxis("Horizontal");
+	pad_y = Input.GetAxis("Vertical");
+}
+
+LTriggerを押しながらLStickを操作すると、プレイヤーを後ろから映す,RStickは効かない
+if (Input.GetAxis("LTrigger") > 0) {
+	//↓プレイヤーを後ろから映していたいのでこの速度
+	pad_rx = -Input.GetAxis("L_Stick_H") / 3.5f;
+}
+else {
+	pad_lx = Input.GetAxis("L_Stick_H");
+}

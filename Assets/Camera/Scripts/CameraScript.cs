@@ -26,8 +26,8 @@ public sealed partial class CameraScript : MonoBehaviour
         //camera_state = 0;
         scene_camera_state = 0;
 
-        // 演出初期化
-        approach_state = 0;
+		// 演出初期化
+		approach_state = 0;
         approach_timer = 0;
         init_zoom_out_spd = zoom_out_spd;
         enemy_hit_flg = false;
@@ -117,8 +117,8 @@ public sealed partial class CameraScript : MonoBehaviour
 		// パッド情報を取得
 		pad_rx = -Input.GetAxis("R_Stick_H");
 		pad_ry = Input.GetAxis("R_Stick_V");
-		//LTriggerを押しながらLStickを操作すると、プレイヤーを後ろから映す,RStickは効かない
-		if (Input.GetAxis("LTrigger") > 0) {
+		//CURVEショットの時は、移動せずに向きだけ変化する
+		if (player.GetComponent<Player>().shot_state == 2 && Input.GetButton("Shot_R")) {
 			//↓プレイヤーを後ろから映していたいのでこの速度
 			pad_rx = -Input.GetAxis("L_Stick_H") / 3.5f;
 		}
