@@ -27,7 +27,7 @@ public sealed partial class Player : CharaBase
 		fall_can_move   = true;
 		init_back_speed = back_speed;
         COUNT           = 23 / ANIME_SPD;       // 着地アニメフレームを計算
-		respawn_pos	    = transform.position;
+		respawn_pos     = transform.position + new Vector3(0, 10.0f, 0);
 		respawn_angle   = transform.localEulerAngles;
 		shot_jump_fg    = false;
 		velocity	    = Vector3.zero;
@@ -602,7 +602,7 @@ public sealed partial class Player : CharaBase
 		FallRespawn();
 
 		//リスポーン後の一定時間後で動けるようになる
-		if (!fall_can_move && WaitTimeBox((int)Enum_Timer.RESPAWN, 60)) {
+		if (!fall_can_move && WaitTimeBox((int)Enum_Timer.RESPAWN, 30)) {
 			fall_can_move = true;
 		}
 
