@@ -17,7 +17,7 @@ public sealed partial class Player : CharaBase
 
 	private bool speedy_flg;
 	//public float SPEEDYRUN_SPEED = 20.0f;
-	public float speedrun_spd = 20.0f;
+	public float speedrun_spd = 18.0f;
 
 	[Foldout("PlayerParameter", false)]
     private Vector3 axis;                   //入力値

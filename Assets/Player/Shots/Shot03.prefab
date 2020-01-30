@@ -94,13 +94,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spd_down_timer_max: 0.5
-  speed: 15
+  speed: 25
   destroy_time: 3
   down_spd: 15
   down_pos: 0.8
   timer_fg: 0
   timer_fg_max: 0
   apper_fg: 0
+  test: 0
   target_pos: {x: 0, y: 0, z: 0}
 --- !u!54 &7358626092893561063
 Rigidbody:
