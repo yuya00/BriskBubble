@@ -117,10 +117,10 @@ public sealed partial class CameraScript : MonoBehaviour
 		// パッド情報を取得
 		pad_rx = -Input.GetAxis("R_Stick_H");
 		pad_ry = Input.GetAxis("R_Stick_V");
-		//CURVEショットの時は、移動せずに向きだけ変化する
-		if (player.GetComponent<Player>().shot_state == 2 && Input.GetButton("Shot_R")) {
+		//CURVEショットの時は、向きだけ変化する
+		if (player.GetComponent<Player>().CurveAimFlg) {
 			//↓プレイヤーを後ろから映していたいのでこの速度
-			pad_rx = -Input.GetAxis("L_Stick_H") / 3.5f;
+			pad_rx = -Input.GetAxis("R_Stick_H") / 3.5f;
 		}
 		else {
 			pad_lx = Input.GetAxis("L_Stick_H");

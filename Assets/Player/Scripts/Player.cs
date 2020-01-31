@@ -385,9 +385,14 @@ public sealed partial class Player : CharaBase
 		float pad_x = 0;
         float pad_y = 0;
 
-		//CURVEショットの時は、移動せずに向きだけ変化する
-		if (shot_state == 2 && Input.GetButton("Shot_R")) {
-			transform.Rotate(0.0f, Input.GetAxis("L_Stick_H"), 0.0f);
+		//CURVEショットエイム判定
+		CurveAimJudge();
+
+		//CURVEショットの時は、戦車移動＋その場回転
+		if (curve_aim_flg) {
+			transform.Rotate(0.0f, Input.GetAxis("R_Stick_H"), 0.0f);
+			pad_x = Input.GetAxis("L_Stick_H")/5;
+			pad_y = -Input.GetAxis("L_Stick_V")/5;
 		}
 		else {
 			pad_x = Input.GetAxis("L_Stick_H");
@@ -418,8 +423,12 @@ public sealed partial class Player : CharaBase
         move = right * axis_x;
         move += front * axis_y;
 
-        //　方向キーが多少押されていたらその方向向く
-        if (axis_x != 0f || axis_y != 0f) LookAt(move);
+		//　方向キーが多少押されていたらその方向向く(CURVEショットのエイムの時以外)
+		if (axis_x != 0f || axis_y != 0f) {
+			if (!curve_aim_flg) {
+				LookAt(move);
+			}
+		}
 
 
 
@@ -475,6 +484,16 @@ public sealed partial class Player : CharaBase
 
 
 		#endregion
+	}
+
+	//CURVEショットエイム判定
+	void CurveAimJudge() {
+		if (shot_state == 2 && Input.GetButton("Shot_R")) {
+			curve_aim_flg = true;
+		}
+		else {
+			curve_aim_flg = false;
+		}
 	}
 
 	// その方向を向く
@@ -1209,5 +1228,10 @@ public sealed partial class Player : CharaBase
     {
         get { return (int)enum_faint; }
     }
+
+	public bool CurveAimFlg {
+		get { return curve_aim_flg; }
+	}
+
 }
 

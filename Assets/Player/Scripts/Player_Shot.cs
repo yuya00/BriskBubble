@@ -54,7 +54,7 @@ public sealed partial class Player : CharaBase
 					case 1:
 						break;
 					case 2:
-						if (Input.GetButton("Shot_R") && !enemy_hit) {
+						if (Input.GetButton("Shot_R")) {
 							ShotChargeLength();
 							//やまなりショットの軌道予測線を表示
 							Physics_Simulate();
@@ -67,7 +67,6 @@ public sealed partial class Player : CharaBase
 					ShotSelect(shot_object[shot_state]);
 					effect.Effect(PLAYER, SHOT, transform.position + transform.forward * shot_down_pos, effect.shot_player);
                     sound.SoundSE(PLAYER_SE, SHOT_SE); // サウンド発生
-					enemy_hit = false;
 				}
 			}
 
@@ -380,9 +379,9 @@ public sealed partial class Player : CharaBase
             }
         }
 
-        //enemy_hit = false;
+		enemy_hit = false;
 
-        physics_simulate_pos.Clear();
+		physics_simulate_pos.Clear();
 
     }
 

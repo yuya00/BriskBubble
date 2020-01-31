@@ -160,7 +160,7 @@ public sealed partial class Player : CharaBase
     private float shot_charge_length = CHARGE_LENGTH_OFFSET;       //やまりなショットの発射距離
     private float shot_length_charge_speed; //やまなりショットのチャージスピード
 
-
+	private bool curve_aim_flg; //CURVEショットのエイム判定
 
     //壁掴み判定Ray ---------------------------------------------
     [System.Serializable]
