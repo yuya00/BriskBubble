@@ -483,7 +483,7 @@ public sealed partial class Enemy : CharaBase
 			}
 		}
 		//音範囲内で音があったら、警戒stateに移行
-		if (enemy_sounddetect.HitFlg) {
+		if (enemy_sounddetect.SoundCatchFlg) {
 			if (enum_state == Enum_State.WAIT) {
 				enum_state = Enum_State.WARNING;
 			}
@@ -608,7 +608,10 @@ public sealed partial class Enemy : CharaBase
                 Swing(wait_act.swing_spd, wait_act.swing_time / 2 + once_random.num, 0, Enum_Act.WAIT);
                 break;
         }
-    }
+
+		//--反撃ショットに移行
+		BreakShot_Shift();
+	}
 
 	//--首振り関数(首振る速さ、首振る時間、待機時間、次のstate)
 	void Swing(int spd, int time, int wait_time, Enum_Act next_state) {
@@ -654,7 +657,7 @@ public sealed partial class Enemy : CharaBase
 					enum_act = Enum_Act.WARNING1;
 				}
 				//音範囲内で音
-				if (enemy_sounddetect.HitFlg) {
+				if (enemy_sounddetect.SoundCatchFlg) {
 					enum_act = Enum_Act.WARNING2;
 				}
 				break;
@@ -670,8 +673,8 @@ public sealed partial class Enemy : CharaBase
 				enum_act = Enum_Act.WAIT;
 				break;
 			case Enum_Act.WAIT:
-				if (WaitTimeBox((int)Enum_Timer.WARNIG, 60)) {
-					enemy_sounddetect.HitFlg = false;
+				if (WaitTimeBox((int)Enum_Timer.WARNIG, 30)) {
+					enemy_sounddetect.SoundCatchFlg = false;
 					Clear();
 					enum_state = Enum_State.WAIT;
 				}
@@ -1570,8 +1573,10 @@ public sealed partial class Enemy : CharaBase
 	//--反撃ショットに移行
 	void BreakShot_Shift() {
 		//音範囲にシャボンがあれば、ショットで破壊
-		if (is_ground && enum_awaykind == Enum_AwayKind.SHOT && 
+		if (is_ground && enum_awaykind == Enum_AwayKind.SHOT &&
 			enemy_sounddetect.FoundShotFlg) {
+			//元のstateに戻りたいので、enum_stateを保存
+			breakshot_act.serve_state = (int)enum_state;
 			enum_state = Enum_State.BREAK;
 			Clear();
 		}
@@ -1612,8 +1617,15 @@ public sealed partial class Enemy : CharaBase
 				if (WaitTimeBox((int)Enum_Timer.EACH_ACT, breakshot_act.back_time)) {
 					Clear();
 					transform.localEulerAngles = Vector3.zero;
-					enum_state = Enum_State.AWAY;
-					enum_act = Enum_Act.RUN;
+					//元のstateに戻る
+					if (breakshot_act.serve_state == (int)Enum_State.WAIT) {
+						enum_state = Enum_State.WAIT;
+						enum_act = Enum_Act.CLEAR;
+					}
+					else if(breakshot_act.serve_state == (int)Enum_State.AWAY) {
+						enum_state = Enum_State.AWAY;
+						enum_act = Enum_Act.RUN;
+					}
 				}
 				break;
 		}

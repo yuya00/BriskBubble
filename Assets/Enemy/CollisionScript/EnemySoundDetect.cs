@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemySoundDetect : MonoBehaviour {
 	private SphereCollider m_sphereCollider = null;
-	private bool hit_flg;
-	private Vector3 hit_pos;
 
-	private bool found_shot_flg;
-	private Vector3 found_hit_pos;
+	private bool sound_catch_flg;   //聞こえた判定
+	private Vector3 hit_pos;        //座標保存
+
+	private bool found_shot_flg;	//見つけた判定(反撃ショット用)
+	private Vector3 found_hit_pos;	//座標保存
 
 	public bool gizmo_on;
 	[SerializeField]
@@ -20,19 +21,23 @@ public class EnemySoundDetect : MonoBehaviour {
 
 	// 当たり判定 -------------------------------------------------------
 	private void OnTriggerStay(Collider other) {
+		//当たったのがショットで、音があればヒット
 		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().ApperFg) {
-			hit_flg = true;
+			sound_catch_flg = true;
 			hit_pos = other.gameObject.transform.position;
 		}
+		//座標保存(反撃ショット用)
 		if (other.gameObject.tag == "Shot") {
 			found_hit_pos = other.gameObject.transform.position;
 		}
 	}
 	private void OnTriggerEnter(Collider other) {
+		//当たったのがショットで、音があればヒット
 		if (other.gameObject.tag == "Shot" && other.GetComponent<ShotBase>().ApperFg) {
-			hit_flg = true;
+			sound_catch_flg = true;
 			hit_pos = other.gameObject.transform.position;
 		}
+		//判定(反撃ショット用)
 		if (other.gameObject.tag == "Shot") {
 			found_shot_flg = true;
 		}
@@ -48,9 +53,9 @@ public class EnemySoundDetect : MonoBehaviour {
 
 	// get -----------------------------------------------------------
 	//当たり判定を返す
-	public bool HitFlg {
-		get { return hit_flg; }
-		set { hit_flg = value; }
+	public bool SoundCatchFlg {
+		get { return sound_catch_flg; }
+		set { sound_catch_flg = value; }
 	}
 	//座標を返す
 	public Vector3 Hitpos {
